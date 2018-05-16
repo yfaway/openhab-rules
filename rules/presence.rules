@@ -1,0 +1,39 @@
+val LOGGER_NAME = "Presence"
+
+rule "Update owner1's got home state when user is online"
+when
+  Item Presence_Owner1_Phone changed from OFF to ON
+then
+  Presence_Owner1_Just_Got_Home.sendCommand(ON)
+end
+
+rule "Update owner1's got home state when user is offline"
+when
+  Item Presence_Owner1_Phone changed from ON to OFF
+then
+  Presence_Owner1_Just_Got_Home.sendCommand(OFF)
+end
+
+rule "Update owner2's got home state when user is online"
+when
+  Item Presence_Owner2_Phone changed from OFF to ON
+then
+  Presence_Owner2_Just_Got_Home.sendCommand(ON)
+end
+
+rule "Update owner2's got home state when user is offline"
+when
+  Item Presence_Owner2_Phone changed from ON to OFF
+then
+  Presence_Owner2_Just_Got_Home.sendCommand(OFF)
+end
+
+/*
+rule "Init presence states"
+when
+  System started
+then
+  Presence_Owner1_Just_Got_Home.sendCommand(OFF)
+  Presence_Owner2_Just_Got_Home.sendCommand(OFF)
+end
+*/

@@ -1,0 +1,191 @@
+val String LOGGER_NAME = "SecurityRules"
+
+/**
+ * If the garage door is open from the car or the external panel, determine
+ * if an owner is arriving home. If yes, unarm the system (if was armed).
+ * The "arriving home" determination is done by determining if at least one
+ * owner is initially not at home. Then wait in 15' interval up to a total of
+ * 90'. If an owner's presence changed from OFF to ON state, then that owner
+ * just arrives home.
+ */
+rule "Unarm when garage is open from car or external panel"
+when
+  Item GarageDoorSwitch changed from OFF to ON
+then
+  logInfo(LOGGER_NAME, "Garage door is open.")
+
+  if (PARTITION1_ARM_MODE.state == 1 || PARTITION1_ARM_MODE.state == 2) {
+    val owner1WasNotHome = (gOwner1Presence.state == OFF 
+        || Presence_Owner1_Just_Got_Home.state == ON)
+    val owner2WasNotHome = (gOwner2Presence.state == OFF
+        || Presence_Owner2_Just_Got_Home.state == ON)
+
+    // wait up to 1.5 mins to determine if an owner just got home
+    if ( owner1WasNotHome || owner2WasNotHome ) {
+      var owner1ArrivedHome = (Presence_Owner1_Just_Got_Home.state == ON)
+      var owner2ArrivedHome = (Presence_Owner2_Just_Got_Home.state == ON)
+      if ( ! owner1ArrivedHome && ! owner2ArrivedHome ) {
+        Thread.sleep(15000) // wait 15' for HAB to ping phone thru WIFI.
+      }
+
+      owner1ArrivedHome = (Presence_Owner1_Just_Got_Home.state == ON)
+      owner2ArrivedHome = (Presence_Owner2_Just_Got_Home.state == ON)
+      if ( ! owner1ArrivedHome && ! owner2ArrivedHome ) {
+        Thread.sleep(15000) // wait 15' more
+      }
+
+      owner1ArrivedHome = (Presence_Owner1_Just_Got_Home.state == ON)
+      owner2ArrivedHome = (Presence_Owner2_Just_Got_Home.state == ON)
+      if ( ! owner1ArrivedHome && ! owner2ArrivedHome ) {
+        Thread.sleep(15000) // wait 15' more
+      }
+
+      owner1ArrivedHome = (Presence_Owner1_Just_Got_Home.state == ON)
+      owner2ArrivedHome = (Presence_Owner2_Just_Got_Home.state == ON)
+      if ( ! owner1ArrivedHome && ! owner2ArrivedHome ) {
+        Thread.sleep(15000) // wait 15' more
+      }
+
+      owner1ArrivedHome = (Presence_Owner1_Just_Got_Home.state == ON)
+      owner2ArrivedHome = (Presence_Owner2_Just_Got_Home.state == ON)
+      if ( ! owner1ArrivedHome && ! owner2ArrivedHome ) {
+        Thread.sleep(15000) // wait 15' more
+      }
+
+      owner1ArrivedHome = (Presence_Owner1_Just_Got_Home.state == ON)
+      owner2ArrivedHome = (Presence_Owner2_Just_Got_Home.state == ON)
+      if ( ! owner1ArrivedHome && ! owner2ArrivedHome ) {
+        Thread.sleep(15000) // wait 15' more
+      }
+
+      owner1ArrivedHome = (Presence_Owner1_Just_Got_Home.state == ON)
+      owner2ArrivedHome = (Presence_Owner2_Just_Got_Home.state == ON)
+      if ( owner1ArrivedHome || owner2ArrivedHome ) {
+        var ownerName = "";
+        if (owner1ArrivedHome ) {
+          ownerName = "Owner1"
+        } else {
+          ownerName = "Owner2"
+        }
+        logInfo(LOGGER_NAME, ownerName + " arrives home; unarming.")
+        PARTITION1_ARM_MODE.sendCommand(0)
+      }
+      else {
+        logInfo(LOGGER_NAME, "Cannot determine who opened the garage door.")
+      }
+    }
+    else {
+      logInfo(LOGGER_NAME, "Both owner are at home.")
+    }
+  }
+  else {
+    logInfo(LOGGER_NAME, "System not armed.")
+  }
+end
+
+
+rule "Unarm when garage door is opened programmatically"
+when
+  Item GarageDoorSwitch received command ON
+then
+  logInfo(LOGGER_NAME, "Garage receives open command.")
+
+  if (PARTITION1_ARM_MODE.state == 1 || PARTITION1_ARM_MODE.state == 2) {
+    logInfo(LOGGER_NAME, "Unarming.")
+    PARTITION1_ARM_MODE.sendCommand(0)
+  }
+  else {
+    logInfo(LOGGER_NAME, "System not armed.")
+  }
+end
+
+
+/**
+ * Unarm in the weekday morning at 7:10 if system was in ARMED STAY mode.
+ */
+rule "Unarm in the morning"
+when
+  Time cron "0 10 7 ? * MON-FRI *"
+then
+  if (PARTITION1_ARM_MODE.state == 2) {
+    logInfo(LOGGER_NAME, "Unarming.")
+    PARTITION1_ARM_MODE.sendCommand(0)
+  }
+  else {
+    logInfo(LOGGER_NAME, "Security system is not in ARMED STAY state -> not unarming.")
+  }
+end
+
+
+/**
+ * Attempt to STAY arm at 15' interval between 8:45PM and 1:00AM, if someone
+ * is home and if the security system is in DISARM mode.
+ */
+rule "Arm at Stay mode in the night"
+when
+  Time cron "0 45 20 1/1 * ? *" or
+  Time cron "0 0 21 1/1 * ? *" or
+  Time cron "0 15 21 1/1 * ? *" or
+  Time cron "0 30 21 1/1 * ? *" or
+  Time cron "0 45 21 1/1 * ? *" or
+
+  Time cron "0 0 22 1/1 * ? *" or
+  Time cron "0 15 22 1/1 * ? *" or
+  Time cron "0 30 22 1/1 * ? *" or
+  Time cron "0 45 22 1/1 * ? *" or
+
+  Time cron "0 0 23 1/1 * ? *" or
+  Time cron "0 15 23 1/1 * ? *" or
+  Time cron "0 30 23 1/1 * ? *" or
+  Time cron "0 45 23 1/1 * ? *" or
+
+  Time cron "0 0 0 1/1 * ? *" or
+  Time cron "0 30 0 1/1 * ? *" or
+
+  Time cron "0 0 1 1/1 * ? *"
+then
+  if (PARTITION1_ARM_MODE.state == 0) {
+    if ( gPresence.state == ON ) {
+      logInfo(LOGGER_NAME, "Arming security system at STAY mode.")
+
+      PARTITION1_ARM_MODE.sendCommand(2)
+    }
+    else {
+      logDebug(LOGGER_NAME, "No one is home -> not arming at STAY mode.")
+    }
+  }
+  else {
+    logDebug(LOGGER_NAME, "Security system is not in READY state -> not arming.")
+  }
+end
+
+//rule "test rule"
+//when 
+//  Time cron "0 0/1 * 1/1 * ? *"
+//then
+
+/*
+rule "stay arm after Owner1's Home"
+when
+  Item Presence_Owner1_Phone changed from OFF to ON
+then
+  PARTITION1_ARM_MODE.sendCommand(2)
+end
+*/
+
+/*
+import org.eclipse.xtext.xbase.lib.Functions
+val Functions.Function0<String, void> unarmIfPresence= [loggerName |
+  if (PARTITION1_ARM_MODE.state == 1 || PARTITION1_ARM_MODE.state == 2) {
+    if ( gPresence.state == ON ) {
+    }
+    else {
+    }
+  }
+  else {
+    logInfo(loggerName, "System not armed.")
+  }
+]
+*/
+
+
