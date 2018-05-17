@@ -1,0 +1,56 @@
+/**
+ * Sent an alert after a garage door remains open for a specified period.
+ * When the garage door is closed, the timer alert is cancelled. If an open 
+ * alert had been sent out previously, a new alert is now sent to notify that
+ * the garage door is now closed.
+ */
+
+val String LOGGER_NAME = "GarageDoorOpenAlertRules"
+
+/**
+ * How long the garage remains open before sending out an alert.
+ */
+val GARAGE_ALERT_PERIOD_IN_MINUTES = 30
+
+val GARAGE_OPEN_ALERT_SUBJECT = "Garage door has been open for %d minutes"
+val GARAGE_CLOSE_ALERT_SUBJECT = "Garage door is now closed"
+
+val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
+
+var Timer garageOpenTimer = null
+var sentOpenAlert = false
+
+rule "Alert after garage door remains open for a specific period"
+when
+  Item GarageDoorSwitch changed from OFF to ON
+then
+  sentOpenAlert = false;
+
+  garageOpenTimer = createTimer(now.plusMinutes(GARAGE_ALERT_PERIOD_IN_MINUTES)) [|
+    if (garageOpenTimer !== null) {
+      garageOpenTimer.cancel
+      garageOpenTimer = null
+
+      val subject = String::format(GARAGE_OPEN_ALERT_SUBJECT, GARAGE_ALERT_PERIOD_IN_MINUTES)
+      sendMail(OWNER_EMAIL_ADDRESSES, subject, "")
+      sentOpenAlert = true
+      logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
+    }
+  ]
+end
+
+rule "Cancel garage-door-open-alert when garage door is closed"
+when
+  Item GarageDoorSwitch changed from ON to OFF
+then
+  if (garageOpenTimer !== null) {
+    garageOpenTimer.cancel
+    garageOpenTimer = null
+    logInfo(LOGGER_NAME, "Cancelled garage-door-open timer.")
+  }
+  else if (sentOpenAlert) {
+    sendMail(OWNER_EMAIL_ADDRESSES, GARAGE_CLOSE_ALERT_SUBJECT, "")
+    sentOpenAlert = false
+    logInfo(LOGGER_NAME, "Sent alert '" + GARAGE_CLOSE_ALERT_SUBJECT + "'")
+  }
+end

@@ -1,2 +1,4 @@
+services
+transform/owner-email-addresses.map
 *.swp
 *.swo
