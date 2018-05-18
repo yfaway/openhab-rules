@@ -1,5 +1,24 @@
 val LOGGER_NAME = "Presence"
 
+rule "Init presence states"
+when
+  System started
+then
+  gOwner1Presence.sendCommand(OFF)
+  gOwner2Presence.sendCommand(OFF)
+  Presence_Owner1_Just_Got_Home.sendCommand(OFF)
+  Presence_Owner2_Just_Got_Home.sendCommand(OFF)
+  Security_Motion_Sensor_Triggered.sendCommand(OFF)
+end
+
+rule "Presence based on security motion sensor (assuming zone 4)"
+when
+  Item ZONE4_TRIPPED changed from OFF to ON 
+then
+  Security_Motion_Sensor_Triggered.sendCommand(ON)
+  // logInfo(LOGGER_NAME, "Security motion sensor triggered")
+end
+
 rule "Update owner1's got home state when user is online"
 when
   Item Presence_Owner1_Phone changed from OFF to ON
@@ -29,11 +48,4 @@ then
 end
 
 /*
-rule "Init presence states"
-when
-  System started
-then
-  Presence_Owner1_Just_Got_Home.sendCommand(OFF)
-  Presence_Owner2_Just_Got_Home.sendCommand(OFF)
-end
 */

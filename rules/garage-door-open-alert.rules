@@ -49,8 +49,9 @@ then
     logInfo(LOGGER_NAME, "Cancelled garage-door-open timer.")
   }
   else if (sentOpenAlert) {
-    sendMail(OWNER_EMAIL_ADDRESSES, GARAGE_CLOSE_ALERT_SUBJECT, "")
     sentOpenAlert = false
+
+    sendMail(OWNER_EMAIL_ADDRESSES, GARAGE_CLOSE_ALERT_SUBJECT, "")
     logInfo(LOGGER_NAME, "Sent alert '" + GARAGE_CLOSE_ALERT_SUBJECT + "'")
   }
 end

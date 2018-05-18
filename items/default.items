@@ -12,10 +12,18 @@ Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network> {expire="5
 Switch Presence_Owner1_Phone "Owner1's Phone" <network> (gPresence, gOwner1Presence) { channel="network:pingdevice:192_168_0_208:online" } 
 Switch Presence_Owner2_Phone "Owner2's Phone" <network> (gPresence, gOwner2Presence) { channel="network:pingdevice:192_168_0_207:online" }
 
+Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPresence) {expire="5m,command=OFF"}
+
 /**
  * Security system
  */
 Number PARTITION1_ARM_MODE "Partition 1 Arm Mode: [%d]" (DSCAlarmPartitions) {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
+
+Switch ZONE1_TRIPPED (DSCAlarmZones) {channel="dscalarm:zone:706cd89d:zone1:zone_tripped"}
+Switch ZONE2_TRIPPED (DSCAlarmZones) {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
+Switch ZONE3_TRIPPED (DSCAlarmZones) {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
+Switch ZONE4_TRIPPED (DSCAlarmZones) {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
+Switch ZONE5_TRIPPED (DSCAlarmZones) {channel="dscalarm:zone:706cd89d:zone5:zone_tripped"}
 
 /**
  * Garage door
