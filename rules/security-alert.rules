@@ -1,0 +1,39 @@
+
+val String LOGGER_NAME = "SecurityAlertRules"
+val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
+
+/**
+ * A value that indicates a LED indicator is off.
+ */
+val KEYPAD_LED_OFF = 0
+
+var sentAlarmAlert = false
+
+rule "Alert when security system is in alarm"
+when
+  Item PARTITION1_IN_ALARM changed from OFF to ON
+then
+  sentAlarmAlert = false;
+
+  var subject = "Security system is in alarm"
+  if (KEYPAD_FIRE_LED.state != KEYPAD_LED_OFF) {
+    subject += ": FIRE"
+  }
+
+  sendMail(OWNER_EMAIL_ADDRESSES, subject, "")
+  sentAlarmAlert = true
+  logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
+end
+
+rule "Alert when security system is no longer in alarm"
+when
+  Item PARTITION1_IN_ALARM changed from ON to OFF
+then
+  if (sentAlarmAlert) {
+    sentAlarmAlert = false
+
+    val subject = "Security system is NO LONGER in alarm"
+    sendMail(OWNER_EMAIL_ADDRESSES, subject, "")
+    logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
+  }
+end
