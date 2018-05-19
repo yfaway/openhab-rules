@@ -1,4 +1,9 @@
 /**
+ * Alert items.
+ */
+String AlertSender
+
+/**
  * Presence states.
  */
 Group:Switch:AND(OFF,ON) gPresence "Someone is at home"

@@ -15,8 +15,6 @@ val GARAGE_ALERT_PERIOD_IN_MINUTES = 30
 val GARAGE_OPEN_ALERT_SUBJECT = "Garage door has been open for %d minutes"
 val GARAGE_CLOSE_ALERT_SUBJECT = "Garage door is now closed"
 
-val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
-
 var Timer garageOpenTimer = null
 var sentOpenAlert = false
 
@@ -32,9 +30,8 @@ then
       garageOpenTimer = null
 
       val subject = String::format(GARAGE_OPEN_ALERT_SUBJECT, GARAGE_ALERT_PERIOD_IN_MINUTES)
-      sendMail(OWNER_EMAIL_ADDRESSES, subject, "")
+      AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
       sentOpenAlert = true
-      logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
     }
   ]
 end
@@ -50,8 +47,6 @@ then
   }
   else if (sentOpenAlert) {
     sentOpenAlert = false
-
-    sendMail(OWNER_EMAIL_ADDRESSES, GARAGE_CLOSE_ALERT_SUBJECT, "")
-    logInfo(LOGGER_NAME, "Sent alert '" + GARAGE_CLOSE_ALERT_SUBJECT + "'")
+    AlertSender.postUpdate("{\"subject\":\"" + GARAGE_CLOSE_ALERT_SUBJECT + "\"}")
   }
 end

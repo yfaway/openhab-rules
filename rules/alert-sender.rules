@@ -1,0 +1,48 @@
+/**
+ * A generic mechanism to send alert through the item "AlertSender".
+ * To send an alert, invoke AlertSender.postUpdate with a JSON string. The
+ * JSON string must contain a non-empty "subject" field. The "body" field is
+ * optional.
+ * The actual alert (implementation specific) is triggered upon
+ * "AlertSender received update".
+ * Example:
+ *   AlertSender.postUpdate("{\"subject\":\"hello\",\"body\":\"body msg\"}")
+ * The current implementation sends out emails.
+ *
+ * Dependency: the follow item must be declared:
+ *   String AlertSender
+ */
+
+val String LOGGER_NAME = "AlertSender"
+
+/**
+ * Indicates if the system is in dev mode, in which case the actual alert isn't
+ * sent out.
+ */
+var DEV_MODE = false
+
+val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
+
+rule "Send alerts"
+when
+  Item AlertSender received update
+then
+  val state = AlertSender.state.toString
+  val subject = transform("JSONPATH", "$.subject", state)
+
+  if (null === subject || "" == subject) {
+    logInfo(LOGGER_NAME, "null or empty subject.");
+  }
+  else {
+    if (! DEV_MODE) {
+      var body = transform("JSONPATH", "$.body", state)
+      if (state == body) { // i.e. body field not specified
+        body = "";
+      }
+
+      sendMail(OWNER_EMAIL_ADDRESSES, subject, body)
+    }
+
+    logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
+  }
+end

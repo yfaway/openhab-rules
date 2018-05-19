@@ -1,6 +1,5 @@
 
 val String LOGGER_NAME = "SecurityAlertRules"
-val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
 
 /**
  * A value that indicates a LED indicator is off.
@@ -20,9 +19,8 @@ then
     subject += ": FIRE"
   }
 
-  sendMail(OWNER_EMAIL_ADDRESSES, subject, "")
+  AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
   sentAlarmAlert = true
-  logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
 end
 
 rule "Alert when security system is no longer in alarm"
@@ -33,7 +31,6 @@ then
     sentAlarmAlert = false
 
     val subject = "Security system is NO LONGER in alarm"
-    sendMail(OWNER_EMAIL_ADDRESSES, subject, "")
-    logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
+    AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
   }
 end
