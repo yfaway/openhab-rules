@@ -10,13 +10,33 @@ var sentAlarmAlert = false
 
 rule "Alert when security system is in alarm"
 when
-  Item PARTITION1_IN_ALARM changed from OFF to ON
+  Item PARTITION1_IN_ALARM changed to ON
 then
-  sentAlarmAlert = false;
+  sentAlarmAlert = false
 
   var subject = "Security system is in alarm"
   if (KEYPAD_FIRE_LED.state != KEYPAD_LED_OFF) {
     subject += ": FIRE"
+  }
+  else if (gZoneTripped.state == ON) {
+    // retrieve the name of the zones tripped
+    subject += ": "
+
+    var idx = 0
+    gZoneInAlarm.members.forEach[zone |
+
+      if (zone.state == ON) {
+        val localIdx = zone.name.indexOf("_")
+        val zoneName = zone.name.substring(0, localIdx)
+        val target = gZone.members.findFirst[zone | zone.name == zoneName]
+
+        if ( idx > 0 ) {
+          subject += ", "
+        }
+        subject += target.label
+        idx += 1
+      }
+    ]
   }
 
   AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
