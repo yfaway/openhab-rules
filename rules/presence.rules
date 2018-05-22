@@ -4,6 +4,8 @@ rule "Init presence states"
 when
   System started
 then
+  gPresence.sendCommand(OFF)
+  gOwnerPresence.sendCommand(OFF)
   gOwner1Presence.sendCommand(OFF)
   gOwner2Presence.sendCommand(OFF)
   Presence_Owner1_Just_Got_Home.sendCommand(OFF)

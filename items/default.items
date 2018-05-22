@@ -7,9 +7,10 @@ String AlertSender
  * Presence states.
  */
 Group:Switch:AND(OFF,ON) gPresence "Someone is at home"
+Group:Switch:AND(OFF,ON) gOwnerPresence "An owner is at home"
 
-Group:Switch:AND(OFF,ON) gOwner1Presence "Owner1 is at home"
-Group:Switch:AND(OFF,ON) gOwner2Presence "Owner2 is at home"
+Group:Switch:AND(OFF,ON) gOwner1Presence "Owner1 is at home" (gOwnerPresence) 
+Group:Switch:AND(OFF,ON) gOwner2Presence "Owner2 is at home" (gOwnerPresence)
 
 Switch Presence_Owner1_Just_Got_Home "Owner1 just got home" <network> {expire="5m,command=OFF"}
 Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network> {expire="5m,command=OFF"}
@@ -22,14 +23,14 @@ Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPre
 /**
  * Security system
  */
+Group gZone
+Group:Switch:OR(ON,OFF) gZoneTripped "A zone is tripped"
+Group:Switch:OR(ON,OFF) gZoneInAlarm "A zone is in alarm"
+
 Switch PARTITION1_IN_ALARM (DSCAlarmPartitions) {channel="dscalarm:partition:706cd89d:partition1:partition_in_alarm"}
 Number PARTITION1_ARM_MODE "Partition 1 Arm Mode: [%d]" (DSCAlarmPartitions) {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
 
 Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED> (DSCAlarmKeypads) {channel="dscalarm:keypad:706cd89d:keypad:keypad_fire_led"}
-
-Group gZone
-Group:Switch:OR(ON,OFF) gZoneTripped "A zone is tripped"
-Group:Switch:OR(ON,OFF) gZoneInAlarm "A zone is in alarm"
 
 String ZONE1 "Front Door" (gZone)
 String ZONE2 "Garage Door" (gZone)

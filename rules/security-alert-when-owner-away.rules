@@ -1,0 +1,60 @@
+/**
+ * Sends an alert when a zone is triggered IFF the following conditions are
+ * met:
+ *  - the house is not armed, and
+ *  - the owners are not home (at work or in vacation), and
+ *  - the current time is in the specified time range.
+ */
+
+val LOGGER_NAME = "SecurityAlertWhenOwnerAwayRules"
+val UNARMED = 0
+
+/**
+ * How often the alert should be sent.
+ */
+val INTERVAL_BETWEEN_ALERTS_IN_MINUTES = 30
+
+/**
+ * Only send alert on these days.
+ */
+val WORKDAYS = newArrayList(
+    DateTimeConstants.MONDAY, DateTimeConstants.TUESDAY,
+    DateTimeConstants.WEDNESDAY, DateTimeConstants.THURSDAY, 
+    DateTimeConstants.FRIDAY) 
+
+/**
+ * Only send alert from 2PM to 4:30PM.
+ */
+val TIME_RANGE_IN_MILLIS_OF_DAY = (14.5 * 3600 * 1000) -> (16.5 * 3600 * 1000)
+
+// The last time the alert was sent.
+var DateTime lastAlertTimestamp = null
+
+rule "Alert when a zone is unexpectedly tripped (system is unarmed)"
+when
+  Item gZoneTripped changed to ON
+then
+  if ( PARTITION1_ARM_MODE.state == UNARMED && gOwnerPresence.state == OFF ) {
+    // prevent false alarm in case the owner presence is not accurate
+    // (very likely when based on iPhone's WIFI connection).
+    // todo: get time range from a config file
+    val jodaLocalDateTime = now.toLocalDateTime()
+    val dayOfWeek = jodaLocalDateTime.getDayOfWeek()
+    val millisOfDay = jodaLocalDateTime.getMillisOfDay()
+    if ( WORKDAYS.contains(dayOfWeek) 
+        && millisOfDay >= TIME_RANGE_IN_MILLIS_OF_DAY.getKey()
+        && millisOfDay <= TIME_RANGE_IN_MILLIS_OF_DAY.getValue()) {
+      if (null === lastAlertTimestamp 
+          || lastAlertTimestamp.plusMinutes(INTERVAL_BETWEEN_ALERTS_IN_MINUTES).isBeforeNow()) {
+        val trippedZone = gZoneTripped.members.findFirst[z | z.state == ON]
+        val zoneName = trippedZone.name.substring(0, trippedZone.name.indexOf("_"))
+        val zoneLocation = gZone.members.findFirst[z | z.name == zoneName].label
+
+        val subject = "Someone is at the house (owners not in presence). The zone tripped is: " + zoneLocation
+        AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
+
+        lastAlertTimestamp = now
+      }
+    }
+  }
+end
