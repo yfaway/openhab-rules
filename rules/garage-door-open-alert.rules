@@ -30,7 +30,7 @@ then
       garageOpenTimer = null
 
       val subject = String::format(GARAGE_OPEN_ALERT_SUBJECT, GARAGE_ALERT_PERIOD_IN_MINUTES)
-      AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
+      VT_AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
       sentOpenAlert = true
     }
   ]
@@ -47,6 +47,6 @@ then
   }
   else if (sentOpenAlert) {
     sentOpenAlert = false
-    AlertSender.postUpdate("{\"subject\":\"" + GARAGE_CLOSE_ALERT_SUBJECT + "\"}")
+    VT_AlertSender.postUpdate("{\"subject\":\"" + GARAGE_CLOSE_ALERT_SUBJECT + "\"}")
   }
 end

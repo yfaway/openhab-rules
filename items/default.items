@@ -8,7 +8,7 @@
 /**
  * Alert items.
  */
-String AlertSender
+String VT_AlertSender
 
 /**
  * Presence states.

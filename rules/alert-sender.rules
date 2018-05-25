@@ -1,19 +1,30 @@
 /**
- * A generic mechanism to send alert through the item "AlertSender".
- * To send an alert, invoke AlertSender.postUpdate with a JSON string. The
- * JSON string must contain a non-empty "subject" field. The "body" field is
- * optional.
+ * A generic mechanism to send alert through the item "VT_AlertSender".
+ * To send an alert, invoke VT_AlertSender.postUpdate with a JSON string. The
+ * JSON string can contain the following fields:
+ *   - subject (required): the subject of the alert
+ *   - body (opt): the body of the alert
+ *   - module (opt): an unique string to indicate the owner
+ *   - intervalBetweenAlertsInMinutes (opt): only valid if "module" is also
+ *     specified. Will track the timestamp of the last alert. When a new alert
+ *     arrives, if the # of minutes specified by this field has not passed,
+ *     the alert is dropped.
+ *   - resetTimestamp (opt): only valid if "module" is also specified. Will
+ *     reset the timestamp of the last alert message. I.e. this guarantees
+ *     that the current alert is always sent out.
+ *
  * The actual alert (implementation specific) is triggered upon
- * "AlertSender received update".
+ * "VT_AlertSender received update".
  * Example:
- *   AlertSender.postUpdate("{\"subject\":\"hello\",\"body\":\"body msg\"}")
+ *   VT_AlertSender.postUpdate("{\"subject\":\"hello\",\"body\":\"body msg\"}")
+ *
  * The current implementation sends out emails.
  *
  * Dependency: the follow item must be declared:
- *   String AlertSender
+ *   String VT_AlertSender
  */
 
-val String LOGGER_NAME = "AlertSender"
+val LOGGER_NAME = "AlertSender"
 
 /**
  * Indicates if the system is in dev mode, in which case the actual alert isn't
@@ -23,26 +34,88 @@ var DEV_MODE = false
 
 val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
 
+val moduleTimestamps = newLinkedHashMap()
+
 rule "Send alerts"
 when
-  Item AlertSender received update
+  Item VT_AlertSender received update
 then
-  val state = AlertSender.state.toString
+  val state = VT_AlertSender.state.toString
   val subject = transform("JSONPATH", "$.subject", state)
 
   if (null === subject || "" == subject) {
-    logInfo(LOGGER_NAME, "null or empty subject.");
+    logInfo(LOGGER_NAME, "null or empty subject.")
+    return
   }
-  else {
-    if (! DEV_MODE) {
-      var body = transform("JSONPATH", "$.body", state)
-      if (state == body) { // i.e. body field not specified
-        body = "";
-      }
 
-      sendMail(OWNER_EMAIL_ADDRESSES, subject, body)
+  var body = transform("JSONPATH", "$.body", state)
+  if (state == body) { // i.e. body field not specified
+    body = ""
+  }
+
+  var module = transform("JSONPATH", "$.module", state)
+  if (state == module) {
+    module = ""
+  }
+
+  var intervalInMinutes = transform("JSONPATH", "$.intervalBetweenAlertsInMinutes", state)
+  if (state == intervalInMinutes) {
+    intervalInMinutes = ""
+  }
+
+  // return early if not pass the module alert interval
+  if (! module.isEmpty()) {
+    if ( moduleTimestamps.containsKey(module) ) {
+      if ( ! intervalInMinutes.isEmpty() ) {
+        val long durationInMillis = Integer.parseInt(intervalInMinutes) * 60 * 1000
+        var diff = now.getMillis() - (moduleTimestamps.get(module) as long)
+        if (diff <= durationInMillis) {
+          return
+        }
+      }
     }
 
-    logInfo(LOGGER_NAME, "Sent alert '" + subject + "'")
+    moduleTimestamps.put(module, now.millis)
   }
+
+  if (! DEV_MODE) {
+    sendMail(OWNER_EMAIL_ADDRESSES, subject, body)
+  }
+
+  var logContent = module
+  if ( ! logContent.isEmpty ) {
+    logContent += ": "
+  }
+
+  logContent += subject
+
+  if (! body.isEmpty()) {
+    logContent += ": " + body
+  }
+
+  logInfo(LOGGER_NAME, "Sent alert '" + logContent + "'")
 end
+
+/*
+rule "Test AlertSender"
+when 
+  Time cron "0 0/1 * 1/1 * ? *"
+then
+  DEV_MODE = true
+
+  var msg1 = "{"
+  msg1 += "\"subject\":\"hello\""
+  msg1 += ",\"body\":\"body msg\""
+  msg1 += ",\"module\":\"test\""
+  msg1 += ",\"intervalBetweenAlertsInMinutes\":\"2\""
+  msg1 += "}"
+  VT_AlertSender.postUpdate(msg1)
+
+  Thread.sleep(3000)
+
+  var msg2 = "{"
+  msg2 += "\"subject\":\"hello\""
+  msg2 += "}"
+  VT_AlertSender.postUpdate(msg2)
+end
+*/

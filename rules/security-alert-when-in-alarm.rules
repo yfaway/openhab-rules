@@ -39,7 +39,7 @@ then
     ]
   }
 
-  AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
+  VT_AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
   sentAlarmAlert = true
 end
 
@@ -51,6 +51,6 @@ then
     sentAlarmAlert = false
 
     val subject = "Security system is NO LONGER in alarm"
-    AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
+    VT_AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
   }
 end
