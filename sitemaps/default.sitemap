@@ -1,215 +1,35 @@
 sitemap default label="HV Home"
 {
-  Text item=gPresence icon="switch"
-
-  //Switch item=gOwner1Presence
-  //Switch item=gOwner2Presence
+  Text item=gPresence icon="presence"
 
   Selection item=PARTITION1_ARM_MODE icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
 
   Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
 
-Frame label="Alarm System" {
-        Text label="DSC Alarm System" {
-            Frame label="Panel" {
-                Switch item=BRIDGE_CONNECTION label="Panel Connection" mappings=[ON="Connected", OFF="Disconnected"]
-                Text item=PANEL_MESSAGE
-                Selection item=PANEL_COMMAND mappings=[0="Poll", 1="Status Report", 2="Labels Request (Serial Only)", 8="Dump Zone Timers (TCP Only)", 10="Set Time/Date", 200="Send User Code"]
-                Text item=PANEL_TIME {
-                    Switch item=PANEL_TIME_STAMP label="Panel Time Stamp"
-                    Switch item=PANEL_TIME_BROADCAST label="Panel Time Broadcast"
-                }
+  Text item=gTemperature icon="temperature"
+  Text item=gHumidity icon="humidity"
 
-                Text item=PANEL_SYSTEM_ERROR
-
-                Text item=PANEL_TROUBLE_LED label="Panel Trouble Condition" {
-                    Text item=PANEL_TROUBLE_MESSAGE
-                    Text item=PANEL_SERVICE_REQUIRED label="Service Required"
-                    Text item=PANEL_AC_TROUBLE label="AC Trouble"
-                    Text item=PANEL_TELEPHONE_TROUBLE label="Telephone Line Trouble"
-                    Text item=PANEL_FTC_TROUBLE label="Failed to Communicate Trouble"
-                    Text item=PANEL_ZONE_FAULT label="Zone Fault"
-                    Text item=PANEL_ZONE_TAMPER label="Zone Tamper"
-                    Text item=PANEL_ZONE_LOW_BATTERY label="Zone Low Battery"
-                    Text item=PANEL_TIME_LOSS label="Panel Time Loss"                   
-                }
-            }
-
-            Frame label="Partitions" {
-                Text item=PARTITION1_STATUS {
-                    Switch item=PARTITION1_ARM_MODE label="Partition 1 Arm Options" mappings=[0="Disarm", 1="Away", 2="Stay", 3="No Entry Delay", 4="With User Code"]
-                    Text item=PARTITION1_OPENING_CLOSING_MODE
-                }
-            }
-
-            Frame label="Keypad" {
-                Text label="Keypad LED Status" {
-                    Text item=KEYPAD_READY_LED label="Ready LED Status"
-                    Text item=KEYPAD_ARMED_LED label="Armed LED Status"
-                    Text item=KEYPAD_MEMORY_LED label="Memory LED Status"
-                    Text item=KEYPAD_BYPASS_LED label="Bypass LED Status"
-                    Text item=KEYPAD_TROUBLE_LED label="Trouble LED Status"
-                    Text item=KEYPAD_PROGRAM_LED label="Program LED Status"
-                    Text item=KEYPAD_FIRE_LED label="Fire LED Status"
-                    Text item=KEYPAD_BACKLIGHT_LED label="Backlight LED Status"
-                    Text item=KEYPAD_AC_LED label="AC LED Status"
-                }
-            }
-
-            Frame label="Zones" {
-                Text label="All Zones" {
-                    Text item=ZONE1_STATUS {
-                        Switch item=ZONE1_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE1_IN_ALARM
-                            Switch item=ZONE1_TAMPER
-                            Switch item=ZONE1_FAULT
-                        }
-                    }
-
-                    Text item=ZONE9_STATUS {
-                        Switch item=ZONE9_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE9_IN_ALARM
-                            Switch item=ZONE9_TAMPER
-                            Switch item=ZONE9_FAULT
-                        }
-                    }
-                    Text item=ZONE10_STATUS {
-                        Switch item=ZONE10_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE10_IN_ALARM
-                            Switch item=ZONE10_TAMPER
-                            Switch item=ZONE10_FAULT
-                        }
-                    }
-                    Text item=ZONE11_STATUS {
-                        Switch item=ZONE11_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE11_IN_ALARM
-                            Switch item=ZONE11_TAMPER
-                            Switch item=ZONE11_FAULT
-                        }
-                    }
-                    Text item=ZONE12_STATUS {
-                        Switch item=ZONE12_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE12_IN_ALARM
-                            Switch item=ZONE12_TAMPER
-                            Switch item=ZONE12_FAULT
-                        }
-                    }
-                    Text item=ZONE13_STATUS {
-                        Switch item=ZONE13_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE13_IN_ALARM
-                            Switch item=ZONE13_TAMPER
-                            Switch item=ZONE13_FAULT
-                        }
-                    }
-                    Text item=ZONE14_STATUS {
-                        Switch item=ZONE14_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE14_IN_ALARM
-                            Switch item=ZONE14_TAMPER
-                            Switch item=ZONE14_FAULT
-                        }
-                    }
-                    Text item=ZONE15_STATUS {
-                        Switch item=ZONE15_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE15_IN_ALARM
-                            Switch item=ZONE15_TAMPER
-                            Switch item=ZONE15_FAULT
-                        }
-                    }
-                    Text item=ZONE21_STATUS {
-                        Switch item=ZONE21_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE21_IN_ALARM
-                            Switch item=ZONE21_TAMPER
-                            Switch item=ZONE21_FAULT
-                        }
-                    }
-                    Text item=ZONE22_STATUS {
-                        Switch item=ZONE22_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE22_IN_ALARM
-                            Switch item=ZONE22_TAMPER
-                            Switch item=ZONE22_FAULT
-                        }
-                    }
-                    Text item=ZONE23_STATUS {
-                        Switch item=ZONE23_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE23_IN_ALARM
-                            Switch item=ZONE23_TAMPER
-                            Switch item=ZONE23_FAULT
-                        }
-                    }
-                    Text item=ZONE24_STATUS {
-                        Switch item=ZONE24_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE24_IN_ALARM
-                            Switch item=ZONE24_TAMPER
-                            Switch item=ZONE24_FAULT
-                        }
-                    }
-                    Text item=ZONE25_STATUS {
-                        Switch item=ZONE25_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE25_IN_ALARM
-                            Switch item=ZONE25_TAMPER
-                            Switch item=ZONE25_FAULT
-                        }
-                    }
-                    Text item=ZONE51_STATUS {
-                        Switch item=ZONE51_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE51_IN_ALARM
-                            Switch item=ZONE51_TAMPER
-                            Switch item=ZONE51_FAULT
-                        }
-                    }
-                    Text item=ZONE52_STATUS {
-                        Switch item=ZONE52_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE52_IN_ALARM
-                            Switch item=ZONE52_TAMPER
-                            Switch item=ZONE52_FAULT
-                        }
-                    }
-                    Text item=ZONE53_STATUS {
-                        Switch item=ZONE53_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE53_IN_ALARM
-                            Switch item=ZONE53_TAMPER
-                            Switch item=ZONE53_FAULT
-                        }
-                    }
-                    Text item=ZONE54_STATUS {
-                        Switch item=ZONE54_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE54_IN_ALARM
-                            Switch item=ZONE54_TAMPER
-                            Switch item=ZONE54_FAULT
-                        }
-                    }
-                    Text item=ZONE55_STATUS {
-                        Switch item=ZONE55_BYPASS_MODE mappings=[OFF="Armed", ON="Bypassed"]
-                        Frame label="Other Status:" {
-                            Switch item=ZONE55_IN_ALARM
-                            Switch item=ZONE55_TAMPER
-                            Switch item=ZONE55_FAULT
-                        }
-                    }
-                }
-
-                Group item=DSCAlarmDoorWindow label="Door/Window Sensors"
-                Group item=DSCAlarmMotion label="Motion Sensors"
-                Group item=DSCAlarmSmoke label="Smoke Detectors"
-
-            }
-        }
+  Text label="Ecobee Thermostat" {
+    Frame label="Ecobee Thermostat" {
+      Text item=FF_GreatRoom_Thermostat_EcobeeName
+      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
+      Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+      Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
+      Text item=FF_GreatRoom_Thermostat_DesiredCool icon="snow"
+      Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
+      Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
+      Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
+      Text item=FF_GreatRoom_Thermostat_RoomOccupancy
     }
+  }
+
+  Text label="Presence Details" {
+    Frame label="Presence" {
+      Switch item=gPresence
+      Switch item=gOwner1Presence icon="network"
+      Switch item=gOwner2Presence icon="network"
+      Switch item=Presence_Owner1_Just_Got_Home 
+      Switch item=Presence_Owner2_Just_Got_Home 
+    }
+  }
 }

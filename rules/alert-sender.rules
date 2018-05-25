@@ -19,7 +19,7 @@ val String LOGGER_NAME = "AlertSender"
  * Indicates if the system is in dev mode, in which case the actual alert isn't
  * sent out.
  */
-var DEV_MODE = true
+var DEV_MODE = false
 
 val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
 

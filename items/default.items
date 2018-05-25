@@ -1,4 +1,11 @@
 /**
+ * Naming convention: <area>_<room>_<type>_<name>.
+ * List of areas: 
+ *  BM = basement, FF = first floor, SF = second floor, VT = virtual items. 
+ * Groups have the "g" prefix.
+ */
+
+/**
  * Alert items.
  */
 String AlertSender
@@ -19,6 +26,29 @@ Switch Presence_Owner1_Phone "Owner1's Phone" <network> (gPresence, gOwner1Prese
 Switch Presence_Owner2_Phone "Owner2's Phone" <network> (gPresence, gOwner2Presence) { channel="network:pingdevice:192_168_0_207:online" }
 
 Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPresence) {expire="5m,command=OFF"}
+
+/**
+ * Temperature and humidity.
+ */
+Group:Number:AVG gTemperature "House Temperature [%.1f °C]"
+Group:Number:AVG gHumidity "House Humidity [%d %%]"
+
+/**
+ * Ecobee
+ */
+Group gEcobeeRuntime
+
+String FF_GreatRoom_Thermostat_EcobeeName "Name [%s]" { ecobee="=[411921197263#name]" }
+Number FF_GreatRoom_Thermostat_ActualTemperature "House Temperature [%.1f °C]" (gTemperature, gEcobeeRuntime) { ecobee="<[411921197263#runtime.actualTemperature]" }
+Number FF_GreatRoom_Thermostat_ActualHumidity "House Humidity [%d %%]" (gHumidity, gEcobeeRuntime) { ecobee="<[411921197263#runtime.actualHumidity]" }
+Number FF_GreatRoom_Thermostat_DesiredHeat "Desired Heat [%.1f °C]" (gEcobeeRuntime) { ecobee="<[411921197263#runtime.desiredHeat]" }
+Number FF_GreatRoom_Thermostat_DesiredCool "Desired Cool [%.1f °C]" (gEcobeeRuntime) { ecobee="<[411921197263#runtime.desiredCool]" }
+String FF_GreatRoom_Thermostat_DesiredFanMode "Desired Fan Mode [%s]" (gEcobeeRuntime) { ecobee="<[411921197263#runtime.desiredFanMode]" }
+
+String FF_GreatRoom_Thermostat_HvacMode "Hvac Mode [%s]" (gEcobeeRuntime) { ecobee="=[411921197263#settings.hvacMode]" }
+String FF_GreatRoom_Thermostat_CurrentClimateRef "Current Profile [%s]"  { ecobee="<[411921197263#program.currentClimateRef]" }
+
+Switch FF_GreatRoom_Thermostat_RoomOccupancy "Great Room Occupancy [%s]" { ecobee="<[411921197263#remoteSensors(Main Floor).capability(occupancy).value]" }
 
 /**
  * Security system
