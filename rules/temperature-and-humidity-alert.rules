@@ -1,0 +1,67 @@
+/**
+ * Sends alert when the temperature or humidity value is outside the allowed
+ * range. Alerts are throttled to once every ALERT_INTERVAL_IN_MINUTES. 
+ */
+
+val LOGGER_NAME = "TempAndHumidityAlert"
+
+/**
+ * The duration between alerts.
+ */
+val ALERT_INTERVAL_IN_MINUTES = 30
+
+/**
+ * The min and max temperature and humidity values.
+ */
+val MIN_TEMPERATURE_IN_DEGREE = 10
+val MAX_TEMPERATURE_IN_DEGREE = 32
+val MIN_HUMIDITY_PERCENTAGE = 25
+val MAX_HUMIDITY_PERCENTAGE = 80
+
+rule "Alert when temperature is outside allowed range"
+when
+  Item gTemperature changed
+then
+  val degree = FF_GreatRoom_Thermostat_ActualTemperature.state;
+
+  var subject = ""
+  if (degree < MIN_TEMPERATURE_IN_DEGREE) {
+    subject = "The house temperature (" + degree + " C) is below threshold"
+  }
+  else if (degree > MAX_TEMPERATURE_IN_DEGREE) {
+    subject = "The house temperature (" + degree + " C) is above threshold"
+  }
+  
+  if ( ! subject.isEmpty() ) {
+    var msg = "{"
+    msg += "\"subject\":\"" + subject + "\""
+    msg += ",\"module\":\"Temperature\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += "}"
+    VT_AlertSender.postUpdate(msg)
+  }
+end
+
+rule "Alert when humidty is outside allowed range"
+when
+  Item gHumidity changed
+then
+  val humidityPercentage = FF_GreatRoom_Thermostat_ActualHumidity.state;
+
+  var subject = ""
+  if (humidityPercentage < MIN_HUMIDITY_PERCENTAGE) {
+    subject = "The house humidity (" + humidityPercentage + "%) is below threshold"
+  }
+  else if (humidityPercentage > MAX_HUMIDITY_PERCENTAGE) {
+    subject = "The house humidity (" + humidityPercentage + "%) is above threshold"
+  }
+  
+  if ( ! subject.isEmpty() ) {
+    var msg = "{"
+    msg += "\"subject\":\"" + subject + "\""
+    msg += ",\"module\":\"Humidity\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += "}"
+    VT_AlertSender.postUpdate(msg)
+  }
+end

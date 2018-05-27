@@ -24,9 +24,10 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Current Functionalities
 ## Alerts
-* Garage door remains open after a period of time.
-* Security alarm triggers with fire/smoke alarm and zone indication.
-* A zone tripped when system is not armed, and an owner is not home, and within a specific period. 
+* When garage door remains open after a period of time.
+* When the security system is in alarmed.
+* When a zone tripped while system is not armed, and an owner is not home, and within a specific period. 
+* When temperature or humidity value is outside the allowed ranges.
 
 ## Display
 * Garage door status.

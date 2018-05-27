@@ -15,7 +15,7 @@ end
 
 rule "Presence based on security motion sensor (assuming zone 4)"
 when
-  Item ZONE4_TRIPPED changed from OFF to ON 
+  Item FF_GreatRoom_MotionSensor_Tripped changed from OFF to ON 
 then
   Security_Motion_Sensor_Triggered.sendCommand(ON)
   // logInfo(LOGGER_NAME, "Security motion sensor triggered")

@@ -5,7 +5,7 @@
  * the garage door is now closed.
  */
 
-val String LOGGER_NAME = "GarageDoorOpenAlertRules"
+val LOGGER_NAME = "GarageDoorOpenAlertRules"
 
 /**
  * How long the garage remains open before sending out an alert.
