@@ -32,8 +32,6 @@ val LOGGER_NAME = "AlertSender"
  */
 var DEV_MODE = false
 
-val OWNER_EMAIL_ADDRESSES = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
-
 val moduleTimestamps = newLinkedHashMap()
 
 rule "Send alerts"
@@ -79,7 +77,10 @@ then
   }
 
   if (! DEV_MODE) {
-    sendMail(OWNER_EMAIL_ADDRESSES, subject, body)
+    // Not defining as global const to allow changing the value on the fly in
+    // the transform file.
+    val emailAddresses = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
+    sendMail(emailAddresses, subject, body)
   }
 
   var logContent = module

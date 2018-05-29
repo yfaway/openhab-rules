@@ -6,10 +6,11 @@ The following sensors, bindings, actions, and transformations need to be present
 
 **Sensors**
 1. Chamberlain 3/4 HPS Belt Drive Garage Door Opener Built-in Wifi (LW6000WFC)
-2. DSC Security System
+2. DSC Security System with EnvisaLink inteface
 3. Ecobee3 Thermostat
 
 **Bindings**
+1. [Astro Binding](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
 1. [Chamberlain MyQ Binding](https://docs.openhab.org/addons/bindings/myq1/readme.html)
 2. [DSC Alarm Binding](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
 3. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
@@ -34,6 +35,10 @@ The following sensors, bindings, actions, and transformations need to be present
 * Presence.
 * Security system status.
 * Temperature and humidity.
+
+## Light Control
+* Turn on foyer light when the garage or front door is open.
+* Automatically turn off light after a certain period of time (configured per light).
 
 ## Presence
 * Cell phone wifi connection using Network binding.
