@@ -1,0 +1,46 @@
+/**
+ * From Design Pattern: Time of Day
+ * https://community.openhab.org/t/design-pattern-time-of-day/15407
+ *
+ * Set the state of VT_Time_Of_Day to one of the followings: MORNING (6AM),
+ * DAY (sunrise), AFTERNOON (90' before sunset), EVENING (sunset),
+ * NIGHT (11PM), BED (before morning). 
+ *
+ * Depenency: astro binding.
+ */
+
+val LOGGER_NAME = "TimeOfTheDay"
+
+rule "Calculate time of day state" 
+when
+  System started or
+  Channel 'astro:sun:home:rise#event'    triggered START or
+  Channel 'astro:sun:home:set#event'     triggered START or
+  Channel 'astro:sun:minus90:set#event'  triggered START or
+  Channel 'astro:sun:minus120:set#event' triggered START or
+  Channel 'astro:sun:minus150:set#event' triggered START or
+  Time cron "0 1 0 * * ? *" or
+  Time cron "0 0 6 * * ? *" or
+  Time cron "0 0 23 * * ? *"
+then
+
+  val long morningStart   = now.withTimeAtStartOfDay.plusHours(6).millis
+  val long dayStart       = (VT_Sunrise_Time.state as DateTimeType).getZonedDateTime.toInstant.toEpochMilli
+  val long eveningStart   = (VT_Sunset_Time.state as DateTimeType).getZonedDateTime.toInstant.toEpochMilli
+  val long nightStart     = now.withTimeAtStartOfDay.plusHours(23).millis
+  val long bedStart       = now.withTimeAtStartOfDay.millis
+  val long afternoonStart = (VT_Evening_Time.state as DateTimeType).getZonedDateTime.toInstant.toEpochMilli
+
+  var curr = "UNKNOWN"
+  switch now {
+    case now.isAfter(morningStart)   && now.isBefore(dayStart):       curr = "MORNING"
+    case now.isAfter(dayStart)       && now.isBefore(afternoonStart): curr = "DAY"
+    case now.isAfter(afternoonStart) && now.isBefore(eveningStart):   curr = "AFTERNOON"
+    case now.isAfter(eveningStart)   && now.isBefore(nightStart):     curr = "EVENING"
+    case now.isAfter(nightStart):                                     curr = "NIGHT"
+    case now.isAfter(bedStart)       && now.isBefore(morningStart):   curr = "BED"
+  }
+
+  logInfo(LOGGER_NAME, "Calculated time of day is: " + curr)
+  VT_Time_Of_Day.sendCommand(curr)
+end

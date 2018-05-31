@@ -1,0 +1,2 @@
+astro:sun:home    [ geolocation="45.416667, -75.683333", interval=60 ]
+astro:sun:minus90 [ geolocation="45.416667, -53.183333", interval=60 ] // +15 degrees == -60 minutes

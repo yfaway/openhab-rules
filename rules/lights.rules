@@ -1,16 +1,24 @@
 /**
  * Various rules to turn on/off the lights.
+ *  - Turn on the foyer light when garage or front door is open.
+ *  - For any light that was turned on programatically, automatically turn off
+ *    after 5 minutes.
+ *  - Cancel turn-off timer if the light was switched off manually.
+ * Dependencies: time-of-day.rules for calculationo of day periods.
  */
 
 val LOGGER_NAME = "Lights"
+val Object switchLock = new Object()
+val Object timerLock = new Object()
 
 rule "Turn on foyer light if the front door or garage door is opened"
 when
   Item FF_FrontDoor_Tripped changed to ON or
   Item FF_GarageDoor_Tripped changed to ON
 then
-  val sunsetJodaTime = new DateTime((VT_Sunset_Time.state as DateTimeType).calendar.timeInMillis)
-  if ( now.isAfter(sunsetJodaTime) ) {
+  if (VT_Time_Of_Day.state == "EVENING" 
+        || VT_Time_Of_Day.state == "NIGHT"
+        || VT_Time_Of_Day.state == "BED" ) {
     FF_Foyer_Switch.sendCommand(ON)
   }
 end
@@ -19,41 +27,44 @@ rule "Set a timer to turn off the light after it was programatically turned on"
 when
  Item gLightSwitch changed
 then
-  gLightSwitch.members.forEach[light |
-    val timerItemName = light.name + "_Timer"
-    val target = gLightSwitchTimer.members.findFirst[t | t.name == timerItemName]
+  synchronized(switchLock) {
+    gLightSwitch.members.forEach[light |
+      val timerItemName = light.name + "_Timer"
+      val target = gLightSwitchTimer.members.findFirst[t | t.name == timerItemName]
 
-    if (light.state == ON) {
-      // prevent renewing the timer caused by other light's state changed to ON
-      if ( target.state != ON ) {
-        target.sendCommand(ON)
+      if (light.state == ON) {
+        // prevent renewing the timer caused by other light's state changed to ON
+        if ( target.state != ON ) {
+          target.sendCommand(ON)
           //logInfo(LOGGER_NAME, "Set timer.")
+        }
       }
-    }
-    else {
-      if ( target.state != OFF ) {
-        target.sendCommand(OFF)
+      else {
+        if ( target.state != OFF ) {
+          target.sendCommand(OFF)
           //logInfo(LOGGER_NAME, "Cancel timer.")
+        }
       }
-    }
-  ]
+    ]
+  }
 end
 
 rule "Turn off light when timer expires"
 when
  Item gLightSwitchTimer changed
 then
-  gLightSwitchTimer.members.forEach[timer |
-    if (timer.state == OFF) {
-      val localIdx = timer.name.lastIndexOf("_")
-      val switchName = timer.name.substring(0, localIdx)
-      //logInfo(LOGGER_NAME, "name: " + switchName)
+  synchronized(timerLock) {
+    gLightSwitchTimer.members.forEach[timer |
+      if (timer.state == OFF) {
+        val localIdx = timer.name.lastIndexOf("_")
+        val switchName = timer.name.substring(0, localIdx)
 
-      val target = gLightSwitch.members.findFirst[t | t.name == switchName]
-      if ( target.state == ON ) {
-        target.sendCommand(OFF)
+        val target = gLightSwitch.members.findFirst[t | t.name == switchName]
+        if ( target.state == ON ) {
+          target.sendCommand(OFF)
           //logInfo(LOGGER_NAME, "Turned off light.")
+        }
       }
-    }
-  ]
+    ]
+  }
 end
