@@ -24,7 +24,7 @@ The following sensors, bindings, actions, and transformations need to be present
 2. [Map](https://docs.openhab.org/addons/transformations/map/readme.html)
 
 # Current Functionalities
-## Alerts
+## Text Alerts
 * When garage door remains open after a period of time.
 * When the security system is in alarmed.
 * When a zone tripped while system is not armed, and an owner is not home, and within a specific period. 
@@ -49,3 +49,33 @@ The following sensors, bindings, actions, and transformations need to be present
 * Automatically unarm in the morning before going to work.
 * Automatically unarm if an owner open the garage door from the outside.
 * Automatically unarm if garage door is open from Hab UI.
+
+# Todos - Functionalities
+## Text Alerts
+* A zone tripped while system is in vacation mode (use Ecobee vacation mode).
+* Send a camera snapshot when motion is detected and system is in vacation mode.
+* Audio alert when someone is at the front door, if an owner is at home.
+* Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and noone is home.
+* Automatic security arm failed -> send alert with the name of the opened door (zone tripped)
+* Water leakage.
+
+## Control
+* A single button on HAB UI to turn off all the controlled lights.
+* Turn on/off main water valve.
+* Turn off water valve and alert when water leakage detected.
+* Control blinds.
+
+## Display
+* Energy usage.
+
+## Presence
+* Ecobee motion sensor.
+
+## Voice Alerts
+* Pronounce name of the person heading back home.
+* Voice alert if some one is at the front door or garage.
+* Voice/text alert when washer/dryer finishs if owner is at home (required energy monitor).
+
+# Todos - Design
+* Move ZWave things to config file.
+* Add an event for vacation mode (e.g. detect through vacation setting on the ecobee).
