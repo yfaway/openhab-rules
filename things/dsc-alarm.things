@@ -1,0 +1,10 @@
+Bridge dscalarm:envisalink:706cd89d [ ipAddress="192.168.0.209" ] {
+  Thing panel panel [userCode="1234"]
+  Thing partition partition1 [ partitionNumber=1 ]
+  Thing zone zone1 [ partitionNumber=1, zoneNumber=1 ]
+  Thing zone zone2 [ partitionNumber=2, zoneNumber=2 ]
+  Thing zone zone3 [ partitionNumber=3, zoneNumber=3 ]
+  Thing zone zone4 [ partitionNumber=4, zoneNumber=4 ]
+  Thing zone zone5 [ partitionNumber=5, zoneNumber=5 ]
+  Thing keypad keypad
+}
