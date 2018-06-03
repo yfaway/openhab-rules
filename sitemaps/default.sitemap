@@ -9,6 +9,12 @@ sitemap default label="HV Home"
   Text item=gTemperature icon="temperature"
   Text item=gHumidity icon="humidity"
 
+  Text item=VT_Outdoor_Temperature icon="temperature"
+  Text item=VT_Outdoor_WeatherCondition
+  Text item=VT_Outdoor_RelativeHumidity icon="humidity"
+
+  Switch item=gOrLightSwitch icon="light"
+
   Text label="Ecobee Thermostat" {
     Frame label="Ecobee Thermostat" {
       Text item=FF_GreatRoom_Thermostat_EcobeeName
@@ -19,6 +25,11 @@ sitemap default label="HV Home"
       Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
       Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
       Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
+
+      Text item=VT_Outdoor_Temperature icon="temperature"
+      Text item=VT_Outdoor_WeatherCondition
+      Text item=VT_Outdoor_RelativeHumidity icon="humidity"
+
       Text item=FF_GreatRoom_Thermostat_RoomOccupancy
     }
   }

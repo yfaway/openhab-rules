@@ -34,11 +34,12 @@ The following sensors, bindings, actions, and transformations need to be present
 * Garage door status.
 * Presence.
 * Security system status.
-* Temperature and humidity.
+* Indoor and forecasted temperature and humidity.
 
 ## Light Control
 * Turn on foyer light when the garage or front door is open.
 * Automatically turn off light after a certain period of time (configured per light).
+* Global switch to turn on/off all controlled lights.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
@@ -60,7 +61,6 @@ The following sensors, bindings, actions, and transformations need to be present
 * Water leakage.
 
 ## Control
-* A single button on HAB UI to turn off all the controlled lights.
 * Turn on/off main water valve.
 * Turn off water valve and alert when water leakage detected.
 * Control blinds.

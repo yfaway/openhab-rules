@@ -46,7 +46,11 @@ Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPre
 Group:Number gLightSwitch
 Group:Number gLightSwitchTimer
 
-Switch FF_Foyer_Switch (gLightSwitch) { channel=" zwave:device:8a09fcb3:node2:switch_binary" }
+// Used to send an ON or OFF command to all controlled lights
+Group:Switch:OR(ON,OFF) gOrLightSwitch "Active Lights [%d]"
+
+Switch FF_Foyer_Switch (gLightSwitch, gOrLightSwitch) 
+  { channel=" zwave:device:8a09fcb3:node2:switch_binary" }
 Switch FF_Foyer_Switch_Timer (gLightSwitchTimer) {expire="5m,command=OFF"}
 
 /**
@@ -61,14 +65,28 @@ Group:Number:AVG gHumidity "House Humidity [%d %%]"
 Group gEcobeeRuntime
 
 String FF_GreatRoom_Thermostat_EcobeeName "Name [%s]" { ecobee="=[411921197263#name]" }
-Number FF_GreatRoom_Thermostat_ActualTemperature "House Temperature [%.1f °C]" (gTemperature, gEcobeeRuntime) { ecobee="<[411921197263#runtime.actualTemperature]" }
-Number FF_GreatRoom_Thermostat_ActualHumidity "House Humidity [%d %%]" (gHumidity, gEcobeeRuntime) { ecobee="<[411921197263#runtime.actualHumidity]" }
-Number FF_GreatRoom_Thermostat_DesiredHeat "Desired Heat [%.1f °C]" (gEcobeeRuntime) { ecobee="<[411921197263#runtime.desiredHeat]" }
-Number FF_GreatRoom_Thermostat_DesiredCool "Desired Cool [%.1f °C]" (gEcobeeRuntime) { ecobee="<[411921197263#runtime.desiredCool]" }
-String FF_GreatRoom_Thermostat_DesiredFanMode "Desired Fan Mode [%s]" (gEcobeeRuntime) { ecobee="<[411921197263#runtime.desiredFanMode]" }
+Number FF_GreatRoom_Thermostat_ActualTemperature "House Temperature [%.1f °C]" (gTemperature, gEcobeeRuntime) 
+  { ecobee="<[411921197263#runtime.actualTemperature]" }
+Number FF_GreatRoom_Thermostat_ActualHumidity "House Humidity [%d %%]" (gHumidity, gEcobeeRuntime) 
+  { ecobee="<[411921197263#runtime.actualHumidity]" }
+Number FF_GreatRoom_Thermostat_DesiredHeat "Desired Heat [%.1f °C]" (gEcobeeRuntime) 
+  { ecobee="<[411921197263#runtime.desiredHeat]" }
+Number FF_GreatRoom_Thermostat_DesiredCool "Desired Cool [%.1f °C]" (gEcobeeRuntime) 
+  { ecobee="<[411921197263#runtime.desiredCool]" }
+String FF_GreatRoom_Thermostat_DesiredFanMode "Desired Fan Mode [%s]" (gEcobeeRuntime) 
+  { ecobee="<[411921197263#runtime.desiredFanMode]" }
 
-String FF_GreatRoom_Thermostat_HvacMode "Hvac Mode [%s]" (gEcobeeRuntime) { ecobee="=[411921197263#settings.hvacMode]" }
-String FF_GreatRoom_Thermostat_CurrentClimateRef "Current Profile [%s]"  { ecobee="<[411921197263#program.currentClimateRef]" }
+String FF_GreatRoom_Thermostat_HvacMode "Hvac Mode [%s]" (gEcobeeRuntime) 
+  { ecobee="=[411921197263#settings.hvacMode]" }
+String FF_GreatRoom_Thermostat_CurrentClimateRef "Current Profile [%s]"  
+  { ecobee="<[411921197263#program.currentClimateRef]" }
+
+String VT_Outdoor_WeatherCondition "Weather Condition [%s]" (gWeather) 
+  { ecobee="<[411921197263#weather.forecasts[0].condition]" }
+Number VT_Outdoor_Temperature "Outdoor Temperature [%.1f °C]" (gWeather) 
+  { ecobee="<[411921197263#weather.forecasts[0].temperature]" }
+Number VT_Outdoor_RelativeHumidity "Relative Humidity [%d %%]" (gWeather) 
+  { ecobee="<[411921197263#weather.forecasts[0].relativeHumidity]" }
 
 Switch FF_GreatRoom_Thermostat_RoomOccupancy "Great Room Occupancy [%s]" { ecobee="<[411921197263#remoteSensors(Main Floor).capability(occupancy).value]" }
 
