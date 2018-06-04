@@ -26,7 +26,7 @@ then
     gZoneInAlarm.members.forEach[zone |
 
       if (zone.state == ON) {
-        val localIdx = zone.name.indexOf("_")
+        val localIdx = zone.name.lastIndexOf("_")
         val zoneName = zone.name.substring(0, localIdx)
         val target = gZone.members.findFirst[zone | zone.name == zoneName]
 

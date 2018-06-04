@@ -1,4 +1,13 @@
+/**
+ * Manages the presence state through the Network binding and the motion 
+ * sensors.
+ * Manage the vacation state through the Ecobee sensor.
+ * Dependencies: Ecobee and Network bindings.
+ */
+
 val LOGGER_NAME = "Presence"
+
+val VACATION = "vacation"
 
 rule "Init presence states"
 when
@@ -11,6 +20,13 @@ then
   Presence_Owner1_Just_Got_Home.sendCommand(OFF)
   Presence_Owner2_Just_Got_Home.sendCommand(OFF)
   Security_Motion_Sensor_Triggered.sendCommand(OFF)
+
+  if ( FF_GreatRoom_Thermostat_FirstEvent_Type.state == VACATION ) {
+    VT_In_Vacation.sendCommand(ON)
+  }
+  else {
+    VT_In_Vacation.sendCommand(OFF)
+  }
 end
 
 rule "Presence based on security motion sensor (assuming zone 4)"
@@ -49,5 +65,12 @@ then
   Presence_Owner2_Just_Got_Home.sendCommand(OFF)
 end
 
-/*
-*/
+rule "Update the vacation state based on the Ecobee's event type"
+when
+  Item FF_GreatRoom_Thermostat_FirstEvent_Type changed
+then
+  switch FF_GreatRoom_Thermostat_FirstEvent_Type.state  {
+    case VACATION: VT_In_Vacation.sendCommand(ON)
+    default: VT_In_Vacation.sendCommand(OFF)
+  }
+end

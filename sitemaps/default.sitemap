@@ -1,6 +1,7 @@
 sitemap default label="HV Home"
 {
   Text item=gPresence icon="presence"
+  Text item=VT_In_Vacation visibility=[VT_In_Vacation==ON]
 
   Selection item=PARTITION1_ARM_MODE icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
 

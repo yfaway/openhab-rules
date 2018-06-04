@@ -26,6 +26,8 @@ DateTime VT_Evening_Time "Evening [%1$tH:%1$tM]"
 /**
  * Presence states.
  */
+Switch VT_In_Vacation "In Vacation [%s]" <vacation>
+
 Group:Switch:AND(OFF,ON) gPresence "Someone is at home"
 Group:Switch:AND(OFF,ON) gOwnerPresence "An owner is at home"
 
@@ -80,6 +82,9 @@ String FF_GreatRoom_Thermostat_HvacMode "Hvac Mode [%s]" (gEcobeeRuntime)
   { ecobee="=[411921197263#settings.hvacMode]" }
 String FF_GreatRoom_Thermostat_CurrentClimateRef "Current Profile [%s]"  
   { ecobee="<[411921197263#program.currentClimateRef]" }
+
+String FF_GreatRoom_Thermostat_FirstEvent_Type "First Event Type [%s]"       
+  { ecobee="<[411921197263#events[0].type]" }
 
 String VT_Outdoor_WeatherCondition "Weather Condition [%s]" (gWeather) 
   { ecobee="<[411921197263#weather.forecasts[0].condition]" }
