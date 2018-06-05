@@ -46,9 +46,9 @@ then
         && millisOfDay <= TIME_RANGE_IN_MILLIS_OF_DAY.getValue()) {
       if (null === lastAlertTimestamp 
           || lastAlertTimestamp.plusMinutes(INTERVAL_BETWEEN_ALERTS_IN_MINUTES).isBeforeNow()) {
-        val trippedZone = gZoneTripped.members.findFirst[z | z.state == ON]
+        val trippedZone = gZoneTripped.members.findFirst[ z | z.state == ON ]
         val zoneName = trippedZone.name.substring(0, trippedZone.name.lastIndexOf("_"))
-        val zoneLocation = gZone.members.findFirst[z | z.name == zoneName].label
+        val zoneLocation = gZone.members.findFirst[ z | z.name == zoneName ].label
 
         val subject = "Someone is at the house (owners not in presence). The zone tripped is: " + zoneLocation
         VT_AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")

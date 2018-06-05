@@ -28,6 +28,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * When garage door remains open after a period of time.
 * When the security system is in alarmed.
 * When a zone tripped while system is not armed, and an owner is not home, and within a specific period. 
+* When on vacation and a zone is tripped or the system arm state chagnes (use the Ecobee vacation mode).
 * When temperature or humidity value is outside the allowed ranges.
 
 ## Display
@@ -53,7 +54,6 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Todos - Functionalities
 ## Text Alerts
-* A zone tripped while system is in vacation mode (use Ecobee vacation mode).
 * Send a camera snapshot when motion is detected and system is in vacation mode.
 * Audio alert when someone is at the front door, if an owner is at home.
 * Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and noone is home.

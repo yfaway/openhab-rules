@@ -28,9 +28,9 @@ when
  Item gLightSwitch changed
 then
   synchronized(switchLock) {
-    gLightSwitch.members.forEach[light |
+    gLightSwitch.members.forEach[ light |
       val timerItemName = light.name + "_Timer"
-      val target = gLightSwitchTimer.members.findFirst[t | t.name == timerItemName]
+      val target = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
       if (light.state == ON) {
         // prevent renewing the timer caused by other light's state changed to ON
@@ -54,12 +54,12 @@ when
  Item gLightSwitchTimer changed
 then
   synchronized(timerLock) {
-    gLightSwitchTimer.members.forEach[timer |
+    gLightSwitchTimer.members.forEach[ timer |
       if (timer.state == OFF) {
         val localIdx = timer.name.lastIndexOf("_")
         val switchName = timer.name.substring(0, localIdx)
 
-        val target = gLightSwitch.members.findFirst[t | t.name == switchName]
+        val target = gLightSwitch.members.findFirst[ t | t.name == switchName ]
         if ( target.state == ON ) {
           target.sendCommand(OFF)
           //logInfo(LOGGER_NAME, "Turned off light.")

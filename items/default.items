@@ -52,7 +52,7 @@ Group:Number gLightSwitchTimer
 Group:Switch:OR(ON,OFF) gOrLightSwitch "Active Lights [%d]"
 
 Switch FF_Foyer_Switch (gLightSwitch, gOrLightSwitch) 
-  { channel=" zwave:device:8a09fcb3:node2:switch_binary" }
+  { channel=" zwave:device:9e4ce05e:node2:switch_binary" }
 Switch FF_Foyer_Switch_Timer (gLightSwitchTimer) {expire="5m,command=OFF"}
 
 /**
