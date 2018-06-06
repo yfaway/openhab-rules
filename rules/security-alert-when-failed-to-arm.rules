@@ -1,0 +1,34 @@
+/**
+ * Sends an alert with the list of open zones when the system can't be armed
+ * PROGRAMATICALLY.
+ */
+val String LOGGER_NAME = "SecurityAlertWhenFailedToArmRules"
+
+rule "Alert when security system can't be armed programatically"
+when
+  Item PARTITION1_ARM_MODE received command 1 or
+  Item PARTITION1_ARM_MODE received command 2 or
+  Item PARTITION1_ARM_MODE received command 3 
+then
+  if (OPEN == gZoneStatus.state ) {
+    var openZones = "";
+    gZoneStatus.members.forEach[ zone |
+      if (OPEN == zone.state) {
+        if (openZones.length() > 0) {
+          openZones += ", "
+        }
+
+        val zoneName = zone.name.substring(0, zone.name.lastIndexOf("_"))
+        val target = gZone.members.findFirst[ zone | zone.name == zoneName ]
+        openZones += target.label
+      }
+    ]
+
+    val subject = "[Security] Failed to arm; the following zones are open: " + openZones
+    var msg = "{"
+    msg += "\"subject\":\"" + subject + "\""
+    msg += "}"
+    VT_AlertSender.postUpdate(msg)
+  }
+end
+

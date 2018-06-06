@@ -4,6 +4,7 @@ sitemap default label="HV Home"
   Text item=VT_In_Vacation visibility=[VT_In_Vacation==ON]
 
   Selection item=PARTITION1_ARM_MODE icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
+  Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
 
   Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
 
@@ -42,6 +43,15 @@ sitemap default label="HV Home"
       Switch item=gOwner2Presence icon="network"
       Switch item=Presence_Owner1_Just_Got_Home 
       Switch item=Presence_Owner2_Just_Got_Home 
+    }
+  }
+
+  Text label="Security Details" {
+    Frame label="Security" {
+      Text item=FF_FrontDoor_Status
+      Text item=FF_GarageDoor_Status
+      Text item=FF_PatioDoor_Status
+      Text item=FF_Windows_Status
     }
   }
 }

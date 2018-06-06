@@ -118,8 +118,8 @@ end
 
 
 /**
- * Attempt to STAY arm at 15' interval between 8:45PM and 1:00AM, if someone
- * is home and if the security system is in DISARM mode.
+ * Attempt to STAY arm at 15' interval between 8:45PM and 1:00AM if the
+ * security system is in DISARM mode.
  */
 rule "Arm at Stay mode in the night"
 when
@@ -150,14 +150,8 @@ when
   Time cron "0 0 2 1/1 * ? *" 
 then
   if (PARTITION1_ARM_MODE.state == 0) {
-    if ( gPresence.state == ON ) {
-      logInfo(LOGGER_NAME, "Arming security system at STAY mode.")
-
-      PARTITION1_ARM_MODE.sendCommand(2)
-    }
-    else {
-      logDebug(LOGGER_NAME, "No one is home -> not arming at STAY mode.")
-    }
+    logDebug(LOGGER_NAME, "Arming security system at STAY mode.")
+    PARTITION1_ARM_MODE.sendCommand(2)
   }
   else {
     logDebug(LOGGER_NAME, "Security system is not in READY state -> not arming.")

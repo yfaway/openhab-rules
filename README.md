@@ -27,8 +27,9 @@ The following sensors, bindings, actions, and transformations need to be present
 ## Text Alerts
 * When garage door remains open after a period of time.
 * When the security system is in alarmed.
-* When a zone tripped while system is not armed, and an owner is not home, and within a specific period. 
-* When on vacation and a zone is tripped or the system arm state chagnes (use the Ecobee vacation mode).
+* When the security system can't be armed programatically.
+* When a zone is tripped while 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
+* When the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
 * When temperature or humidity value is outside the allowed ranges.
 
 ## Display

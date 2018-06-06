@@ -102,10 +102,15 @@ Group gZone
 Group:Switch:OR(ON,OFF) gZoneTripped "A zone is tripped"
 Group:Switch:OR(ON,OFF) gZoneInAlarm "A zone is in alarm"
 
-Switch PARTITION1_IN_ALARM (DSCAlarmPartitions) {channel="dscalarm:partition:706cd89d:partition1:partition_in_alarm"}
-Number PARTITION1_ARM_MODE "Partition 1 Arm Mode: [%d]" (DSCAlarmPartitions) {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
+Group:Contact:OR(OPEN, CLOSED) gZoneStatus "A zone is open"
 
-Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED> (DSCAlarmKeypads) {channel="dscalarm:keypad:706cd89d:keypad:keypad_fire_led"}
+Switch PARTITION1_IN_ALARM (DSCAlarmPartitions) 
+  {channel="dscalarm:partition:706cd89d:partition1:partition_in_alarm"}
+Number PARTITION1_ARM_MODE "Partition 1 Arm Mode: [%d]" (DSCAlarmPartitions) 
+  {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
+
+Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED> (DSCAlarmKeypads) 
+  {channel="dscalarm:keypad:706cd89d:keypad:keypad_fire_led"}
 
 String FF_FrontDoor "Front Door" (gZone)
 String FF_GarageDoor "Garage Door" (gZone)
@@ -124,6 +129,15 @@ Switch FF_GarageDoor_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zon
 Switch FF_PatioDoor_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
 Switch FF_GreatRoom_MotionSensor_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
 Switch FF_Windows_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone5:zone_tripped"}
+
+Contact FF_FrontDoor_Status (gZoneStatus) 
+  {channel="dscalarm:zone:706cd89d:zone1:zone_status"}
+Contact FF_GarageDoor_Status (gZoneStatus) 
+  {channel="dscalarm:zone:706cd89d:zone2:zone_status"}
+Contact FF_PatioDoor_Status (gZoneStatus) 
+  {channel="dscalarm:zone:706cd89d:zone3:zone_status"}
+Contact FF_Windows_Status (gZoneStatus) 
+  {channel="dscalarm:zone:706cd89d:zone5:zone_status"}
 
 /**
  * Garage door
