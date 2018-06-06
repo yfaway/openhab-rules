@@ -21,17 +21,15 @@ val ALERT_MODULE_ARM_STATE_CHANGED = "vacation-mode-arm-state-changed"
 
 rule "Alert when a zone is tripped (vacation)"
 when
-  Item gZoneTripped changed to ON
+  Member of gZoneTripped changed to ON
 then
   if (ON != VT_In_Vacation.state) {
     return
   }
 
-  val trippedZone = gZoneTripped.members.findFirst[ z | z.state == ON ]
-
   // Ignore motion sensor since it will generate too many events.
-  if ( FF_GreatRoom_MotionSensor_Tripped != trippedZone ) {
-    val zoneName = trippedZone.name.substring(0, trippedZone.name.lastIndexOf("_"))
+  if ( FF_GreatRoom_MotionSensor_Tripped != triggeringItem ) {
+    val zoneName = triggeringItem.name.substring(0, triggeringItem.name.lastIndexOf("_"))
     val zoneLocation = gZone.members.findFirst[ z | z.name == zoneName ].label
 
     val subject = zoneLocation + " is open (vacation mode)"

@@ -25,46 +25,35 @@ end
 
 rule "Set a timer to turn off the light after it was programatically turned on"
 when
- Item gLightSwitch changed
+ Member of gLightSwitch changed
 then
   synchronized(switchLock) {
-    gLightSwitch.members.forEach[ light |
-      val timerItemName = light.name + "_Timer"
-      val target = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
-      if (light.state == ON) {
-        // prevent renewing the timer caused by other light's state changed to ON
-        if ( target.state != ON ) {
-          target.sendCommand(ON)
-          //logInfo(LOGGER_NAME, "Set timer.")
-        }
+    val timerItemName = triggeringItem.name + "_Timer"
+    val timerItem = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
+
+    if (triggeringItem.state == ON) {
+      timerItem.sendCommand(ON)
+    }
+    else {
+      if ( timerItem.state == ON ) {
+        timerItem.sendCommand(OFF)
       }
-      else {
-        if ( target.state != OFF ) {
-          target.sendCommand(OFF)
-          //logInfo(LOGGER_NAME, "Cancel timer.")
-        }
-      }
-    ]
+    }
   }
 end
 
 rule "Turn off light when timer expires"
 when
- Item gLightSwitchTimer changed
+  Member of gLightSwitchTimer changed to OFF
 then
   synchronized(timerLock) {
-    gLightSwitchTimer.members.forEach[ timer |
-      if (timer.state == OFF) {
-        val localIdx = timer.name.lastIndexOf("_")
-        val switchName = timer.name.substring(0, localIdx)
+    val localIdx = triggeringItem.name.lastIndexOf("_")
+    val switchName = triggeringItem.name.substring(0, localIdx)
 
-        val target = gLightSwitch.members.findFirst[ t | t.name == switchName ]
-        if ( target.state == ON ) {
-          target.sendCommand(OFF)
-          //logInfo(LOGGER_NAME, "Turned off light.")
-        }
-      }
-    ]
+    val target = gLightSwitch.members.findFirst[ t | t.name == switchName ]
+    if ( target.state == ON ) {
+      target.sendCommand(OFF)
+    }
   }
 end

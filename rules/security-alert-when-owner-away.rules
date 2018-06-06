@@ -32,7 +32,7 @@ var DateTime lastAlertTimestamp = null
 
 rule "Alert when a zone is unexpectedly tripped (system is unarmed)"
 when
-  Item gZoneTripped changed to ON
+  Member of gZoneTripped changed to ON
 then
   if ( PARTITION1_ARM_MODE.state == UNARMED && gOwnerPresence.state == OFF ) {
     // prevent false alarm in case the owner presence is not accurate
@@ -46,8 +46,7 @@ then
         && millisOfDay <= TIME_RANGE_IN_MILLIS_OF_DAY.getValue()) {
       if (null === lastAlertTimestamp 
           || lastAlertTimestamp.plusMinutes(INTERVAL_BETWEEN_ALERTS_IN_MINUTES).isBeforeNow()) {
-        val trippedZone = gZoneTripped.members.findFirst[ z | z.state == ON ]
-        val zoneName = trippedZone.name.substring(0, trippedZone.name.lastIndexOf("_"))
+        val zoneName = triggeringItem.name.substring(0, triggeringItem.name.lastIndexOf("_"))
         val zoneLocation = gZone.members.findFirst[ z | z.name == zoneName ].label
 
         val subject = "Someone is at the house (owners not in presence). The zone tripped is: " + zoneLocation
