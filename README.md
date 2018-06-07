@@ -79,4 +79,4 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Todos - Design
 * Move ZWave things to config file.
-* Add an event for vacation mode (e.g. detect through vacation setting on the ecobee).
+* Use group for motion sensors and link them to appropriate light switches.

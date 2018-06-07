@@ -11,15 +11,38 @@ val LOGGER_NAME = "Lights"
 val Object switchLock = new Object()
 val Object timerLock = new Object()
 
+rule "Update light-on time" 
+when
+  System started or
+  Item VT_Time_Of_Day changed
+then
+  if (VT_Time_Of_Day.state == "EVENING" 
+        || VT_Time_Of_Day.state == "NIGHT"
+        || VT_Time_Of_Day.state == "BED" ) {
+    VT_Time_LightOn.sendCommand(ON)
+  }
+  else {
+    VT_Time_LightOn.sendCommand(OFF)
+  }
+end
+
+
 rule "Turn on foyer light if the front door or garage door is opened"
 when
   Item FF_FrontDoor_Tripped changed to ON or
   Item FF_GarageDoor_Tripped changed to ON
 then
-  if (VT_Time_Of_Day.state == "EVENING" 
-        || VT_Time_Of_Day.state == "NIGHT"
-        || VT_Time_Of_Day.state == "BED" ) {
-    FF_Foyer_Switch.sendCommand(ON)
+  if (ON == VT_Time_LightOn.state ) {
+    FF_Foyer_Light_Switch.sendCommand(ON)
+  }
+end
+
+rule "Turn on kitchen light when motion sensor is on"
+when
+  Item FF_GreatRoom_MotionSensor_Tripped changed to ON 
+then
+  if (ON == VT_Time_LightOn.state ) {
+    //FF_Foyer_Light_Switch.sendCommand(ON)
   }
 end
 
@@ -42,6 +65,19 @@ then
     }
   }
 end
+
+rule "Renew timer if the light receives ON command again"
+when
+ Member of gLightSwitch received command ON
+then
+  if (ON == triggeringItem.state) {
+    val timerItemName = triggeringItem.name + "_Timer"
+    val timerItem = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
+
+    timerItem.sendCommand(ON)
+  }
+end
+
 
 rule "Turn off light when timer expires"
 when

@@ -45,15 +45,19 @@ Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPre
 /**
  * Lights
  */
+Switch VT_Time_LightOn
+
 Group:Number gLightSwitch
 Group:Number gLightSwitchTimer
 
 // Used to send an ON or OFF command to all controlled lights
 Group:Switch:OR(ON,OFF) gOrLightSwitch "Active Lights [%d]"
 
-Switch FF_Foyer_Switch (gLightSwitch, gOrLightSwitch) 
+Switch FF_Foyer_Light_Switch (gLightSwitch, gOrLightSwitch) 
   { channel=" zwave:device:9e4ce05e:node2:switch_binary" }
-Switch FF_Foyer_Switch_Timer (gLightSwitchTimer) {expire="5m,command=OFF"}
+Switch FF_Foyer_Light_Switch_Timer (gLightSwitchTimer) {expire="5m,command=OFF"}
+
+Switch FF_Kitchen_Light_Switch_Timer (gLightSwitchTimer) {expire="5m,command=OFF"}
 
 /**
  * Temperature and humidity.
