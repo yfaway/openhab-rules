@@ -11,6 +11,13 @@ val LOGGER_NAME = "Lights"
 val Object switchLock = new Object()
 val Object timerLock = new Object()
 
+rule "Update light states" 
+when
+  System started 
+then
+  FF_Foyer_LightSwitch_MotionSensor.sendCommand(OFF)
+end
+
 rule "Update light-on time" 
 when
   System started or
@@ -26,23 +33,20 @@ then
   }
 end
 
-
-rule "Turn on foyer light if the front door or garage door is opened"
+rule "Turn on light when motion sensor triggered"
 when
-  Item FF_FrontDoor_Tripped changed to ON or
-  Item FF_GarageDoor_Tripped changed to ON
+ Member of gLightSwitchMotionSensor changed to ON
 then
   if (ON == VT_Time_LightOn.state ) {
-    FF_Foyer_Light_Switch.sendCommand(ON)
-  }
-end
+    synchronized(switchLock) {
+      val localIdx = triggeringItem.name.lastIndexOf("_")
+      val switchName = triggeringItem.name.substring(0, localIdx)
 
-rule "Turn on kitchen light when motion sensor is on"
-when
-  Item FF_GreatRoom_MotionSensor_Tripped changed to ON 
-then
-  if (ON == VT_Time_LightOn.state ) {
-    //FF_Foyer_Light_Switch.sendCommand(ON)
+      val target = gLightSwitch.members.findFirst[ t | t.name == switchName ]
+      if ( null !== target && ON != target.state ) {
+        target.sendCommand(ON)
+      }
+    }
   }
 end
 
@@ -55,12 +59,15 @@ then
     val timerItemName = triggeringItem.name + "_Timer"
     val timerItem = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
-    if (triggeringItem.state == ON) {
-      timerItem.sendCommand(ON)
-    }
-    else {
-      if ( timerItem.state == ON ) {
-        timerItem.sendCommand(OFF)
+    // some light might stay on until manually turned off
+    if ( null !== timerItem ) {
+      if (triggeringItem.state == ON) {
+        timerItem.sendCommand(ON)
+      }
+      else {
+        if ( timerItem.state == ON ) {
+          timerItem.sendCommand(OFF)
+        }
       }
     }
   }
@@ -74,7 +81,9 @@ then
     val timerItemName = triggeringItem.name + "_Timer"
     val timerItem = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
-    timerItem.sendCommand(ON)
+    if ( null !== timerItem )  {
+      timerItem.sendCommand(ON)
+    }
   }
 end
 
