@@ -16,6 +16,7 @@ sitemap default label="HV Home"
   Text item=VT_Outdoor_RelativeHumidity icon="humidity"
 
   Switch item=gOrLightSwitch icon="light"
+  Switch item=gOrFanSwitch icon="fan"
 
   Text label="Ecobee Thermostat" {
     Frame label="Ecobee Thermostat" {

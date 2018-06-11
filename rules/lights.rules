@@ -35,16 +35,27 @@ end
 
 rule "Turn on light when motion sensor triggered"
 when
- Member of gLightSwitchMotionSensor changed to ON
+ Member of gWallSwitchMotionSensor changed to ON
 then
-  if (ON == VT_Time_LightOn.state ) {
-    synchronized(switchLock) {
-      val localIdx = triggeringItem.name.lastIndexOf("_")
-      val switchName = triggeringItem.name.substring(0, localIdx)
+  if (ON != VT_Time_LightOn.state ) {
+    return
+  }
 
-      val target = gLightSwitch.members.findFirst[ t | t.name == switchName ]
-      if ( null !== target && ON != target.state ) {
-        target.sendCommand(ON)
+  synchronized(switchLock) {
+    val localIdx = triggeringItem.name.lastIndexOf("_")
+    val switchName = triggeringItem.name.substring(0, localIdx)
+
+    val switchItem = gWallSwitch.members.findFirst[ t | t.name == switchName ]
+    if ( null !== switchItem ) {
+      if ( ON != switchItem.state ) {
+        switchItem.sendCommand(ON)
+      }
+      else { // renew timer
+        val timerName = switchName + "_Timer"
+        val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerName ]
+        if ( null !== timerItem ) {
+          timerItem.sendCommand(ON)
+        }
       }
     }
   }
@@ -52,12 +63,12 @@ end
 
 rule "Set a timer to turn off the light after it was programatically turned on"
 when
- Member of gLightSwitch changed
+ Member of gWallSwitch changed
 then
   synchronized(switchLock) {
 
     val timerItemName = triggeringItem.name + "_Timer"
-    val timerItem = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
+    val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
     // some light might stay on until manually turned off
     if ( null !== timerItem ) {
@@ -75,11 +86,11 @@ end
 
 rule "Renew timer if the light receives ON command again"
 when
- Member of gLightSwitch received command ON
+ Member of gWallSwitch received command ON
 then
   if (ON == triggeringItem.state) {
     val timerItemName = triggeringItem.name + "_Timer"
-    val timerItem = gLightSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
+    val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
     if ( null !== timerItem )  {
       timerItem.sendCommand(ON)
@@ -90,13 +101,13 @@ end
 
 rule "Turn off light when timer expires"
 when
-  Member of gLightSwitchTimer changed to OFF
+  Member of gWallSwitchTimer changed to OFF
 then
   synchronized(timerLock) {
     val localIdx = triggeringItem.name.lastIndexOf("_")
     val switchName = triggeringItem.name.substring(0, localIdx)
 
-    val target = gLightSwitch.members.findFirst[ t | t.name == switchName ]
+    val target = gWallSwitch.members.findFirst[ t | t.name == switchName ]
     if ( target.state == ON ) {
       target.sendCommand(OFF)
     }

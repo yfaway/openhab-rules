@@ -43,27 +43,37 @@ Switch Presence_Owner2_Phone "Owner2's Phone" <network> (gPresence, gOwner2Prese
 Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPresence) {expire="5m,command=OFF"}
 
 /**
- * Lights
+ * Managed lights and washroom fans switches.
  */
 Switch VT_Time_LightOn
 
-Group:Number gLightSwitch
-Group:Number gLightSwitchTimer
-Group gLightSwitchMotionSensor
+Group:Number gWallSwitch
+Group:Number gWallSwitchTimer
+Group gWallSwitchMotionSensor
 
-// Used to send an ON or OFF command to all controlled lights
+// Used to send an ON/OFF command to all controlled lights
 Group:Switch:OR(ON,OFF) gOrLightSwitch "Active Lights [%d]"
 
-Switch FF_Foyer_LightSwitch (gLightSwitch, gOrLightSwitch) 
+// Used to send an ON/OFF command to all controlled fans
+Group:Switch:OR(ON,OFF) gOrFanSwitch "Active Washroom Fans [%d]"
+
+Switch FF_Foyer_LightSwitch (gWallSwitch, gOrLightSwitch) 
   { channel=" zwave:device:9e4ce05e:node2:switch_binary" }
-Switch FF_Foyer_LightSwitch_Timer (gLightSwitchTimer) {expire="5m,command=OFF"}
-Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor (gLightSwitchMotionSensor)
+Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer) {expire="5m,command=OFF"}
+Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 
-
-Switch FF_Kitchen_LightSwitch (gLightSwitch, gOrLightSwitch) 
+Switch FF_Kitchen_LightSwitch (gWallSwitch, gOrLightSwitch) 
   { channel=" zwave:device:9e4ce05e:node3:switch_binary" }
-Switch FF_Kitchen_LightSwitch_Timer (gLightSwitchTimer) {expire="5m,command=OFF"}
-Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gLightSwitchMotionSensor)
+//Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) {expire="5m,command=OFF"}
+//Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
+
+Switch FF_MasterWashroom_LightSwitch (gWallSwitch, gOrLightSwitch) 
+  { channel=" zwave:device:9e4ce05e:node4:switch_binary" }
+Switch FF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer) {expire="10m,command=OFF"}
+
+Switch FF_MasterWashroom_FanSwitch (gWallSwitch, gOrFanSwitch) 
+  { channel=" zwave:device:9e4ce05e:node5:switch_binary" }
+Switch FF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command=OFF"}
 
 /**
  * Temperature and humidity.
