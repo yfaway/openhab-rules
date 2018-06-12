@@ -8,6 +8,8 @@ The following sensors, bindings, actions, and transformations need to be present
 1. Chamberlain 3/4 HPS Belt Drive Garage Door Opener Built-in Wifi (LW6000WFC)
 2. DSC Security System with EnvisaLink inteface
 3. Ecobee3 Thermostat
+4. Aeotec Z-Wave USB ZStick Gen 5
+4. Inovelli NZW30 Z-Wave Wall Switch
 
 **Bindings**
 1. [Astro Binding](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
@@ -15,6 +17,7 @@ The following sensors, bindings, actions, and transformations need to be present
 2. [DSC Alarm Binding](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
 3. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
 4. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
+5. [ZWave] (https://www.openhab.org/addons/bindings/zwave/#supported-things)
 
 **Actions**
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
@@ -24,10 +27,10 @@ The following sensors, bindings, actions, and transformations need to be present
 2. [Map](https://docs.openhab.org/addons/transformations/map/readme.html)
 
 # Current Functionalities
-## Text Alerts
+## Alerts (email)
 * When garage door remains open after a period of time.
 * When the security system is in alarmed.
-* When the security system can't be armed programatically.
+* When the security system can't be armed programatically (e.g. a door is open).
 * When a zone is tripped while 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
 * When the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
 * When temperature or humidity value is outside the allowed ranges.
@@ -41,11 +44,12 @@ The following sensors, bindings, actions, and transformations need to be present
 ## Light Control
 * Turn on foyer light when the garage or front door is open.
 * Automatically turn off light after a certain period of time (configured per light).
-* Global switch to turn on/off all controlled lights.
+* Global switch to turn on/off all controlled lights/fans.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
 * Security motion sensor (if triggered, set to be good for the next 5 minutes).
+* Generic vacation mode (currently backed by the Ecobee's vacation setting).
 
 ## Security Actions
 * Automatically “armed stay” in the night if someone is home.
@@ -58,7 +62,6 @@ The following sensors, bindings, actions, and transformations need to be present
 * Send a camera snapshot when motion is detected and system is in vacation mode.
 * Audio alert when someone is at the front door, if an owner is at home.
 * Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and noone is home.
-* Automatic security arm failed -> send alert with the name of the opened door (zone tripped)
 * Water leakage.
 
 ## Control
@@ -79,4 +82,3 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Todos - Design
 * Move ZWave things to config file.
-* Use group for motion sensors and link them to appropriate light switches.
