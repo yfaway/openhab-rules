@@ -4,7 +4,13 @@
  *  - For any light that was turned on programatically, automatically turn off
  *    after 5 minutes.
  *  - Cancel turn-off timer if the light was switched off manually.
- * Dependencies: time-of-day.rules for calculationo of day periods.
+ *
+ * The timers are not enabled if the system is in vacation mode when the lights
+ * are turned on/off randomly to simulate owner presence (thief prevention).
+ *
+ * Dependencies:
+ *   - time-of-day.rules for calculation of day periods.
+ *   - presence.rules for VT_In_Vacation setting.
  */
 
 val LOGGER_NAME = "Lights"
@@ -46,16 +52,18 @@ then
     val switchName = triggeringItem.name.substring(0, localIdx)
 
     val switchItem = gWallSwitch.members.findFirst[ t | t.name == switchName ]
-    if ( null !== switchItem ) {
-      if ( ON != switchItem.state ) {
-        switchItem.sendCommand(ON)
-      }
-      else { // renew timer
-        val timerName = switchName + "_Timer"
-        val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerName ]
-        if ( null !== timerItem ) {
-          timerItem.sendCommand(ON)
-        }
+    if ( null === switchItem ) {
+      return
+    }
+
+    if ( ON != switchItem.state ) {
+      switchItem.sendCommand(ON)
+    }
+    else { // renew timer
+      val timerName = switchName + "_Timer"
+      val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerName ]
+      if ( null !== timerItem ) {
+        timerItem.sendCommand(ON)
       }
     }
   }
@@ -71,33 +79,25 @@ then
     val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
     // some light might stay on until manually turned off
-    if ( null !== timerItem ) {
-      if (triggeringItem.state == ON) {
+    if ( null === timerItem ) {
+      return
+    }
+
+    if ( ON == triggeringItem.state ) {
+      // When in vacation mode, the lights be turned on/off randomly to
+      // simulate presence (thief prevention). The simulation rule has full
+      // control of the lights; thus we don't want to enable the timer.
+      if ( ON != VT_In_Vacation ) {
         timerItem.sendCommand(ON)
       }
-      else {
-        if ( timerItem.state == ON ) {
-          timerItem.sendCommand(OFF)
-        }
+    }
+    else {
+      if ( ON == timerItem.state ) {
+        timerItem.sendCommand(OFF)
       }
     }
   }
 end
-
-rule "Renew timer if the light receives ON command again"
-when
- Member of gWallSwitch received command ON
-then
-  if (ON == triggeringItem.state) {
-    val timerItemName = triggeringItem.name + "_Timer"
-    val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
-
-    if ( null !== timerItem )  {
-      timerItem.sendCommand(ON)
-    }
-  }
-end
-
 
 rule "Turn off light when timer expires"
 when
@@ -108,7 +108,7 @@ then
     val switchName = triggeringItem.name.substring(0, localIdx)
 
     val target = gWallSwitch.members.findFirst[ t | t.name == switchName ]
-    if ( target.state == ON ) {
+    if ( ON == target.state  ) {
       target.sendCommand(OFF)
     }
   }

@@ -1,0 +1,100 @@
+/**
+ * When on vacation mode (backed by Ecobee), after the sunset and before bed
+ * time, randomly turn on a managed light for a random period. After the 
+ * period expires, randomly select another light (could be the same one again),
+ * and turn it on. Repeat this process until the vacation mode ends or until
+ * bed time.
+ * Dependencies: Astro and Ecobee bindings.
+ */
+import java.util.Random
+import java.util.Vector
+
+val LOGGER_NAME = "LightsVacationSimulation"
+
+/**
+ * Object used for synchronization.
+ */
+val SIMUATION_LOCK = new Object()
+
+/**
+ * The minimum and maximum time to keep each light on; a random value will
+ * be generated within this range.
+ */
+val MIN_LIGHT_ON_DURATION_IN_MINS = 1
+val MAX_LIGHT_ON_DURATION_IN_MINS = 3
+
+val Random RANDOM = new Random()
+
+var isRunning = false
+
+/**
+ * Thread safe structure. Need to use this since while loo doesn't have
+ * break statement, and thus we can't synchronize to change a primitive.
+ */
+var Vector<Object> terminate = new Vector<Object>()
+
+rule "Turn on light when in vacation mode" 
+when
+  System started  or
+  Item VT_Time_LightOn changed to ON or
+  Item VT_In_Vacation changed to ON
+then
+  if ( ON != VT_Time_LightOn.state ) {
+    return
+  }
+
+  if ( ON != VT_In_Vacation.state ) {
+    return
+  }
+
+  synchronized ( SIMUATION_LOCK ) {
+    isRunning = true
+  }
+
+  val lightItems = gOrLightSwitch.members.toArray()
+
+  logInfo(LOGGER_NAME, "Start simulation.")
+
+  while ( terminate.isEmpty() ) {
+
+    // pick a random light
+    val memberIdx = RANDOM.nextInt(lightItems.length)
+    val SwitchItem lightItem = lightItems.get(memberIdx)
+
+    // determine the duration the light will stay on
+    val bound = MAX_LIGHT_ON_DURATION_IN_MINS  - MIN_LIGHT_ON_DURATION_IN_MINS + 1
+    val durationInMins = RANDOM.nextInt(bound) + MIN_LIGHT_ON_DURATION_IN_MINS
+
+    logInfo(LOGGER_NAME, "Turning on " + lightItem.name + " for " + durationInMins + " minutes")
+
+    // If the selected light is not ON, turn off all other lights and then
+    // turn on the selected light.
+    if (ON != lightItem.state) {
+      gOrLightSwitch.members.filter[ l | ON == l.state ].forEach[ l | l.sendCommand(OFF) ] 
+      lightItem.sendCommand(ON)
+    }
+
+    Thread.sleep(durationInMins * 60 * 1000)
+  }
+
+  gOrLightSwitch.sendCommand(OFF)
+
+  synchronized ( SIMUATION_LOCK ) {
+    isRunning = false
+    terminate.clear()
+  }
+
+  logInfo(LOGGER_NAME, "Stop simulation.")
+end
+
+rule "Turn off light simulation when it is bed time or when vacation mode is off" 
+when
+  Item VT_Time_LightOn changed to OFF or
+  Item VT_In_Vacation changed to OFF
+then
+  synchronized ( SIMUATION_LOCK ) {
+    if ( isRunning ) {
+      terminate.add(new Object())
+    }
+  }
+end
