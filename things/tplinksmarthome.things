@@ -1,0 +1,1 @@
+tplinksmarthome:hs100:greatroom "Great Room" [ ipAddress="192.168.0.180", refresh=60 ]

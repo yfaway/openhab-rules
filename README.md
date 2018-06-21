@@ -9,15 +9,17 @@ The following sensors, bindings, actions, and transformations need to be present
 2. DSC Security System with EnvisaLink inteface
 3. Ecobee3 Thermostat
 4. Aeotec Z-Wave USB ZStick Gen 5
-4. Inovelli NZW30 Z-Wave Wall Switch
+5. Inovelli NZW30 Z-Wave Wall Switch
+6. TP-Link HS100 WiFi Plug
 
 **Bindings**
 1. [Astro Binding](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
-1. [Chamberlain MyQ Binding](https://docs.openhab.org/addons/bindings/myq1/readme.html)
-2. [DSC Alarm Binding](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
-3. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
-4. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
-5. [ZWave] (https://www.openhab.org/addons/bindings/zwave/#supported-things)
+2. [Chamberlain MyQ Binding](https://docs.openhab.org/addons/bindings/myq1/readme.html)
+3. [DSC Alarm Binding](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
+4. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
+5. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
+6. [TPLinkSmartHome Binding](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things)
+7. [ZWave] (https://www.openhab.org/addons/bindings/zwave/#supported-things)
 
 **Actions**
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
@@ -68,6 +70,12 @@ The following sensors, bindings, actions, and transformations need to be present
 * Turn on/off main water valve.
 * Turn off water valve and alert when water leakage detected.
 * Control blinds.
+
+## Light Control
+* Turn off all managed lights and fans when armed away.
+
+## Plugs
+* Turn off all managed plugs when armed away unless a computer is running.
 
 ## Display
 * Energy usage.

@@ -15,8 +15,21 @@ sitemap default label="HV Home"
   Text item=VT_Outdoor_WeatherCondition
   Text item=VT_Outdoor_RelativeHumidity icon="humidity"
 
-  Switch item=gOrLightSwitch icon="light"
-  Switch item=gOrFanSwitch icon="fan"
+  Switch item=gLightSwitch icon="light"
+  Switch item=gFanSwitch icon="fan"
+
+  Text label="Lights, Fans, and Plugs" {
+    Frame label="Lights, Fans, and Plugs" {
+      Switch item=FF_Foyer_LightSwitch icon="light"
+
+      Switch item=FF_Kitchen_LightSwitch icon="light"
+
+      Switch item=FF_MasterWashroom_LightSwitch icon="light"
+      Switch item=FF_MasterWashroom_FanSwitch icon="fan"
+
+      Switch item=FF_GreatRoom_Plug icon="plug"
+    }
+  }
 
   Text label="Ecobee Thermostat" {
     Frame label="Ecobee Thermostat" {
