@@ -36,7 +36,7 @@ Switch FF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command
  */
 Group:Number gPlug
 
-Switch FF_GreatRoom_Plug "GreatRoom Plug " 
+Switch FF_GreatRoom_Plug "GreatRoom Plug" (gPlug)
   {channel="tplinksmarthome:hs100:greatroom:switch"}
 
 

@@ -42,11 +42,15 @@ The following sensors, bindings, actions, and transformations need to be present
 * Presence.
 * Security system status.
 * Indoor and forecasted temperature and humidity.
+* Lights, fans, and smart plug status.
 
-## Light Control
+## Light/Fan Control
 * Turn on foyer light when the garage or front door is open.
 * Automatically turn off light after a certain period of time (configured per light).
 * Global switch to turn on/off all controlled lights/fans.
+
+## Smart Plugs
+* Turn on/off plugs based on the security arm status, vacation mode, and hours of days.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
@@ -65,6 +69,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * Audio alert when someone is at the front door, if an owner is at home.
 * Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and noone is home.
 * Water leakage.
+* Smart plugs turned on while in vacation mode.
 
 ## Control
 * Turn on/off main water valve.
@@ -73,9 +78,6 @@ The following sensors, bindings, actions, and transformations need to be present
 
 ## Light Control
 * Turn off all managed lights and fans when armed away.
-
-## Plugs
-* Turn off all managed plugs when armed away unless a computer is running.
 
 ## Display
 * Energy usage.

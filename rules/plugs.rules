@@ -1,0 +1,35 @@
+/**
+ * Automatically turn on/off smart plugs based on the security arm mode,
+ * the vacation settings, and the hours.
+ *
+ * Dependencies: VT_In_Vacation, DSC binding for security system.
+ */
+
+rule "Turn off plugs when security system is armed."
+when
+  Item PARTITION1_ARM_MODE changed to 1 or
+  Item VT_In_Vacation changed to ON or
+  Time cron "0 30 1 1/1 * ? *"
+then
+  gPlug.members.forEach[ p |
+    if ( OFF != p.state ) {
+      p.sendCommand(OFF)
+    }
+  ]
+end
+
+rule "Turn on plugs when security system is disarmed."
+when
+  Item PARTITION1_ARM_MODE changed from 1 to 0 or
+  Time cron "0 10 7 ? * MON-FRI *"
+then
+  if ( ON == VT_In_Vacation.state ) {
+    return
+  }
+
+  gPlug.members.forEach[ p |
+    if ( ON != p.state ) {
+      p.sendCommand(ON)
+    }
+  ]
+end
