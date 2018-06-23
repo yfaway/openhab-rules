@@ -116,7 +116,8 @@ Switch FF_FrontDoor_Tripped (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor)
 Switch FF_GarageDoor_Tripped (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor) 
   {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
 Switch FF_PatioDoor_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
-Switch FF_GreatRoom_MotionSensor_Tripped (gZoneTripped, FF_Kitchen_LightSwitch_MotionSensor)
+Switch FF_GreatRoom_MotionSensor_Tripped 
+  (gZoneTripped, FF_Kitchen_LightSwitch_MotionSensor, FF_GreatRoom_LightSwitch_MotionSensor)
   {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
 Switch FF_Windows_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone5:zone_tripped"}
 

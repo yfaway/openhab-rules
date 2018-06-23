@@ -1,0 +1,23 @@
+/**
+ * Manage the interaction between lights (e.g. if this light is turned on, then
+ * turn off the other light).
+ * These rules are highly specific to individual house layout.
+ */
+
+rule "Light interaction startup states" 
+when
+  System started 
+then
+  FF_GreatRoom_LightSwitch_MotionSensor_DisableTriggeringAlways.sendCommand(ON)
+  FF_Kitchen_LightSwitch_MotionSensor_DisableTriggeringIf.sendCommand("FF_GreatRoom_LightSwitch")
+end
+
+rule "Turn off kitchen light when great room's light is turned on" 
+when
+  Item FF_GreatRoom_LightSwitch changed to ON
+then
+  if ( ON == FF_Kitchen_LightSwitch.state ) {
+    FF_Kitchen_LightSwitch.sendCommand(OFF)
+  }
+end
+

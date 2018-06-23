@@ -19,7 +19,7 @@ The following sensors, bindings, actions, and transformations need to be present
 4. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
 5. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
 6. [TPLinkSmartHome Binding](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things)
-7. [ZWave] (https://www.openhab.org/addons/bindings/zwave/#supported-things)
+7. [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
 
 **Actions**
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
@@ -31,9 +31,9 @@ The following sensors, bindings, actions, and transformations need to be present
 # Current Functionalities
 ## Alerts (email)
 * When garage door remains open after a period of time.
-* When the security system is in alarmed.
+* When the security system is in alarm.
 * When the security system can't be armed programatically (e.g. a door is open).
-* When a zone is tripped while 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
+* When a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
 * When the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
 * When temperature or humidity value is outside the allowed ranges.
 
@@ -45,9 +45,11 @@ The following sensors, bindings, actions, and transformations need to be present
 * Lights, fans, and smart plug status.
 
 ## Light/Fan Control
+* Global switch on HabUI to turn on/off individual or all controlled lights/fans.
 * Turn on foyer light when the garage or front door is open.
-* Automatically turn off light after a certain period of time (configured per light).
-* Global switch to turn on/off all controlled lights/fans.
+* Turn on/off other lights automatically using an optional timer and an optional motion sensor.
+* Support an optional item to disable motion sensor from turning on a light but still use the motion sensor event to keep the light on. This is for the scenario where a shared motion sensor is associated with multiple lights, but we only need to turn on a light at a time.
+* Support an optional item to disable motion sensor from turning on a light if an associated light is already on.
 
 ## Smart Plugs
 * Turn on/off plugs based on the security arm status, vacation mode, and hours of days.
@@ -76,7 +78,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * Turn off water valve and alert when water leakage detected.
 * Control blinds.
 
-## Light Control
+## Light/Fan/Plug Control
 * Turn off all managed lights and fans when armed away.
 
 ## Display

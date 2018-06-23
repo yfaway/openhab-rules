@@ -20,8 +20,8 @@ val SIMUATION_LOCK = new Object()
  * The minimum and maximum time to keep each light on; a random value will
  * be generated within this range.
  */
-val MIN_LIGHT_ON_DURATION_IN_MINS = 1
-val MAX_LIGHT_ON_DURATION_IN_MINS = 3
+val MIN_LIGHT_ON_DURATION_IN_MINS = 3
+val MAX_LIGHT_ON_DURATION_IN_MINS = 8
 
 val Random RANDOM = new Random()
 
