@@ -51,7 +51,7 @@ then
     isRunning = true
   }
 
-  val lightItems = gOrLightSwitch.members.toArray()
+  val lightItems = gLightSwitch.members.toArray()
 
   logInfo(LOGGER_NAME, "Start simulation.")
 
@@ -70,14 +70,14 @@ then
     // If the selected light is not ON, turn off all other lights and then
     // turn on the selected light.
     if (ON != lightItem.state) {
-      gOrLightSwitch.members.filter[ l | ON == l.state ].forEach[ l | l.sendCommand(OFF) ] 
+      gLightSwitch.members.filter[ l | ON == l.state ].forEach[ l | l.sendCommand(OFF) ] 
       lightItem.sendCommand(ON)
     }
 
     Thread.sleep(durationInMins * 60 * 1000)
   }
 
-  gOrLightSwitch.sendCommand(OFF)
+  gLightSwitch.sendCommand(OFF)
 
   synchronized ( SIMUATION_LOCK ) {
     isRunning = false
