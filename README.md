@@ -50,6 +50,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * Turn on/off other lights automatically using an optional timer and an optional motion sensor.
 * Support an optional item to disable motion sensor from turning on a light but still use the motion sensor event to keep the light on. This is for the scenario where a shared motion sensor is associated with multiple lights, but we only need to turn on a light at a time.
 * Support an optional item to disable motion sensor from turning on a light if an associated light is already on.
+* Ignore the motion sensor event if a wall switch was just turned off. This prevents the light/fan from turning on again when a user manually turns it off and movng a way from the area. If not ignored, the motion sensor might trigger the switch to turn on again.
 
 ## Smart Plugs
 * Turn on/off plugs based on the security arm status, vacation mode, and hours of days.

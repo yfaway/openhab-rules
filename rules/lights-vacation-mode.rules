@@ -48,7 +48,13 @@ then
   }
 
   synchronized ( SIMUATION_LOCK ) {
-    isRunning = true
+    if ( isRunning ) { // prevent multiple simulation thread running
+      logInfo(LOGGER_NAME, "A simulation is already running.")
+      return
+    }
+    else {
+      isRunning = true
+    }
   }
 
   val lightItems = gLightSwitch.members.toArray()

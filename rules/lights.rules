@@ -13,9 +13,22 @@
  *   - presence.rules for VT_In_Vacation setting.
  */
 
+import java.util.HashMap
+
 val LOGGER_NAME = "Lights"
 val Object switchLock = new Object()
 val Object timerLock = new Object()
+
+/**
+ * The period of time in seconds (from the last timestamp a switch was turned
+ * off) to ignore the ON command trigged by the motion sensor. This takes care
+ * of the scenario when the user manually turns off a light, but that physical
+ * spot is covered by a motion sensor, which immediately turns on the light
+ * again.
+ */
+val DELAY_AFTER_LAST_OFF_TIME_IN_MS = 8000 // 8 secs
+
+var HashMap<String, Long> lastOffTimes = newHashMap()
 
 rule "Update light states" 
 when
@@ -57,6 +70,14 @@ then
     }
 
     if ( ON != switchItem.state ) {
+      // If a wall switch was just turned off, ignore the motion sensor event.
+      if ( lastOffTimes.containsKey(switchItem.name) ) {
+        val long timestamp = lastOffTimes.get(switchItem.name)
+        if (now.getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS) {
+          return
+        }
+      }
+
       // An open area might have multiple lights with a shared motion sensor
       // (e.g. in the security system motion sensor where the motion sensor
       // tends to be in a corner and cover the whole lobby). In this case, we
@@ -89,6 +110,16 @@ then
         if ( ON == theOtherLight.state ) {
           return
         }
+        else {
+          // If it was just turned off, then don't trigger this light yet.
+          // This might be the case that the user is getting out of this zone
+          if ( lastOffTimes.containsKey(theOtherLight.name) ) {
+            val long timestamp = lastOffTimes.get(theOtherLight.name)
+            if (now.getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS) {
+              return
+            }
+          } // has OFF timestamp
+        } // the other light is of
       }
 
       switchItem.sendCommand(ON)
@@ -129,6 +160,9 @@ then
       if ( ON == timerItem.state ) {
         timerItem.sendCommand(OFF)
       }
+
+
+      lastOffTimes.put(triggeringItem.name, now.getMillis())
     }
   }
 end
