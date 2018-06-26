@@ -36,6 +36,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * When a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
 * When the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
 * When temperature or humidity value is outside the allowed ranges.
+* When a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
 
 ## Display
 * Garage door status.

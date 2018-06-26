@@ -23,7 +23,7 @@ Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor (gWallSwitchMotionSens
 
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch) 
   { channel=" zwave:device:9e4ce05e:node3:switch_binary" }
-Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) {expire="15m,command=OFF"}
+Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) {expire="5m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 String FF_Kitchen_LightSwitch_MotionSensor_DisableTriggeringIf 
   (gMotionSensorDisableTriggeringIf)
@@ -46,9 +46,15 @@ Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command
 /**
  * Smart plugs.
  */
-Group:Number gPlug
+Group gPlug
+Group gPlugPower
 
 Switch FF_GreatRoom_Plug "GreatRoom Plug" (gPlug)
   {channel="tplinksmarthome:hs100:greatroom:switch"}
+
+Switch FF_Office_Plug "Office Plug" (gPlug)
+  {channel="tplinksmarthome:hs110:office:switch"}
+Number FF_Office_Plug_Power "Office Plug Power [%d Watts]" (gPlugPower)
+  {channel="tplinksmarthome:hs110:office:power"}
 
 

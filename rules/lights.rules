@@ -1,9 +1,18 @@
 /**
  * Various rules to turn on/off the lights.
- *  - Turn on the foyer light when garage or front door is open.
- *  - For any light that was turned on programatically, automatically turn off
- *    after 5 minutes.
- *  - Cancel turn-off timer if the light was switched off manually.
+ *   - Turn on foyer light when the garage or front door is open.
+ *   - Turn on/off other lights automatically using an optional timer and an
+ *     optional motion sensor.
+ *   - Support an optional item to disable motion sensor from turning on a 
+ *     light but still use the motion sensor event to keep the light on. This
+ *     is for the scenario where a shared motion sensor is associated with
+ *     multiple lights, but we only need to turn on a light at a time.
+ *   - Support an optional item to disable motion sensor from turning on a
+ *     light if an associated light is already on.
+ *   - Ignore the motion sensor event if a wall switch was just turned off.
+ *     This prevents the light/fan from turning on again when a user manually
+ *     turns it off and movng a way from the area. If not ignored, the motion
+ *     sensor might trigger the switch to turn on again.
  *
  * The timers are not enabled if the system is in vacation mode when the lights
  * are turned on/off randomly to simulate owner presence (thief prevention).

@@ -1,9 +1,18 @@
 /**
  * Automatically turn on/off smart plugs based on the security arm mode,
  * the vacation settings, and the hours.
+ * If a plug has power reading, won't turn it off unless the wattage is below
+ * the threshold. This is to prevent damage to an appliance (e.g. a computer).
+ * An alert email will be sent out instead.
  *
  * Dependencies: VT_In_Vacation, DSC binding for security system.
  */
+
+/**
+ * The power threshold in a smart plug to indicate that an application is
+ * stil running.
+ */
+val ACTIVE_APPLIANCE_WATTAGE_THRESHOLD = 50
 
 rule "Turn off plugs when security system is armed."
 when
@@ -11,8 +20,28 @@ when
   Item VT_In_Vacation changed to ON or
   Time cron "0 30 1 1/1 * ? *"
 then
-  gPlug.members.forEach[ p |
-    if ( OFF != p.state ) {
+  val offPlugs = gPlug.members.filter[ p | OFF != p.state ]
+
+  offPlugs.forEach [ p | 
+    val powerItemName = p.name + "_Power"
+    val powerItem = gPlugPower.members.findFirst[ p | powerItemName == p.name ]
+    if ( null !== powerItem ) {
+      val wattage = (powerItem.state as DecimalType).floatValue()
+
+      if ( ACTIVE_APPLIANCE_WATTAGE_THRESHOLD < wattage ) {
+        val subject = "[" + p.label + "] NOT turning off plug; an appliance is still on"
+        var msg = "{"
+        msg += "\"subject\":\"" + subject + "\""
+        msg += "}"
+        VT_AlertSender.postUpdate(msg)
+      }
+      else // wattage is below threshold --> deemed safe to turn off.
+      {
+        p.sendCommand(OFF)
+      }
+    } 
+    else // plug has no energy reading.
+    {
       p.sendCommand(OFF)
     }
   ]
