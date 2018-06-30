@@ -65,10 +65,6 @@ rule "Turn on light when motion sensor triggered"
 when
  Member of gWallSwitchMotionSensor changed to ON
 then
-  if (ON != VT_Time_LightOn.state ) {
-    return
-  }
-
   synchronized(switchLock) {
     val localIdx = triggeringItem.name.lastIndexOf("_")
     val switchName = triggeringItem.name.substring(0, localIdx)
@@ -79,6 +75,13 @@ then
     }
 
     if ( ON != switchItem.state ) {
+      // This check needs to be here rather than in the outter scope because
+      // the user might have turned on the light before the programmed 
+      // light on time. In such case, we continue to maintain the timer.
+      if (ON != VT_Time_LightOn.state ) {
+        return
+      }
+      
       // If a wall switch was just turned off, ignore the motion sensor event.
       if ( lastOffTimes.containsKey(switchItem.name) ) {
         val long timestamp = lastOffTimes.get(switchItem.name)
