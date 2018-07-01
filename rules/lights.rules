@@ -7,8 +7,16 @@
  *     light but still use the motion sensor event to keep the light on. This
  *     is for the scenario where a shared motion sensor is associated with
  *     multiple lights, but we only need to turn on a light at a time.
+ *     E.g. the great room and kitchen share the same motion sensor. That 
+ *     sensor needs to update the timer for both lights, but must not turn on
+ *     the office light.
  *   - Support an optional item to disable motion sensor from turning on a
  *     light if an associated light is already on.
+ *     E.g. the great room and kitchen share an open space, if a light is
+ *     already on, then a motion sensor event should not turn on the other light.
+ *   - Support an optional String item that contains the light switch to turn
+ *     off when this light switch is turn on. 
+ *     E.g. when office light is turned on, turn off foyer light.
  *   - Ignore the motion sensor event if a wall switch was just turned off.
  *     This prevents the light/fan from turning on again when a user manually
  *     turns it off and movng a way from the area. If not ignored, the motion
@@ -153,26 +161,36 @@ then
   synchronized(switchLock) {
 
     val timerItemName = triggeringItem.name + "_Timer"
-    val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
-    // some light might stay on until manually turned off
-    if ( null === timerItem ) {
-      return
-    }
+    // Some light might stay on until manually turned off, so this value could
+    // be null.
+    val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
     if ( ON == triggeringItem.state ) {
       // When in vacation mode, the lights be turned on/off randomly to
       // simulate presence (thief prevention). The simulation rule has full
       // control of the lights; thus we don't want to enable the timer.
       if ( ON != VT_In_Vacation ) {
-        timerItem.sendCommand(ON)
+        if ( null !== timerItem ) {
+          timerItem.sendCommand(ON)
+        }
+
+        val stringItemName = triggeringItem.name + "_TurnOffOtherLight"
+        val stringItem = gTurnOffOtherLight.members.findFirst[ t | t.name == stringItemName ]
+        if ( null !== stringItem ) {
+          var lightItem = gLightSwitch.members.findFirst[ 
+            t | t.name == stringItem.state.toString
+          ]
+          if ( null !== lightItem ) {
+            lightItem.sendCommand(OFF)
+          }
+        }
       }
     }
     else {
-      if ( ON == timerItem.state ) {
+      if ( null !== timerItem && ON == timerItem.state ) {
         timerItem.sendCommand(OFF)
       }
-
 
       lastOffTimes.put(triggeringItem.name, now.getMillis())
     }

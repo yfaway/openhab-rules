@@ -50,7 +50,7 @@ end
 rule "Turn on plugs when security system is disarmed."
 when
   Item PARTITION1_ARM_MODE changed from 1 to 0 or
-  Time cron "0 10 7 ? * MON-FRI *"
+  Time cron "0 10 7 1/1 * ? *"
 then
   if ( ON == VT_In_Vacation.state ) {
     return

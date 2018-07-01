@@ -21,6 +21,7 @@ sitemap default label="HV Home"
   Text label="Lights, Fans, and Plugs" {
     Frame label="Lights, Fans, and Plugs" {
       Switch item=FF_Foyer_LightSwitch icon="light"
+      Switch item=FF_Office_LightSwitch icon="light"
 
       Switch item=FF_GreatRoom_LightSwitch icon="light"
       Switch item=FF_Kitchen_LightSwitch icon="light"
