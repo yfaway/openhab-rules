@@ -5,14 +5,20 @@
  * the threshold. This is to prevent damage to an appliance (e.g. a computer).
  * An alert email will be sent out instead.
  *
- * Dependencies: VT_In_Vacation, DSC binding for security system.
+ * Dependencies: VT_In_Vacation, VT_Time_LightOn, DSC binding for security system.
  */
+import java.util.HashMap
 
 /**
  * The power threshold in a smart plug to indicate that an application is
  * stil running.
  */
 val ACTIVE_APPLIANCE_WATTAGE_THRESHOLD = 50
+
+/**
+ * Map from item name to wattage.
+ */
+var HashMap<String, Float> lastPowerValues = newHashMap()
 
 rule "Turn off plugs when security system is armed."
 when
@@ -61,4 +67,38 @@ then
       p.sendCommand(ON)
     }
   ]
+end
+
+rule "Turn on/off light when power wattage change"
+when
+  Member of gPlugPower changed
+then
+  val Float lastWattageFloat = lastPowerValues.get(triggeringItem.name)
+  var float lastWattage
+  if (null !== lastWattageFloat) {
+    lastWattage = lastWattageFloat.floatValue()
+  }
+  else {
+    lastWattage = 0
+  }
+  val currentWattage = (triggeringItem.state as DecimalType).floatValue()
+
+  lastPowerValues.put(triggeringItem.name, currentWattage)
+
+  val idx = triggeringItem.name.lastIndexOf("_Plug_Power")
+  val lightName = triggeringItem.name.substring(0, idx) + "_LightSwitch"
+  val lightItem = gLightSwitch.members.findFirst[ l | l.name == lightName ]
+
+  if ( lastWattage < ACTIVE_APPLIANCE_WATTAGE_THRESHOLD 
+          && currentWattage > ACTIVE_APPLIANCE_WATTAGE_THRESHOLD ) {
+    if ( null !== lightItem && ON == VT_Time_LightOn.state && ON != lightItem.state ) {
+      lightItem.sendCommand(ON)
+    }
+  }
+  else if ( lastWattage > ACTIVE_APPLIANCE_WATTAGE_THRESHOLD 
+          && currentWattage < ACTIVE_APPLIANCE_WATTAGE_THRESHOLD ) {
+    if ( null !== lightItem && ON == lightItem.state ) {
+      lightItem.sendCommand(OFF)
+    }
+  }
 end
