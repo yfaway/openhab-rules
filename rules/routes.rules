@@ -1,0 +1,92 @@
+
+import java.net.URLEncoder
+
+val LOGGER_NAME = "Routes"
+val PROPERTIES_FILE = "routes.map"
+
+val TIME_RANGE_ERROR_MESSAGE = "TimeRange must be in 24-hour format hh:mm - hh:mm; got "
+
+rule "Retrieve route info"
+when
+  //Time cron "0 0/1 * 1/1 * ? *"
+then
+  gRoute.members.forEach[ r |
+    val prefix = r.label
+
+    val timeRange = transform("MAP", PROPERTIES_FILE, prefix + "TimeRange")
+    val timeTokens = timeRange.split("-")
+    if ( 2 != timeTokens.length ) {
+      logInfo(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
+      return
+    }
+
+    val startFields = timeTokens.get(0).split(":")
+    if ( 2 != startFields.length ) {
+      logInfo(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
+      return
+    }
+
+    val endFields = timeTokens.get(1).split(":")
+    if ( 2 != endFields.length ) {
+      logInfo(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
+      return
+    }
+
+    val startTime = now.toLocalTime()
+        .withHourOfDay(Integer.parseInt(startFields.get(0).trim()))
+        .withMinuteOfHour(Integer.parseInt(startFields.get(1).trim()))
+    val endTime = now.toLocalTime()
+        .withHourOfDay(Integer.parseInt(endFields.get(0).trim()))
+        .withMinuteOfHour(Integer.parseInt(endFields.get(1).trim()))
+
+    val localTime = now.toLocalTime()
+
+    if ( ! localTime.isAfter(startTime) || ! localTime.isBefore(endTime) ) {
+      logInfo(LOGGER_NAME, "Ignored; out of time range for " + prefix)
+      return
+    }
+
+    val apiKey = transform("MAP", PROPERTIES_FILE, "apiKey")
+    val origin = URLEncoder.encode(
+        transform("MAP", PROPERTIES_FILE, "homeAddress"), "UTF-8")
+
+    val destination = URLEncoder.encode(
+        transform("MAP", PROPERTIES_FILE, prefix + "Address"), "UTF-8")
+
+    val url = "https://maps.googleapis.com/maps/api/directions/json?" + 
+        "origin=" + origin + 
+        "&destination=" + destination + 
+        "&key=" + apiKey
+
+    logInfo("b", "url: " + url)
+    var data = sendHttpGetRequest(url)
+
+    val status = transform("JSONPATH", "$.status", data)
+    if ( "OK" != status ) {
+      logInfo(LOGGER_NAME, "Failed to retrieve route: " + status)
+      return
+    }
+
+    val distanceString = transform("JSONPATH", "$..legs[0].distance.text", data)
+    val duration = transform("JSONPATH", "$..legs[0].duration.text", data)
+    var String instructions = ""
+
+    val int stepCount = Integer.parseInt(transform("JSONPATH", "$..legs[0].steps.length()", data))
+    for (var int i = 0; i < stepCount; i++) {
+      val expression = "$..legs[0].steps[" + i + "].html_instructions"
+      val instruction = transform("JSONPATH", expression, data)
+
+      if ( i > 0 ) {
+        instructions += "\n"
+      }
+      instructions += "  - " + instruction.replaceAll("\\<.*?>","") // remove html tags
+    }
+
+    var body = "Distance: " + distanceString + "\n" +
+        "Duration: " + duration + "\n" + 
+        "Instructions:\n" + instructions
+
+    logInfo("b", body)
+
+  ]
+end

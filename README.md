@@ -56,7 +56,7 @@ The following sensors, bindings, actions, and transformations need to be present
 
 ## Smart Plugs
 * Turn on/off plugs based on the security arm status, vacation mode, and hours of days.
-* Turn on/off associated light when a power wattage crosses a threshold.
+* Turn on/off associated light when a power wattage crosses a threshold. E.g. turn on the office light when the PC is turned on.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
