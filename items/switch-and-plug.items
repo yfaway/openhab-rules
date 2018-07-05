@@ -57,6 +57,10 @@ Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" (gWallSwitch, gFanSwitc
   { channel="zwave:device:9e4ce05e:node5:switch_binary" }
 Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command=OFF"}
 
+Switch SF_MainWashroom_FanSwitch "MainWashroom Fan" (gWallSwitch, gFanSwitch) 
+  { channel="zwave:device:9e4ce05e:node9:switch_binary" }
+Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command=OFF"}
+
 /**
  * Smart plugs.
  */

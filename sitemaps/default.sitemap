@@ -29,6 +29,8 @@ sitemap default label="HV Home"
       Switch item=SF_MasterWashroom_LightSwitch icon="light"
       Switch item=SF_MasterWashroom_FanSwitch icon="fan"
 
+      Switch item=SF_MainWashroom_FanSwitch icon="fan"
+
       Switch item=FF_GreatRoom_Plug icon="poweroutlet"
 
       Switch item=FF_Office_Plug icon="poweroutlet"
