@@ -12,6 +12,8 @@
  *   - resetTimestamp (opt): only valid if "module" is also specified. Will
  *     reset the timestamp of the last alert message. I.e. this guarantees
  *     that the current alert is always sent out.
+ *   - emailAddresses (opt): if not specified, read from file
+ *     transform/owner-email-addresses.map.
  *
  * The actual alert (implementation specific) is triggered upon
  * "VT_AlertSender received update".
@@ -77,9 +79,12 @@ then
   }
 
   if (! DEV_MODE) {
-    // Not defining as global const to allow changing the value on the fly in
-    // the transform file.
-    val emailAddresses = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
+    var emailAddresses = transform("JSONPATH", "$.emailAddresses", state)
+    if (state == emailAddresses) {
+      // Not defining as global const to allow changing the value on the fly in
+      // the transform file.
+      emailAddresses = transform("MAP", "owner-email-addresses.map", "ALL_OWNER_EMAIL_ADDRESSES")
+    }
     sendMail(emailAddresses, subject, body)
   }
 

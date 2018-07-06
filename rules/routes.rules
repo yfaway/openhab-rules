@@ -1,34 +1,71 @@
-
+/**
+ * Triggerred when the front or garage door is opened.  Computes a specified
+ * route and sends an alert if it is different from the typical route the
+ * user travels.
+ * A route profile is specified in the label of a String item. From there, a
+ * series of configured values is read from the transform file routes.map. 
+ * The logic to determine whether a route should be computed and whether an
+ * alert should be sent out is based on those values.
+ * E.g.: for this item
+ *   String VT_Route_User1Work "user1Work" (gRoute)
+ * there should be the following values in routes.map (note the prefix)
+ *    user1WorkAddress=an address
+ *    user1WorkTimeRange=7:30 - 8:00
+ *    user1WorkTypicalRouteKeywords=Main, Steel, Huntvill, 401
+ *    user1WorkEmailAddress=my@email.com
+ */
 import java.net.URLEncoder
+import java.util.Arrays
 
 val LOGGER_NAME = "Routes"
+
+/**
+ * The transform file containing settings for each route profile.
+ */
 val PROPERTIES_FILE = "routes.map"
 
-val TIME_RANGE_ERROR_MESSAGE = "TimeRange must be in 24-hour format hh:mm - hh:mm; got "
+/**
+ * The duration between alerts.
+ */
+val ALERT_INTERVAL_IN_MINUTES = 5
+
+val TIME_RANGE_ERROR_MESSAGE = "Error: TimeRange must be in 24-hour format hh:mm - hh:mm; got "
+
+var long lastCheckTimeStamp = 0
 
 rule "Retrieve route info"
 when
-  //Time cron "0 0/1 * 1/1 * ? *"
+  Item FF_FrontDoor_Tripped changed to ON or
+  Item FF_GarageDoor_Tripped changed to ON
 then
+
+  // Bail out early if we just request a route recently.
+  val long durationInMillis = ALERT_INTERVAL_IN_MINUTES * 60 * 1000
+  if ((now.getMillis() - lastCheckTimeStamp) <= durationInMillis) {
+    return
+  }
+
+  lastCheckTimeStamp = now.getMillis()
+
   gRoute.members.forEach[ r |
     val prefix = r.label
 
     val timeRange = transform("MAP", PROPERTIES_FILE, prefix + "TimeRange")
     val timeTokens = timeRange.split("-")
     if ( 2 != timeTokens.length ) {
-      logInfo(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
+      logError(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
       return
     }
 
     val startFields = timeTokens.get(0).split(":")
     if ( 2 != startFields.length ) {
-      logInfo(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
+      logError(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
       return
     }
 
     val endFields = timeTokens.get(1).split(":")
     if ( 2 != endFields.length ) {
-      logInfo(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
+      logError(LOGGER_NAME, TIME_RANGE_ERROR_MESSAGE + timeRange)
       return
     }
 
@@ -42,7 +79,7 @@ then
     val localTime = now.toLocalTime()
 
     if ( ! localTime.isAfter(startTime) || ! localTime.isBefore(endTime) ) {
-      logInfo(LOGGER_NAME, "Ignored; out of time range for " + prefix)
+      logInfo(LOGGER_NAME, "Skipped; current time is outside time range for profile " + prefix)
       return
     }
 
@@ -56,14 +93,14 @@ then
     val url = "https://maps.googleapis.com/maps/api/directions/json?" + 
         "origin=" + origin + 
         "&destination=" + destination + 
+        "&departure_time=now" +
         "&key=" + apiKey
-
-    logInfo("b", "url: " + url)
     var data = sendHttpGetRequest(url)
 
     val status = transform("JSONPATH", "$.status", data)
     if ( "OK" != status ) {
-      logInfo(LOGGER_NAME, "Failed to retrieve route: " + status)
+      logError(LOGGER_NAME, 
+          "Error: Failed to retrieve route for profile " + prefix + ": " + status)
       return
     }
 
@@ -82,11 +119,40 @@ then
       instructions += "  - " + instruction.replaceAll("\\<.*?>","") // remove html tags
     }
 
-    var body = "Distance: " + distanceString + "\n" +
-        "Duration: " + duration + "\n" + 
-        "Instructions:\n" + instructions
+    val lowerCaseInstructions = instructions.toLowerCase()
+    val keywordsString = transform("MAP", PROPERTIES_FILE, prefix + "TypicalRouteKeywords")
+    val keywords = keywordsString.split("\\s*,\\s*")
 
-    logInfo("b", body)
+    val keyWordNotFound = Arrays.stream(keywords).map[ k | k.trim().toLowerCase() ]
+      .filter[ k | ! lowerCaseInstructions.contains(k) ]
+      .findAny();
 
+    if (! keyWordNotFound.isPresent()) {
+      logInfo(LOGGER_NAME, 
+          "The current route is the same for profile " + prefix + " -> not sending an alert.")
+    }
+    else {
+
+      val emailAddresses = transform("MAP", PROPERTIES_FILE, prefix + "EmailAddress")
+      if (null === emailAddresses || emailAddresses.isEmpty() ) {
+        logError(LOGGER_NAME, 
+          "Error: Must specify email address for profile " + prefix)
+        return
+      }
+
+      var body = "Distance: " + distanceString + "\n" +
+          "Duration: " + duration + "\n" + 
+          "Instructions:\n" + instructions
+
+      var msg = "{"
+      msg += "\"emailAddresses\":\"" + emailAddresses + "\""
+      msg += ",\"subject\":\"Revised travel route\""
+      msg += ",\"body\":\"" + body + "\""
+      msg += ",\"module\":\"" + prefix + "\""
+      msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+      msg += "}"
+
+      VT_AlertSender.postUpdate(msg)
+    }
   ]
 end

@@ -54,14 +54,17 @@ The following sensors, bindings, actions, and transformations need to be present
 * Support an optional String item that contains the light switch to turn off when this light switch is turn on. E.g. when office light is turned on, turn off foyer light.
 * Ignore the motion sensor event if a wall switch was just turned off. This prevents the light/fan from turning on again when a user manually turns it off and movng a way from the area. If not ignored, the motion sensor might trigger the switch to turn on again.
 
-## Smart Plugs
-* Turn on/off plugs based on the security arm status, vacation mode, and hours of days.
-* Turn on/off associated light when a power wattage crosses a threshold. E.g. turn on the office light when the PC is turned on.
-
 ## Presence
 * Cell phone wifi connection using Network binding.
 * Security motion sensor (if triggered, set to be good for the next 5 minutes).
 * Generic vacation mode (currently backed by the Ecobee's vacation setting).
+
+## Route
+* One or more route profiles can be configured in transform/routes.map file. Each profile specifies the destination address, the time range and the typical travelled road names. When the garage or front door is open, the rule will check if the current time is in the time range. If yes, it requests a route to the destination address using Google Maps service. If the route is different from a normally travelled route, it will send an email alert to the user.
+
+## Smart Plugs
+* Turn on/off plugs based on the security arm status, vacation mode, and hours of days.
+* Turn on/off associated light when a power wattage crosses a threshold. E.g. turn on the office light when the PC is turned on.
 
 ## Security Actions
 * Automatically “armed stay” in the night if someone is home.
