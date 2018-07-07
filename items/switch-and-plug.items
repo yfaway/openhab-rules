@@ -51,13 +51,17 @@ Switch FF_GreatRoom_LightSwitch_MotionSensor_DisableTriggeringAlways
 
 Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node4:switch_binary" }
-Switch SF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer) {expire="25m,command=OFF"}
+Switch SF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer) {expire="5m,command=OFF"}
+Switch SF_MasterWashroom_LightSwitch_MotionSensor (gWallSwitchMotionSensor) 
+  {mqtt="<[broker:zigbee2mqtt/0x00158d0001fa45fd:command:JS(occupancy.js)]" }
 
 Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node5:switch_binary" }
 Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command=OFF"}
+Switch SF_MasterWashroom_FanSwitch_MotionSensor (gWallSwitchMotionSensor) 
+  {mqtt="<[broker:zigbee2mqtt/0x00158d000200eb10:command:JS(occupancy.js)]" }
 
-Switch SF_MainWashroom_FanSwitch "MainWashroom Fan" (gWallSwitch, gFanSwitch) 
+Switch SF_MainWashroom_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node9:switch_binary" }
 Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command=OFF"}
 
@@ -67,7 +71,7 @@ Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command=O
 Group gPlug
 Group gPlugPower
 
-Switch FF_GreatRoom_Plug "GreatRoom Plug" (gPlug)
+Switch FF_GreatRoom_Plug "Great Room Plug" (gPlug)
   {channel="tplinksmarthome:hs100:greatroom:switch"}
 
 Switch FF_Office_Plug "Office Plug" (gPlug)

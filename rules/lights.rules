@@ -83,10 +83,13 @@ then
     }
 
     if ( ON != switchItem.state ) {
+      // Is this a fan switch?
+      val isFanSwitch = switchName.endsWith("FanSwitch")
+
       // This check needs to be here rather than in the outter scope because
       // the user might have turned on the light before the programmed 
       // light on time. In such case, we continue to maintain the timer.
-      if (ON != VT_Time_LightOn.state ) {
+      if (ON != VT_Time_LightOn.state && ! isFanSwitch ) {
         return
       }
       
@@ -154,7 +157,7 @@ then
   }
 end
 
-rule "Set a timer to turn off the light after it was programatically turned on"
+rule "Set a timer to turn off the switch after it was programatically turned on"
 when
  Member of gWallSwitch changed
 then
@@ -178,11 +181,11 @@ then
         val stringItemName = triggeringItem.name + "_TurnOffOtherLight"
         val stringItem = gTurnOffOtherLight.members.findFirst[ t | t.name == stringItemName ]
         if ( null !== stringItem ) {
-          var lightItem = gLightSwitch.members.findFirst[ 
+          var switchItem = gLightSwitch.members.findFirst[ 
             t | t.name == stringItem.state.toString
           ]
-          if ( null !== lightItem ) {
-            lightItem.sendCommand(OFF)
+          if ( null !== switchItem ) {
+            switchItem.sendCommand(OFF)
           }
         }
       }
@@ -197,7 +200,7 @@ then
   }
 end
 
-rule "Turn off light when timer expires"
+rule "Turn off wall switch when timer expires"
 when
   Member of gWallSwitchTimer changed to OFF
 then
@@ -205,9 +208,22 @@ then
     val localIdx = triggeringItem.name.lastIndexOf("_")
     val switchName = triggeringItem.name.substring(0, localIdx)
 
-    val target = gWallSwitch.members.findFirst[ t | t.name == switchName ]
-    if ( ON == target.state  ) {
-      target.sendCommand(OFF)
+    // Check if motion sensor state is still on; if yes, renew timer. This
+    // take care of the situation where there is constant activity and thus
+    // the motion sensor was never shut off --> timer wasn't being renewed.
+    val motionSensorName = switchName + "_MotionSensor"
+    val motionSensorItem = gWallSwitchMotionSensor.members.findFirst[
+      s | s.name == motionSensorName
+    ]
+
+    if ( null !== motionSensorItem && ON == motionSensorItem.state ) {
+      triggeringItem.sendCommand(ON)
+    }
+    else {
+      val target = gWallSwitch.members.findFirst[ t | t.name == switchName ]
+      if ( ON == target.state  ) {
+        target.sendCommand(OFF)
+      }
     }
   }
 end
