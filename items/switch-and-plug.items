@@ -64,6 +64,8 @@ Switch SF_MasterWashroom_FanSwitch_MotionSensor (gWallSwitchMotionSensor)
 Switch SF_MainWashroom_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node9:switch_binary" }
 Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer) {expire="20m,command=OFF"}
+Switch SF_MainWashroom_FanSwitch_MotionSensor (gWallSwitchMotionSensor) 
+  {mqtt="<[broker:zigbee2mqtt/0x00158d000200ed5e:command:JS(occupancy.js)]" }
 
 /**
  * Smart plugs.

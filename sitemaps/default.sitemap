@@ -75,4 +75,12 @@ sitemap default label="HV Home"
       Text item=FF_Windows_Status
     }
   }
+
+  Text label="Motion Sensors" {
+    Frame label="Motion Sensors" {
+      Switch item=SF_MasterWashroom_LightSwitch_MotionSensor
+      Switch item=SF_MasterWashroom_FanSwitch_MotionSensor
+      Switch item=SF_MainWashroom_FanSwitch_MotionSensor 
+    }
+  }
 }

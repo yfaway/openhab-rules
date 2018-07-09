@@ -11,6 +11,7 @@ The following sensors, bindings, actions, and transformations need to be present
 4. Aeotec Z-Wave USB ZStick Gen 5
 5. Inovelli NZW30 Z-Wave Wall Switch
 6. TP-Link HS100 WiFi Plug
+7. Xiaomi Aqara Motion Sensor (Zigbee)
 
 **Bindings**
 1. [Astro Binding](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
@@ -25,8 +26,9 @@ The following sensors, bindings, actions, and transformations need to be present
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
 
 **Transformations**
-1. [JsonPath](https://docs.openhab.org/addons/transformations/jsonpath/readme.html)
-2. [Map](https://docs.openhab.org/addons/transformations/map/readme.html)
+1. [Javascript](https://www.openhab.org/addons/transformations/javascript/)
+2. [JsonPath](https://docs.openhab.org/addons/transformations/jsonpath/readme.html)
+3. [Map](https://docs.openhab.org/addons/transformations/map/readme.html)
 
 # Current Functionalities
 ## Alerts (email)
@@ -44,6 +46,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * Security system status.
 * Indoor and forecasted temperature and humidity.
 * Lights, fans, and smart plug status.
+* Motion sensors states
 
 ## Light/Fan Control
 * Global switch on HabUI to turn on/off individual or all controlled lights/fans.
@@ -79,6 +82,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and noone is home.
 * Water leakage.
 * Smart plugs turned on while in vacation mode.
+* Sensor battery is low.
 
 ## Control
 * Turn on/off main water valve.
@@ -87,12 +91,14 @@ The following sensors, bindings, actions, and transformations need to be present
 
 ## Light/Fan/Plug Control
 * Turn off all managed lights and fans when armed away.
+* Turn on light based on motion sensor and illuminate level (if available).
 
 ## Display
 * Energy usage.
 
 ## Presence
 * Ecobee motion sensor.
+* Xiaomi motion sensors
 
 ## Voice Alerts
 * Pronounce name of the person heading back home.
