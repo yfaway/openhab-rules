@@ -52,6 +52,8 @@ The following sensors, bindings, actions, and transformations need to be present
 * Global switch on HabUI to turn on/off individual or all controlled lights/fans.
 * Turn on foyer light when the garage or front door is open.
 * Turn on/off other lights automatically using an optional timer and an optional motion sensor.
+* By default, only turn on the light if it is evening time (based on the sunset time from the Astro binding).
+* Support an optional Number item for the illuminance value; turn on the light if it is below a illuminance LUX threshold, even if it is not yet evening.
 * Support an optional item to disable motion sensor from turning on a light but still use the motion sensor event to keep the light on. This is for the scenario where a shared motion sensor is associated with multiple lights, but we only need to turn on a light at a time.  E.g. the great room and kitchen share the same motion sensor. That sensor needs to update the timer for both lights, but must not turn on the office light.
 * Support an optional item to disable motion sensor from turning on a light if an associated light is already on. E.g. the great room and kitchen share an open space, if a light is already on, then a motion sensor event should not turn on the other light.
 * Support an optional String item that contains the light switch to turn off when this light switch is turn on. E.g. when office light is turned on, turn off foyer light.
@@ -91,7 +93,6 @@ The following sensors, bindings, actions, and transformations need to be present
 
 ## Light/Fan/Plug Control
 * Turn off all managed lights and fans when armed away.
-* Turn on light based on motion sensor and illuminate level (if available).
 
 ## Display
 * Energy usage.

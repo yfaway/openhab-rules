@@ -1,8 +1,11 @@
 /**
- * Various rules to turn on/off the lights.
- *   - Turn on foyer light when the garage or front door is open.
- *   - Turn on/off other lights automatically using an optional timer and an
- *     optional motion sensor.
+ * Generic rules to turn on/off the lights using a timer and oneo r more
+ * triggering events (typically motion sensor or door tripped).
+ *   - By default, only turn on the light if it is evening time (based on the
+ *     sunset time from the Astro binding).
+ *   - Support an optional Number item for the illuminance value; turn on the
+ *     light if it is below a illuminance LUX threshold, even if it is not
+ *     evening.
  *   - Support an optional item to disable motion sensor from turning on a 
  *     light but still use the motion sensor event to keep the light on. This
  *     is for the scenario where a shared motion sensor is associated with
@@ -21,7 +24,7 @@
  *     This prevents the light/fan from turning on again when a user manually
  *     turns it off and movng a way from the area. If not ignored, the motion
  *     sensor might trigger the switch to turn on again.
- *
+ *  
  * The timers are not enabled if the system is in vacation mode when the lights
  * are turned on/off randomly to simulate owner presence (thief prevention).
  *
@@ -44,6 +47,11 @@ val Object timerLock = new Object()
  * again.
  */
 val DELAY_AFTER_LAST_OFF_TIME_IN_MS = 8000 // 8 secs
+
+/**
+ * The light level threshold; if it is below this value, turn on the light.
+ */
+val ILLUMINANCE_THRESHOLD_IN_LUX = 50
 
 var HashMap<String, Long> lastOffTimes = newHashMap()
 
@@ -90,7 +98,28 @@ then
       // the user might have turned on the light before the programmed 
       // light on time. In such case, we continue to maintain the timer.
       if (ON != VT_Time_LightOn.state && ! isFanSwitch ) {
-        return
+        // check if there is a valid illuminance value
+        val illuminanceName = switchName + "_Illuminance"
+        val illuminanceItem = gIlluminance.members.findFirst[ 
+          t | t.name == illuminanceName  
+        ]
+
+        if ( null === illuminanceItem ) {
+          return
+        }
+        else {
+          val value = illuminanceItem.state as Number
+          if ( null === value ) { // value not available yet
+            return
+          }
+          else {
+            val int intValue = value.intValue
+            if ( intValue > ILLUMINANCE_THRESHOLD_IN_LUX ) {
+              return
+            }
+            // else pass through to turn on the light
+          }
+        }
       }
       
       // If a wall switch was just turned off, ignore the motion sensor event.
