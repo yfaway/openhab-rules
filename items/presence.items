@@ -1,0 +1,29 @@
+/**
+ * Presence states.
+ */
+Switch VT_In_Vacation "In Vacation [%s]" <vacation>
+
+Group:Switch:AND(OFF,ON) gPresence "Someone is at home"
+
+Group gFirstFloorMotionSensors
+Switch gFirstFloorPresence "Someone is on the first floor" 
+  (gPresence) {expire="5m,command=OFF"}
+
+Group gSecondFloorMotionSensors
+Switch gSecondFloorPresence "Someone is on the second floor" 
+  (gPresence) {expire="5m,command=OFF"}
+
+Group:Switch:AND(OFF,ON) gOwnerPresence "An owner is at home"
+
+Group:Switch:AND(OFF,ON) gOwner1Presence "Owner1 is at home" (gOwnerPresence) 
+Group:Switch:AND(OFF,ON) gOwner2Presence "Owner2 is at home" (gOwnerPresence)
+
+Switch Presence_Owner1_Just_Got_Home "Owner1 just got home" <network> {expire="5m,command=OFF"}
+Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network> {expire="5m,command=OFF"}
+
+Switch Presence_Owner1_Phone "Owner1's Phone" <network> (gPresence, gOwner1Presence) { channel="network:pingdevice:192_168_0_208:online" } 
+Switch Presence_Owner2_Phone "Owner2's Phone" <network> (gPresence, gOwner2Presence) { channel="network:pingdevice:192_168_0_207:online" }
+
+Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPresence) {expire="5m,command=OFF"}
+
+

@@ -51,7 +51,7 @@ val DELAY_AFTER_LAST_OFF_TIME_IN_MS = 8000 // 8 secs
 /**
  * The light level threshold; if it is below this value, turn on the light.
  */
-val ILLUMINANCE_THRESHOLD_IN_LUX = 50
+val ILLUMINANCE_THRESHOLD_IN_LUX = 8
 
 var HashMap<String, Long> lastOffTimes = newHashMap()
 

@@ -65,8 +65,8 @@ Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%
   {mqtt="<[broker:zigbee2mqtt/0x00158d0001fa45fd:state:JSONPATH($.illuminance)]"}
 // This wash room has two motion sensors (one in the standing shower area).
 Group:Switch:OR(ON,OFF) SF_MasterWashroom_LightSwitch_MotionSensor 
-  (gWallSwitchMotionSensor)
-Switch SF_MasterWashroom_LightSwitch_MainMotionSensor 
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
+Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor 
   (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d0001fa45fd:command:JS(occupancy.js)]" }
 
@@ -79,11 +79,14 @@ Switch SF_MasterWashroom_FanSwitch_MotionSensor
   (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000200eb10:command:JS(occupancy.js)]" }
 
+Group:Switch:OR(ON,OFF) SF_MainWashroom_LightSwitch_MotionSensor 
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MainWashroom_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node9:switch_binary" }
 Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer) 
   {expire="10m,command=OFF"}
-Switch SF_MainWashroom_FanSwitch_MotionSensor (gWallSwitchMotionSensor) 
+Switch SF_MainWashroom_FanSwitch_MotionSensor 
+  (gWallSwitchMotionSensor, SF_MainWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000200ed5e:command:JS(occupancy.js)]" }
 
 /**

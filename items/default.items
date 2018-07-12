@@ -24,25 +24,6 @@ DateTime VT_Evening_Time "Evening [%1$tH:%1$tM]"
     { channel="astro:sun:minus90:set#start" }
 
 /**
- * Presence states.
- */
-Switch VT_In_Vacation "In Vacation [%s]" <vacation>
-
-Group:Switch:AND(OFF,ON) gPresence "Someone is at home"
-Group:Switch:AND(OFF,ON) gOwnerPresence "An owner is at home"
-
-Group:Switch:AND(OFF,ON) gOwner1Presence "Owner1 is at home" (gOwnerPresence) 
-Group:Switch:AND(OFF,ON) gOwner2Presence "Owner2 is at home" (gOwnerPresence)
-
-Switch Presence_Owner1_Just_Got_Home "Owner1 just got home" <network> {expire="5m,command=OFF"}
-Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network> {expire="5m,command=OFF"}
-
-Switch Presence_Owner1_Phone "Owner1's Phone" <network> (gPresence, gOwner1Presence) { channel="network:pingdevice:192_168_0_208:online" } 
-Switch Presence_Owner2_Phone "Owner2's Phone" <network> (gPresence, gOwner2Presence) { channel="network:pingdevice:192_168_0_207:online" }
-
-Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPresence) {expire="5m,command=OFF"}
-
-/**
  * Temperature and humidity.
  */
 Group:Number:AVG gTemperature "House Temperature [%.1f °C]"
@@ -117,7 +98,8 @@ Switch FF_GarageDoor_Tripped (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor)
   {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
 Switch FF_PatioDoor_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
 Switch FF_GreatRoom_MotionSensor_Tripped 
-  (gZoneTripped, FF_Kitchen_LightSwitch_MotionSensor, FF_GreatRoom_LightSwitch_MotionSensor)
+  (gZoneTripped, gFirstFloorMotionSensors, FF_Kitchen_LightSwitch_MotionSensor, 
+   FF_GreatRoom_LightSwitch_MotionSensor)
   {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
 Switch FF_Windows_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone5:zone_tripped"}
 

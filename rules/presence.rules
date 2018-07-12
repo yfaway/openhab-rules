@@ -29,12 +29,18 @@ then
   }
 end
 
-rule "Presence based on security motion sensor (assuming zone 4)"
+rule "Set first floor presence timer to ON"
 when
-  Item FF_GreatRoom_MotionSensor_Tripped changed from OFF to ON 
+  Member of gFirstFloorMotionSensors changed to ON
 then
-  Security_Motion_Sensor_Triggered.sendCommand(ON)
-  // logInfo(LOGGER_NAME, "Security motion sensor triggered")
+  gFirstFloorPresence.sendCommand(ON)
+end
+
+rule "Set second floor presence timer to ON"
+when
+  Member of gSecondFloorMotionSensors changed to ON
+then
+  gSecondFloorPresence.sendCommand(ON)
 end
 
 rule "Update owner1's got home state when user is online"
