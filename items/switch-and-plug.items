@@ -41,7 +41,7 @@ String FF_Office_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node3:switch_binary" }
 Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="5m,command=OFF"}
+  {expire="15m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 String FF_Kitchen_LightSwitch_MotionSensor_DisableTriggeringIf 
   (gMotionSensorDisableTriggeringIf)

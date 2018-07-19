@@ -1,6 +1,7 @@
 /**
  * Automatically turn on/off smart plugs based on the security arm mode,
  * the vacation settings, and the hours.
+ * If the light of the room the plug is located in is still on, do not turn off.
  * If a plug has power reading, won't turn it off unless the wattage is below
  * the threshold. This is to prevent damage to an appliance (e.g. a computer).
  * An alert email will be sent out instead.
@@ -24,11 +25,23 @@ rule "Turn off plugs when security system is armed."
 when
   Item PARTITION1_ARM_MODE changed to 1 or
   Item VT_In_Vacation changed to ON or
+  Time cron "0 0 23 1/1 * ? *" or
+  Time cron "0 30 23 1/1 * ? *" or
+  Time cron "0 0 0 1/1 * ? *" or
+  Time cron "0 30 0 1/1 * ? *" or
+  Time cron "0 0 1 1/1 * ? *" or
   Time cron "0 30 1 1/1 * ? *"
 then
   val offPlugs = gPlug.members.filter[ p | OFF != p.state ]
 
   offPlugs.forEach [ p | 
+    // if the room's light is on, the don't turn of the plug
+    val lightItemName = p.name.substring(0, p.name.lastIndexOf("_")) + "_LightSwitch"
+    val lightItem = gLightSwitch.members.findFirst[ p | lightItemName == p.name ]
+    if ( null !== lightItem && ON == lightItem.state ) {
+      return
+    }
+
     val powerItemName = p.name + "_Power"
     val powerItem = gPlugPower.members.findFirst[ p | powerItemName == p.name ]
     if ( null !== powerItem ) {
@@ -40,16 +53,12 @@ then
         msg += "\"subject\":\"" + subject + "\""
         msg += "}"
         VT_AlertSender.postUpdate(msg)
-      }
-      else // wattage is below threshold --> deemed safe to turn off.
-      {
-        p.sendCommand(OFF)
-      }
-    } 
-    else // plug has no energy reading.
-    {
-      p.sendCommand(OFF)
-    }
+
+        return
+      } // else wattage is below threshold --> deemed safe to turn off.
+    } // else plug has no energy reading.
+
+    p.sendCommand(OFF)
   ]
 end
 

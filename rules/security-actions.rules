@@ -101,11 +101,12 @@ end
 
 
 /**
- * Unarm in the weekday morning at 7:10 if system was in ARMED STAY mode.
+ * Unarm in the morning if system was in ARMED STAY mode.
  */
 rule "Unarm in the morning"
 when
-  Time cron "0 10 7 ? * MON-FRI *"
+  Time cron "0 45 6 ? * MON-FRI *" or
+  Time cron "0 0 9 ? * SAT,SUN *"
 then
   if (PARTITION1_ARM_MODE.state == 2) {
     logInfo(LOGGER_NAME, "Unarming.")

@@ -18,7 +18,7 @@ sitemap default label="HV Home"
   Switch item=gLightSwitch icon="light"
   Switch item=gFanSwitch icon="fan"
 
-  Text label="Lights, Fans, and Plugs" {
+  Text label="Lights, Fans, and Plugs" icon="poweroutlet" {
     Frame label="Lights, Fans, and Plugs" {
       Switch item=FF_Foyer_LightSwitch icon="light"
       Switch item=FF_Office_LightSwitch icon="light"
@@ -38,7 +38,7 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Ecobee Thermostat" {
+  Text label="Ecobee Thermostat" icon="temperature" {
     Frame label="Ecobee Thermostat" {
       Text item=FF_GreatRoom_Thermostat_EcobeeName
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
@@ -57,7 +57,7 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Presence Details" {
+  Text label="Presence Details" icon="presence" {
     Frame label="Presence" {
       Switch item=gPresence
       Switch item=gFirstFloorPresence
@@ -78,9 +78,9 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Motion Sensors" {
+  Text label="Motion Sensors" icon="motion" {
     Frame label="Motion Sensors" {
-      Switch item=SF_MasterWashroom_LightSwitch_MainMotionSensor
+      Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor
       Text item=SF_MasterWashroom_LightSwitch_Illuminance
 
       Switch item=SF_MasterWashroom_FanSwitch_MotionSensor
