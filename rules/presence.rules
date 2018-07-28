@@ -29,6 +29,13 @@ then
   }
 end
 
+rule "Update the last presence timestamp"
+when
+  Member of gPresence changed to ON
+then
+  VT_Last_Presence_Timestamp.sendCommand(new DateTimeType())
+end
+
 rule "Set first floor presence timer to ON"
 when
   Member of gFirstFloorMotionSensors changed to ON

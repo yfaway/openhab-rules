@@ -30,7 +30,7 @@ Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch)
 Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer) 
   {expire="5m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
-  (gWallSwitchMotionSensor)
+  (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
 String FF_Foyer_LightSwitch_MotionSensor_DisableTriggeringIf 
   (gMotionSensorDisableTriggeringIf)
 
@@ -50,7 +50,7 @@ Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch)
   { channel="zwave:device:9e4ce05e:node7:switch_binary" }
 String FF_GreatRoom_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_GreatRoom_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="15m,command=OFF"}
+  {expire="30m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_GreatRoom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor)
 Switch FF_GreatRoom_LightSwitch_MotionSensor_DisableTriggeringAlways 

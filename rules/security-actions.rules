@@ -1,5 +1,8 @@
 val String LOGGER_NAME = "SecurityRules"
 
+val STATE_ARM_AWAY = 1
+val STATE_ARM_STAY = 2
+
 /**
  * If the garage door is open from the car or the external panel, determine
  * if an owner is arriving home. If yes, unarm the system (if was armed).
@@ -14,7 +17,8 @@ when
 then
   logInfo(LOGGER_NAME, "Garage door is open.")
 
-  if (PARTITION1_ARM_MODE.state == 1 || PARTITION1_ARM_MODE.state == 2) {
+  if (STATE_ARM_AWAY == PARTITION1_ARM_MODE.state 
+        || STATE_ARM_STAY == PARTITION1_ARM_MODE.state ) {
     val owner1WasNotHome = (gOwner1Presence.state == OFF 
         || Presence_Owner1_Just_Got_Home.state == ON)
     val owner2WasNotHome = (gOwner2Presence.state == OFF
@@ -90,7 +94,8 @@ when
 then
   logInfo(LOGGER_NAME, "Garage receives open command.")
 
-  if (PARTITION1_ARM_MODE.state == 1 || PARTITION1_ARM_MODE.state == 2) {
+  if (STATE_ARM_AWAY == PARTITION1_ARM_MODE.state 
+        || STATE_ARM_STAY == PARTITION1_ARM_MODE.state ) {
     logInfo(LOGGER_NAME, "Unarming.")
     PARTITION1_ARM_MODE.sendCommand(0)
   }
@@ -108,7 +113,7 @@ when
   Time cron "0 45 6 ? * MON-FRI *" or
   Time cron "0 0 9 ? * SAT,SUN *"
 then
-  if (PARTITION1_ARM_MODE.state == 2) {
+  if (STATE_ARM_STAY == PARTITION1_ARM_MODE.state ) {
     logInfo(LOGGER_NAME, "Unarming.")
     PARTITION1_ARM_MODE.sendCommand(0)
   }
@@ -119,8 +124,8 @@ end
 
 
 /**
- * Attempt to STAY arm at 15' interval between 8:45PM and 1:00AM if the
- * security system is in DISARM mode.
+ * Attempt to STAY/AWAY (depends on vacation state) arm at 15' interval
+ * between 8:45PM and 1:00AM if the security system is in DISARM mode.
  */
 rule "Arm at Stay mode in the night"
 when
@@ -152,7 +157,8 @@ when
 then
   if (PARTITION1_ARM_MODE.state == 0) {
     logDebug(LOGGER_NAME, "Arming security system at STAY mode.")
-    PARTITION1_ARM_MODE.sendCommand(2)
+    val state = if (ON == VT_In_Vacation.state)  STATE_ARM_AWAY else STATE_ARM_STAY
+    PARTITION1_ARM_MODE.sendCommand(state)
   }
   else {
     logDebug(LOGGER_NAME, "Security system is not in READY state -> not arming.")
