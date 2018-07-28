@@ -202,7 +202,8 @@ then
       // When in vacation mode, the lights be turned on/off randomly to
       // simulate presence (thief prevention). The simulation rule has full
       // control of the lights; thus we don't want to enable the timer.
-      if ( ON != VT_In_Vacation ) {
+      val isFanItem = triggeringItem.getGroupNames().contains(gFanSwitch.name)
+      if ( ON != VT_In_Vacation.state || isFanItem ) {
         if ( null !== timerItem ) {
           timerItem.sendCommand(ON)
         }

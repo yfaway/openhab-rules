@@ -61,6 +61,7 @@ The following sensors, bindings, actions, and transformations need to be present
 
 ## Presence
 * Cell phone wifi connection using Network binding.
+* Doors open (presence state expires in 5')
 * Security motion sensor (presence state expires in 5')
 * Xiaomi motion sensors (presence state expires in 5')
 * Generic vacation mode (currently backed by the Ecobee's vacation setting).
