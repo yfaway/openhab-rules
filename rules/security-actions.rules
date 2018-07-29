@@ -165,6 +165,25 @@ then
   }
 end
 
+rule "Set the timer to arm away while in vacation mode"
+when
+  Item gPresence changed to ON
+then
+  if (ON == VT_In_Vacation.state) {
+    VT_Arm_Vacation.sendCommand(ON)
+  }
+end
+
+rule "Arm away after timer expires"
+when
+  Item VT_Arm_Vacation changed from ON to OFF
+then
+  if (ON == VT_In_Vacation.state) {
+    PARTITION1_ARM_MODE.sendCommand(STATE_ARM_AWAY)
+  }
+end
+
+
 //rule "test rule"
 //when 
 //  Time cron "0 0/1 * 1/1 * ? *"

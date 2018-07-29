@@ -74,10 +74,11 @@ The following sensors, bindings, actions, and transformations need to be present
 * Turn on/off associated light when a power wattage crosses a threshold. E.g. turn on the office light when the PC is turned on.
 
 ## Security Actions
-* Automatically “armed stay” in the night if someone is home.
+* Automatically armed stay in the night if someone is home.
 * Automatically unarm in the morning before going to work.
 * Automatically unarm if an owner open the garage door from the outside.
 * Automatically unarm if garage door is open from Hab UI.
+* Automatically arm away an hour after last presence event, if in vacation mode.
 
 # Todos - Functionalities
 ## Text Alerts

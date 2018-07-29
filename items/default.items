@@ -61,7 +61,8 @@ Number VT_Outdoor_Temperature "Outdoor Temperature [%.1f °C]" (gWeather)
 Number VT_Outdoor_RelativeHumidity "Relative Humidity [%d %%]" (gWeather) 
   { ecobee="<[411921197263#weather.forecasts[0].relativeHumidity]" }
 
-Switch FF_GreatRoom_Thermostat_RoomOccupancy "Great Room Occupancy [%s]" { ecobee="<[411921197263#remoteSensors(Main Floor).capability(occupancy).value]" }
+Switch FF_GreatRoom_Thermostat_RoomOccupancy "Great Room Occupancy [%s]" 
+  { ecobee="<[411921197263#remoteSensors(Main Floor).capability(occupancy).value]" }
 
 /**
  * Security system

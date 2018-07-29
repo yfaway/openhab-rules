@@ -3,6 +3,9 @@
  */
 Switch VT_In_Vacation "In Vacation [%s]" <vacation>
 
+// When changes to OFF, arm away
+Switch VT_Arm_Vacation {expire="60m,command=OFF"}
+
 // https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html
 DateTime VT_Last_Presence_Timestamp "Last Presence [%1$ta %1$tb %1$td %1$tI:%1$tM %1$tp]"
 
@@ -21,10 +24,15 @@ Group:Switch:AND(OFF,ON) gOwnerPresence "An owner is at home"
 Group:Switch:AND(OFF,ON) gOwner1Presence "Owner1 is at home" (gOwnerPresence) 
 Group:Switch:AND(OFF,ON) gOwner2Presence "Owner2 is at home" (gOwnerPresence)
 
-Switch Presence_Owner1_Just_Got_Home "Owner1 just got home" <network> {expire="5m,command=OFF"}
-Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network> {expire="5m,command=OFF"}
+Switch Presence_Owner1_Just_Got_Home "Owner1 just got home" <network> 
+  {expire="5m,command=OFF"}
+Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network> 
+  {expire="5m,command=OFF"}
 
-Switch Presence_Owner1_Phone "Owner1's Phone" <network> (gPresence, gOwner1Presence) { channel="network:pingdevice:192_168_0_208:online" } 
-Switch Presence_Owner2_Phone "Owner2's Phone" <network> (gPresence, gOwner2Presence) { channel="network:pingdevice:192_168_0_207:online" }
+Switch Presence_Owner1_Phone "Owner1's Phone" <network> (gPresence, gOwner1Presence) 
+  { channel="network:pingdevice:192_168_0_208:online" } 
+Switch Presence_Owner2_Phone "Owner2's Phone" <network> (gPresence, gOwner2Presence) 
+  { channel="network:pingdevice:192_168_0_207:online" }
 
-Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" (gPresence) {expire="5m,command=OFF"}
+Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" 
+  (gPresence) {expire="5m,command=OFF"}
