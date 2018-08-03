@@ -17,8 +17,8 @@ when
 then
   logInfo(LOGGER_NAME, "Garage door is open.")
 
-  if (STATE_ARM_AWAY == PARTITION1_ARM_MODE.state 
-        || STATE_ARM_STAY == PARTITION1_ARM_MODE.state ) {
+  if ( PARTITION1_ARM_MODE.state == STATE_ARM_AWAY 
+        || PARTITION1_ARM_MODE.state == STATE_ARM_STAY ) {
     val owner1WasNotHome = (gOwner1Presence.state == OFF 
         || Presence_Owner1_Just_Got_Home.state == ON)
     val owner2WasNotHome = (gOwner2Presence.state == OFF
@@ -94,8 +94,8 @@ when
 then
   logInfo(LOGGER_NAME, "Garage receives open command.")
 
-  if (STATE_ARM_AWAY == PARTITION1_ARM_MODE.state 
-        || STATE_ARM_STAY == PARTITION1_ARM_MODE.state ) {
+  if (PARTITION1_ARM_MODE.state == STATE_ARM_AWAY 
+        || PARTITION1_ARM_MODE.state == STATE_ARM_STAY ) {
     logInfo(LOGGER_NAME, "Unarming.")
     PARTITION1_ARM_MODE.sendCommand(0)
   }
@@ -113,7 +113,7 @@ when
   Time cron "0 45 6 ? * MON-FRI *" or
   Time cron "0 0 9 ? * SAT,SUN *"
 then
-  if (STATE_ARM_STAY == PARTITION1_ARM_MODE.state ) {
+  if ( PARTITION1_ARM_MODE.state == STATE_ARM_STAY ) {
     logInfo(LOGGER_NAME, "Unarming.")
     PARTITION1_ARM_MODE.sendCommand(0)
   }
