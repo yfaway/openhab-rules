@@ -2,6 +2,7 @@
  * Managed lights and washroom fans switches.
  */
 Switch VT_Time_LightOn
+Switch VT_Light_Simulation "Light Simulation [%s]" <light>
 
 Group gWallSwitch
 Group gWallSwitchTimer

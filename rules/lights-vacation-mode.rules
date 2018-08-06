@@ -40,12 +40,16 @@ when
   Item VT_In_Vacation changed to ON
 then
   if ( ON != VT_Time_LightOn.state ) {
+    VT_Light_Simulation.sendCommand(OFF)
     return
   }
 
   if ( ON != VT_In_Vacation.state ) {
+    VT_Light_Simulation.sendCommand(OFF)
     return
   }
+
+  VT_Light_Simulation.sendCommand(ON)
 
   synchronized ( SIMUATION_LOCK ) {
     if ( isRunning ) { // prevent multiple simulation thread running
@@ -96,11 +100,14 @@ end
 rule "Turn off light simulation when it is bed time or when vacation mode is off" 
 when
   Item VT_Time_LightOn changed to OFF or
+  Item VT_Time_Of_Day changed to "BED" or
   Item VT_In_Vacation changed to OFF
 then
   synchronized ( SIMUATION_LOCK ) {
     if ( isRunning ) {
       terminate.add(new Object())
+
+      VT_Light_Simulation.sendCommand(OFF)
     }
   }
 end
