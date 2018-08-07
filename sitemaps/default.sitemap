@@ -83,6 +83,7 @@ sitemap default label="HV Home"
 
   Text label="Motion Sensors" icon="motion" {
     Frame label="Motion Sensors" {
+      Switch item=FF_Office_LightSwitch_MotionSensor
       Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor
       Text item=SF_MasterWashroom_LightSwitch_Illuminance
 

@@ -39,12 +39,9 @@ when
   Item VT_Time_LightOn changed to ON or
   Item VT_In_Vacation changed to ON
 then
-  if ( ON != VT_Time_LightOn.state ) {
-    VT_Light_Simulation.sendCommand(OFF)
-    return
-  }
-
-  if ( ON != VT_In_Vacation.state ) {
+  if ( ON != VT_Time_LightOn.state 
+        || ON != VT_In_Vacation.state 
+        || "BED" == VT_Time_Of_Day.state.toString ) {
     VT_Light_Simulation.sendCommand(OFF)
     return
   }
