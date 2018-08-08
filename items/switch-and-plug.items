@@ -29,9 +29,12 @@ Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node2:switch_binary" }
 Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="5m,command=OFF"}
+  {expire="2m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
+Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
+  (FF_Foyer_LightSwitch_MotionSensor) 
+  {mqtt="<[broker:zigbee2mqtt/0x00158d000204c7ef:command:JS(occupancy.js)]" }
 String FF_Foyer_LightSwitch_MotionSensor_DisableTriggeringIf 
   (gMotionSensorDisableTriggeringIf)
 
@@ -47,10 +50,13 @@ Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node3:switch_binary" }
 Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="15m,command=OFF"}
+  {expire="5m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 String FF_Kitchen_LightSwitch_MotionSensor_DisableTriggeringIf 
   (gMotionSensorDisableTriggeringIf)
+Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
+  (FF_Kitchen_LightSwitch_MotionSensor) 
+  {mqtt="<[broker:zigbee2mqtt/0x00158d000236b4cd:command:JS(occupancy.js)]" }
 
 Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node7:switch_binary" }
@@ -73,7 +79,7 @@ Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%
 Group:Switch:OR(ON,OFF) SF_MasterWashroom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motion Sensor"
-  (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
+  (SF_MasterWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d0001fa45fd:command:JS(occupancy.js)]" }
 
 Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" 
