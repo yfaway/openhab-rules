@@ -40,22 +40,30 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Ecobee Thermostat" icon="temperature" {
-    Frame label="Ecobee Thermostat" {
-      Text item=FF_GreatRoom_Thermostat_EcobeeName
+  Text label="Temperature & Humidity" icon="temperature" {
+    Frame label="Temperature & Humidity" {
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
       Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-      Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
-      Text item=FF_GreatRoom_Thermostat_DesiredCool icon="snow"
-      Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
-      Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
-      Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
+      Text item=FF_Kitchen_Temperature icon="temperature"
+      Text item=FF_Kitchen_Humidity icon="humidity"
+    }
+    Text label="Ecobee Thermostat" icon="temperature" {
+      Frame label="Ecobee Thermostat" {
+        Text item=FF_GreatRoom_Thermostat_EcobeeName
+        Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
+        Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+        Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
+        Text item=FF_GreatRoom_Thermostat_DesiredCool icon="snow"
+        Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
+        Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
+        Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
 
-      Text item=VT_Outdoor_Temperature icon="temperature"
-      Text item=VT_Outdoor_WeatherCondition
-      Text item=VT_Outdoor_RelativeHumidity icon="humidity"
+        Text item=VT_Outdoor_Temperature icon="temperature"
+        Text item=VT_Outdoor_WeatherCondition
+        Text item=VT_Outdoor_RelativeHumidity icon="humidity"
 
-      Text item=FF_GreatRoom_Thermostat_RoomOccupancy
+        Text item=FF_GreatRoom_Thermostat_RoomOccupancy
+      }
     }
   }
 

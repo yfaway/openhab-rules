@@ -42,7 +42,7 @@ Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch)
   { channel="zwave:device:9e4ce05e:node8:switch_binary" }
 String FF_Office_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_Office_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="10m,command=OFF"}
+  {expire="15m,command=OFF"}
 Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000236b6c0:command:JS(occupancy.js)]" }
