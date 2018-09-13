@@ -39,6 +39,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * When the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
 * When temperature or humidity value is outside the allowed ranges.
 * When a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
+* When kitchen temperature sensor is a certain degree above the thermostat settings. This might indicate an oven remains on.
 
 ## Display
 * Garage door status.

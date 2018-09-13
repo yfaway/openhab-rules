@@ -39,6 +39,7 @@ String FF_Foyer_LightSwitch_MotionSensor_DisableTriggeringIf
   (gMotionSensorDisableTriggeringIf)
 
 Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch) 
+  [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node8:switch_binary" }
 String FF_Office_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_Office_LightSwitch_Timer (gWallSwitchTimer) 
@@ -48,6 +49,7 @@ Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   {mqtt="<[broker:zigbee2mqtt/0x00158d000236b6c0:command:JS(occupancy.js)]" }
 
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch) 
+  [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node3:switch_binary" }
 Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) 
   {expire="5m,command=OFF"}

@@ -1,5 +1,5 @@
 /**
- * Generic rules to turn on/off the lights using a timer and oneo r more
+ * Generic rules to turn on/off the lights using a timer and one or more
  * triggering events (typically motion sensor or door tripped).
  *   - By default, only turn on the light if it is evening time (based on the
  *     sunset time from the Astro binding).
@@ -22,7 +22,7 @@
  *     E.g. when office light is turned on, turn off foyer light.
  *   - Ignore the motion sensor event if a wall switch was just turned off.
  *     This prevents the light/fan from turning on again when a user manually
- *     turns it off and movng a way from the area. If not ignored, the motion
+ *     turns it off and moving a way from the area. If not ignored, the motion
  *     sensor might trigger the switch to turn on again.
  *  
  * The timers are not enabled if the system is in vacation mode when the lights
@@ -52,6 +52,16 @@ val DELAY_AFTER_LAST_OFF_TIME_IN_MS = 8000 // 8 secs
  * The light level threshold; if it is below this value, turn on the light.
  */
 val ILLUMINANCE_THRESHOLD_IN_LUX = 8
+
+/**
+ * This Item tag indicates that the switch shares a motion sensor with one
+ * or more other switches. These switches then share the same
+ * DELAY_AFTER_LAST_OFF_TIME_IN_MS value. I.e. if a switch is just turned
+ * off, for the next couple seconds any motion sensor triggering will do
+ * nothing. This is because the user is getting out of the zone, and thus it
+ * is wrong to turn on another light.
+ */
+val TAG_SHARED_MOTION_SENSOR = "shared-motion-sensor"
 
 var HashMap<String, Long> lastOffTimes = newHashMap()
 
@@ -162,7 +172,7 @@ then
         if ( ON == theOtherLight.state ) {
           return
         }
-        else {
+        else if ( switchItem.hasTag(TAG_SHARED_MOTION_SENSOR) ) {
           // If it was just turned off, then don't trigger this light yet.
           // This might be the case that the user is getting out of this zone
           if ( lastOffTimes.containsKey(theOtherLight.name) ) {
@@ -172,6 +182,7 @@ then
             }
           } // has OFF timestamp
         } // the other light is of
+        // else - pass through
       }
 
       switchItem.sendCommand(ON)
