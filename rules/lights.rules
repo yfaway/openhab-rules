@@ -65,6 +65,11 @@ val TAG_SHARED_MOTION_SENSOR = "shared-motion-sensor"
 
 var HashMap<String, Long> lastOffTimes = newHashMap()
 
+val Functions$Function1<GenericItem, Boolean> isSwitchOn = [ switchItem |
+    ON == switchItem.state 
+          || (switchItem instanceof DimmerItem && switchItem.state > 0)
+]
+
 rule "Update light states" 
 when
   System started 
@@ -169,7 +174,8 @@ then
         // see if the other light is on
         val theOtherLight = gWallSwitch.members.findFirst[ 
             t | t.name == disableTriggeringIfItem.state.toString ]
-        if ( ON == theOtherLight.state ) {
+
+        if ( isSwitchOn.apply(theOtherLight) ) { 
           return
         }
         else if ( switchItem.hasTag(TAG_SHARED_MOTION_SENSOR) ) {
@@ -209,7 +215,7 @@ then
     // be null.
     val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerItemName ]
 
-    if ( ON == triggeringItem.state ) {
+    if ( isSwitchOn.apply(triggeringItem) ) { 
       // When in vacation mode, the lights be turned on/off randomly to
       // simulate presence (thief prevention). The simulation rule has full
       // control of the lights; thus we don't want to enable the timer.
@@ -262,7 +268,7 @@ then
     }
     else {
       val target = gWallSwitch.members.findFirst[ t | t.name == switchName ]
-      if ( ON == target.state  ) {
+      if ( isSwitchOn.apply(target) ) { 
         target.sendCommand(OFF)
       }
     }

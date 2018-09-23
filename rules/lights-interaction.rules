@@ -16,4 +16,7 @@ then
 
   FF_Office_LightSwitch_TurnOffOtherLight.sendCommand("FF_Foyer_LightSwitch")
   FF_GreatRoom_LightSwitch_TurnOffOtherLight.sendCommand("FF_Kitchen_LightSwitch")
+
+  SF_Lobby_LightSwitch_TurnOffOtherLight.sendCommand("FF_Foyer_LightSwitch")
+  FF_Foyer_LightSwitch_TurnOffOtherLight.sendCommand("SF_Lobby_LightSwitch")
 end

@@ -28,6 +28,7 @@ Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
 Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node2:switch_binary" }
+String FF_Foyer_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer) 
   {expire="2m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
@@ -102,6 +103,15 @@ Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer)
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MainWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000200ed5e:command:JS(occupancy.js)]" }
+
+Dimmer SF_Lobby_LightSwitch "Lobby Light" (gWallSwitch, gLightSwitch) 
+  { channel="zwave:device:9e4ce05e:node10:switch_dimmer" }
+String SF_Lobby_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
+Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
+  {mqtt="<[broker:zigbee2mqtt/0x00158d000239725a:command:JS(occupancy.js)]" }
+Switch SF_Lobby_LightSwitch_Timer (gWallSwitchTimer) 
+  {expire="2m,command=OFF"}
 
 /**
  * Smart plugs.
