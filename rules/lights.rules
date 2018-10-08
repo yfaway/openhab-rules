@@ -268,8 +268,10 @@ then
     }
     else {
       val target = gWallSwitch.members.findFirst[ t | t.name == switchName ]
-      if ( isSwitchOn.apply(target) ) { 
-        target.sendCommand(OFF)
+      synchronized(switchLock) {
+        if ( isSwitchOn.apply(target) ) { 
+          target.sendCommand(OFF)
+        }
       }
     }
   }

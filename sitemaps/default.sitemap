@@ -95,7 +95,10 @@ sitemap default label="HV Home"
     Frame label="Motion Sensors" {
       Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor
       Switch item=FF_Office_LightSwitch_MotionSensor
+
       Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor
+      Text item=FF_Kitchen_LightSwitch_Illuminance
+
       Switch item=SF_Lobby_LightSwitch_MotionSensor
 
       Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor

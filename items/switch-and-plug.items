@@ -52,6 +52,7 @@ Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch) 
   [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node3:switch_binary" }
+String FF_Kitchen_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) 
   {expire="5m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
@@ -60,6 +61,9 @@ String FF_Kitchen_LightSwitch_MotionSensor_DisableTriggeringIf
 Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
   (FF_Kitchen_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000236b4cd:command:JS(occupancy.js)]" }
+Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
+  (gIlluminance) 
+  {mqtt="<[broker:zigbee2mqtt/0x00158d000236b4cd:state:JSONPATH($.illuminance)]"}
 
 Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node7:switch_binary" }
@@ -87,7 +91,7 @@ Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motio
 
 Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" 
   (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node5:switch_binary" }
+  { channel="zwave:device:9e4ce05e:node11:switch_binary" }
 Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) 
   {expire="10m,command=OFF"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
@@ -122,7 +126,8 @@ Group gPlugPower
 Switch FF_GreatRoom_Plug "Great Room Plug" (gPlug)
   {channel="tplinksmarthome:hs100:greatroom:switch"}
 
-Switch FF_Office_Plug "Office Plug" (gPlug)
+// Not include in gPlug group as that intefere with the PC's suspense function
+Switch FF_Office_Plug "Office Plug"
   {channel="tplinksmarthome:hs110:office:switch"}
 Number FF_Office_Plug_Power "Office Plug Power [%d Watts]" (gPlugPower)
   {channel="tplinksmarthome:hs110:office:power"}

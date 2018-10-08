@@ -24,7 +24,7 @@ rule "Alert when temperature is outside allowed range"
 when
   Item gTemperature changed
 then
-  val degree = FF_GreatRoom_Thermostat_ActualTemperature.state;
+  val degree = FF_GreatRoom_Thermostat_ActualTemperature.state as Number;
 
   var subject = ""
   if (degree < MIN_TEMPERATURE_IN_DEGREE) {
@@ -72,8 +72,8 @@ rule "Alert when kitchen temperature is above thermostat temperature"
 when
   Item FF_Kitchen_Temperature changed
 then
-  val thermotatDegree = FF_GreatRoom_Thermostat_ActualTemperature.state;
-  val kitchenDegree = FF_Kitchen_Temperature.state;
+  val thermotatDegree = (FF_GreatRoom_Thermostat_ActualTemperature.state as Number).floatValue;
+  val kitchenDegree = (FF_Kitchen_Temperature.state as Number).floatValue;
 
   var subject = ""
   if ((kitchenDegree - thermotatDegree) >= KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD ) {
