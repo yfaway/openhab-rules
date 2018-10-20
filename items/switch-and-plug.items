@@ -77,6 +77,7 @@ Switch FF_GreatRoom_LightSwitch_MotionSensor_DisableTriggeringAlways
 
 Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" (gWallSwitch, gLightSwitch) 
   { channel="zwave:device:9e4ce05e:node4:switch_binary" }
+String SF_MasterWashroom_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch SF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer) 
   {expire="5m,command=OFF"}
 Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%d]"

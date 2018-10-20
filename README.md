@@ -20,7 +20,8 @@ The following sensors, bindings, actions, and transformations need to be present
 4. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
 5. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
 6. [TPLinkSmartHome Binding](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things)
-7. [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
+7. [Weather](https://www.openhab.org/addons/bindings/weather1/#table-of-contents)
+8. [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
 
 **Actions**
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
@@ -37,7 +38,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * When the security system can't be armed programatically (e.g. a door is open).
 * When a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
 * When the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
-* When temperature or humidity value is outside the allowed ranges.
+* When indoor temperature or humidity value is outside the allowed ranges.
 * When a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
 * When kitchen temperature sensor is a certain degree above the thermostat settings. This might indicate an oven remains on.
 

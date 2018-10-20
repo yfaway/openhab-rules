@@ -42,7 +42,7 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Temperature & Humidity" icon="temperature" {
+  Text label="Indoor Temperature & Humidity" icon="temperature" {
     Frame label="Temperature & Humidity" {
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
       Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
@@ -66,6 +66,33 @@ sitemap default label="HV Home"
 
         Text item=FF_GreatRoom_Thermostat_RoomOccupancy
       }
+    }
+  }
+
+  Text label="Weather" icon="temperature" {
+    Frame label="Weather" {
+      Text item=VT_Weather_Temperature icon="temperature"
+      Text item=VT_Weather_Humidity icon="humidity"
+
+      Text item=VT_Weather_Condition        
+      Text item=VT_Weather_Rain icon="rain" visibility=[VT_Weather_Rain > 0]
+      Text item=VT_Weather_Snow icon="snow" visibility=[VT_Weather_Snow > 0]
+      Text item=VT_Weather_PrecipationProbability visibility=[VT_Weather_PrecipationProbability > 0]
+      Text item=VT_Weather_WindSpeed icon="wind" visibility=[VT_Weather_WindSpeed > 0]
+      Text item=VT_Weather_WindGust icon="wind" visibility=[VT_Weather_WindGust > 0]
+
+      Text item=VT_Weather_ForecastTempMin
+      Text item=VT_Weather_ForecastTempMax
+      Text item=VT_Weather_ForecastRain visibility=[VT_Weather_ForecastRain > 0]
+      Text item=VT_Weather_ForecastSnow visibility=[VT_Weather_ForecastSnow > 0]
+      Text item=VT_Weather_ForecastPrecipationProbability visibility=[VT_Weather_ForecastPrecipationProbability > 0]
+      Text item=VT_Weather_ForecastWindSpeed icon="wind" visibility=[VT_Weather_ForecastWindSpeed > 0]
+      Text item=VT_Weather_ForecastWindGust icon="wind" visibility=[VT_Weather_ForecastWindGust > 0]
+
+      // Text item=VT_Weather_Condition_ID     
+      Text item=VT_Weather_ObservationTime  
+      Text item=VT_Weather_LastUpdate       
+      Text item=VT_Weather_CommonId         
     }
   }
 
