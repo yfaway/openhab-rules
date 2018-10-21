@@ -33,14 +33,6 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Current Functionalities
 ## Alerts (email)
-* When garage door remains open after a period of time.
-* When the security system is in alarm.
-* When the security system can't be armed programatically (e.g. a door is open).
-* When a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
-* When the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
-* When indoor temperature or humidity value is outside the allowed ranges.
-* When a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
-* When kitchen temperature sensor is a certain degree above the thermostat settings. This might indicate an oven remains on.
 
 ## Display
 * Garage door status.
@@ -49,6 +41,10 @@ The following sensors, bindings, actions, and transformations need to be present
 * Indoor and forecasted temperature and humidity.
 * Lights, fans, and smart plug status.
 * Motion sensors states
+
+## Indoor Temperature/Humidity
+* Alert when indoor temperature or humidity value is outside the allowed ranges.
+* Alert when kitchen temperature sensor is a certain degree above the thermostat settings. This might indicate an oven remains on.
 
 ## Light/Fan Control
 * Global switch on HabUI to turn on/off individual or all controlled lights/fans.
@@ -60,6 +56,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * Support an optional item to disable motion sensor from turning on a light if an associated light is already on. E.g. the great room and kitchen share an open space, if a light is already on, then a motion sensor event should not turn on the other light.
 * Support an optional String item that contains the light switch to turn off when this light switch is turn on. E.g. when office light is turned on, turn off foyer light.
 * Ignore the motion sensor event if a wall switch was just turned off. This prevents the light/fan from turning on again when a user manually turns it off and movng a way from the area. If not ignored, the motion sensor might trigger the switch to turn on again.
+* Alert when a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
@@ -75,12 +72,21 @@ The following sensors, bindings, actions, and transformations need to be present
 * Turn on/off plugs based on the security arm status, vacation mode, and hours of days.
 * Turn on/off associated light when a power wattage crosses a threshold. E.g. turn on the office light when the PC is turned on.
 
-## Security Actions
+## Security System
 * Automatically armed stay in the night if someone is home.
 * Automatically unarm in the morning before going to work.
 * Automatically unarm if an owner open the garage door from the outside.
 * Automatically unarm if garage door is open from Hab UI.
 * Automatically arm away an hour after last presence event, if in vacation mode.
+* Alert when garage door remains open after a period of time.
+* Alert when the security system is in alarm.
+* Alert when the security system can't be armed programatically (e.g. a door is open).
+* Alert when a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
+* Alert when the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
+
+## Weather
+* Alert early in the morning if it is going rain today.
+* Alert if wind speed or wind gust across a threshold.
 
 # Todos - Functionalities
 ## Text Alerts

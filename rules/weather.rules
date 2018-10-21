@@ -1,0 +1,77 @@
+/**
+ * The duration between wind speed alerts.
+ */
+val WIND_ALERT_INTERVAL_IN_MINUTES = 30
+
+/**
+ * The wind speed threshold to send an alert of high wind.
+ */
+val WIND_SPEED_THRESHOLD_IN_KM_HOUR = 50
+
+rule "Send alert in the morning if it might rain today"
+when
+  Time cron "0 20 6 ? * MON-FRI *" or
+  Time cron "0 0 8 ? * SAT,SUN *"
+then
+  val forecastRain = VT_Weather_ForecastRain.state as Number
+  val commonId = VT_Weather_CommonId.state.toString
+
+  if ( forecastRain > 0 
+      || commonId == 'thunderstorm' || commonId == 'storm'
+      || commonId == 'scattered thunderstorm'
+      || commonId == 'scattered-showers'
+      || commonId == 'thundershowers'
+      || commonId == 'snow-showers'
+      || commonId == 'scattered thundershowers' ) {
+    var body = ""
+    body += VT_Weather_ForecastRain.getLabel + 
+            ": \t\t" + VT_Weather_ForecastRain.state + " mm/h\n"
+    body += VT_Weather_ForecastPrecipationProbability.getLabel + 
+            ": \t" + VT_Weather_ForecastPrecipationProbability.state + " %\n"
+    body += VT_Weather_ForecastTempMin.getLabel + 
+            ": \t\t" + VT_Weather_ForecastTempMin.state + " °C\n"
+    body += VT_Weather_ForecastTempMax.getLabel + 
+            ": \t\t" + VT_Weather_ForecastTempMax.state + " °C\n"
+    body += VT_Weather_ForecastWindSpeed.getLabel + 
+            ": \t\t" + VT_Weather_ForecastWindSpeed.state + " km/h\n"
+
+    // could be UndefType if value not initialized
+    if ( VT_Weather_ForecastWindGust.state instanceof DecimalType ) {
+      body += VT_Weather_ForecastWindGust.getLabel + 
+              ": \t" + VT_Weather_ForecastWindGust.state + " km/h\n"
+    }
+
+    var msg = "{"
+    msg += "\"subject\":\"[Weather] Possible rain today\""
+    msg += "\"body\":\"" + body + "\""
+    msg += ",\"module\":\"Weather-Rain\""
+    msg += "}"
+    VT_AlertSender.postUpdate(msg)
+
+  }
+  else {
+    logInfo(LOGGER_NAME, "No forecasted rain today.")
+  }
+end
+
+rule "Alert when wind or wind gust speed is above threshold"
+when
+  Item VT_Weather_WindSpeed changed or
+  Item VT_Weather_WindGust changed
+then
+  if ( triggeringItem.state instanceof UnDefType ) {
+    return
+  }
+
+  val speed = triggeringItem.state as Number;
+  if ( speed > WIND_SPEED_THRESHOLD_IN_KM_HOUR ) {
+    var subject = "[Weather] High " + triggeringItem.label.toLowerCase() + " speed: " + speed + " km/h"
+
+    var msg = "{"
+    msg += "\"subject\":\"" + subject + "\""
+    msg += ",\"module\":\"Weather-WindSpeed\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + WIND_ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += "}"
+    VT_AlertSender.postUpdate(msg)
+  }
+end

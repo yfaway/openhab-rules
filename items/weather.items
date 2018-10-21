@@ -1,4 +1,4 @@
-Number VT_Weather_Temperature "Temperature [%.2f °C]"   
+Number VT_Weather_Temperature "Temperature [%.1f °C]"   
   {weather="locationId=home, type=temperature, property=current"}
 Number VT_Weather_Humidity "Humidity [%d %%]"
   {weather="locationId=home, type=atmosphere, property=humidity"}
@@ -15,29 +15,29 @@ DateTime VT_Weather_LastUpdate "Last update [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"
 String   VT_Weather_CommonId "Common id [%s]"      
   {weather="locationId=home, type=condition, property=commonId"}
 
-Number   VT_Weather_Rain "Rain [%.2f mm/h]"   
+Number   VT_Weather_Rain "Rain [%.1f mm/h]"   
   {weather="locationId=home, type=precipitation, property=rain"}
-Number   VT_Weather_Snow "Snow [%.2f mm/h]"   
+Number   VT_Weather_Snow "Snow [%.1f mm/h]"   
   {weather="locationId=home, type=precipitation, property=snow"}
 Number   VT_Weather_PrecipationProbability "Precipation Probability [%d %%]"   
   {weather="locationId=home, type=precipitation, property=probability"}
-Number   VT_Weather_WindSpeed "Windspeed [%.2f km/h]"    
+Number   VT_Weather_WindSpeed "Windspeed [%.1f km/h]"    
   {weather="locationId=home, type=wind, property=speed"}
-Number   VT_Weather_WindGust "Wind gust [%.2f km/h]"    
+Number   VT_Weather_WindGust "Wind gust [%.1f km/h]"    
   {weather="locationId=home, type=wind, property=gust"}
 
 // today forecast
-Number   VT_Weather_ForecastTempMin "Forecast Temp Min [%.2f °C]"   
+Number   VT_Weather_ForecastTempMin "Forecast Temp Min [%.1f °C]"   
   {weather="locationId=home, forecast=0, type=temperature, property=min"}
-Number   VT_Weather_ForecastTempMax "Forecast Temp max [%.2f °C]"   
+Number   VT_Weather_ForecastTempMax "Forecast Temp max [%.1f °C]"   
   {weather="locationId=home, forecast=0, type=temperature, property=max"}
-Number   VT_Weather_ForecastRain "Forecast Rain [%.2f mm/h]"   
+Number   VT_Weather_ForecastRain "Forecast Rain [%.1f mm/h]"   
   {weather="locationId=home, forecast=0, type=precipitation, property=rain"}
-Number   VT_Weather_ForecastSnow "Forecast Snow [%.2f mm/h]"   
+Number   VT_Weather_ForecastSnow "Forecast Snow [%.1f mm/h]"   
   {weather="locationId=home, forecast=0, type=precipitation, property=snow"}
 Number   VT_Weather_ForecastPrecipationProbability "Forecast Precipation Prob [%d %%]"   
   {weather="locationId=home, forecast=0, type=precipitation, property=probability"}
-Number   VT_Weather_ForecastWindSpeed "Forecast Windspeed [%.2f km/h]"    
+Number   VT_Weather_ForecastWindSpeed "Forecast Windspeed [%.1f km/h]"    
   {weather="locationId=home, forecast=0, type=wind, property=speed"}
-Number   VT_Weather_ForecastWindGust "Forecast Wind gust [%.2f km/h]"    
+Number   VT_Weather_ForecastWindGust "Forecast Wind gust [%.1f km/h]"    
   {weather="locationId=home, forecast=0, type=wind, property=gust"}
