@@ -18,10 +18,11 @@ The following sensors, bindings, actions, and transformations need to be present
 2. [Chamberlain MyQ Binding](https://docs.openhab.org/addons/bindings/myq1/readme.html)
 3. [DSC Alarm Binding](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
 4. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
-5. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
-6. [TPLinkSmartHome Binding](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things)
-7. [Weather](https://www.openhab.org/addons/bindings/weather1/#table-of-contents)
-8. [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
+5. [Feed](https://www.openhab.org/addons/bindings/feed/)
+6. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
+7. [TPLinkSmartHome Binding](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things)
+8. [Weather](https://www.openhab.org/addons/bindings/weather1/#table-of-contents)
+9. [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
 
 **Actions**
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
@@ -87,6 +88,7 @@ The following sensors, bindings, actions, and transformations need to be present
 ## Weather
 * Alert early in the morning if it is going rain today.
 * Alert if wind speed or wind gust across a threshold.
+* Alert if Environment Canada has a weather alert for the city.
 
 # Todos - Functionalities
 ## Text Alerts

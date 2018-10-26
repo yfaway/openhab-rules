@@ -1,3 +1,20 @@
+/**
+ * Environment Canada alerts.
+ */
+String   VT_Weather_Alert_Description  "Alert [%s]"
+  {channel="feed:feed:envCanada:latest-description"}
+DateTime VT_Weather_Alert_Date  "Alert Last Update [%1tb %1$td %1$tY %1$tH:%1$tM]"
+  {channel="feed:feed:envCanada:latest-date"}
+
+/*
+String   VT_Weather_Alert_Title         {channel="feed:feed:envCanada:latest-title"}
+Number   VT_Weather_Alert_Of_entries    {channel="feed:feed:envCanada:number-of-entries"}
+String   VT_Weather_AlertDescription    {channel="feed:feed:envCanada:description"}
+String   VT_Weather_AlertAuthor         {channel="feed:feed:envCanada:author"}
+DateTime VT_Weather_AlertPublished_date {channel="feed:feed:envCanada:last-update"}
+String   VT_Weather_AlertTitle          {channel="feed:feed:envCanada:title"}
+*/
+
 Number VT_Weather_Temperature "Temperature [%.1f °C]"   
   {weather="locationId=home, type=temperature, property=current"}
 Number VT_Weather_Humidity "Humidity [%d %%]"
@@ -8,9 +25,9 @@ String   VT_Weather_Condition "Condition [%s]"
   {weather="locationId=home, type=condition, property=text"}
 String   VT_Weather_Condition_ID "Condition id [%s]"   
   {weather="locationId=home, type=condition, property=id"}
-DateTime VT_Weather_ObservationTime "Observation time [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"   
+DateTime VT_Weather_ObservationTime "Observation time [%1tb %1$td %1$tY %1$tH:%1$tM]"   
   {weather="locationId=home, type=condition, property=observationTime"}
-DateTime VT_Weather_LastUpdate "Last update [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"        
+DateTime VT_Weather_LastUpdate "Last update [%1tb %1$td %1$tY %1$tH:%1$tM]"        
   {weather="locationId=home, type=condition, property=lastUpdate"}
 String   VT_Weather_CommonId "Common id [%s]"      
   {weather="locationId=home, type=condition, property=commonId"}

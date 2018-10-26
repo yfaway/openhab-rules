@@ -43,7 +43,7 @@ then
 
     var msg = "{"
     msg += "\"subject\":\"[Weather] Possible rain today\""
-    msg += "\"body\":\"" + body + "\""
+    msg += ",\"body\":\"" + body + "\""
     msg += ",\"module\":\"Weather-Rain\""
     msg += "}"
     VT_AlertSender.postUpdate(msg)
@@ -74,4 +74,22 @@ then
     msg += "}"
     VT_AlertSender.postUpdate(msg)
   }
+end
+
+rule "Alert when there is a weather alert from Environment Canada"
+when
+  Item VT_Weather_Alert_Description changed
+then
+  val description = VT_Weather_Alert_Description.state.toString
+  val subject = "[Weather Alert] " + description
+
+  var body = "https://www.weather.gc.ca/warnings/report_e.html?on41"
+  body +="\nPublished Date: " + VT_Weather_Alert_Date.state.toString
+
+  var msg = "{"
+  msg += "\"subject\":\"" + subject + "\""
+  msg += "\"body\":\"" + body + "\""
+  msg += ",\"module\":\"Weather-Alert\""
+  msg += "}"
+  VT_AlertSender.postUpdate(msg)
 end

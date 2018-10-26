@@ -93,6 +93,9 @@ sitemap default label="HV Home"
       Text item=VT_Weather_ObservationTime  
       Text item=VT_Weather_LastUpdate       
       Text item=VT_Weather_CommonId         
+
+      Text item=VT_Weather_Alert_Description
+      Text item=VT_Weather_Alert_Date
     }
   }
 
