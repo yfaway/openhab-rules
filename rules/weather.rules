@@ -63,7 +63,7 @@ then
     return
   }
 
-  val speed = triggeringItem.state as Number;
+  val speed = triggeringItem.state as Number
   if ( speed > WIND_SPEED_THRESHOLD_IN_KM_HOUR ) {
     var subject = "[Weather] High " + triggeringItem.label.toLowerCase() + " speed: " + speed + " km/h"
 
@@ -78,17 +78,31 @@ end
 
 rule "Alert when there is a weather alert from Environment Canada"
 when
-  Item VT_Weather_Alert_Description changed
+  Item VT_Weather_Alert_Title changed
 then
-  val description = VT_Weather_Alert_Description.state.toString
-  val subject = "[Weather Alert] " + description
+  val title = VT_Weather_Alert_Title.state.toString
+  val subject = "[Weather Alert] " + title
 
-  var body = "https://www.weather.gc.ca/warnings/report_e.html?on41"
-  body +="\nPublished Date: " + VT_Weather_Alert_Date.state.toString
+  val url = "https://www.weather.gc.ca/warnings/report_e.html?on41"
+  var data = sendHttpGetRequest(url)
+
+  val startKeyword = "<div class=\"col-xs-12\">"
+  var startIdx = data.indexOf(startKeyword)
+  val endIdx = data.indexOf("<section class=\"followus hidden-print\">") 
+
+  data = data.substring(startIdx + startKeyword.length(), endIdx)
+  data = data.replace("<br/>", "\n")
+  data = data.replace("<p>", "\n\n")
+  data = data.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ")
+  data = data.trim()
+
+  var body = data 
+  body += "\nLink: " + url
+  body += "\nPublished Date: " + VT_Weather_Alert_Date.state.toString
 
   var msg = "{"
   msg += "\"subject\":\"" + subject + "\""
-  msg += "\"body\":\"" + body + "\""
+  msg += ",\"body\":\"" + body + "\""
   msg += ",\"module\":\"Weather-Alert\""
   msg += "}"
   VT_AlertSender.postUpdate(msg)

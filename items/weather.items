@@ -1,13 +1,14 @@
 /**
  * Environment Canada alerts.
  */
-String   VT_Weather_Alert_Description  "Alert [%s]"
+String   VT_Weather_Alert_Description  "Alert Description [%s]"
   {channel="feed:feed:envCanada:latest-description"}
 DateTime VT_Weather_Alert_Date  "Alert Last Update [%1tb %1$td %1$tY %1$tH:%1$tM]"
   {channel="feed:feed:envCanada:latest-date"}
+String   VT_Weather_Alert_Title "Alert [%s]"         
+  {channel="feed:feed:envCanada:latest-title"}
 
 /*
-String   VT_Weather_Alert_Title         {channel="feed:feed:envCanada:latest-title"}
 Number   VT_Weather_Alert_Of_entries    {channel="feed:feed:envCanada:number-of-entries"}
 String   VT_Weather_AlertDescription    {channel="feed:feed:envCanada:description"}
 String   VT_Weather_AlertAuthor         {channel="feed:feed:envCanada:author"}
