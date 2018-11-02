@@ -90,16 +90,16 @@ then
 
   var logContent = module
   if ( ! logContent.isEmpty ) {
-    logContent += ": "
+    logContent += "\n"
   }
 
   logContent += subject
 
   if (! body.isEmpty()) {
-    logContent += ": " + body
+    logContent += "\n" + body
   }
 
-  logInfo(LOGGER_NAME, "Sent alert '" + logContent + "'")
+  logInfo(LOGGER_NAME, "Sent alert\n" + logContent)
 end
 
 /*

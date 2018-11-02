@@ -8,7 +8,7 @@ val LOGGER_NAME = "TempAndHumidityAlert"
 /**
  * The duration between alerts.
  */
-val ALERT_INTERVAL_IN_MINUTES = 10
+val ALERT_INTERVAL_IN_MINUTES = 20
 
 /**
  * The min and max temperature and humidity values.
@@ -18,7 +18,7 @@ val MAX_TEMPERATURE_IN_DEGREE = 32
 val MIN_HUMIDITY_PERCENTAGE = 25
 val MAX_HUMIDITY_PERCENTAGE = 80
 
-val KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD = 1 // degrees
+val KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD = 1.5 // degrees
 
 rule "Alert when temperature is outside allowed range"
 when
@@ -76,9 +76,10 @@ then
   val kitchenDegree = (FF_Kitchen_Temperature.state as Number).floatValue;
 
   var subject = ""
-  if ((kitchenDegree - thermotatDegree) >= KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD ) {
-    subject = "Kitchen temperature (" + kitchenDegree + " C) is "
-    subject += KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD + " degrees above thermostat setting."
+  val difference = kitchenDegree - thermotatDegree
+  if (difference >= KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD ) {
+    subject = String.format("Kitchen temperature (%.1f C) is %.1f degrees above Ecobee thermostat (%.1f)", 
+        kitchenDegree, difference, thermotatDegree)
   }
   
   if ( ! subject.isEmpty() ) {

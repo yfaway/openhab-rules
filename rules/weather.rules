@@ -24,25 +24,38 @@ then
       || commonId == 'snow-showers'
       || commonId == 'scattered thundershowers' ) {
     var body = ""
-    body += VT_Weather_ForecastRain.getLabel + 
-            ": \t\t" + VT_Weather_ForecastRain.state + " mm/h\n"
-    body += VT_Weather_ForecastPrecipationProbability.getLabel + 
-            ": \t" + VT_Weather_ForecastPrecipationProbability.state + " %\n"
-    body += VT_Weather_ForecastTempMin.getLabel + 
-            ": \t\t" + VT_Weather_ForecastTempMin.state + " °C\n"
-    body += VT_Weather_ForecastTempMax.getLabel + 
-            ": \t\t" + VT_Weather_ForecastTempMax.state + " °C\n"
-    body += VT_Weather_ForecastWindSpeed.getLabel + 
-            ": \t\t" + VT_Weather_ForecastWindSpeed.state + " km/h\n"
+    body += String.format("%26s: %.1f°C\n", VT_Weather_Temperature.getLabel,
+        (VT_Weather_Temperature.state as Number).floatValue)
+    body += String.format("%26s: %d%%\n", VT_Weather_Humidity.getLabel,
+        (VT_Weather_Humidity.state as Number).intValue)
+    body += String.format("%26s: %s\n", VT_Weather_Condition.getLabel,
+        VT_Weather_Condition.state.toString)
+    body += "\n"
+    body += String.format("%26s: %.1f mm/h\n", VT_Weather_ForecastRain.getLabel,
+        (VT_Weather_ForecastRain.state as Number).floatValue)
+    body += String.format("%26s: %d%%\n", VT_Weather_ForecastPrecipationProbability.getLabel,
+        (VT_Weather_ForecastPrecipationProbability.state as Number).intValue)
+
+    body += String.format("%26s: %.1f°C\n", VT_Weather_ForecastTempMin.getLabel,
+        (VT_Weather_ForecastTempMin.state as Number).floatValue)
+    body += String.format("%26s: %.1f°C\n", VT_Weather_ForecastTempMax.getLabel,
+        (VT_Weather_ForecastTempMax.state as Number).floatValue)
+    body += String.format("%26s: %.1f km/h\n", VT_Weather_ForecastWindSpeed.getLabel,
+        (VT_Weather_ForecastWindSpeed.state as Number).floatValue)
 
     // could be UndefType if value not initialized
     if ( VT_Weather_ForecastWindGust.state instanceof DecimalType ) {
-      body += VT_Weather_ForecastWindGust.getLabel + 
-              ": \t" + VT_Weather_ForecastWindGust.state + " km/h\n"
+      body += String.format("%26s: %.1f km/h\n", VT_Weather_ForecastWindGust.getLabel,
+          (VT_Weather_ForecastWindGust.state as Number).floatValue)
     }
 
+    val subject = String.format(
+        "[Weather] Possible rain today; currently %.1f°C, %s", 
+        (VT_Weather_Temperature.state as Number).floatValue,
+        VT_Weather_Condition.state.toString)
+
     var msg = "{"
-    msg += "\"subject\":\"[Weather] Possible rain today\""
+    msg += "\"subject\":\"" + subject + "\""
     msg += ",\"body\":\"" + body + "\""
     msg += ",\"module\":\"Weather-Rain\""
     msg += "}"

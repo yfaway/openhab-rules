@@ -14,15 +14,17 @@ The following sensors, bindings, actions, and transformations need to be present
 7. Xiaomi Aqara Motion Sensor (Zigbee)
 
 **Bindings**
-1. [Astro Binding](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
-2. [Chamberlain MyQ Binding](https://docs.openhab.org/addons/bindings/myq1/readme.html)
-3. [DSC Alarm Binding](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
-4. [Ecobee Binding](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
-5. [Feed](https://www.openhab.org/addons/bindings/feed/)
-6. [Network Binding](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
-7. [TPLinkSmartHome Binding](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things)
-8. [Weather](https://www.openhab.org/addons/bindings/weather1/#table-of-contents)
-9. [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
+* [Astro](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
+* [Chamberlain MyQ](https://docs.openhab.org/addons/bindings/myq1/readme.html)
+* [DSC Alarm](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
+* [Ecobee](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
+* [Expire](https://www.openhab.org/addons/bindings/expire1/)
+* [Feed](https://www.openhab.org/addons/bindings/feed/)
+* [MQTT](https://www.openhab.org/addons/bindings/mqtt1/)
+* [Network](https://docs.openhab.org/addons/bindings/network/readme.html) - for presence detection by phone
+* [TPLinkSmartHome](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things)
+* [Weather](https://www.openhab.org/addons/bindings/weather1/#table-of-contents)
+* [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
 
 **Actions**
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
@@ -34,18 +36,19 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Current Functionalities
 ## Alerts (email)
+* Generic framework to send alerts from any rules. The alert currently just emails owners.
 
 ## Display
 * Garage door status.
 * Presence.
 * Security system status.
-* Indoor and forecasted temperature and humidity.
+* Indoor temperature & humidity and forecasted weather inclduing Environment Canada alert.
 * Lights, fans, and smart plug status.
 * Motion sensors states
 
 ## Indoor Temperature/Humidity
-* Alert when indoor temperature or humidity value is outside the allowed ranges.
-* Alert when kitchen temperature sensor is a certain degree above the thermostat settings. This might indicate an oven remains on.
+* Send alert when indoor temperature or humidity value is outside the allowed ranges.
+* Send alert when the kitchen temperature sensor is a certain degree above the thermostat settings. This might indicate an oven remains on.
 
 ## Light/Fan Control
 * Global switch on HabUI to turn on/off individual or all controlled lights/fans.
@@ -57,7 +60,7 @@ The following sensors, bindings, actions, and transformations need to be present
 * Support an optional item to disable motion sensor from turning on a light if an associated light is already on. E.g. the great room and kitchen share an open space, if a light is already on, then a motion sensor event should not turn on the other light.
 * Support an optional String item that contains the light switch to turn off when this light switch is turn on. E.g. when office light is turned on, turn off foyer light.
 * Ignore the motion sensor event if a wall switch was just turned off. This prevents the light/fan from turning on again when a user manually turns it off and movng a way from the area. If not ignored, the motion sensor might trigger the switch to turn on again.
-* Alert when a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
+* Send alert when a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
@@ -79,25 +82,26 @@ The following sensors, bindings, actions, and transformations need to be present
 * Automatically unarm if an owner open the garage door from the outside.
 * Automatically unarm if garage door is open from Hab UI.
 * Automatically arm away an hour after last presence event, if in vacation mode.
-* Alert when garage door remains open after a period of time.
-* Alert when the security system is in alarm.
-* Alert when the security system can't be armed programatically (e.g. a door is open).
-* Alert when a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
-* Alert when the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
+* Send alert when garage door remains open after a period of time.
+* Send alert when the security system is in alarm.
+* Send alert when the security system can't be armed programatically (e.g. a door is open).
+* Send alert when a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
+* Send alert when the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
 
 ## Weather
-* Alert early in the morning if it is going rain today.
-* Alert if wind speed or wind gust across a threshold.
-* Alert if Environment Canada has a weather alert for the city.
+* Send alert early in the morning if it is going rain today.
+* Send alert if wind speed or wind gust across a threshold.
+* Send alert if Environment Canada has a weather alert for the city.
 
 # Todos - Functionalities
 ## Text Alerts
 * Send a camera snapshot when motion is detected and system is in vacation mode.
 * Audio alert when someone is at the front door, if an owner is at home.
-* Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and noone is home.
+* Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and no one is home.
 * Water leakage.
 * Smart plugs turned on while in vacation mode.
 * Sensor battery is low.
+* Window is open (might indicate intrusion from basement windows).
 
 ## Control
 * Turn on/off main water valve.
@@ -112,6 +116,9 @@ The following sensors, bindings, actions, and transformations need to be present
 
 ## Presence
 * Ecobee motion sensor.
+
+## Route
+* Show time different between revised route and normal route.
 
 ## Voice Alerts
 * Pronounce name of the person heading back home.
