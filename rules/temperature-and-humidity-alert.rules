@@ -8,7 +8,7 @@ val LOGGER_NAME = "TempAndHumidityAlert"
 /**
  * The duration between alerts.
  */
-val ALERT_INTERVAL_IN_MINUTES = 20
+val ALERT_INTERVAL_IN_MINUTES = 30
 
 /**
  * The min and max temperature and humidity values.
@@ -18,7 +18,7 @@ val MAX_TEMPERATURE_IN_DEGREE = 32
 val MIN_HUMIDITY_PERCENTAGE = 25
 val MAX_HUMIDITY_PERCENTAGE = 80
 
-val KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD = 1.5 // degrees
+val KITCHEN_TEMPERATURE_DIFFERENT_THRESHOLD = 2 // degrees
 
 rule "Alert when temperature is outside allowed range"
 when

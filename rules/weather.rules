@@ -1,3 +1,5 @@
+import java.util.Calendar
+
 /**
  * The duration between wind speed alerts.
  */
@@ -6,7 +8,7 @@ val WIND_ALERT_INTERVAL_IN_MINUTES = 30
 /**
  * The wind speed threshold to send an alert of high wind.
  */
-val WIND_SPEED_THRESHOLD_IN_KM_HOUR = 50
+val WIND_SPEED_THRESHOLD_IN_KM_HOUR = 25
 
 rule "Send alert in the morning if it might rain today"
 when
@@ -69,16 +71,24 @@ end
 
 rule "Alert when wind or wind gust speed is above threshold"
 when
+  Time cron "0 0/1 * 1/1 * ? *" or
   Item VT_Weather_WindSpeed changed or
   Item VT_Weather_WindGust changed
 then
+  // Reduce the alert spam by only alert during or close to nap or sleep time.
+  val hourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) // 24-hour
+  logInfo("b", "hd: " + hourOfDay)
+  if ( hourOfDay > 2 && (hourOfDay < 13 || hourOfDay > 16) && hourOfDay < 20 ) {
+    return
+  }
+
   if ( triggeringItem.state instanceof UnDefType ) {
     return
   }
 
   val speed = triggeringItem.state as Number
   if ( speed > WIND_SPEED_THRESHOLD_IN_KM_HOUR ) {
-    var subject = "[Weather] High " + triggeringItem.label.toLowerCase() + " speed: " + speed + " km/h"
+    var subject = "[Weather] High " + triggeringItem.label.toLowerCase() + " speed: " + speed + " km/h; check the trees"
 
     var msg = "{"
     msg += "\"subject\":\"" + subject + "\""

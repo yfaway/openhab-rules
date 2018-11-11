@@ -79,7 +79,7 @@ Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" (gWallSwitch, gLigh
   { channel="zwave:device:9e4ce05e:node4:switch_binary" }
 String SF_MasterWashroom_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch SF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="5m,command=OFF"}
+  {expire="10m,command=OFF"}
 Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%d]"
   (gIlluminance) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d0001fa45fd:state:JSONPATH($.illuminance)]"}
@@ -94,7 +94,7 @@ Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan"
   (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node11:switch_binary" }
 Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) 
-  {expire="10m,command=OFF"}
+  {expire="15m,command=OFF"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000200eb10:command:JS(occupancy.js)]" }
@@ -104,7 +104,7 @@ Group:Switch:OR(ON,OFF) SF_MainWashroom_LightSwitch_MotionSensor
 Switch SF_MainWashroom_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node9:switch_binary" }
 Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer) 
-  {expire="10m,command=OFF"}
+  {expire="15m,command=OFF"}
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MainWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000200ed5e:command:JS(occupancy.js)]" }

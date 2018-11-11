@@ -95,13 +95,10 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Todos - Functionalities
 ## Text Alerts
-* Send a camera snapshot when motion is detected and system is in vacation mode.
-* Audio alert when someone is at the front door, if an owner is at home.
 * Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and no one is home.
 * Water leakage.
 * Smart plugs turned on while in vacation mode.
 * Sensor battery is low.
-* Window is open (might indicate intrusion from basement windows).
 
 ## Control
 * Turn on/off main water valve.
@@ -111,14 +108,17 @@ The following sensors, bindings, actions, and transformations need to be present
 ## Light/Fan/Plug Control
 * Turn off all managed lights and fans when armed away.
 
-## Display
-* Energy usage.
-
 ## Presence
 * Ecobee motion sensor.
 
 ## Route
 * Show time different between revised route and normal route.
+
+## Security
+* Automatically arm after garage door is closed, and no presence detected after certain time, and possible a bound time range.
+* Email/audio alert if a window is open when the system is unarmed (might indicate intrusion from basement windows).
+* Audio alert when someone is at the front door, if an owner is at home.
+* Send a camera snapshot when motion is detected and system is in vacation mode.
 
 ## Voice Alerts
 * Pronounce name of the person heading back home.
@@ -127,3 +127,4 @@ The following sensors, bindings, actions, and transformations need to be present
 
 # Todos - Design
 * Move ZWave things to config file.
+* Redesign the alert message structure to support audio alert as well as priority (info/warning/severe). Even if audio output is not specified, any event that is above INFO level should still generate an audio alert if the owner is presence.
