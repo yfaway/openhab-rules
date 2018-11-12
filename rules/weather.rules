@@ -1,3 +1,8 @@
+/**
+ * Wind gust scale: https://blog.metservice.com/BeaufortWindScale
+ * 
+ */
+
 import java.util.Calendar
 
 /**
@@ -8,7 +13,7 @@ val WIND_ALERT_INTERVAL_IN_MINUTES = 30
 /**
  * The wind speed threshold to send an alert of high wind.
  */
-val WIND_SPEED_THRESHOLD_IN_KM_HOUR = 25
+val WIND_SPEED_THRESHOLD_IN_KM_HOUR = 30
 
 rule "Send alert in the morning if it might rain today"
 when
@@ -71,18 +76,16 @@ end
 
 rule "Alert when wind or wind gust speed is above threshold"
 when
-  Time cron "0 0/1 * 1/1 * ? *" or
   Item VT_Weather_WindSpeed changed or
   Item VT_Weather_WindGust changed
 then
   // Reduce the alert spam by only alert during or close to nap or sleep time.
   val hourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) // 24-hour
-  logInfo("b", "hd: " + hourOfDay)
   if ( hourOfDay > 2 && (hourOfDay < 13 || hourOfDay > 16) && hourOfDay < 20 ) {
     return
   }
 
-  if ( triggeringItem.state instanceof UnDefType ) {
+  if ( triggeringItem.state == NULL || triggeringItem.state == UNDEF) {
     return
   }
 
@@ -129,4 +132,35 @@ then
   msg += ",\"module\":\"Weather-Alert\""
   msg += "}"
   VT_AlertSender.postUpdate(msg)
+end
+
+/**
+ * The darksky/forecast.io weather service (Weather add-on) does not have
+ * wind gust info. Parse the Env Canada wind gust info to complement it.
+ */
+rule "Retrieve wind gust speed from Environment Canada (every 10 minutes)"
+when
+  Time cron "0 0/10 * 1/1 * ? *"
+then
+  var windSpeed = 0
+
+  val url = "https://www.weather.gc.ca/rss/city/on-118_e.xml"
+  var data = sendHttpGetRequest(url)
+
+  val startKeyword = "gust "
+  var startIdx = data.indexOf(startKeyword)
+  if ( startIdx != -1 ) { 
+    val endIdx = data.indexOf(" km/h", startIdx + startKeyword.length()) 
+    if ( endIdx != -1 ) {
+      data = data.substring(startIdx + startKeyword.length(), endIdx)
+
+      windSpeed = try {
+          Integer.parseInt(data)
+        } catch (NumberFormatException e) {
+          0
+        }
+    }
+  }
+
+  VT_Weather_WindGust.sendCommand(windSpeed)
 end
