@@ -119,7 +119,7 @@ then
           t | t.name == illuminanceName  
         ]
 
-        if ( null === illuminanceItem ) {
+        if ( null === illuminanceItem || NULL == illuminanceItem.state) {
           return
         }
         else {

@@ -129,6 +129,7 @@ end
  */
 rule "Arm at Stay mode in the night"
 when
+  Time cron "0 0 20 1/1 * ? *" or
   Time cron "0 30 20 1/1 * ? *" or
   Time cron "0 45 20 1/1 * ? *" or
   Time cron "0 0 21 1/1 * ? *" or
@@ -165,6 +166,9 @@ then
   }
 end
 
+/** ===========================================================================
+ * The next two rules arm away automatically after the vacation mode is turned on.
+ */
 rule "Set the timer to arm away while in vacation mode"
 when
   Item gPresence changed to ON
@@ -174,7 +178,7 @@ then
   }
 end
 
-rule "Arm away after timer expires"
+rule "Arm away after arm-vacation timer expires"
 when
   Item VT_Arm_Vacation changed from ON to OFF
 then
@@ -182,7 +186,45 @@ then
     PARTITION1_ARM_MODE.sendCommand(STATE_ARM_AWAY)
   }
 end
+// END OF AUTOMATIC VACATION ARM-AWAY RULES ===================================
 
+/** ===========================================================================
+ * The next couple rules arm away automatically after the garage door is closed.
+ * This is the usecase of user left the house but forgot to arm-away.
+ */
+rule "Turn on the arm-away timer after garage door is closed"
+when
+  Item GarageDoorSwitch changed to OFF
+then
+  if (PARTITION1_ARM_MODE.state == 0) {
+    VT_Arm_Away.sendCommand(ON)
+  }
+end
+
+rule "Turn off arm-away timer if a presence event is triggered (cancel arming)"
+when
+  Member of gPresence changed to ON or
+  Member of gFirstFloorPresence changed to ON or
+  Member of gSecondFloorPresence changed to ON or
+  Member of gOwnerPresence changed to ON
+then
+  if ( VT_Arm_Away.state == ON ) {
+    VT_Arm_Away.sendCommand(OFF)
+  }
+end
+
+rule "Arm away after the garage door is closed (forgot to arm-away)"
+when
+  Item VT_Arm_Away changed from ON to OFF
+then
+  if (PARTITION1_ARM_MODE.state == 0 && gPresence.state == OFF ) {
+    PARTITION1_ARM_MODE.sendCommand(STATE_ARM_AWAY)
+  }
+  else {
+    logInfo(LOGGER_NAME, "Cancelled arm-away timer.")
+  }
+end
+// END OF AUTOMATIC ARM-AWAY RULES ============================================
 
 //rule "test rule"
 //when 

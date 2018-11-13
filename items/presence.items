@@ -6,6 +6,10 @@ Switch VT_In_Vacation "In Vacation [%s]" <vacation>
 // When changes to OFF, arm away
 Switch VT_Arm_Vacation {expire="60m,command=OFF"}
 
+// When changes to OFF and if system is not in ARMED mode, determine if
+// anyone is presence; if no, arm away.
+Switch VT_Arm_Away {expire="10m,command=OFF"}
+
 // https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html
 DateTime VT_Last_Presence_Timestamp "Last Presence [%1$ta %1$tb %1$td %1$tI:%1$tM %1$tp]"
 

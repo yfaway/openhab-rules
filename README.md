@@ -77,7 +77,8 @@ The following sensors, bindings, actions, and transformations need to be present
 * Turn on/off associated light when a power wattage crosses a threshold. E.g. turn on the office light when the PC is turned on.
 
 ## Security System
-* Automatically armed stay in the night if someone is home.
+* Automatically arm-stay in the night if someone is home.
+* Automatically arm-away after garage door is closed, and no presence detected after certain time. This is the usecase of the user left the house but forgot to arm-away.
 * Automatically unarm in the morning before going to work.
 * Automatically unarm if an owner open the garage door from the outside.
 * Automatically unarm if garage door is open from Hab UI.
@@ -87,10 +88,11 @@ The following sensors, bindings, actions, and transformations need to be present
 * Send alert when the security system can't be armed programatically (e.g. a door is open).
 * Send alert when a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
 * Send alert when the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
+* Send alert if a window is open (might indicate intrusion from the basement windows).
 
 ## Weather
 * Send alert early in the morning if it is going rain today.
-* Send alert if wind speed or wind gust across a threshold.
+* Send alert if wind speed or wind gust speed crosses a threshold.
 * Send alert if Environment Canada has a weather alert for the city.
 
 # Todos - Functionalities
@@ -115,8 +117,6 @@ The following sensors, bindings, actions, and transformations need to be present
 * Show time different between revised route and normal route.
 
 ## Security
-* Automatically arm after garage door is closed, and no presence detected after certain time, and possible a bound time range.
-* Email/audio alert if a window is open when the system is unarmed (might indicate intrusion from basement windows).
 * Audio alert when someone is at the front door, if an owner is at home.
 * Send a camera snapshot when motion is detected and system is in vacation mode.
 

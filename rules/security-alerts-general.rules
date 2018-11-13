@@ -1,9 +1,9 @@
+val String LOGGER_NAME = "SecurityAlertWhenFailedToArmRules"
+
 /**
  * Sends an alert with the list of open zones when the system can't be armed
  * PROGRAMATICALLY.
  */
-val String LOGGER_NAME = "SecurityAlertWhenFailedToArmRules"
-
 rule "Alert when security system can't be armed programatically"
 when
   Item PARTITION1_ARM_MODE received command 1 or
@@ -32,3 +32,10 @@ then
   }
 end
 
+rule "Alert when a window is open (e.g. break-in through basement windows)"
+when
+  Item FF_Windows_Tripped changed to ON
+then
+  val msg = "{\"subject\":\"[Security] A window is opened\"}"
+  VT_AlertSender.postUpdate(msg)
+end
