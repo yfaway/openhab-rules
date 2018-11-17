@@ -2,7 +2,7 @@
 A set of rules for my house.
 
 # Prerequisites
-The following sensors, bindings, actions, and transformations need to be present and installed for the rules to work.
+The rules work with the following devices/sensors, bindings, actions, and transformations. They make heavy use of OpenHab's groups concept and as such are quite general. You don't need to have all the sensors below to make use of the rules. If are new to OpenHab, or interested in practical integrations, these rules can be the starting point.
 
 **Sensors**
 1. Chamberlain 3/4 HPS Belt Drive Garage Door Opener Built-in Wifi (LW6000WFC)
@@ -109,6 +109,7 @@ The following sensors, bindings, actions, and transformations need to be present
 
 ## Light/Fan/Plug Control
 * Turn off all managed lights and fans when armed away.
+* Associate each light with the dimming value and time range.
 
 ## Presence
 * Ecobee motion sensor.

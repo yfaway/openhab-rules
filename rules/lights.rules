@@ -66,8 +66,11 @@ val TAG_SHARED_MOTION_SENSOR = "shared-motion-sensor"
 var HashMap<String, Long> lastOffTimes = newHashMap()
 
 val Functions$Function1<GenericItem, Boolean> isSwitchOn = [ switchItem |
-    ON == switchItem.state 
-          || (switchItem instanceof DimmerItem && switchItem.state > 0)
+    switchItem.state == ON
+          || (switchItem instanceof DimmerItem 
+                && NULL != switchItem.state 
+                && UNDEF != switchItem.state 
+                && switchItem.state > 0)
 ]
 
 rule "Update light states" 
@@ -104,102 +107,109 @@ then
     if ( null === switchItem ) {
       return
     }
-
-    if ( ON != switchItem.state ) {
-      // Is this a fan switch?
-      val isFanSwitch = switchName.endsWith("FanSwitch")
-
-      // This check needs to be here rather than in the outter scope because
-      // the user might have turned on the light before the programmed 
-      // light on time. In such case, we continue to maintain the timer.
-      if (ON != VT_Time_LightOn.state && ! isFanSwitch ) {
-        // check if there is a valid illuminance value
-        val illuminanceName = switchName + "_Illuminance"
-        val illuminanceItem = gIlluminance.members.findFirst[ 
-          t | t.name == illuminanceName  
-        ]
-
-        if ( null === illuminanceItem || NULL == illuminanceItem.state) {
-          return
-        }
-        else {
-          val value = illuminanceItem.state as Number
-          if ( null === value ) { // value not available yet
-            return
-          }
-          else {
-            val int intValue = value.intValue
-            if ( intValue > ILLUMINANCE_THRESHOLD_IN_LUX ) {
-              return
-            }
-            // else pass through to turn on the light
-          }
-        }
-      }
-      
-      // If a wall switch was just turned off, ignore the motion sensor event.
-      if ( lastOffTimes.containsKey(switchItem.name) ) {
-        val long timestamp = lastOffTimes.get(switchItem.name)
-        if (now.getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS) {
-          return
-        }
-      }
-
-      // An open area might have multiple lights with a shared motion sensor
-      // (e.g. in the security system motion sensor where the motion sensor
-      // tends to be in a corner and cover the whole lobby). In this case, we
-      // only want to trigger a single light if all lights were off. However,
-      // if any light is already on, we still want to renew the timer to keep
-      // the light on.
-      //
-      // Check to see if the motion sensor is allowed to trigger the light.
-      val disableAlwaysItemName = triggeringItem.name + "_DisableTriggeringAlways"
-      val disableTriggeringAlwaysItem = gMotionSensorDisableTriggeringAlways.members.findFirst[ 
-          t | t.name == disableAlwaysItemName 
-      ]
-      if (null !== disableTriggeringAlwaysItem 
-            && ON == disableTriggeringAlwaysItem.state) {
-        return
-      }
-
-      // Check to see if there is a dependent relationship between lights.
-      // I.e. if light B is already on, then don't turn on light A if its
-      // motion sensor is triggered.
-      val disableIfItemName = triggeringItem.name + "_DisableTriggeringIf"
-      val disableTriggeringIfItem = gMotionSensorDisableTriggeringIf.members.findFirst[ 
-          t | t.name == disableIfItemName 
-      ]
-      if (null !== disableTriggeringIfItem
-          && null !== disableTriggeringIfItem.state) {
-        // see if the other light is on
-        val theOtherLight = gWallSwitch.members.findFirst[ 
-            t | t.name == disableTriggeringIfItem.state.toString ]
-
-        if ( isSwitchOn.apply(theOtherLight) ) { 
-          return
-        }
-        else if ( switchItem.hasTag(TAG_SHARED_MOTION_SENSOR) ) {
-          // If it was just turned off, then don't trigger this light yet.
-          // This might be the case that the user is getting out of this zone
-          if ( lastOffTimes.containsKey(theOtherLight.name) ) {
-            val long timestamp = lastOffTimes.get(theOtherLight.name)
-            if (now.getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS) {
-              return
-            }
-          } // has OFF timestamp
-        } // the other light is of
-        // else - pass through
-      }
-
-      switchItem.sendCommand(ON)
-    }
-    else { // renew timer
+    
+    if ( isSwitchOn.apply(switchItem) ) { // renew timer
       val timerName = switchName + "_Timer"
       val timerItem = gWallSwitchTimer.members.findFirst[ t | t.name == timerName ]
       if ( null !== timerItem ) {
         timerItem.sendCommand(ON)
       }
+
+      return
     }
+
+    /*
+     * the associate switch was on; let's do further processing.
+     */
+
+    // Is this a fan switch?
+    val isFanSwitch = switchName.endsWith("FanSwitch")
+
+    // This check needs to be here rather than in the outter scope because
+    // the user might have turned on the light before the programmed 
+    // light on time. In such case, we continue to maintain the timer.
+    if (VT_Time_LightOn.state != ON && ! isFanSwitch ) {
+      // check if there is a valid illuminance value
+      val illuminanceName = switchName + "_Illuminance"
+      val illuminanceItem = gIlluminance.members.findFirst[ 
+        t | t.name == illuminanceName  
+      ]
+
+      if ( null === illuminanceItem || NULL == illuminanceItem.state
+          || UNDEF == illuminanceItem.state ) {
+        return
+      }
+      else {
+        val value = illuminanceItem.state as Number
+        if ( null === value ) { // value not available yet
+          return
+        }
+        else {
+          val int intValue = value.intValue
+          if ( intValue > ILLUMINANCE_THRESHOLD_IN_LUX ) {
+            return
+          }
+          // else pass through to turn on the light
+        }
+      }
+    }
+    
+    // If a wall switch was just turned off, ignore the motion sensor event.
+    if ( lastOffTimes.containsKey(switchItem.name) ) {
+      val long timestamp = lastOffTimes.get(switchItem.name)
+      if (now.getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS) {
+        return
+      }
+    }
+
+    // An open area might have multiple lights with a shared motion sensor
+    // (e.g. in the security system motion sensor where the motion sensor
+    // tends to be in a corner and cover the whole lobby). In this case, we
+    // only want to trigger a single light if all lights were off. However,
+    // if any light is already on, we still want to renew the timer to keep
+    // the light on.
+    //
+    // Check to see if the motion sensor is allowed to trigger the light.
+    val disableAlwaysItemName = triggeringItem.name + "_DisableTriggeringAlways"
+    val disableTriggeringAlwaysItem = gMotionSensorDisableTriggeringAlways.members.findFirst[ 
+        t | t.name == disableAlwaysItemName 
+    ]
+    if (null !== disableTriggeringAlwaysItem 
+          && disableTriggeringAlwaysItem.state == ON) {
+      return
+    }
+
+    // Check to see if there is a dependent relationship between lights.
+    // I.e. if light B is already on, then don't turn on light A if its
+    // motion sensor is triggered.
+    val disableIfItemName = triggeringItem.name + "_DisableTriggeringIf"
+    val disableTriggeringIfItem = gMotionSensorDisableTriggeringIf.members.findFirst[ 
+        t | t.name == disableIfItemName 
+    ]
+    if (null !== disableTriggeringIfItem
+        && NULL !== disableTriggeringIfItem.state
+        && UNDEF !== disableTriggeringIfItem.state) {
+      // see if the other light is on
+      val theOtherLight = gWallSwitch.members.findFirst[ 
+          t | t.name == disableTriggeringIfItem.state.toString ]
+
+      if ( isSwitchOn.apply(theOtherLight) ) { 
+        return
+      }
+      else if ( switchItem.hasTag(TAG_SHARED_MOTION_SENSOR) ) {
+        // If it was just turned off, then don't trigger this light yet.
+        // This might be the case that the user is getting out of this zone
+        if ( lastOffTimes.containsKey(theOtherLight.name) ) {
+          val long timestamp = lastOffTimes.get(theOtherLight.name)
+          if (now.getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS) {
+            return
+          }
+        } // has OFF timestamp
+      } // the other light is off
+      // else - pass through
+    }
+
+    switchItem.sendCommand(ON)
   }
 end
 
@@ -220,7 +230,7 @@ then
       // simulate presence (thief prevention). The simulation rule has full
       // control of the lights; thus we don't want to enable the timer.
       val isFanItem = triggeringItem.getGroupNames().contains(gFanSwitch.name)
-      if ( ON != VT_In_Vacation.state || isFanItem ) {
+      if ( VT_In_Vacation.state != ON || isFanItem ) {
         if ( null !== timerItem ) {
           timerItem.sendCommand(ON)
         }
@@ -238,7 +248,7 @@ then
       }
     }
     else {
-      if ( null !== timerItem && ON == timerItem.state ) {
+      if ( null !== timerItem && timerItem.state == ON ) {
         timerItem.sendCommand(OFF)
       }
 
@@ -263,7 +273,7 @@ then
       s | s.name == motionSensorName
     ]
 
-    if ( null !== motionSensorItem && ON == motionSensorItem.state ) {
+    if ( null !== motionSensorItem && motionSensorItem.state == ON ) {
       triggeringItem.sendCommand(ON)
     }
     else {
