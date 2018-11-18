@@ -13,7 +13,11 @@ The rules work with the following devices/sensors, bindings, actions, and transf
 6. TP-Link HS100 WiFi Plug
 7. Xiaomi Aqara Motion Sensor (Zigbee)
 
-**Bindings**
+The following add-ons need to be installed.
+Actions
+1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
+
+Bindings
 * [Astro](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
 * [Chamberlain MyQ](https://docs.openhab.org/addons/bindings/myq1/readme.html)
 * [DSC Alarm](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
@@ -26,10 +30,10 @@ The rules work with the following devices/sensors, bindings, actions, and transf
 * [Weather](https://www.openhab.org/addons/bindings/weather1/#table-of-contents)
 * [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things)
 
-**Actions**
-1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
+Misc
+1. Rule Engine (Experimental) - to support rules written in Jython
 
-**Transformations**
+Transformations
 1. [Javascript](https://www.openhab.org/addons/transformations/javascript/)
 2. [JsonPath](https://docs.openhab.org/addons/transformations/jsonpath/readme.html)
 3. [Map](https://docs.openhab.org/addons/transformations/map/readme.html)
@@ -61,6 +65,7 @@ The rules work with the following devices/sensors, bindings, actions, and transf
 * Support an optional String item that contains the light switch to turn off when this light switch is turn on. E.g. when office light is turned on, turn off foyer light.
 * Ignore the motion sensor event if a wall switch was just turned off. This prevents the light/fan from turning on again when a user manually turns it off and movng a way from the area. If not ignored, the motion sensor might trigger the switch to turn on again.
 * Send alert when a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
+* Turn off all managed lights when armed away.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
@@ -108,7 +113,6 @@ The rules work with the following devices/sensors, bindings, actions, and transf
 * Control blinds.
 
 ## Light/Fan/Plug Control
-* Turn off all managed lights and fans when armed away.
 * Associate each light with the dimming value and time range.
 
 ## Presence
