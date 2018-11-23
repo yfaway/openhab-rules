@@ -110,7 +110,7 @@ Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   {mqtt="<[broker:zigbee2mqtt/0x00158d000200ed5e:command:JS(occupancy.js)]" }
 
 Dimmer SF_Lobby_LightSwitch "Lobby Light" (gWallSwitch, gLightSwitch) 
-  { channel="zwave:device:9e4ce05e:node10:switch_dimmer" }
+  { channel="zwave:device:9e4ce05e:node10:switch_dimmer", light="dimming" [level=10, timeRange="21-7"] }
 String SF_Lobby_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 

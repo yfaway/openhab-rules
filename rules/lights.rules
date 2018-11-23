@@ -257,6 +257,7 @@ then
   }
 end
 
+/*
 rule "Turn off wall switch when timer expires"
 when
   Member of gWallSwitchTimer changed to OFF
@@ -286,3 +287,5 @@ then
     }
   }
 end
+*/
+

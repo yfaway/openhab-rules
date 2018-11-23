@@ -14,6 +14,7 @@ The rules work with the following devices/sensors, bindings, actions, and transf
 7. Xiaomi Aqara Motion Sensor (Zigbee)
 
 The following add-ons need to be installed.
+
 Actions
 1. [Mail Actions](https://docs.openhab.org/addons/actions/mail/readme.html) - for sending email alerts
 

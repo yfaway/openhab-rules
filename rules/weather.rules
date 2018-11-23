@@ -13,7 +13,8 @@ val WIND_ALERT_INTERVAL_IN_MINUTES = 30
 /**
  * The wind speed threshold to send an alert of high wind.
  */
-val WIND_SPEED_THRESHOLD_IN_KM_HOUR = 30
+val WIND_SPEED_THRESHOLD_IN_KM_HOUR = 45
+
 
 rule "Send alert in the morning if it might rain today"
 when
