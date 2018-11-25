@@ -71,7 +71,7 @@ Transformations
 
 ## Music
 * Pause Chromecast music when system is armed away.
-* Automatically play classical music in the specified morning hour range. The two owners have different leaving schedule so the music is played up to 2 times during that hour range. Music is paused when the front door or garage door is open (implies owner leaving for work).
+* Automatically play classical music in the specified morning hour range. The two owners have different leaving schedules so the music is played up to 2 times during that hour range. Music is paused when the front door or garage door is open (implies owner leaving the house).
 
 ## Presence
 * Cell phone wifi connection using Network binding.

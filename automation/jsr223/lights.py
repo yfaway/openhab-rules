@@ -161,7 +161,7 @@ def setTimerWhenSwitchIsTurnedOn(switchEvent):
 
             stringItemName = triggeringItem.name + "_TurnOffOtherLight"
             if stringItemName in items:
-                events.sendCommand(stringItemName, "OFF")
+                events.sendCommand(items[stringItemName].toString(), "OFF")
     else:
       if timerItemName in items:
             events.sendCommand(timerItemName, "OFF")
