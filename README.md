@@ -21,6 +21,7 @@ Actions
 Bindings
 * [Astro](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
 * [Chamberlain MyQ](https://docs.openhab.org/addons/bindings/myq1/readme.html)
+* [Chromecast](https://www.openhab.org/addons/bindings/chromecast/)
 * [DSC Alarm](https://docs.openhab.org/addons/bindings/dscalarm/readme.html)
 * [Ecobee](https://docs.openhab.org/addons/bindings/ecobee1/readme.html)
 * [Expire](https://www.openhab.org/addons/bindings/expire1/)
@@ -67,6 +68,10 @@ Transformations
 * Ignore the motion sensor event if a wall switch was just turned off. This prevents the light/fan from turning on again when a user manually turns it off and movng a way from the area. If not ignored, the motion sensor might trigger the switch to turn on again.
 * Send alert when a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
 * Turn off all managed lights when armed away.
+
+## Music
+* Pause Chromecast music when system is armed away.
+* Automatically play classical music in the specified morning hour range. The two owners have different leaving schedule so the music is played up to 2 times during that hour range. Music is paused when the front door or garage door is open (implies owner leaving for work).
 
 ## Presence
 * Cell phone wifi connection using Network binding.
@@ -115,6 +120,10 @@ Transformations
 
 ## Light/Fan/Plug Control
 * Associate each light with the dimming value and time range.
+
+## Chrome cast
+* Associate music life cycle with presence.
+* Automatically transfer music as owner moves around.
 
 ## Presence
 * Ecobee motion sensor.

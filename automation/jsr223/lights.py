@@ -7,6 +7,11 @@ from org.eclipse.smarthome.core.items import MetadataKey
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
 
+from org.eclipse.smarthome.model.script.actions.Audio import playSound
+from org.eclipse.smarthome.model.script.actions.Audio import playStream
+from org.eclipse.smarthome.model.script.actions.Voice import say
+from org.eclipse.smarthome.model.script.actions.HTTP import sendHttpPostRequest
+
 import constants
 reload(constants)
 from constants import *
@@ -63,7 +68,6 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
     switchName = triggeringItem.name[:localIdx]
 
     if switchName not in items:
-        log.info("null item")
         return
 
     switchItem = itemRegistry.getItem(switchName)
@@ -72,31 +76,27 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
         # renew timer
         timerName = switchName + "_Timer"
         events.sendCommand(timerName, "ON")
-        log.info("switch is on")
         return
 
     
     # the associate switch was on; let's do further processing.
 
     # Is this a fan switch?
-    isFanSwitch = "FanSwitch" in switchName
+    isFanSwitch = ("FanSwitch" in switchName)
 
     # This check needs to be here rather than in the outter scope because
     # the user might have turned on the light before the programmed 
     # light on time. In such case, we continue to maintain the timer.
-    if items["VT_Time_LightOn"] != ON and ! isFanSwitch:
+    if items["VT_Time_LightOn"] != ON and (not isFanSwitch):
         # check if there is a valid illuminance value
         illuminanceName = switchName + "_Illuminance"
-        if illuminanceName not in  items:
-            log.info("no illuminance item")
+        if illuminanceName not in items:
             return
 
         illuminanceItem = itemRegistry.getItem(illuminanceName)
         if UnDefType.NULL == illuminanceItem.state or UnDefType.UNDEF == illuminanceItem.state:
-            log.info("no illuminance value")
             return
         elif illuminanceItem.state > DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX):
-            log.info("illuminance value is too high")
             return
         # else pass through to turn on the light
     
@@ -104,7 +104,6 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
     if switchName in lastOffTimes:
         timestamp = lastOffTimes[switchName]
         if (DateTime.now().getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS):
-            log.info("was just off")
             return
 
     # An open area might have multiple lights with a shared motion sensor
@@ -117,15 +116,12 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
     # Check to see if the motion sensor is allowed to trigger the light.
     disableAlwaysItemName = triggeringItem.name + "_DisableTriggeringAlways"
     if disableAlwaysItemName in items and items[disableAlwaysItemName] == ON:
-        log.info("disable motion sensor")
         return
 
     # Check to see if there is a dependent relationship between lights.
     # I.e. if light B is already on, then don't turn on light A if its
     # motion sensor is triggered.
     disableIfItemName = triggeringItem.name + "_DisableTriggeringIf"
-    disableTriggeringIfItem = itemRegistry.getItem(disableIfItemName)
-
     if disableIfItemName in items \
         and UnDefType.NULL != items[disableIfItemName] \
         and UnDefType.UNDEF != items[disableIfItemName]:
@@ -133,7 +129,6 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
         theOtherLight = itemRegistry.getItem(items[disableIfItemName].toString())
 
         if isSwitchOn(theOtherLight):
-            log.info("disabled by other light")
             return
       #elif switchItem.hasTag(TAG_SHARED_MOTION_SENSOR):
         # If it was just turned off, then don't trigger this light yet.
@@ -206,10 +201,15 @@ def isSwitchOn(switchItem):
             and switchItem.state > DecimalType(0))
 
 
-@rule("Hello World timer rule")
-@when("Time cron 0/5 * * * * ?")
-def hellowWorldDecorator(event):
-    item = itemRegistry.getItem("SF_Lobby_LightSwitch")
+#@rule("Hello World timer rule")
+#@when("Time cron 0/45 * * * * ?")
+#def hellowWorldDecorator(event):
+    #log.info("*** playing music")
+    #sendHttpPostRequest("http://192.168.0.144:8008/apps/YouTube", "application/json", "v=FyTdov_lF_g")
+    #say("Anna and Abby, it is time to go to bed.")
+    #playSound("doorbell.mp3")
+    #playStream("https://wwfm.streamguys1.com/live-mp3")
+    #item = itemRegistry.getItem("SF_Lobby_LightSwitch")
 
     #turnOffWallSwitch("FF_Foyer_LightSwitch_Timer")
     #meta = MetadataRegistry.get(MetadataKey("light", "SF_Lobby_LightSwitch")) 

@@ -99,6 +99,22 @@ sitemap default label="HV Home"
     }
   }
 
+  Text label="Music" icon="soundvolume" {
+    Frame label="Music" {
+        Switch item=VT_GreatRoom_ChromeCastSetUri
+
+        Default item=FF_GreatRoom_ChromeCastPlayer
+        Slider item=FF_GreatRoom_ChromeCastVolume icon=soundvolume
+        Switch item=FF_GreatRoom_ChromeCastIdling
+        Text item=FF_GreatRoom_ChromeCastPlayUri
+        Text item=FF_GreatRoom_ChromeCastDuration visibility=[FF_GreatRoom_ChromeCastDuration > 0]
+        Text item=FF_GreatRoom_ChromeCastCurrentTime visibility=[FF_GreatRoom_ChromeCastCurrentTime > 0]
+        Text item=FF_GreatRoom_ChromeCastTitle
+        // Text item=FF_GreatRoom_ChromeCastAppName
+        // Text item=FF_GreatRoom_ChromeCastAppId
+    }
+  }
+
   Text label="Presence Details" icon="presence" {
     Frame label="Presence" {
       Switch item=gPresence

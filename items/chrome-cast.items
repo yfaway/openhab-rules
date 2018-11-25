@@ -1,0 +1,20 @@
+Switch VT_GreatRoom_ChromeCastSetUri "Set Playlist"
+
+Player FF_GreatRoom_ChromeCastPlayer { channel="chromecast:audio:greatRoom:control" }
+Dimmer FF_GreatRoom_ChromeCastVolume "Volume" 
+  { channel="chromecast:audio:greatRoom:volume" }
+String FF_GreatRoom_ChromeCastPlayUri "Play URI [%s]"
+  { channel="chromecast:audio:greatRoom:playuri" }
+Switch FF_GreatRoom_ChromeCastIdling "Idling"
+  { channel="chromecast:audio:greatRoom:idling" }
+Number FF_GreatRoom_ChromeCastDuration "Duration [%d]" 
+  { channel="chromecast:audio:greatRoom:duration" }
+Number FF_GreatRoom_ChromeCastCurrentTime "Current Time [%d]"
+  { channel="chromecast:audio:greatRoom:currentTime" }
+String FF_GreatRoom_ChromeCastTitle "Title [%s]"
+  { channel="chromecast:audio:greatRoom:title" }
+String FF_GreatRoom_ChromeCastAppName "App Name [%s]"
+  { channel="chromecast:audio:greatRoom:appName" }
+String FF_GreatRoom_ChromeCastAppId "App Id [%s]"
+  { channel="chromecast:audio:greatRoom:appId" }
+
