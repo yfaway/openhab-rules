@@ -1,6 +1,7 @@
-Switch VT_GreatRoom_ChromeCastSetUri "Set Playlist"
+Switch VT_GreatRoom_PlayMorningAnnouncement "Play Morning Announcement"
+Switch VT_GreatRoom_ChromeCastSetUri "Play Music"
 
-Player FF_GreatRoom_ChromeCastPlayer { channel="chromecast:audio:greatRoom:control" }
+Player FF_GreatRoom_ChromeCastPlayer "Control" { channel="chromecast:audio:greatRoom:control" }
 Dimmer FF_GreatRoom_ChromeCastVolume "Volume" 
   { channel="chromecast:audio:greatRoom:volume" }
 String FF_GreatRoom_ChromeCastPlayUri "Play URI [%s]"

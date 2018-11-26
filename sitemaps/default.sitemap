@@ -99,8 +99,9 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Music" icon="soundvolume" {
-    Frame label="Music" {
+  Text label="Music / Voice Announcement" icon="soundvolume" {
+    Frame label="Music / Voice Announcement" {
+        Switch item=VT_GreatRoom_PlayMorningAnnouncement
         Switch item=VT_GreatRoom_ChromeCastSetUri
 
         Default item=FF_GreatRoom_ChromeCastPlayer
