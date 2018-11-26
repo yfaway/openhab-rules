@@ -50,17 +50,17 @@ def pauseMusic(event):
 
 @rule("Play music on the first 2 morning visits to kitchen")
 @when("Item FF_Kitchen_LightSwitch_MotionSensor changed to ON")
-def playMusicInTheMorning(event):
+def playAnnouncementAndMusicInTheMorning(event):
     global morningMusicStartCount
 
     if isInMorningTimeRange() and \
             morningMusicStartCount < MAX_MORNING_MUSIC_START_COUNT:
-        if not isActive():
+        if not cast.isActive():
             msg = getMorningAnnouncement()
-            log.info("Saying: " + msg)
-            say(msg)
-            time.sleep(10)
+            cast.playMessage(msg)
 
+            log.info("playing music")
+            time.sleep(1)
             playMusic(event)
             morningMusicStartCount += 1
 
@@ -104,3 +104,7 @@ def getMorningAnnouncement():
         message += " It is going to snow today."
 
     return message
+
+#cast.pause()
+#morningMusicStartCount = 0
+#playAnnouncementAndMusicInTheMorning(None)
