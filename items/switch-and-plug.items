@@ -23,10 +23,13 @@ Group gTurnOffOtherLight
 // Used to send an ON/OFF command to all controlled lights
 Group:Switch:OR(ON,OFF) gLightSwitch "Active Lights [%d]"
 
+Group:Switch:OR(ON,OFF) gFirstFloorLightSwitch "Active First Floor Lights [%d]"
+Group:Switch:OR(ON,OFF) gSecondFloorLightSwitch "Active First Floor Lights [%d]"
+
 // Used to send an ON/OFF command to all controlled fans
 Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
-Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch) 
+Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node2:switch_binary" }
 String FF_Foyer_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer) 
@@ -39,7 +42,7 @@ Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
 String FF_Foyer_LightSwitch_MotionSensor_DisableTriggeringIf 
   (gMotionSensorDisableTriggeringIf)
 
-Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch) 
+Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node8:switch_binary" }
 String FF_Office_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
@@ -49,7 +52,7 @@ Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000236b6c0:command:JS(occupancy.js)]" }
 
-Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch) 
+Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node3:switch_binary" }
 String FF_Kitchen_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
@@ -65,7 +68,7 @@ Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000236b4cd:state:JSONPATH($.illuminance)]"}
 
-Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch) 
+Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node7:switch_binary" }
 String FF_GreatRoom_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch FF_GreatRoom_LightSwitch_Timer (gWallSwitchTimer) 
@@ -75,7 +78,8 @@ Group:Switch:OR(ON,OFF) FF_GreatRoom_LightSwitch_MotionSensor
 Switch FF_GreatRoom_LightSwitch_MotionSensor_DisableTriggeringAlways 
   (gMotionSensorDisableTriggeringAlways)
 
-Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" (gWallSwitch, gLightSwitch) 
+Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" 
+  (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node4:switch_binary" }
 String SF_MasterWashroom_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch SF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer) 
@@ -109,7 +113,8 @@ Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MainWashroom_LightSwitch_MotionSensor) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000200ed5e:command:JS(occupancy.js)]" }
 
-Dimmer SF_Lobby_LightSwitch "Lobby Light" (gWallSwitch, gLightSwitch) 
+Dimmer SF_Lobby_LightSwitch "Lobby Light" 
+  (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node10:switch_dimmer", light="dimming" [level=10, timeRange="21-7"] }
 String SF_Lobby_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"

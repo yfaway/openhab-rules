@@ -7,14 +7,13 @@ from org.eclipse.smarthome.core.items import MetadataKey
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
 
-from org.eclipse.smarthome.model.script.actions.Audio import playSound
-from org.eclipse.smarthome.model.script.actions.Audio import playStream
-from org.eclipse.smarthome.model.script.actions.Voice import say
-from org.eclipse.smarthome.model.script.actions.HTTP import sendHttpPostRequest
-
 import constants
 reload(constants)
 from constants import *
+
+from aaa_modules import switch_manager
+reload(switch_manager)
+from aaa_modules import switch_manager
 
 scriptExtension.importPreset("RuleSupport")
 scriptExtension.importPreset("RuleSimple")
@@ -28,7 +27,6 @@ log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 # spot is covered by a motion sensor, which immediately turns on the light
 # again.
 DELAY_AFTER_LAST_OFF_TIME_IN_MS = 8000 # 8 secs
-
 
 # The light level threshold; if it is below this value, turn on the light.
 ILLUMINANCE_THRESHOLD_IN_LUX = 8
@@ -72,7 +70,7 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
 
     switchItem = itemRegistry.getItem(switchName)
     
-    if isSwitchOn(switchItem):
+    if switch_manager.isSwitchOn(switchItem):
         # renew timer
         timerName = switchName + "_Timer"
         events.sendCommand(timerName, "ON")
@@ -128,7 +126,7 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
         # see if the other light is on
         theOtherLight = itemRegistry.getItem(items[disableIfItemName].toString())
 
-        if isSwitchOn(theOtherLight):
+        if switch_manager.isSwitchOn(theOtherLight):
             return
       #elif switchItem.hasTag(TAG_SHARED_MOTION_SENSOR):
         # If it was just turned off, then don't trigger this light yet.
@@ -150,7 +148,7 @@ def setTimerWhenSwitchIsTurnedOn(switchEvent):
 
     # Some light might stay on until manually turned off, so the timer item
     # could be null.
-    if isSwitchOn(triggeringItem):
+    if switch_manager.isSwitchOn(triggeringItem):
         # When in vacation mode, the lights be turned on/off randomly to
         # simulate presence (thief prevention). The simulation rule has full
         # control of the lights; thus we don't want to enable the timer.
@@ -187,28 +185,14 @@ def turnOffWallSwitch(timerEvent):
     else:
         target = filter(lambda item: item.name == switchName, 
                 ir.getItem(GROUP_WALL_SWITCH).members)[0]
-        if isSwitchOn(target):
+        if switch_manager.isSwitchOn(target):
             events.sendCommand(target.name, "OFF")
-
-# Returns true if a switch is on.
-# @param switchItem can be a regular OnOffItem or a DimmerItem. In the later
-#     case, the dimmer switch is considered on if its value is greater than 0.
-def isSwitchOn(switchItem):
-    return (switchItem.state == ON) \
-        or (isinstance(switchItem, DimmerItem)
-            and UnDefType.NULL != switchItem.state
-            and UnDefType.UNDEF != switchItem.state 
-            and switchItem.state > DecimalType(0))
-
 
 #@rule("Hello World timer rule")
 #@when("Time cron 0/45 * * * * ?")
 #def hellowWorldDecorator(event):
     #log.info("*** playing music")
-    #sendHttpPostRequest("http://192.168.0.144:8008/apps/YouTube", "application/json", "v=FyTdov_lF_g")
     #say("Anna and Abby, it is time to go to bed.")
-    #playSound("doorbell.mp3")
-    #playStream("https://wwfm.streamguys1.com/live-mp3")
     #item = itemRegistry.getItem("SF_Lobby_LightSwitch")
 
     #turnOffWallSwitch("FF_Foyer_LightSwitch_Timer")

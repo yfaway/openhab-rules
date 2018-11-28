@@ -20,9 +20,9 @@ import constants
 reload(constants)
 from constants import *
 
-from aaa_modules import cast
-reload(cast)
-from aaa_modules import cast
+from aaa_modules import cast_manager
+reload(cast_manager)
+from aaa_modules import cast_manager
 
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
@@ -39,14 +39,14 @@ morningMusicStartCount = 0
 @rule("Play the music when the switch is turn on")
 @when("Item VT_GreatRoom_ChromeCastSetUri changed to ON")
 def playMusic(event):
-    if not cast.isActive():
+    if not cast_manager.isActive():
         playStream(CLASSICAL_MUSIC_URI)
 
 @rule("Pause the music")
 @when("Item VT_GreatRoom_ChromeCastSetUri changed to OFF")
 @when("Item {0} changed to {1:d}".format(SECURITY_ITEM_ARM_MODE, SECURITY_STATE_ARM_AWAY))
 def pauseMusic(event):
-    cast.pause()
+    cast_manager.pause()
 
 @rule("Play music on the first 2 morning visits to kitchen")
 @when("Item FF_Kitchen_LightSwitch_MotionSensor changed to ON")
@@ -55,9 +55,9 @@ def playAnnouncementAndMusicInTheMorning(event):
 
     if isInMorningTimeRange() and \
             morningMusicStartCount < MAX_MORNING_MUSIC_START_COUNT:
-        if not cast.isActive():
+        if not cast_manager.isActive():
             msg = getMorningAnnouncement()
-            cast.playMessage(msg)
+            cast_manager.playMessage(msg)
 
             log.info("playing music")
             time.sleep(1)
@@ -105,6 +105,6 @@ def getMorningAnnouncement():
 
     return message
 
-#cast.pause()
+#cast_manager.pause()
 #morningMusicStartCount = 0
 #playAnnouncementAndMusicInTheMorning(None)

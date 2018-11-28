@@ -69,9 +69,10 @@ Transformations
 * Send alert when a triggering event (e.g. arm-away or vacation mode) tries to turn off a smart plug with energy reading, but the plug still has high wattage --> an appliance/device wasn't turned off yet. Won't turn off the plug in this case to avoid damaging the appliance; send an alert instead.
 * Turn off all managed lights when armed away.
 
-## Music
+## Music / Voice Alerts
 * Pause Chromecast music when system is armed away.
 * Automatically play classical music in the specified morning hour range. The two owners have different leaving schedules so the music is played up to 2 times during that hour range. Music is paused when the front door or garage door is open (implies owner leaving the house).
+* Tell kids to go to bed at 8:30 and 8:45; on the second notice, turn off the first floor lights as well.
 
 ## Presence
 * Cell phone wifi connection using Network binding.
