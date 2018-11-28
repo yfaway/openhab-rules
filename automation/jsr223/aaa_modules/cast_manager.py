@@ -1,3 +1,7 @@
+# Functions that work with Google Chromecasts and Google Home.
+# @TODO create a ChromeCast class to group together the various attributes
+# of a Chromecast/Home device.
+
 import time
 
 from org.slf4j import Logger, LoggerFactory
@@ -32,9 +36,9 @@ def isActive(castItemPrefix = 'FF_GreatRoom_ChromeCast'):
 
 def hasTitle(castItemPrefix = 'FF_GreatRoom_ChromeCast'):
     name = castItemPrefix + "Title"
-    return scope.UnDefType.UNDEF == scope.items[name] \
-        or scope.UnDefType.NULL == scope.items[name] \
-        or scope.StringType('') == scope.items[name]
+    return scope.UnDefType.UNDEF != scope.items[name] \
+        and scope.UnDefType.NULL != scope.items[name] \
+        and scope.StringType('') != scope.items[name]
 
 # Play the given message and wait till it finishes (up to 
 # MAX_SAY_WAIT_TIME_IN_SECONDS seconds). Afterward, pause the player.
@@ -49,10 +53,10 @@ def playMessage(message, castItemPrefix = 'FF_GreatRoom_ChromeCast'):
     seconds = 2
     time.sleep(seconds)
     while seconds <= MAX_SAY_WAIT_TIME_IN_SECONDS:
-        if not hasTitle():
+        if hasTitle(): # this means the announcement is still happening.
             time.sleep(1)
             seconds += 1
-        else:
+        else: # announcemen is finished.
             seconds = MAX_SAY_WAIT_TIME_IN_SECONDS + 1
 
     pause(castItemPrefix) # the Player needs to be manually reset to PAUSE.
