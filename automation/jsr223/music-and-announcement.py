@@ -12,10 +12,6 @@ from org.eclipse.smarthome.core.items import MetadataKey
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
 
-from org.eclipse.smarthome.model.script.actions.Audio import playSound
-from org.eclipse.smarthome.model.script.actions.Audio import playStream
-from org.eclipse.smarthome.model.script.actions.Voice import say
-
 import constants
 reload(constants)
 from constants import *
@@ -23,6 +19,10 @@ from constants import *
 from aaa_modules import cast_manager
 reload(cast_manager)
 from aaa_modules import cast_manager
+
+from aaa_modules import chromecast
+reload(chromecast)
+from aaa_modules.chromecast import *
 
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
@@ -33,14 +33,17 @@ CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 MORNING_TIME_RANGE = (6, 9)
 MAX_MORNING_MUSIC_START_COUNT = 2
 
+# If set, implies the user hasn't left yet, and thus do not trigger additional
+# annoucement.
+inSession = False
+
 log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 morningMusicStartCount = 0
 
 @rule("Play the music when the switch is turn on")
 @when("Item VT_GreatRoom_ChromeCastSetUri changed to ON")
 def playMusic(event):
-    if not cast_manager.isActive():
-        playStream(CLASSICAL_MUSIC_URI)
+    cast_manager.playStream(CLASSICAL_MUSIC_URI)
 
 @rule("Pause the music")
 @when("Item VT_GreatRoom_ChromeCastSetUri changed to OFF")
@@ -52,15 +55,15 @@ def pauseMusic(event):
 @when("Item FF_Kitchen_LightSwitch_MotionSensor changed to ON")
 def playAnnouncementAndMusicInTheMorning(event):
     global morningMusicStartCount
+    global inSession
 
     if isInMorningTimeRange() and \
             morningMusicStartCount < MAX_MORNING_MUSIC_START_COUNT:
-        if not cast_manager.isActive():
+        if not inSession:
+            inSession = True
             msg = getMorningAnnouncement()
             cast_manager.playMessage(msg)
 
-            log.info("playing music")
-            time.sleep(1)
             playMusic(event)
             morningMusicStartCount += 1
 
@@ -75,13 +78,14 @@ def resetMorningMusicStartCount(event):
 def pauseMorningMusic(event):
     if isInMorningTimeRange():
         pauseMusic(event)
+        inSession = False
 
 @rule("Play morning announcement")
 @when("Item VT_GreatRoom_PlayMorningAnnouncement changed to ON")
 def playMorningAnnouncement(event):
     msg = getMorningAnnouncement()
     log.info("Saying: " + msg)
-    say(msg)
+    cast_manager.playMessage(msg)
     events.sendCommand(event.itemName, 'OFF')
 
 # @return True if the current hour is within the time range; False otherwise.
