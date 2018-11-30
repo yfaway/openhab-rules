@@ -102,10 +102,11 @@ sitemap default label="HV Home"
   Text label="Music / Voice Announcement" icon="soundvolume" {
     Frame label="Music / Voice Announcement" {
         Switch item=VT_GreatRoom_PlayMorningAnnouncement
-        Switch item=VT_GreatRoom_ChromeCastSetUri
+        Switch item=VT_Master_PlayMusic
 
-        Default item=FF_GreatRoom_ChromeCastPlayer
-        Slider item=FF_GreatRoom_ChromeCastVolume icon=soundvolume
+        Default item=VT_Master_ChromeCastPlayer
+        Slider item=VT_Master_ChromeCastVolume icon=soundvolume
+
         Switch item=FF_GreatRoom_ChromeCastIdling
         Text item=FF_GreatRoom_ChromeCastPlayUri
         Text item=FF_GreatRoom_ChromeCastDuration visibility=[FF_GreatRoom_ChromeCastDuration > 0]

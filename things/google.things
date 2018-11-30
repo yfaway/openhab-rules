@@ -1,1 +1,2 @@
 chromecast:audio:greatRoom [ ipAddress="192.168.0.144"]
+chromecast:audio:masterBedRoom [ ipAddress="192.168.0.115"]

@@ -40,17 +40,6 @@ inSession = False
 log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 morningMusicStartCount = 0
 
-@rule("Play the music when the switch is turn on")
-@when("Item VT_GreatRoom_ChromeCastSetUri changed to ON")
-def playMusic(event):
-    cast_manager.playStream(CLASSICAL_MUSIC_URI)
-
-@rule("Pause the music")
-@when("Item VT_GreatRoom_ChromeCastSetUri changed to OFF")
-@when("Item {0} changed to {1:d}".format(SECURITY_ITEM_ARM_MODE, SECURITY_STATE_ARM_AWAY))
-def pauseMusic(event):
-    cast_manager.pause()
-
 @rule("Play music on the first 2 morning visits to kitchen")
 @when("Item FF_Kitchen_LightSwitch_MotionSensor changed to ON")
 def playAnnouncementAndMusicInTheMorning(event):
@@ -112,3 +101,4 @@ def getMorningAnnouncement():
 #cast_manager.pause()
 #morningMusicStartCount = 0
 #playAnnouncementAndMusicInTheMorning(None)
+

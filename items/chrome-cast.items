@@ -1,8 +1,15 @@
 Switch VT_GreatRoom_PlayMorningAnnouncement "Play Morning Announcement"
-Switch VT_GreatRoom_ChromeCastSetUri "Play Music"
+Switch VT_Master_PlayMusic "Play Music"
 
-Player FF_GreatRoom_ChromeCastPlayer "Control" { channel="chromecast:audio:greatRoom:control" }
-Dimmer FF_GreatRoom_ChromeCastVolume "Volume" 
+Player VT_Master_ChromeCastPlayer "Master Control"
+Dimmer VT_Master_ChromeCastVolume "Master Volume"
+
+Group gCastVolume
+Group gCastPlayer
+
+Player FF_GreatRoom_ChromeCastPlayer "Control" (gCastPlayer)
+  { channel="chromecast:audio:greatRoom:control" }
+Dimmer FF_GreatRoom_ChromeCastVolume "Volume" (gCastVolume)
   { channel="chromecast:audio:greatRoom:volume" }
 String FF_GreatRoom_ChromeCastPlayUri "Play URI [%s]"
   { channel="chromecast:audio:greatRoom:playuri" }
@@ -19,3 +26,21 @@ String FF_GreatRoom_ChromeCastAppName "App Name [%s]"
 String FF_GreatRoom_ChromeCastAppId "App Id [%s]"
   { channel="chromecast:audio:greatRoom:appId" }
 
+Player SF_MasterBedRoom_ChromeCastPlayer "Control" (gCastPlayer)
+  { channel="chromecast:audio:masterBedRoom:control" }
+Dimmer SF_MasterBedRoom_ChromeCastVolume "Volume" (gCastVolume)
+  { channel="chromecast:audio:masterBedRoom:volume" }
+String SF_MasterBedRoom_ChromeCastPlayUri "Play URI [%s]"
+  { channel="chromecast:audio:masterBedRoom:playuri" }
+Switch SF_MasterBedRoom_ChromeCastIdling "Idling"
+  { channel="chromecast:audio:masterBedRoom:idling" }
+Number SF_MasterBedRoom_ChromeCastDuration "Duration [%d]" 
+  { channel="chromecast:audio:masterBedRoom:duration" }
+Number SF_MasterBedRoom_ChromeCastCurrentTime "Current Time [%d]"
+  { channel="chromecast:audio:masterBedRoom:currentTime" }
+String SF_MasterBedRoom_ChromeCastTitle "Title [%s]"
+  { channel="chromecast:audio:masterBedRoom:title" }
+String SF_MasterBedRoom_ChromeCastAppName "App Name [%s]"
+  { channel="chromecast:audio:masterBedRoom:appName" }
+String SF_MasterBedRoom_ChromeCastAppId "App Id [%s]"
+  { channel="chromecast:audio:masterBedRoom:appId" }
