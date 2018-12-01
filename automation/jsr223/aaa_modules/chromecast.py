@@ -17,6 +17,8 @@ class ChromeCast:
     def __init__(self, prefix, sink):
         self.prefix = prefix
         self.sink = sink
+        self.streamUrl = None
+        self.streamName = None
 
     # Return true if the the chromecast is playing something.
     # @param castItemPrefix string the chrome cast item name
@@ -41,3 +43,22 @@ class ChromeCast:
     # Return the sink name for Voice.say and Audio.playStream usages.
     def getSinkName(self):
         return self.sink
+
+    # Returns the current stream Uri or None if no stream set.
+    # @return string
+    def getStreamUrl(self):
+        return self.streamUrl
+
+    # Returns the current stream name or None if no stream set.
+    # @return string
+    def getStreamName(self):
+        return self.streamName
+
+    # Associate a stream URI with this object.
+    # @param streamUrl string 
+    # @param streamName string 
+    def setStream(self, streamName, streamUrl):
+        self.streamName = streamName
+        self.streamUrl = streamUrl
+
+ 

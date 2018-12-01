@@ -25,8 +25,8 @@ from aaa_modules.chromecast import *
 
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
-SOURCE_ITEM = 'VT_SelectedChromeCast'
-STREAM_ITEM = 'VT_SelectedStream'
+_SOURCE_ITEM = 'VT_SelectedChromeCast'
+_STREAM_ITEM = 'VT_SelectedStream'
 
 log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -58,21 +58,27 @@ def updateCastVolume(event):
         if matchSelectedSource(volumeItem.name):
             events.sendCommand(volumeItem.name, str(items[event.itemName].intValue()))
 
+@rule("Update the stream selection and play the music when the switch is turn on")
+@when("Item VT_SelectedChromeCast changed")
+def updateStream(event):
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
+    events.sendCommand(_STREAM_ITEM, selectedCasts[0].getStreamName())
+
 @rule("Play the music when the switch is turn on")
 @when("Item VT_Master_PlayMusic changed to ON")
 @when("Item VT_SelectedStream changed")
 def playMusic(event):
-    selectedCasts = cast_manager.findCasts(items[SOURCE_ITEM])
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
 
-    selectedStream = ""
-    itemValue = items[STREAM_ITEM]
+    streamName = None
+    itemValue = items[_STREAM_ITEM]
     if UnDefType.UNDEF ==  itemValue or UnDefType.NULL == itemValue:
-        selectedStream = ""
+        streamName = None
     else:
-        selectedStream = itemValue.toString()
+        streamName = itemValue.toString()
     
-    if "" != selectedStream:
-        cast_manager.playStream(selectedStream, selectedCasts)
+    if None != streamName:
+        cast_manager.playStream(streamName, selectedCasts)
     else:
         log.info("Invalid stream " + itemValue.toString())
 
@@ -80,16 +86,14 @@ def playMusic(event):
 @when("Item VT_Master_PlayMusic changed to OFF")
 @when("Item {0} changed to {1:d}".format(SECURITY_ITEM_ARM_MODE, SECURITY_STATE_ARM_AWAY))
 def pauseMusic(event):
-    selectedCasts = cast_manager.findCasts(items[SOURCE_ITEM])
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
     cast_manager.pause(selectedCasts)
 
 # Returns True if the item name matches the selected chrome cast (source);
 # False otherwise
 # @param itemName string
 def matchSelectedSource(itemName):
-    selectedCasts = cast_manager.findCasts(items[SOURCE_ITEM])
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
     matchedCast = next(ifilter(lambda item: item.getPrefix() in itemName, 
                 selectedCasts), None)
     return None != matchedCast
-
-#events.postUpdate('VT_Master_ChromeCastVolume', "20")

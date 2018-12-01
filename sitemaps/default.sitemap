@@ -105,23 +105,25 @@ sitemap default label="HV Home"
           mappings=["SF_MasterBedRoom_ChromeCast"="Master Bedroom",
                     "FF_GreatRoom_ChromeCast"="Great Room",
                     "ALL"="ALL"]
+          icon="mediacontrol"
         Selection item=VT_SelectedStream 
           mappings=[
-            "https://wwfm.streamguys1.com/live-mp3"="Classical",
-            "http://174.36.206.197:8000/stream"="Venice Classical",
-            "http://player.allclassical.org/streamplaylist/ac96k.pls"="Portland All Classical",
-            "http://8.38.78.173:8093/stream"="Audiophile Classical",
-            "http://radio.wanderingsheep.tv:8000/jazzcafe"="Jazz Cafe",
-            "http://cbcr2tor.akacast.akamaistream.net/7/364/451661/v1/rc.akacast.akamaistream.net/cbc_r2_tor"="CBC Radio 2"
+            "Classical"="Classical",
+            "Venice Classical"="Venice Classical",
+            "Portland All Classical"="Portland All Classical",
+            "Audiophile Classical"="Audiophile Classical",
+            "Jazz Cafe"="Jazz Cafe",
+            "CBC Radio 2"="CBC Radio 2"
             ]
-        Switch item=VT_GreatRoom_PlayMorningAnnouncement
-        Switch item=VT_Master_PlayMusic
-
+          icon="flow"
         Default item=VT_Master_ChromeCastPlayer
         Slider item=VT_Master_ChromeCastVolume icon=soundvolume
 
+        Switch item=VT_GreatRoom_PlayMorningAnnouncement
+        // Switch item=VT_Master_PlayMusic
+
         Switch item=FF_GreatRoom_ChromeCastIdling
-        Text item=FF_GreatRoom_ChromeCastPlayUri
+        // Text item=FF_GreatRoom_ChromeCastPlayUri
         Text item=FF_GreatRoom_ChromeCastDuration visibility=[FF_GreatRoom_ChromeCastDuration > 0]
         Text item=FF_GreatRoom_ChromeCastCurrentTime visibility=[FF_GreatRoom_ChromeCastCurrentTime > 0]
         Text item=FF_GreatRoom_ChromeCastTitle

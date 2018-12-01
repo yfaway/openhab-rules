@@ -28,11 +28,26 @@ log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 CASTS = [ChromeCast('FF_GreatRoom_ChromeCast', "chromecast:audio:greatRoom"),
          ChromeCast('SF_MasterBedRoom_ChromeCast', "chromecast:audio:masterBedRoom")]
 
-# Pause the passed-in chrome cast player.
+_STREAMS = {
+    "Classical": "https://wwfm.streamguys1.com/live-mp3",
+    "Venice Classical": "http://174.36.206.197:8000/stream",
+    "Portland All Classical": "http://player.allclassical.org/streamplaylist/ac96k.pls",
+    "Audiophile Classical": "http://8.38.78.173:8093/stream",
+    "Jazz Cafe": "http://radio.wanderingsheep.tv:8000/jazzcafe",
+    "CBC Radio 2": "http://cbcr2tor.akacast.akamaistream.net/7/364/451661/v1/rc.akacast.akamaistream.net/cbc_r2_tor"
+}
+
+# Pauses the passed-in chrome cast player.
 # @param casts list of ChromeCast
 def pause(casts = CASTS):
     for cast in casts:
         scope.events.sendCommand(cast.getPlayerName(), "PAUSE")
+
+# Resumes playing on the passed-in chrome casts.
+# @param casts list of ChromeCast
+def resume(casts = CASTS):
+    for cast in casts:
+        scope.events.sendCommand(cast.getPlayerName(), "PLAY")
 
 # Play the given message on one or more ChromeCast and wait till it finishes 
 # (up to MAX_SAY_WAIT_TIME_IN_SECONDS seconds). Afterward, pause the player.
@@ -60,11 +75,17 @@ def playMessage(message, casts = CASTS):
     pause(casts)
 
 # Play the given stream url.
-# @param url string
+# @param name string; see _STREAMS
 # @param casts list of ChromeCast
-def playStream(url, casts = CASTS):
+def playStream(name, casts = CASTS):
     for cast in casts:
-        Audio.playStream(cast.getSinkName(), url)
+        url = getStreamUrl(name)
+        if None != url:
+            if url == cast.getStreamUrl():
+                resume([cast])
+            else:
+                Audio.playStream(cast.getSinkName(), url)
+                cast.setStream(name, url)
 
 # Return the ChromeCast objects on the first floor.
 # @return list of Chromecast
@@ -81,3 +102,10 @@ def findCasts(prefix):
     else:
         return filter(lambda cast: cast.getPrefix() == prefix.toString(), CASTS)
 
+# Returns the stream associated with the given name.
+# @return string could be None if not found
+def getStreamUrl(name):
+    if name in _STREAMS:
+        return _STREAMS[name]
+    else:
+        return None
