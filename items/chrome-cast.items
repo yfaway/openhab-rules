@@ -1,3 +1,5 @@
+String VT_SelectedChromeCast "Source"
+String VT_SelectedStream "Stream"
 Switch VT_GreatRoom_PlayMorningAnnouncement "Play Morning Announcement"
 Switch VT_Master_PlayMusic "Play Music"
 

@@ -4,14 +4,16 @@ A set of rules for my house.
 # Prerequisites
 The rules work with the following devices/sensors, bindings, actions, and transformations. They make heavy use of OpenHab's groups concept and as such are quite general. You don't need to have all the sensors below to make use of the rules. If are new to OpenHab, or interested in practical integrations, these rules can be the starting point.
 
-**Sensors**
-1. Chamberlain 3/4 HPS Belt Drive Garage Door Opener Built-in Wifi (LW6000WFC)
-2. DSC Security System with EnvisaLink inteface
-3. Ecobee3 Thermostat
-4. Aeotec Z-Wave USB ZStick Gen 5
-5. Inovelli NZW30 Z-Wave Wall Switch
-6. TP-Link HS100 WiFi Plug
-7. Xiaomi Aqara Motion Sensor (Zigbee)
+**Devices/Sensors**
+* Chamberlain 3/4 HPS Belt Drive Garage Door Opener Built-in Wifi (LW6000WFC)
+* DSC Security System with EnvisaLink inteface
+* Ecobee3 Thermostat
+* Aeotec Z-Wave USB ZStick Gen 5
+* Inovelli NZW30 Z-Wave Wall Switch
+* TP-Link HS100 WiFi Plug
+* Xiaomi Aqara Motion Sensor (Zigbee)
+* Xiaomi Aqara Temperature Sensor (Zigbee)
+* Google Home/mini, Chromecast, Chromecast Audio
 
 The following add-ons need to be installed.
 
@@ -39,6 +41,9 @@ Transformations
 1. [Javascript](https://www.openhab.org/addons/transformations/javascript/)
 2. [JsonPath](https://docs.openhab.org/addons/transformations/jsonpath/readme.html)
 3. [Map](https://docs.openhab.org/addons/transformations/map/readme.html)
+
+Voice
+These add-ons are used to play audio files, stream, or text to speech (TTS). Either Google Cloud TTS or VocieRSS would work. The "Marry TTS" is very slow on the Raspberry PI. Once downloaded, in the Paper UI, go to Configuration -> System -> Voice (at the very end of the page) to configure the default engine.
 
 # Current Functionalities
 ## Alerts (email)

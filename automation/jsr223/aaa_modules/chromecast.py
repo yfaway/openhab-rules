@@ -30,6 +30,9 @@ class ChromeCast:
             and scope.UnDefType.NULL != scope.items[name] \
             and scope.StringType('') != scope.items[name]
 
+    def getPrefix(self):
+        return self.prefix
+
     # Returns the name of the player item for this chromecast object.
     # @return string
     def getPlayerName(self):

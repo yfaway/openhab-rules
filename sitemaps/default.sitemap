@@ -101,6 +101,19 @@ sitemap default label="HV Home"
 
   Text label="Music / Voice Announcement" icon="soundvolume" {
     Frame label="Music / Voice Announcement" {
+        Selection item=VT_SelectedChromeCast 
+          mappings=["SF_MasterBedRoom_ChromeCast"="Master Bedroom",
+                    "FF_GreatRoom_ChromeCast"="Great Room",
+                    "ALL"="ALL"]
+        Selection item=VT_SelectedStream 
+          mappings=[
+            "https://wwfm.streamguys1.com/live-mp3"="Classical",
+            "http://174.36.206.197:8000/stream"="Venice Classical",
+            "http://player.allclassical.org/streamplaylist/ac96k.pls"="Portland All Classical",
+            "http://8.38.78.173:8093/stream"="Audiophile Classical",
+            "http://radio.wanderingsheep.tv:8000/jazzcafe"="Jazz Cafe",
+            "http://cbcr2tor.akacast.akamaistream.net/7/364/451661/v1/rc.akacast.akamaistream.net/cbc_r2_tor"="CBC Radio 2"
+            ]
         Switch item=VT_GreatRoom_PlayMorningAnnouncement
         Switch item=VT_Master_PlayMusic
 

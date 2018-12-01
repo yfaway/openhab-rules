@@ -71,3 +71,13 @@ def playStream(url, casts = CASTS):
 def getFirstFloorCasts():
     return [ CASTS[0] ]
 
+# Return a list of ChromeCast 
+# @param prefix the state of a StringItem
+def findCasts(prefix):
+    if scope.UnDefType.UNDEF == prefix \
+            or scope.UnDefType.NULL == prefix \
+            or scope.StringType("ALL") == prefix:
+        return CASTS
+    else:
+        return filter(lambda cast: cast.getPrefix() == prefix.toString(), CASTS)
+
