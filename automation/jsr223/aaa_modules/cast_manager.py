@@ -29,12 +29,19 @@ CASTS = [ChromeCast('FF_GreatRoom_ChromeCast', "chromecast:audio:greatRoom"),
          ChromeCast('SF_MasterBedRoom_ChromeCast', "chromecast:audio:masterBedRoom")]
 
 _STREAMS = {
-    "Classical": "https://wwfm.streamguys1.com/live-mp3",
+    "WWFM Classical": "https://wwfm.streamguys1.com/live-mp3",
     "Venice Classical": "http://174.36.206.197:8000/stream",
     "Portland All Classical": "http://player.allclassical.org/streamplaylist/ac96k.pls",
     "Audiophile Classical": "http://8.38.78.173:8093/stream",
+    "113FM Smooth Jazz": "http://113fm-edge2.cdnstream.com:80/1725_128",
+    "CD101.9 NY Smooth Jazz": "http://hestia2.cdnstream.com:80/1277_192",
     "Jazz Cafe": "http://radio.wanderingsheep.tv:8000/jazzcafe",
-    "CBC Radio 2": "http://cbcr2tor.akacast.akamaistream.net/7/364/451661/v1/rc.akacast.akamaistream.net/cbc_r2_tor"
+    "Meditation - Yimago Radio 4": "http://199.195.194.94:8109/stream",
+    "Santa Radio": "http://149.255.59.164:8041/stream",
+    "XMas Music": "http://91.121.134.23:8380/stream",
+    "CBC Radio 2": "http://cbcr2tor.akacast.akamaistream.net/7/364/451661/v1/rc.akacast.akamaistream.net/cbc_r2_tor",
+    "Classic Rock Florida": "http://198.58.98.83:8258/stream",
+    "Radio Paradise - Rock": "http://stream-dc2.radioparadise.com:80/mp3-192",
 }
 
 # Pauses the passed-in chrome cast player.
@@ -47,7 +54,10 @@ def pause(casts = CASTS):
 # @param casts list of ChromeCast
 def resume(casts = CASTS):
     for cast in casts:
-        scope.events.sendCommand(cast.getPlayerName(), "PLAY")
+        if scope.OnOffType.ON == scope.items[cast.getIdleItemName()]:
+            Audio.playStream(cast.getSinkName(), cast.getStreamUrl())
+        else:
+            scope.events.sendCommand(cast.getPlayerName(), "PLAY")
 
 # Play the given message on one or more ChromeCast and wait till it finishes 
 # (up to MAX_SAY_WAIT_TIME_IN_SECONDS seconds). Afterward, pause the player.
@@ -86,6 +96,8 @@ def playStream(name, casts = CASTS):
             else:
                 Audio.playStream(cast.getSinkName(), url)
                 cast.setStream(name, url)
+        else:
+            log.info("Missing stream URL for '{0}'".format(name))
 
 # Return the ChromeCast objects on the first floor.
 # @return list of Chromecast

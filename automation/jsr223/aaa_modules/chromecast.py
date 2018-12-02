@@ -40,6 +40,11 @@ class ChromeCast:
     def getPlayerName(self):
         return self.prefix + "Player"
 
+    # Returns the name of the player item for this chromecast object.
+    # @return string
+    def getIdleItemName(self):
+        return self.prefix + "Idling"
+
     # Return the sink name for Voice.say and Audio.playStream usages.
     def getSinkName(self):
         return self.sink

@@ -75,6 +75,7 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 * Turn off all managed lights when armed away.
 
 ## Music / Voice Alerts
+* A single Player and Volume control for the selected chromecast and music stream. Switching the chromecast or stream automaticaly play/re-cast the right music. Can select a single chrome cast or multiple.
 * Pause Chromecast music when system is armed away.
 * Automatically play classical music in the specified morning hour range. The two owners have different leaving schedules so the music is played up to 2 times during that hour range. Music is paused when the front door or garage door is open (implies owner leaving the house).
 * Tell kids to go to bed at 8:30 and 8:45; on the second notice, turn off the first floor lights as well.
@@ -129,7 +130,7 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 
 ## Chrome cast
 * Associate music life cycle with presence.
-* Automatically transfer music as owner moves around.
+* Automatically transfer music as owner moves around; i.e. follow me mode.
 
 ## Presence
 * Ecobee motion sensor.

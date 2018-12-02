@@ -112,21 +112,28 @@ sitemap default label="HV Home"
             "Venice Classical"="Venice Classical",
             "Portland All Classical"="Portland All Classical",
             "Audiophile Classical"="Audiophile Classical",
-            "Jazz Cafe"="Jazz Cafe",
-            "CBC Radio 2"="CBC Radio 2"
+            "113FM Smooth Jazz"="113FM Smooth Jazz",
+            "CD101.9 NY Smooth Jazz"="CD101.9 NY Smooth Jazz",
+            "Meditation - Yimago Radio 4"="Meditation - Yimago Radio 4",
+            "Santa Radio"="Santa Radio",
+            "XMas Music"="XMas Music",
+            "CBC Radio 2"="CBC Radio 2",
+            "Classic Rock Florida"="Classic Rock Florida",
+            "Radio Paradise - Rock"="Radio Paradise - Rock"
             ]
           icon="flow"
+          //"Jazz Cafe"="Jazz Cafe",
         Default item=VT_Master_ChromeCastPlayer
         Slider item=VT_Master_ChromeCastVolume icon=soundvolume
 
         Switch item=VT_GreatRoom_PlayMorningAnnouncement
         // Switch item=VT_Master_PlayMusic
 
-        Switch item=FF_GreatRoom_ChromeCastIdling
+        // Switch item=FF_GreatRoom_ChromeCastIdling
         // Text item=FF_GreatRoom_ChromeCastPlayUri
-        Text item=FF_GreatRoom_ChromeCastDuration visibility=[FF_GreatRoom_ChromeCastDuration > 0]
-        Text item=FF_GreatRoom_ChromeCastCurrentTime visibility=[FF_GreatRoom_ChromeCastCurrentTime > 0]
-        Text item=FF_GreatRoom_ChromeCastTitle
+        // Text item=FF_GreatRoom_ChromeCastDuration visibility=[FF_GreatRoom_ChromeCastDuration > 0]
+        // Text item=FF_GreatRoom_ChromeCastCurrentTime visibility=[FF_GreatRoom_ChromeCastCurrentTime > 0]
+        // Text item=FF_GreatRoom_ChromeCastTitle
         // Text item=FF_GreatRoom_ChromeCastAppName
         // Text item=FF_GreatRoom_ChromeCastAppId
     }

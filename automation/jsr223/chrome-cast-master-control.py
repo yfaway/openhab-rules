@@ -62,6 +62,9 @@ def updateCastVolume(event):
 @when("Item VT_SelectedChromeCast changed")
 def updateStream(event):
     selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
+    # Reset to empty string so that we can trigger a change event, just in 
+    # case the current cast's stream is the same as the other cast's.
+    events.sendCommand(_STREAM_ITEM, '')
     events.sendCommand(_STREAM_ITEM, selectedCasts[0].getStreamName())
 
 @rule("Play the music when the switch is turn on")
@@ -71,11 +74,11 @@ def playMusic(event):
     selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
 
     streamName = None
-    itemValue = items[_STREAM_ITEM]
-    if UnDefType.UNDEF ==  itemValue or UnDefType.NULL == itemValue:
+    streamItemValue = items[_STREAM_ITEM]
+    if UnDefType.UNDEF ==  streamItemValue or UnDefType.NULL == streamItemValue:
         streamName = None
     else:
-        streamName = itemValue.toString()
+        streamName = streamItemValue.toString()
     
     if None != streamName:
         cast_manager.playStream(streamName, selectedCasts)
