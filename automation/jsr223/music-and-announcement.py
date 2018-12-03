@@ -51,9 +51,10 @@ def playAnnouncementAndMusicInTheMorning(event):
         if not inSession:
             inSession = True
             msg = getMorningAnnouncement()
-            cast_manager.playMessage(msg)
+            casts = cast_manager.getFirstFloorCasts()
 
-            playMusic(event)
+            cast_manager.playMessage(msg, casts)
+            cast_manager.playStream("WWFM Classical", casts)
             morningMusicStartCount += 1
 
 @rule("Reset morningMusicStartCount to 0 at 5AM")
@@ -101,4 +102,3 @@ def getMorningAnnouncement():
 #cast_manager.pause()
 #morningMusicStartCount = 0
 #playAnnouncementAndMusicInTheMorning(None)
-

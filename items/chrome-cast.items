@@ -28,21 +28,40 @@ String FF_GreatRoom_ChromeCastAppName "App Name [%s]"
 String FF_GreatRoom_ChromeCastAppId "App Id [%s]"
   { channel="chromecast:audio:greatRoom:appId" }
 
-Player SF_MasterBedRoom_ChromeCastPlayer "Control" (gCastPlayer)
-  { channel="chromecast:audio:masterBedRoom:control" }
-Dimmer SF_MasterBedRoom_ChromeCastVolume "Volume" (gCastVolume)
-  { channel="chromecast:audio:masterBedRoom:volume" }
-String SF_MasterBedRoom_ChromeCastPlayUri "Play URI [%s]"
-  { channel="chromecast:audio:masterBedRoom:playuri" }
-Switch SF_MasterBedRoom_ChromeCastIdling "Idling"
-  { channel="chromecast:audio:masterBedRoom:idling" }
-Number SF_MasterBedRoom_ChromeCastDuration "Duration [%d]" 
-  { channel="chromecast:audio:masterBedRoom:duration" }
-Number SF_MasterBedRoom_ChromeCastCurrentTime "Current Time [%d]"
-  { channel="chromecast:audio:masterBedRoom:currentTime" }
-String SF_MasterBedRoom_ChromeCastTitle "Title [%s]"
-  { channel="chromecast:audio:masterBedRoom:title" }
-String SF_MasterBedRoom_ChromeCastAppName "App Name [%s]"
-  { channel="chromecast:audio:masterBedRoom:appName" }
-String SF_MasterBedRoom_ChromeCastAppId "App Id [%s]"
-  { channel="chromecast:audio:masterBedRoom:appId" }
+Player SF_MasterBedroom_ChromeCastPlayer "Control" (gCastPlayer)
+  { channel="chromecast:audio:masterBedroom:control" }
+Dimmer SF_MasterBedroom_ChromeCastVolume "Volume" (gCastVolume)
+  { channel="chromecast:audio:masterBedroom:volume" }
+String SF_MasterBedroom_ChromeCastPlayUri "Play URI [%s]"
+  { channel="chromecast:audio:masterBedroom:playuri" }
+Switch SF_MasterBedroom_ChromeCastIdling "Idling"
+  { channel="chromecast:audio:masterBedroom:idling" }
+Number SF_MasterBedroom_ChromeCastDuration "Duration [%d]" 
+  { channel="chromecast:audio:masterBedroom:duration" }
+Number SF_MasterBedroom_ChromeCastCurrentTime "Current Time [%d]"
+  { channel="chromecast:audio:masterBedroom:currentTime" }
+String SF_MasterBedroom_ChromeCastTitle "Title [%s]"
+  { channel="chromecast:audio:masterBedroom:title" }
+String SF_MasterBedroom_ChromeCastAppName "App Name [%s]"
+  { channel="chromecast:audio:masterBedroom:appName" }
+String SF_MasterBedroom_ChromeCastAppId "App Id [%s]"
+  { channel="chromecast:audio:masterBedroom:appId" }
+
+Player SF_MasterWashroom_ChromeCastPlayer "Control" (gCastPlayer)
+  { channel="chromecast:audio:masterBathroom:control" }
+Dimmer SF_MasterWashroom_ChromeCastVolume "Volume" (gCastVolume)
+  { channel="chromecast:audio:masterBathroom:volume" }
+String SF_MasterWashroom_ChromeCastPlayUri "Play URI [%s]"
+  { channel="chromecast:audio:masterBathroom:playuri" }
+Switch SF_MasterWashroom_ChromeCastIdling "Idling"
+  { channel="chromecast:audio:masterBathroom:idling" }
+Number SF_MasterWashroom_ChromeCastDuration "Duration [%d]" 
+  { channel="chromecast:audio:masterBathroom:duration" }
+Number SF_MasterWashroom_ChromeCastCurrentTime "Current Time [%d]"
+  { channel="chromecast:audio:masterBathroom:currentTime" }
+String SF_MasterWashroom_ChromeCastTitle "Title [%s]"
+  { channel="chromecast:audio:masterBathroom:title" }
+String SF_MasterWashroom_ChromeCastAppName "App Name [%s]"
+  { channel="chromecast:audio:masterBathroom:appName" }
+String SF_MasterWashroom_ChromeCastAppId "App Id [%s]"
+  { channel="chromecast:audio:masterBathroom:appId" }

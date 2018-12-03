@@ -26,7 +26,9 @@ MAX_SAY_WAIT_TIME_IN_SECONDS = 20
 log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 CASTS = [ChromeCast('FF_GreatRoom_ChromeCast', "chromecast:audio:greatRoom"),
-         ChromeCast('SF_MasterBedRoom_ChromeCast', "chromecast:audio:masterBedRoom")]
+         ChromeCast('SF_MasterBedroom_ChromeCast', "chromecast:audio:masterBedroom"),
+         ChromeCast('SF_MasterWashroom_ChromeCast', "chromecast:audio:masterBathroom")
+        ]
 
 _STREAMS = {
     "WWFM Classical": "https://wwfm.streamguys1.com/live-mp3",

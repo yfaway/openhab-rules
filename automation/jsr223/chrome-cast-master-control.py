@@ -89,8 +89,27 @@ def playMusic(event):
 @when("Item VT_Master_PlayMusic changed to OFF")
 @when("Item {0} changed to {1:d}".format(SECURITY_ITEM_ARM_MODE, SECURITY_STATE_ARM_AWAY))
 def pauseMusic(event):
-    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
-    cast_manager.pause(selectedCasts)
+    if SECURITY_ITEM_ARM_MODE == event.itemName:
+        cast_manager.pause()
+    else:
+        selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
+        cast_manager.pause(selectedCasts)
+
+@rule("Play music when a bathroom fan is turned on")
+@when("Member of gFanSwitch changed to ON")
+def playMusicWhenBathroomFanTurnOn(event):
+    index = event.itemName.rfind("_")
+    castPrefix = event.itemName[0:index] + "_ChromeCast"
+    casts = cast_manager.findCasts(StringType(castPrefix))
+    cast_manager.playStream("CD101.9 NY Smooth Jazz", casts)
+
+@rule("Stop music when a bathroom fan is turned off")
+@when("Member of gFanSwitch changed to OFF")
+def playMusicWhenBathroomFanTurnOff(event):
+    index = event.itemName.rfind("_")
+    castPrefix = event.itemName[0:index] + "_ChromeCast"
+    casts = cast_manager.findCasts(StringType(castPrefix))
+    cast_manager.pause(casts)
 
 # Returns True if the item name matches the selected chrome cast (source);
 # False otherwise

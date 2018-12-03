@@ -102,13 +102,14 @@ sitemap default label="HV Home"
   Text label="Music / Voice Announcement" icon="soundvolume" {
     Frame label="Music / Voice Announcement" {
         Selection item=VT_SelectedChromeCast 
-          mappings=["SF_MasterBedRoom_ChromeCast"="Master Bedroom",
-                    "FF_GreatRoom_ChromeCast"="Great Room",
+          mappings=["FF_GreatRoom_ChromeCast"="Great Room",
+                    "SF_MasterBedroom_ChromeCast"="Master Bedroom",
+                    "SF_MasterWashroom_ChromeCast"="Master Washroom",
                     "ALL"="ALL"]
           icon="mediacontrol"
         Selection item=VT_SelectedStream 
           mappings=[
-            "Classical"="Classical",
+            "WWFM Classical"="WWFM Classical",
             "Venice Classical"="Venice Classical",
             "Portland All Classical"="Portland All Classical",
             "Audiophile Classical"="Audiophile Classical",
