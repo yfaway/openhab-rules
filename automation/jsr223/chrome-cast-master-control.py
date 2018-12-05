@@ -25,8 +25,9 @@ from aaa_modules import security_manager
 
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
-_SOURCE_ITEM = 'VT_SelectedChromeCast'
-_STREAM_ITEM = 'VT_SelectedStream'
+_SOURCE_ITEM_NAME = 'VT_SelectedChromeCast'
+_STREAM_ITEM_NAME = 'VT_SelectedStream'
+_MASTER_PLAYER_ITEM_NAME = 'VT_Master_ChromeCastPlayer'
 
 log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -34,15 +35,18 @@ log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 @when("Member of gCastPlayer changed")
 def updateMasterPlayerState(event):
     if matchSelectedSource(event.itemName):
-        events.sendCommand('VT_Master_ChromeCastPlayer',
+        events.sendCommand(_MASTER_PLAYER_ITEM_NAME,
                 items[event.itemName].toString())
 
 @rule("Update individual cast's player state when master state changes")
-@when("Item VT_Master_ChromeCastPlayer changed")
+@when("Item {0} changed".format(_MASTER_PLAYER_ITEM_NAME))
 def updateCastPlayerState(event):
-    for player in ir.getItem('gCastPlayer').members:
-        if matchSelectedSource(player.name):
-            events.sendCommand(player.name, items[event.itemName].toString())
+    for cast in cast_manager.CASTS:
+        if matchSelectedSource(cast.getPlayerName()):
+            if event.itemState == PlayPauseType.PAUSE:
+                cast_manager.pause([cast])
+            elif event.itemState == PlayPauseType.PLAY:
+                cast_manager.resume([cast])
 
 @rule("Update master volume when a chromecast's volume changes.")
 @when("Member of gCastVolume changed")
@@ -58,32 +62,41 @@ def updateCastVolume(event):
         if matchSelectedSource(volumeItem.name):
             events.sendCommand(volumeItem.name, str(items[event.itemName].intValue()))
 
-@rule("Update the stream selection and play the music when the switch is turn on")
-@when("Item VT_SelectedChromeCast changed")
+@rule("Update the stream selection when the chromecast (source) changes")
+@when("Item {0} changed".format(_SOURCE_ITEM_NAME))
 def updateStream(event):
-    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
-    # Reset to empty string so that we can trigger a change event, just in 
-    # case the current cast's stream is the same as the other cast's.
-    events.sendCommand(_STREAM_ITEM, '')
-    events.sendCommand(_STREAM_ITEM, selectedCasts[0].getStreamName())
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
+
+    if items[_STREAM_ITEM_NAME] == StringType(selectedCasts[0].getStreamName()):
+        # same stream as the other cast -> force play
+        playMusic(event)
+    else: # update the stream item value which will trigger play
+        events.sendCommand(_STREAM_ITEM_NAME, selectedCasts[0].getStreamName())
+
+    volumeItemName = selectedCasts[0].getVolumeName()
+    events.sendCommand('VT_Master_ChromeCastVolume', 
+            str(items[volumeItemName].intValue()))
 
 @rule("Play the music when the switch is turn on")
 @when("Item VT_Master_PlayMusic changed to ON")
 @when("Item VT_SelectedStream changed")
 def playMusic(event):
-    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
 
     streamName = None
-    streamItemValue = items[_STREAM_ITEM]
-    if UnDefType.UNDEF ==  streamItemValue or UnDefType.NULL == streamItemValue:
+    streamItemValue = items[_STREAM_ITEM_NAME]
+    if UnDefType.UNDEF ==  streamItemValue \
+        or UnDefType.NULL == streamItemValue \
+        or StringType('') == streamItemValue:
         streamName = None
     else:
         streamName = streamItemValue.toString()
     
     if None != streamName:
         cast_manager.playStream(streamName, selectedCasts)
+        events.sendCommand(_MASTER_PLAYER_ITEM_NAME, 'PLAY')
     else:
-        log.info("Invalid stream " + itemValue.toString())
+        events.sendCommand(_MASTER_PLAYER_ITEM_NAME, 'PAUSE')
 
 @rule("Pause the music")
 @when("Item VT_Master_PlayMusic changed to OFF")
@@ -92,7 +105,7 @@ def pauseMusic(event):
     if security_manager.ITEM_NAME_PARTITION_ARM_MODE == event.itemName:
         cast_manager.pause()
     else:
-        selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
+        selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
         cast_manager.pause(selectedCasts)
 
 @rule("Play music when a bathroom fan is turned on")
@@ -116,7 +129,7 @@ def playMusicWhenBathroomFanTurnOff(event):
 # False otherwise
 # @param itemName string
 def matchSelectedSource(itemName):
-    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
     matchedCast = next(ifilter(lambda item: item.getPrefix() in itemName, 
                 selectedCasts), None)
     return None != matchedCast

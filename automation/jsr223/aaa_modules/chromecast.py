@@ -40,6 +40,11 @@ class ChromeCast:
     def getPlayerName(self):
         return self.prefix + "Player"
 
+    # Returns the name of the volume item for this chromecast object.
+    # @return string
+    def getVolumeName(self):
+        return self.prefix + "Volume"
+
     # Returns the name of the player item for this chromecast object.
     # @return string
     def getIdleItemName(self):
