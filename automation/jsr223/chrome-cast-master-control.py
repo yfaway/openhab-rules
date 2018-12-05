@@ -11,10 +11,6 @@ from openhab.triggers import when
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
 
-import constants
-reload(constants)
-from constants import *
-
 from aaa_modules import cast_manager
 reload(cast_manager)
 from aaa_modules import cast_manager
@@ -22,6 +18,10 @@ from aaa_modules import cast_manager
 from aaa_modules import chromecast
 reload(chromecast)
 from aaa_modules.chromecast import *
+
+from aaa_modules import security_manager
+reload(security_manager)
+from aaa_modules import security_manager
 
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
@@ -87,9 +87,9 @@ def playMusic(event):
 
 @rule("Pause the music")
 @when("Item VT_Master_PlayMusic changed to OFF")
-@when("Item {0} changed to {1:d}".format(SECURITY_ITEM_ARM_MODE, SECURITY_STATE_ARM_AWAY))
+@when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
 def pauseMusic(event):
-    if SECURITY_ITEM_ARM_MODE == event.itemName:
+    if security_manager.ITEM_NAME_PARTITION_ARM_MODE == event.itemName:
         cast_manager.pause()
     else:
         selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM])
@@ -105,6 +105,7 @@ def playMusicWhenBathroomFanTurnOn(event):
 
 @rule("Stop music when a bathroom fan is turned off")
 @when("Member of gFanSwitch changed to OFF")
+@when("Member of gSecondFloorLightSwitch changed to OFF")
 def playMusicWhenBathroomFanTurnOff(event):
     index = event.itemName.rfind("_")
     castPrefix = event.itemName[0:index] + "_ChromeCast"

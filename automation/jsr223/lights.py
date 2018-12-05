@@ -7,13 +7,13 @@ from org.eclipse.smarthome.core.items import MetadataKey
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
 
-import constants
-reload(constants)
-from constants import *
-
 from aaa_modules import switch_manager
 reload(switch_manager)
 from aaa_modules import switch_manager
+
+from aaa_modules import security_manager
+reload(security_manager)
+from aaa_modules import security_manager
 
 scriptExtension.importPreset("RuleSupport")
 scriptExtension.importPreset("RuleSimple")
@@ -54,9 +54,9 @@ def setLightOnTime(event):
 
 
 @rule("Turn off all lights when armed away")
-@when("Item {0} changed to {1:d}".format(SECURITY_ITEM_ARM_MODE, SECURITY_STATE_ARM_AWAY))
+@when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
 def turnOffAllLights(event):
-    events.sendCommand(GROUP_LIGHT_SWITCHS, "OFF")
+    events.sendCommand(switch_manager.GROUP_LIGHT_SWITCH, "OFF")
 
 @rule("Turn on light when motion sensor triggered")
 @when("Member of gWallSwitchMotionSensor changed to ON")
@@ -128,14 +128,14 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
 
         if switch_manager.isSwitchOn(theOtherLight):
             return
-      #elif switchItem.hasTag(TAG_SHARED_MOTION_SENSOR):
-        # If it was just turned off, then don't trigger this light yet.
-        # This might be the case that the user is getting out of this zone
-        #if ( lastOffTimes.containsKey(theOtherLight.name) ) {
-        #  val long timestamp = lastOffTimes.get(theOtherLight.name)
-        #  if (now.getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS) {
-        #    return
-      # else - pass through
+        elif switchItem.hasTag(TAG_SHARED_MOTION_SENSOR):
+            # If it was just turned off, then don't trigger this light yet.
+            # This might be the case that the user is getting out of this zone
+            if theOtherLight.name in lastOffTimes:
+                timestamp = lastOffTimes[theOtherLight.name]
+                if (DateTime.now().getMillis() - timestamp <= DELAY_AFTER_LAST_OFF_TIME_IN_MS):
+                    return
+        # else - pass through
 
     events.sendCommand(switchItem.name, "ON")
 
@@ -178,13 +178,13 @@ def turnOffWallSwitch(timerEvent):
     # the motion sensor was never shut off --> timer wasn't being renewed.
     motionSensorName = switchName + "_MotionSensor"
     motionSensorItems = filter(lambda item: item.name == motionSensorName, 
-            ir.getItem(GROUP_WALL_SWITCH_MOTION_SENSORS).members)
+            ir.getItem(switch_manager.GROUP_WALL_SWITCH_MOTION_SENSOR).members)
 
     if len(motionSensorItems) > 0 and motionSensorItems[0] == ON:
         events.sendCommand(triggeringItem.name, "ON")
     else:
         target = filter(lambda item: item.name == switchName, 
-                ir.getItem(GROUP_WALL_SWITCH).members)[0]
+                ir.getItem(switch_manager.GROUP_WALL_SWITCH).members)[0]
         if switch_manager.isSwitchOn(target):
             events.sendCommand(target.name, "OFF")
 

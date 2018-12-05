@@ -12,8 +12,12 @@ from org.joda.time import DateTime
 
 from openhab.jsr223 import scope
 
+GROUP_WALL_SWITCH = "gWallSwitch"
+GROUP_LIGHT_SWITCH = "gLightSwitch"
 GROUP_FIRST_FLOOR_LIGHT_SWITCH = "gFirstFloorLightSwitch"
 GROUP_SECOND_FLOOR_LIGHT_SWITCH = "gSecondFloorLightSwitch"
+
+GROUP_WALL_SWITCH_MOTION_SENSOR = "gWallSwitchMotionSensor"
 
 _LOG = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
