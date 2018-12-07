@@ -49,6 +49,9 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 ## Alerts (email)
 * Generic framework to send alerts from any rules. The alert currently just emails owners.
 
+## Ecobee Thermostat
+* In the winter turn on the farm when owner is at home. This helps to circulate the air to the second floor. Turn if off when armed away.
+
 ## Display
 * Garage door status.
 * Presence.

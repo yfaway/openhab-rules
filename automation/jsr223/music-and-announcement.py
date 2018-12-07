@@ -7,24 +7,11 @@ from org.slf4j import Logger, LoggerFactory
 from openhab import osgi
 from openhab.rules import rule
 from openhab.triggers import when
-from org.eclipse.smarthome.core.items import Metadata
-from org.eclipse.smarthome.core.items import MetadataKey
-from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
-
-import constants
-reload(constants)
-from constants import *
 
 from aaa_modules import cast_manager
 reload(cast_manager)
 from aaa_modules import cast_manager
-
-from aaa_modules import chromecast
-reload(chromecast)
-from aaa_modules.chromecast import *
-
-CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
 # The follow two constants define the morning time range and the # of times
 # announcement and music will automatically be played. The counter is
