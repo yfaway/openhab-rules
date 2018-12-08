@@ -50,7 +50,8 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 * Generic framework to send alerts from any rules. The alert currently just emails owners.
 
 ## Ecobee Thermostat
-* In the winter turn on the farm when owner is at home. This helps to circulate the air to the second floor. Turn if off when armed away.
+* Change the thermostat to 'away' mode (climate ref) when the system is armed away. 'Away' mode should have lower heat setting and higher cool setting. Proactively change to away mode rather than relying on the static setting in the thermostat should save more energy.
+* In the winter turn on the far when owner is at home. This helps to circulate the air to the second floor.
 
 ## Display
 * Garage door status.

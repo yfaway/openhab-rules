@@ -12,31 +12,37 @@ from aaa_modules import security_manager
 
 ECOBEE_ID = '411921197263'
 
-ITEM_DESIRED_HEAT = 'FF_GreatRoom_Thermostat_DesiredHeat'
-ITEM_DESIRED_COOL = 'FF_GreatRoom_Thermostat_DesiredCool'
+_ITEM_DESIRED_HEAT = 'FF_GreatRoom_Thermostat_DesiredHeat'
+_ITEM_DESIRED_COOL = 'FF_GreatRoom_Thermostat_DesiredCool'
 
 _HOLD_FAN_PARAMS = {'fan': 'on',
           'isTemperatureAbsolute': False,
           'isTemperatureRelative': False,
-          'coolHoldTemp': items[ITEM_DESIRED_COOL].floatValue(),
-          'heatHoldTemp': items[ITEM_DESIRED_HEAT].floatValue(),
+          'coolHoldTemp': items[_ITEM_DESIRED_COOL].floatValue(),
+          'heatHoldTemp': items[_ITEM_DESIRED_HEAT].floatValue(),
           'isCoolOff': True,
           'isHeatOff': True, }
+
+_AWAY_CLIMATE_REF = 'away'
 
 log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 @rule("Turn off fan when armed away")
 @when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
 def resume(event):
-    log.info("[thermostat] turn off fan")
-    EcobeeAction.ecobeeResumeProgram(ECOBEE_ID, True)
+    EcobeeAction.ecobeeSetHold(ECOBEE_ID, None, None, _AWAY_CLIMATE_REF, None,
+            None, None, None)
+    log.info("[Thermostat] Changed to Away mode")
 
 @rule("Turn on fan when unarmed and is in winter")
 @when(security_manager.WHEN_CHANGED_FROM_ARM_AWAY_TO_UNARMED)
 def holdFanOn(event):
+    EcobeeAction.ecobeeResumeProgram(ECOBEE_ID, True)
+    log.info("[Thermostat] Resumed normal schedule")
+
     if isInWinter():
-        log.info("[thermostat] turn on fan")
         EcobeeAction.ecobeeSetHold(ECOBEE_ID, _HOLD_FAN_PARAMS, None, None, None, None)
+        log.info("[Thermostat] Turned on fan")
 
 def isInWinter():
     month = DateTime.now().getMonthOfYear()
