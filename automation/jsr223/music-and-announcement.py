@@ -53,8 +53,8 @@ def resetMorningMusicStartCount(event):
 @when("Item FF_FrontDoor_Tripped changed to ON")
 @when("Item FF_GarageDoor_Tripped changed to ON")
 def pauseMorningMusic(event):
-    if isInMorningTimeRange():
-        pauseMusic(event)
+    if isInMorningTimeRange() and inSession:
+        cast_manager.pause()
         inSession = False
 
 @rule("Play morning announcement")

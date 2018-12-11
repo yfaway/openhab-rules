@@ -11,12 +11,12 @@ class ChromeCast:
     #     file. By convention, other channels of this device will have this
     #     naming pattern: {prefix}Idling, {prefix}Title, {prefix}Player, and
     #     so on.
-    # @param sink the sink name for voice and audio play. The sink name can be
+    # @param sinkName the sink name for voice and audio play. The sink name can be
     #     retrieved by running "openhab-cli console" and then 
     #     "smarthome:audio sinks".
-    def __init__(self, prefix, sink):
+    def __init__(self, prefix, sinkName):
         self.prefix = prefix
-        self.sink = sink
+        self.sinkName = sinkName
         self.streamUrl = None
         self.streamName = None
 
@@ -52,7 +52,7 @@ class ChromeCast:
 
     # Return the sink name for Voice.say and Audio.playStream usages.
     def getSinkName(self):
-        return self.sink
+        return self.sinkName
 
     # Returns the current stream Uri or None if no stream set.
     # @return string

@@ -129,6 +129,7 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 * Turn on/off main water valve.
 * Turn off water valve and alert when water leakage detected.
 * Control blinds.
+* Turn on/off vacation mode from sitemap --> set vacation mode on Ecobee as well.
 
 ## Light/Fan/Plug Control
 * Associate each light with the dimming value and time range.
@@ -136,6 +137,7 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 ## Chrome cast
 * Associate music life cycle with presence.
 * Automatically transfer music as owner moves around; i.e. follow me mode.
+* Add timer to stop music after 5', 10, 15, 30, 1h.
 
 ## Presence
 * Ecobee motion sensor.

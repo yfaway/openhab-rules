@@ -96,7 +96,7 @@ Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motio
 
 Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" 
   (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node11:switch_binary" }
+  { channel="zwave:device:9e4ce05e:node14:switch_binary" }
 Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) 
   {expire="15m,command=OFF"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"

@@ -104,9 +104,11 @@ def playMusic(event):
 def pauseMusic(event):
     if security_manager.ITEM_NAME_PARTITION_ARM_MODE == event.itemName:
         cast_manager.pause()
+        log.info("[Cast] Paused all music.")
     else:
         selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
         cast_manager.pause(selectedCasts)
+        log.info("[Cast] Paused selected stream.")
 
 @rule("Play music when a bathroom fan is turned on")
 @when("Member of gFanSwitch changed to ON")

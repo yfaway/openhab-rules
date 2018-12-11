@@ -66,55 +66,76 @@ def resume(casts = CASTS):
 # After this call, cast.isActive() will return False.
 # @param message string the message to tts
 # @param casts list of ChromeCast
+# @return boolean True if success; False if stream name is invalid.
 def playMessage(message, casts = CASTS):
-    for cast in casts:
-        Voice.say(message, None, cast.getSinkName())
+    if None != message and '' != message:
+        for cast in casts:
+            Voice.say(message, None, cast.getSinkName())
 
-    # Wait until the cast is available again or a specific number of seconds 
-    # has passed. This is a workaround for the limitation that the OpenHab
-    # say method is non-blocking.
-    seconds = 2
-    time.sleep(seconds)
+        # Wait until the cast is available again or a specific number of seconds 
+        # has passed. This is a workaround for the limitation that the OpenHab
+        # say method is non-blocking.
+        seconds = 2
+        time.sleep(seconds)
 
-    lastCast = casts[-1]
-    while seconds <= MAX_SAY_WAIT_TIME_IN_SECONDS:
-        if lastCast.hasTitle(): # this means the announcement is still happening.
-            time.sleep(1)
-            seconds += 1
-        else: # announcemen is finished.
-            seconds = MAX_SAY_WAIT_TIME_IN_SECONDS + 1
+        lastCast = casts[-1]
+        while seconds <= MAX_SAY_WAIT_TIME_IN_SECONDS:
+            if lastCast.hasTitle(): # this means the announcement is still happening.
+                time.sleep(1)
+                seconds += 1
+            else: # announcement is finished.
+                seconds = MAX_SAY_WAIT_TIME_IN_SECONDS + 1
 
-    pause(casts)
+        pause(casts)
+
+        return True
+    else:
+        log.info("Empty TTS message")
+        return False
 
 # Play the given stream url.
 # @param name string; see _STREAMS
 # @param casts list of ChromeCast
+# @return boolean True if success; False if stream name is invalid.
 def playStream(name, casts = CASTS):
-    for cast in casts:
-        url = getStreamUrl(name)
-        if None != url:
+    url = getStreamUrl(name)
+    if None != url:
+        for cast in casts:
             if url == cast.getStreamUrl():
                 resume([cast])
             else:
                 Audio.playStream(cast.getSinkName(), url)
                 cast.setStream(name, url)
-        else:
-            log.info("Missing stream URL for '{0}'".format(name))
+
+        return True
+    else:
+        log.info("Missing stream URL for '{0}'".format(name))
+        return False
+
+# Return all available ChromeCast objects.
+# @return list of Chromecast
+def getAllCasts():
+    return CASTS
 
 # Return the ChromeCast objects on the first floor.
 # @return list of Chromecast
 def getFirstFloorCasts():
     return [ CASTS[0] ]
 
-# Return a list of ChromeCast 
-# @param prefix the state of a StringItem
+# Return a list of ChromeCast. If prefix is UNDEF, NULL, or "ALL", return
+# all casts. Otherwise returns the matching casts.
+# @param prefix StringItem or string
+# @return list of ChromeCast
 def findCasts(prefix):
     if scope.UnDefType.UNDEF == prefix \
             or scope.UnDefType.NULL == prefix \
-            or scope.StringType("ALL") == prefix:
+            or scope.StringType("ALL") == prefix \
+            or 'ALL' == prefix:
         return CASTS
-    else:
+    elif isinstance(prefix, scope.StringType):
         return filter(lambda cast: cast.getPrefix() == prefix.toString(), CASTS)
+    else: # assume to be string
+        return filter(lambda cast: cast.getPrefix() == prefix, CASTS)
 
 # Returns the stream associated with the given name.
 # @return string could be None if not found
@@ -123,3 +144,8 @@ def getStreamUrl(name):
         return _STREAMS[name]
     else:
         return None
+
+# Returns a list of stream names.
+# @return list
+def getAllStreamNames():
+    return _STREAMS.keys()
