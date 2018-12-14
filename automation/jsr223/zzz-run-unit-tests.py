@@ -4,6 +4,14 @@ import unittest
 
 from org.slf4j import Logger, LoggerFactory
 
+from aaa_modules import alert_test
+reload(alert_test)
+from aaa_modules.alert_test import AlertTest
+
+from aaa_modules import alert_manager_test
+reload(alert_manager_test)
+from aaa_modules.alert_manager_test import AlertManagerTest
+
 from aaa_modules import chromecast_test
 reload(chromecast_test)
 from aaa_modules.chromecast_test import ChromeCastTest
@@ -14,7 +22,7 @@ from aaa_modules.cast_manager_test import CastManagerTest
 
 LOGGER = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
-TEST_NAMES = [ChromeCastTest, CastManagerTest]
+TEST_NAMES = [AlertTest, AlertManagerTest, ChromeCastTest, CastManagerTest]
 
 def getTestSuites():
     suites = []
@@ -47,3 +55,4 @@ def runTests():
         LOGGER.error(_formatErrors(result.failures))
 
 runTests()
+

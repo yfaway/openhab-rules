@@ -11,14 +11,39 @@ class Level:
 
 # Contains information about the alert.
 class Alert:
-    # @param level int a value in Level class
+    # Creates an INFO alert.
     # @param subject string
     # @param body string, optional
+    # @param module string, optional
+    # @param intervalBetweenAlertsInMinutes int, optional
     @classmethod
-    def createSimpleAlert(cls, level, subject, body = None):
-        return cls(level, subject, body)
+    def createInfoAlert(cls, subject, body = None, module = None, 
+            intervalBetweenAlertsInMinutes = -1):
+        return cls(Level.INFO, subject, body)
 
-    # Creates a new object from information in the json string.
+    # Creates an WARNING alert.
+    # @param subject string
+    # @param body string, optional
+    # @param module string, optional
+    # @param intervalBetweenAlertsInMinutes int, optional
+    @classmethod
+    def createWarningAlert(cls, subject, body = None, module = None, 
+            intervalBetweenAlertsInMinutes = -1):
+        return cls(Level.WARNING, subject, body)
+
+    # Creates an CRITICAL alert.
+    # @param subject string
+    # @param body string, optional
+    # @param module string, optional
+    # @param intervalBetweenAlertsInMinutes int, optional
+    @classmethod
+    def createCriticalAlert(cls, subject, body = None, module = None, 
+            intervalBetweenAlertsInMinutes = -1):
+        return cls(Level.CRITICAL, subject, body)
+
+    # Creates a new object from information in the json string. This method
+    # is used for alerts coming in from outside the jsr223 framework; they 
+    # will be in JSON format.
     # Accepted keys: subject, body, level ('info', 'warning', or 'critical').
     # @param jsonString string
     # @throw ValueError if jsonString contains invalid values
@@ -26,8 +51,11 @@ class Alert:
     def fromJson(cls, jsonString):
         obj = json.loads(jsonString)
 
-        subject = obj['subject']
-        body = None if not 'body' in obj else obj['body']
+        subject = obj.get('subject', None)
+        if None == subject or '' == subject:
+            raise ValueError('Missing subject value.')
+
+        body = obj.get('body', None)
 
         levelMappings = {
             'info': Level.INFO,
@@ -41,18 +69,40 @@ class Alert:
         if None == level:
             raise ValueError('Invalid alert level.')
 
-        return cls(level, subject, body)
+        module = obj.get('module', None)
+        if '' == module:
+            module = None
 
-    def __init__(self, level, subject, body):
+        intervalBetweenAlertsInMinutes = obj.get(
+                'intervalBetweenAlertsInMinutes', -1)
+        if None != module and intervalBetweenAlertsInMinutes <= 0:
+            raise ValueError('Invalid intervalBetweenAlertsInMinutes value: ' 
+                    + str(intervalBetweenAlertsInMinutes))
+
+        return cls(level, subject, body, module, intervalBetweenAlertsInMinutes)
+
+    def __init__(self, level, subject, body = None, module = None,
+            intervalBetweenAlertsInMinutes = -1):
         self.level = level
         self.subject = subject
         self.body = body
+        self.module = module
+        self.intervalBetweenAlertsInMinutes = intervalBetweenAlertsInMinutes
 
     def getSubject(self):
         return self.subject
 
     def getBody(self):
         return self.body
+
+    # Returns the alert module
+    # @return string
+    def getModule(self):
+        return self.module
+
+    # @return int
+    def getIntervalBetweenAlertsInMinutes(self):
+        return self.intervalBetweenAlertsInMinutes
 
     def isInfoLevel(self):
         return Level.INFO == self.level

@@ -46,6 +46,9 @@ _STREAMS = {
     "Radio Paradise - Rock": "http://stream-dc2.radioparadise.com:80/mp3-192",
 }
 
+# If set, the TTS message won't be sent to the chromecasts.
+_testMode = False
+
 # Pauses the passed-in chrome cast player.
 # @param casts list of ChromeCast
 def pause(casts = CASTS):
@@ -64,29 +67,35 @@ def resume(casts = CASTS):
 # Play the given message on one or more ChromeCast and wait till it finishes 
 # (up to MAX_SAY_WAIT_TIME_IN_SECONDS seconds). Afterward, pause the player.
 # After this call, cast.isActive() will return False.
+# 
+# If _testMode is True, no message will be sent to the cast.
 # @param message string the message to tts
 # @param casts list of ChromeCast
 # @return boolean True if success; False if stream name is invalid.
 def playMessage(message, casts = CASTS):
     if None != message and '' != message:
         for cast in casts:
-            Voice.say(message, None, cast.getSinkName())
+            if not _testMode:
+                Voice.say(message, None, cast.getSinkName())
 
-        # Wait until the cast is available again or a specific number of seconds 
-        # has passed. This is a workaround for the limitation that the OpenHab
-        # say method is non-blocking.
-        seconds = 2
-        time.sleep(seconds)
+            cast._setLastTtsMessage(message)
 
-        lastCast = casts[-1]
-        while seconds <= MAX_SAY_WAIT_TIME_IN_SECONDS:
-            if lastCast.hasTitle(): # this means the announcement is still happening.
-                time.sleep(1)
-                seconds += 1
-            else: # announcement is finished.
-                seconds = MAX_SAY_WAIT_TIME_IN_SECONDS + 1
+        if not _testMode:
+            # Wait until the cast is available again or a specific number of seconds 
+            # has passed. This is a workaround for the limitation that the OpenHab
+            # say method is non-blocking.
+            seconds = 2
+            time.sleep(seconds)
 
-        pause(casts)
+            lastCast = casts[-1]
+            while seconds <= MAX_SAY_WAIT_TIME_IN_SECONDS:
+                if lastCast.hasTitle(): # this means the announcement is still happening.
+                    time.sleep(1)
+                    seconds += 1
+                else: # announcement is finished.
+                    seconds = MAX_SAY_WAIT_TIME_IN_SECONDS + 1
+
+            pause(casts)
 
         return True
     else:
@@ -149,3 +158,9 @@ def getStreamUrl(name):
 # @return list
 def getAllStreamNames():
     return _STREAMS.keys()
+
+# Switches on/off the test mode.
+# @param mode boolean
+def _setTestMode(mode):
+    global _testMode
+    _testMode = mode

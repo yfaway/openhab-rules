@@ -19,6 +19,7 @@ class ChromeCast:
         self.sinkName = sinkName
         self.streamUrl = None
         self.streamName = None
+        self.lastTtsMessage = None
 
     # Return true if the the chromecast is playing something.
     # @param castItemPrefix string the chrome cast item name
@@ -64,6 +65,9 @@ class ChromeCast:
     def getStreamName(self):
         return self.streamName
 
+    def getLastTtsMessage(self):
+        return self.lastTtsMessage
+
     # Associate a stream URI with this object.
     # @param streamUrl string 
     # @param streamName string 
@@ -71,4 +75,7 @@ class ChromeCast:
         self.streamName = streamName
         self.streamUrl = streamUrl
 
- 
+    # Internal API to be used by the cast_manager to set the last TTS message.
+    # @param ttsMessage string
+    def _setLastTtsMessage(self, ttsMessage):
+        self.lastTtsMessage = ttsMessage

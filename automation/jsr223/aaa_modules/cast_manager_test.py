@@ -24,8 +24,10 @@ class CastManagerTest(unittest.TestCase):
     def testPlayMessage_validMessage_returnsTrue(self):
         casts = cast_manager.getFirstFloorCasts()
 
-        result = cast_manager.playMessage("hello world", casts)
+        ttsMessage = "hello world"
+        result = cast_manager.playMessage(ttsMessage, casts)
         self.assertTrue(result)
+        self.assertEqual(ttsMessage, casts[0].getLastTtsMessage())
 
         time.sleep(1) # sleep for 1 sec for the pause message to go through
         for cast in casts:

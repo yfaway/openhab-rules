@@ -8,21 +8,39 @@ from aaa_modules.alert import *
 
 SUBJECT = "a subject"
 BODY = 'a body'
+MODULE = 'a module'
+INTERVAL_BETWEEN_ALERTS_IN_MINUTES = 5
 
-LOGGER = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 class AlertTest(unittest.TestCase):
-    def testCreateSimpleAlert_withSubject_returnsNewObject(self):
-        alert = Alert.createSimpleAlert(Level.INFO, SUBJECT)
+    def testCreateInfoAlert_withSubject_returnsNewObject(self):
+        alert = Alert.createInfoAlert(SUBJECT)
         self.assertEqual(SUBJECT, alert.getSubject())
         self.assertEqual(None, alert.getBody())
+        self.assertEqual(None, alert.getModule())
+        self.assertEqual(-1, alert.getIntervalBetweenAlertsInMinutes())
         self.assertTrue(alert.isInfoLevel())
 
-    def testCreateSimpleAlert_withSubjectAndBody_returnsNewObject(self):
-        alert = Alert.createSimpleAlert(Level.CRITICAL, SUBJECT, BODY)
+    def testCreateWarningAlert_withSubject_returnsNewObject(self):
+        alert = Alert.createWarningAlert(SUBJECT)
+        self.assertEqual(SUBJECT, alert.getSubject())
+        self.assertEqual(None, alert.getBody())
+        self.assertEqual(None, alert.getModule())
+        self.assertEqual(-1, alert.getIntervalBetweenAlertsInMinutes())
+        self.assertTrue(alert.isWarningLevel())
+
+    def testCreateCriticalAlert_withSubjectAndBody_returnsNewObject(self):
+        alert = Alert.createCriticalAlert(SUBJECT, BODY)
         self.assertEqual(SUBJECT, alert.getSubject())
         self.assertEqual(BODY, alert.getBody())
         self.assertTrue(alert.isCriticalLevel())
+
+    def testFromJson_missingSubject_raiseException(self):
+        json = '{' + '"body":"{}","level":"blah"'.format(SUBJECT, BODY) + '}'
+        with self.assertRaises(ValueError) as cm:
+            alert = Alert.fromJson(json)
+        self.assertEqual('Missing subject value.', cm.exception.args[0])
 
     def testFromJson_withSubject_returnsNewObject(self):
         json = '{"subject":"' + SUBJECT + '"}'
@@ -53,5 +71,22 @@ class AlertTest(unittest.TestCase):
         with self.assertRaises(ValueError) as cm:
             alert = Alert.fromJson(json)
 
-run_test(AlertTest, LOGGER) 
+    def testFromJson_withSubjectBodyAndModule_returnsNewObject(self):
+        json = '{' + '"subject":"{}","body":"{}","module":"{}","intervalBetweenAlertsInMinutes":{}'.format(
+                SUBJECT, BODY, MODULE, INTERVAL_BETWEEN_ALERTS_IN_MINUTES) + '}'
+        alert = Alert.fromJson(json)
 
+        self.assertEqual(SUBJECT, alert.getSubject())
+        self.assertEqual(BODY, alert.getBody())
+        self.assertEqual(MODULE, alert.getModule())
+        self.assertEqual(INTERVAL_BETWEEN_ALERTS_IN_MINUTES, alert.getIntervalBetweenAlertsInMinutes())
+        self.assertTrue(alert.isInfoLevel())
+
+    def testFromJson_missingIntervalBetweenAlertsInMinutes_returnsNewObject(self):
+        json = '{' + '"subject":"{}","body":"{}","module":"{}"'.format(
+                SUBJECT, BODY, MODULE) + '}'
+        with self.assertRaises(ValueError) as cm:
+            alert = Alert.fromJson(json)
+        self.assertEqual('Invalid intervalBetweenAlertsInMinutes value: -1', cm.exception.args[0])
+
+#run_test(AlertTest, logger) 
