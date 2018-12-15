@@ -20,9 +20,18 @@ from aaa_modules import cast_manager_test
 reload(cast_manager_test)
 from aaa_modules.cast_manager_test import CastManagerTest
 
-LOGGER = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+import alert_sender_test
+reload(alert_sender_test)
+from alert_sender_test import AlertRuleTest
 
-TEST_NAMES = [AlertTest, AlertManagerTest, ChromeCastTest, CastManagerTest]
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+
+TEST_NAMES = [
+    AlertTest,
+    AlertManagerTest,
+    ChromeCastTest,
+    CastManagerTest,
+    AlertRuleTest, ]
 
 def getTestSuites():
     suites = []
@@ -44,15 +53,15 @@ def runTests():
     runner = unittest.TextTestRunner(resultclass=unittest.TestResult)
     result = runner.run(suites)
 
-    LOGGER.info("Run {} tests; {} errors, {} failures, {} skipped".format(
+    logger.info("Run {} tests; {} errors, {} failures, {} skipped".format(
                 result.testsRun, len(result.errors), len(result.failures),
                 len(result.skipped)))
 
     if len(result.errors) > 0:
-        LOGGER.error(_formatErrors(result.errors))
+        logger.error(_formatErrors(result.errors))
 
     if len(result.failures) > 0:
-        LOGGER.error(_formatErrors(result.failures))
+        logger.error(_formatErrors(result.failures))
 
 runTests()
 

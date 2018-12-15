@@ -19,7 +19,7 @@ class Alert:
     @classmethod
     def createInfoAlert(cls, subject, body = None, module = None, 
             intervalBetweenAlertsInMinutes = -1):
-        return cls(Level.INFO, subject, body)
+        return cls(Level.INFO, subject, body, module, intervalBetweenAlertsInMinutes)
 
     # Creates an WARNING alert.
     # @param subject string
@@ -29,7 +29,7 @@ class Alert:
     @classmethod
     def createWarningAlert(cls, subject, body = None, module = None, 
             intervalBetweenAlertsInMinutes = -1):
-        return cls(Level.WARNING, subject, body)
+        return cls(Level.WARNING, subject, body, module, intervalBetweenAlertsInMinutes)
 
     # Creates an CRITICAL alert.
     # @param subject string
@@ -39,7 +39,7 @@ class Alert:
     @classmethod
     def createCriticalAlert(cls, subject, body = None, module = None, 
             intervalBetweenAlertsInMinutes = -1):
-        return cls(Level.CRITICAL, subject, body)
+        return cls(Level.CRITICAL, subject, body, module, intervalBetweenAlertsInMinutes)
 
     # Creates a new object from information in the json string. This method
     # is used for alerts coming in from outside the jsr223 framework; they 
@@ -112,3 +112,17 @@ class Alert:
 
     def isCriticalLevel(self):
         return Level.CRITICAL == self.level
+
+    # Returns a user readable string containing this object's info.
+    def toString(self):
+        str = ''
+        if self.isInfoLevel():
+            str += '[INFO]'
+        elif self.isWarningLevel():
+            str += '[WARNING]'
+        else:
+            str += '[CRITICAL]'
+
+        str += ' {}\n{}'.format(self.getSubject(), self.getBody())
+
+        return str
