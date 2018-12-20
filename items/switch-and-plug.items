@@ -38,7 +38,7 @@ Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
 Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
   (FF_Foyer_LightSwitch_MotionSensor) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d000204c7ef:command:JS(occupancy.js)]" }
+  {channel="mqtt:topic:mything:FoyerMotionSensor"}
 String FF_Foyer_LightSwitch_MotionSensor_DisableTriggeringIf 
   (gMotionSensorDisableTriggeringIf)
 
@@ -50,7 +50,7 @@ Switch FF_Office_LightSwitch_Timer (gWallSwitchTimer)
   {expire="15m,command=OFF"}
 Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d000236b6c0:command:JS(occupancy.js)]" }
+  {channel="mqtt:topic:mything:OfficeMotionSensor"}
 
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
@@ -63,10 +63,10 @@ String FF_Kitchen_LightSwitch_MotionSensor_DisableTriggeringIf
   (gMotionSensorDisableTriggeringIf)
 Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
   (FF_Kitchen_LightSwitch_MotionSensor) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d000236b4cd:command:JS(occupancy.js)]" }
+  {channel="mqtt:topic:mything:PantryMotionSensor"}
 Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d000236b4cd:state:JSONPATH($.illuminance)]"}
+  {channel="mqtt:topic:mything:PantryIlluminance"}
 
 Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node7:switch_binary" }
@@ -86,22 +86,23 @@ Switch SF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer)
   {expire="10m,command=OFF"}
 Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%d]"
   (gIlluminance) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d0001fa45fd:state:JSONPATH($.illuminance)]"}
+  {channel="mqtt:topic:mything:MasterWashroomIlluminance"}
 // This wash room has two motion sensors (one in the standing shower area).
 Group:Switch:OR(ON,OFF) SF_MasterWashroom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motion Sensor"
   (SF_MasterWashroom_LightSwitch_MotionSensor) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d0001fa45fd:command:JS(occupancy.js)]" }
+  {channel="mqtt:topic:mything:MasterWashroomLightMotionSensor"}
+
 
 Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" 
   (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node14:switch_binary" }
+  {channel="zwave:device:9e4ce05e:node14:switch_binary" }
 Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) 
   {expire="15m,command=OFF"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d000200eb10:command:JS(occupancy.js)]" }
+  {channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
 
 Group:Switch:OR(ON,OFF) SF_MainWashroom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
@@ -111,7 +112,7 @@ Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer)
   {expire="15m,command=OFF"}
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MainWashroom_LightSwitch_MotionSensor) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d000200ed5e:command:JS(occupancy.js)]" }
+  {channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
 
 Dimmer SF_Lobby_LightSwitch "Lobby Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
@@ -119,7 +120,7 @@ Dimmer SF_Lobby_LightSwitch "Lobby Light"
 String SF_Lobby_LightSwitch_TurnOffOtherLight (gTurnOffOtherLight)
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  {mqtt="<[broker:zigbee2mqtt/0x00158d000239725a:command:JS(occupancy.js)]" }
+  {channel="mqtt:topic:mything:SecondFloorMotionSensor"}
 Switch SF_Lobby_LightSwitch_Timer (gWallSwitchTimer) 
   {expire="2m,command=OFF"}
 

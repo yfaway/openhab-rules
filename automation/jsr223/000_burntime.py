@@ -18,7 +18,8 @@ while True:
             break;
     except:
         pass
+
     log.info("jsr223: context not initialised yet. waiting 10 sec before checking again")
-    time.sleep(10)
+    time.sleep(40)
 
 log.info("jsr223: done")

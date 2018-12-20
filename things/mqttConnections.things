@@ -1,0 +1,24 @@
+Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
+{
+    Thing mqtt:topic:mything {
+    Channels:
+      Type switch : FoyerMotionSensor "Foyer Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000204c7ef", commandTopic="zigbee2mqtt/0x00158d000204c7ef", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type switch : OfficeMotionSensor "Office Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000236b6c0", commandTopic="zigbee2mqtt/0x00158d000236b6c0", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type switch : PantryMotionSensor "Pantry Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000236b4cd", commandTopic="zigbee2mqtt/0x00158d000236b4cd", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : PantryIlluminance "Pantry Illuminance Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000236b4cd", commandTopic="zigbee2mqtt/0x00158d000236b4cd", transformationPattern="JSONPATH:$.illuminance"]
+      Type switch : MasterWashroomLightMotionSensor "Master Washroom Light Motion Sensor" 
+        [stateTopic="zigbee2mqtt/0x00158d0001fa45fd", commandTopic="zigbee2mqtt/0x00158d0001fa45fd", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : MasterWashroomIlluminance "Master Washroom Illuminance Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d0001fa45fd", commandTopic="zigbee2mqtt/0x00158d0001fa45fd", transformationPattern="JSONPATH:$.illuminance"]
+      Type switch : MasterWashroomFanMotionSensor "Master Washroom Fan Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000200eb10", commandTopic="zigbee2mqtt/0x00158d000200eb10", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type switch : MainWashroomFanMotionSensor "Main Washroom Fan Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000200ed5e", commandTopic="zigbee2mqtt/0x00158d000200ed5e", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type switch : SecondFloorMotionSensor "Second Floor Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+    }
+}

@@ -70,4 +70,4 @@ class AlertManagerTest(unittest.TestCase):
         emails = AlertManager._getEmailAddresses()
         self.assertTrue(len(emails) > 0)
 
-run_test(AlertManagerTest, logger) 
+#run_test(AlertManagerTest, logger) 

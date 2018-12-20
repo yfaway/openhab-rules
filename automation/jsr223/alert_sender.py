@@ -3,7 +3,6 @@
 from org.slf4j import Logger, LoggerFactory
 from openhab.rules import rule
 from openhab.triggers import when
-from openhab.jsr223 import scope
 
 from aaa_modules import alert_manager
 reload(alert_manager)
@@ -16,7 +15,7 @@ _ALERT_ITEM_NAME = 'VT_AlertSender'
 @rule("Send alert")
 @when("Item {} received update".format(_ALERT_ITEM_NAME))
 def sendAlert(event):
-    json = scope.items[_ALERT_ITEM_NAME].toString()
+    json = items[_ALERT_ITEM_NAME].toString()
     alert = Alert.fromJson(json)
 
     if AlertManager.processAlert(alert):
@@ -24,3 +23,4 @@ def sendAlert(event):
     else:
         logger.error('Failed to send alert {}' % alert.toString())
         return False
+
