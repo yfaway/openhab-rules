@@ -1,4 +1,5 @@
 services
+things/camera.things
 transform/owner-email-addresses.map
 transform/routes.map
 *.swp

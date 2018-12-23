@@ -1,0 +1,16 @@
+Group gCameraImage
+Group gCameraMotionAlarm
+
+Switch FF_Porch_Camera_MotionAlarm "Porch Motion Detected" (gCameraMotionAlarm) 
+  {channel="ipcamera:DAHUA:001:motionAlarm"}
+Image  FF_Porch_Camera_Image (gCameraImage)
+  {channel="ipcamera:DAHUA:001:image"}
+
+Switch FF_Porch_Camera_UpdateImage "Porch Get New Image" 
+  {channel="ipcamera:DAHUA:001:updateImageNow"}
+
+// Switch CamEnableMotion "MotionAlarm on/off" {channel="ipcamera:DAHUA:001:enableMotionAlarm"}
+// Switch CamAudioAlarm "Audio detected" { channel="ipcamera:DAHUA:001:audioAlarm" }
+// String CamImageUrl "Image Url" { channel="ipcamera:DAHUA:001:imageurl" }
+// Switch CamUpdateImage "Get new picture" { channel="ipcamera:DAHUA:001:updateImageNow" }
+

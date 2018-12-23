@@ -99,6 +99,16 @@ sitemap default label="HV Home"
     }
   }
 
+  Text label="Camera" icon="camera" {
+    Frame label="Camera" {
+      //Switch item=CamEnableMotion label="Turn motion on/off"
+      Switch item=FF_Porch_Camera_MotionAlarm label="Motion detected"
+      //Switch item=CamAudioAlarm label="Audio detected"    
+      Switch item=FF_Porch_Camera_UpdateImage label="Fetch new image"
+      Image url="http://google.com/leaveLinkAsThis" item=FF_Porch_Camera_Image refresh=10000
+    }
+  }
+
   Text label="Music / Voice Announcement" icon="soundvolume" {
     Frame label="Music / Voice Announcement" {
         Selection item=VT_SelectedChromeCast 

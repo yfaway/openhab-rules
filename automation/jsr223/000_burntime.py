@@ -11,6 +11,8 @@ log = LoggerFactory.getLogger("org.eclipse.smarthome.automation")
 
 log.info("jsr223: checking for initialised context")
 
+time.sleep(30)
+
 while True:
     try:
         scriptExtension.importPreset("RuleSupport")
