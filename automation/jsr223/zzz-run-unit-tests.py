@@ -20,6 +20,10 @@ from aaa_modules import cast_manager_test
 reload(cast_manager_test)
 from aaa_modules.cast_manager_test import CastManagerTest
 
+from aaa_modules import camera_utilities_test
+reload(camera_utilities_test)
+from aaa_modules.camera_utilities_test import CameraUtilitiesTest
+
 import alert_sender_test
 reload(alert_sender_test)
 from alert_sender_test import AlertRuleTest
@@ -31,7 +35,8 @@ TEST_NAMES = [
     AlertManagerTest,
     ChromeCastTest,
     CastManagerTest,
-    AlertRuleTest, ]
+    #AlertRuleTest,
+    CameraUtilitiesTest, ]
 
 def getTestSuites():
     suites = []

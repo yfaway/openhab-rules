@@ -4,23 +4,21 @@ from org.slf4j import Logger, LoggerFactory
 from openhab.jsr223 import scope
 from openhab.testing import run_test
 
-import camera
-reload(camera)
-import camera
+from aaa_modules import camera_utilities
+reload(camera_utilities)
+from aaa_modules import camera_utilities
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
-# Unit tests for camera.py.
-class CameraRuleTest(unittest.TestCase):
+# Unit tests for camera_utilities.py.
+class CameraUtilitiesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        camera.items = scope.items
-        camera.events = scope.events
-        camera.OnOffType = scope.OnOffType
+        pass
 
     def testRetrieveSnapshot(self):
         itemPrefix = 'FF_Porch_Camera'
-        urls = camera.retrieveSnapshots(itemPrefix, 2)
+        urls = camera_utilities.retrieveSnapshots(itemPrefix, 2)
         self.assertTrue(len(urls) > 0)
 
-#run_test(CameraRuleTest, logger) 
+# run_test(CameraUtilitiesTest, logger) 
