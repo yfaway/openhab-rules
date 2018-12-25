@@ -18,6 +18,7 @@ class AlertTest(unittest.TestCase):
         alert = Alert.createInfoAlert(SUBJECT)
         self.assertEqual(SUBJECT, alert.getSubject())
         self.assertEqual(None, alert.getBody())
+        self.assertEqual(0, len(alert.getAttachmentUrls()))
         self.assertEqual(None, alert.getModule())
         self.assertEqual(-1, alert.getIntervalBetweenAlertsInMinutes())
         self.assertTrue(alert.isInfoLevel())
@@ -26,6 +27,7 @@ class AlertTest(unittest.TestCase):
         alert = Alert.createWarningAlert(SUBJECT)
         self.assertEqual(SUBJECT, alert.getSubject())
         self.assertEqual(None, alert.getBody())
+        self.assertEqual(0, len(alert.getAttachmentUrls()))
         self.assertEqual(None, alert.getModule())
         self.assertEqual(-1, alert.getIntervalBetweenAlertsInMinutes())
         self.assertTrue(alert.isWarningLevel())
@@ -34,6 +36,7 @@ class AlertTest(unittest.TestCase):
         alert = Alert.createCriticalAlert(SUBJECT, BODY)
         self.assertEqual(SUBJECT, alert.getSubject())
         self.assertEqual(BODY, alert.getBody())
+        self.assertEqual(0, len(alert.getAttachmentUrls()))
         self.assertTrue(alert.isCriticalLevel())
 
     def testFromJson_missingSubject_raiseException(self):

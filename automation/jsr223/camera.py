@@ -7,8 +7,8 @@ from openhab.triggers import when
 from openhab.actions import Mail
 
 from aaa_modules import camera_utilities
-reload(camera_utilities)
-from aaa_modules import camera_utilities
+from aaa_modules.alert import *
+from aaa_modules.alert_manager import *
 
 # Allowed threshold in seconds between handling of the motion alarm.
 _INTERVAL_IN_SECONDS = 30
@@ -42,4 +42,11 @@ def sendSnapshot(event):
 
     logger.info('Sending camera snapshot with {} images'.format(
                 len(attachmentUrls)))
-    # Mail.sendMail(emailAddress, '[{}] Camera motion alarm triggered'.format(prefix), '', attachmentUrls)
+    
+    # todo: use warning instead of info for evening hours.
+    alert = Alert.createInfoAlert('[{}] Camera motion alarm triggered'.format(prefix),
+            None, attachmentUrls)
+    result = AlertManager.processAlert(alert)
+    if not result:
+        logger.info('Failed to send camera snapshots')
+

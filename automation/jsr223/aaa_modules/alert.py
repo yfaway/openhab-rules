@@ -14,32 +14,38 @@ class Alert:
     # Creates an INFO alert.
     # @param subject string
     # @param body string, optional
+    # @param attachmentUrls list of attachment URL strings
     # @param module string, optional
     # @param intervalBetweenAlertsInMinutes int, optional
     @classmethod
-    def createInfoAlert(cls, subject, body = None, module = None, 
-            intervalBetweenAlertsInMinutes = -1):
-        return cls(Level.INFO, subject, body, module, intervalBetweenAlertsInMinutes)
+    def createInfoAlert(cls, subject, body = None, attachmentUrls = [],
+            module = None, intervalBetweenAlertsInMinutes = -1):
+        return cls(Level.INFO, subject, body, attachmentUrls, module,
+                intervalBetweenAlertsInMinutes)
 
     # Creates an WARNING alert.
     # @param subject string
     # @param body string, optional
+    # @param attachmentUrls list of attachment URL strings
     # @param module string, optional
     # @param intervalBetweenAlertsInMinutes int, optional
     @classmethod
-    def createWarningAlert(cls, subject, body = None, module = None, 
-            intervalBetweenAlertsInMinutes = -1):
-        return cls(Level.WARNING, subject, body, module, intervalBetweenAlertsInMinutes)
+    def createWarningAlert(cls, subject, body = None, attachmentUrls = [],
+            module = None, intervalBetweenAlertsInMinutes = -1):
+        return cls(Level.WARNING, subject, body, attachmentUrls, module,
+                intervalBetweenAlertsInMinutes)
 
     # Creates an CRITICAL alert.
     # @param subject string
     # @param body string, optional
+    # @param attachmentUrls list of attachment URL strings
     # @param module string, optional
     # @param intervalBetweenAlertsInMinutes int, optional
     @classmethod
-    def createCriticalAlert(cls, subject, body = None, module = None, 
-            intervalBetweenAlertsInMinutes = -1):
-        return cls(Level.CRITICAL, subject, body, module, intervalBetweenAlertsInMinutes)
+    def createCriticalAlert(cls, subject, body = None, attachmentUrls = [],
+            module = None, intervalBetweenAlertsInMinutes = -1):
+        return cls(Level.CRITICAL, subject, body, attachmentUrls, module,
+                intervalBetweenAlertsInMinutes)
 
     # Creates a new object from information in the json string. This method
     # is used for alerts coming in from outside the jsr223 framework; they 
@@ -79,13 +85,16 @@ class Alert:
             raise ValueError('Invalid intervalBetweenAlertsInMinutes value: ' 
                     + str(intervalBetweenAlertsInMinutes))
 
-        return cls(level, subject, body, module, intervalBetweenAlertsInMinutes)
+        attachmentUrls = []
+        return cls(level, subject, body, attachmentUrls, module,
+                intervalBetweenAlertsInMinutes)
 
-    def __init__(self, level, subject, body = None, module = None,
-            intervalBetweenAlertsInMinutes = -1):
+    def __init__(self, level, subject, body = None, attachmentUrls = [],
+            module = None, intervalBetweenAlertsInMinutes = -1):
         self.level = level
         self.subject = subject
         self.body = body
+        self.attachmentUrls = attachmentUrls
         self.module = module
         self.intervalBetweenAlertsInMinutes = intervalBetweenAlertsInMinutes
 
@@ -94,6 +103,9 @@ class Alert:
 
     def getBody(self):
         return self.body
+
+    def getAttachmentUrls(self):
+        return self.attachmentUrls
 
     # Returns the alert module
     # @return string
@@ -115,14 +127,15 @@ class Alert:
 
     # Returns a user readable string containing this object's info.
     def toString(self):
-        str = ''
+        returnedVal = ''
         if self.isInfoLevel():
-            str += '[INFO]'
+            returnedVal += '[INFO]'
         elif self.isWarningLevel():
-            str += '[WARNING]'
+            returnedVal += '[WARNING]'
         else:
-            str += '[CRITICAL]'
+            returnedVal += '[CRITICAL]'
 
-        str += ' {}\n{}'.format(self.getSubject(), self.getBody())
+        returnedVal += ' {}\n{}\n{}'.format(self.getSubject(), self.getBody(), 
+                str(self.getAttachmentUrls()))
 
-        return str
+        return returnedVal

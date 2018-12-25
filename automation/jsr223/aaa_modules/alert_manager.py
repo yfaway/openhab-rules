@@ -71,7 +71,7 @@ class AlertManager:
         if not AlertManager._testMode:
             body = '' if alert.getBody() == None else alert.getBody()
             Mail.sendMail(';'.join(emailAddresses), alert.getSubject(),
-                    alert.getBody())
+                    alert.getBody(), alert.getAttachmentUrls())
 
         AlertManager._lastEmailedSubject = alert.getSubject()
 

@@ -57,7 +57,7 @@ class AlertManagerTest(unittest.TestCase):
             self.assertEqual(SUBJECT, cast.getLastTtsMessage())
 
     def testProcessAlert_withinInterval_returnsFalse(self):
-        alert = Alert.createCriticalAlert(SUBJECT, None, MODULE, 1)
+        alert = Alert.createCriticalAlert(SUBJECT, None, [], MODULE, 1)
         self.assertTrue(AlertManager.processAlert(alert))
 
         # send alert would be ignored dued to interval threshold
