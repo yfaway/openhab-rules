@@ -24,9 +24,13 @@ from aaa_modules import camera_utilities_test
 reload(camera_utilities_test)
 from aaa_modules.camera_utilities_test import CameraUtilitiesTest
 
-import alert_sender_test
-reload(alert_sender_test)
-from alert_sender_test import AlertRuleTest
+from aaa_modules import time_utilities_test
+reload(time_utilities_test)
+from aaa_modules.time_utilities_test import TimeUtilitiesTest
+
+#import alert_sender_test
+#reload(alert_sender_test)
+#from alert_sender_test import AlertRuleTest
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -36,7 +40,9 @@ TEST_NAMES = [
     ChromeCastTest,
     CastManagerTest,
     #AlertRuleTest,
-    CameraUtilitiesTest, ]
+    CameraUtilitiesTest,
+    TimeUtilitiesTest,
+]
 
 def getTestSuites():
     suites = []
@@ -69,4 +75,3 @@ def runTests():
         logger.error(_formatErrors(result.failures))
 
 #runTests()
-

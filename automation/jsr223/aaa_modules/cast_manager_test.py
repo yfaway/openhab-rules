@@ -11,23 +11,40 @@ from aaa_modules import cast_manager
 
 LOGGER = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
+TEST_MESSAGE = 'hello world'
+
 # Unit tests for cast_manager.
 class CastManagerTest(unittest.TestCase):
-    def testPlayMessage_none_returnsFalse(self):
-        result = cast_manager.playMessage(None)
-        self.assertFalse(result)
+    def testPlayMessage_none_throwsException(self):
+        with self.assertRaises(ValueError) as cm:
+            cast_manager.playMessage(None)
 
-    def testPlayMessage_emptyMessage_returnsFalse(self):
-        result = cast_manager.playMessage('')
-        self.assertFalse(result)
+        self.assertEqual('message must not be null or empty', cm.exception.args[0])
+
+    def testPlayMessage_emptyMessage_throwsException(self):
+        with self.assertRaises(ValueError) as cm:
+            cast_manager.playMessage('')
+
+        self.assertEqual('message must not be null or empty', cm.exception.args[0])
+
+    def testPlayMessage_volumeBelowThreshold_throwsException(self):
+        with self.assertRaises(ValueError) as cm:
+            cast_manager.playMessage(TEST_MESSAGE, cast_manager.getAllCasts(), -1)
+
+        self.assertEqual('volume must be between 0 and 100', cm.exception.args[0])
+
+    def testPlayMessage_volumeAboveThreshold_throwsException(self):
+        with self.assertRaises(ValueError) as cm:
+            cast_manager.playMessage(TEST_MESSAGE, cast_manager.getAllCasts(), 101)
+
+        self.assertEqual('volume must be between 0 and 100', cm.exception.args[0])
 
     def testPlayMessage_validMessage_returnsTrue(self):
         casts = cast_manager.getFirstFloorCasts()
 
-        ttsMessage = "hello world"
-        result = cast_manager.playMessage(ttsMessage, casts)
+        result = cast_manager.playMessage(TEST_MESSAGE, casts)
         self.assertTrue(result)
-        self.assertEqual(ttsMessage, casts[0].getLastTtsMessage())
+        self.assertEqual(TEST_MESSAGE, casts[0].getLastTtsMessage())
 
         time.sleep(1) # sleep for 1 sec for the pause message to go through
         for cast in casts:

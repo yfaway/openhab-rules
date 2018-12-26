@@ -86,7 +86,6 @@ def getMorningAnnouncement():
         message += " It is going to snow today."
 
     return message
-
 #cast_manager.pause()
 #morningMusicStartCount = 0
 #playAnnouncementAndMusicInTheMorning(None)

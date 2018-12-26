@@ -23,6 +23,8 @@ from aaa_modules import security_manager
 reload(security_manager)
 from aaa_modules import security_manager
 
+from aaa_modules import time_utilities
+
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
 _SOURCE_ITEM_NAME = 'VT_SelectedChromeCast'
@@ -116,7 +118,10 @@ def playMusicWhenBathroomFanTurnOn(event):
     index = event.itemName.rfind("_")
     castPrefix = event.itemName[0:index] + "_ChromeCast"
     casts = cast_manager.findCasts(StringType(castPrefix))
-    cast_manager.playStream("CD101.9 NY Smooth Jazz", casts)
+
+    if len(casts) > 0:
+        volume = 25 if time_utilities.isKidsSleepTime() else 45
+        cast_manager.playStream("CD101.9 NY Smooth Jazz", casts, volume)
 
 @rule("Stop music when a bathroom fan is turned off")
 @when("Member of gFanSwitch changed to OFF")

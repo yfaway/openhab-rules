@@ -23,7 +23,7 @@ from aaa_modules.chromecast import *
 
 MAX_SAY_WAIT_TIME_IN_SECONDS = 20
 
-log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 CASTS = [ChromeCast('FF_GreatRoom_ChromeCast', "chromecast:audio:greatRoom"),
          ChromeCast('SF_MasterBedroom_ChromeCast', "chromecast:audio:masterBedroom"),
@@ -71,45 +71,57 @@ def resume(casts = CASTS):
 # If _testMode is True, no message will be sent to the cast.
 # @param message string the message to tts
 # @param casts list of ChromeCast
+# @param volume int the volume value, 0 to 100 inclusive
 # @return boolean True if success; False if stream name is invalid.
-def playMessage(message, casts = CASTS):
-    if None != message and '' != message:
-        for cast in casts:
-            if not _testMode:
-                Voice.say(message, None, cast.getSinkName())
+# @throws ValueError if volume is not in the 0 - 100 inclusive range, or if
+#     message is None or empty.
+def playMessage(message, casts = CASTS, volume = 50):
+    if volume < 0 or volume > 100:
+        raise ValueError('volume must be between 0 and 100')
 
-            cast._setLastTtsMessage(message)
+    if None == message or '' == message:
+        raise ValueError('message must not be null or empty')
 
+    for cast in casts:
+        scope.events.sendCommand(cast.getVolumeName(), str(volume))
         if not _testMode:
-            # Wait until the cast is available again or a specific number of seconds 
-            # has passed. This is a workaround for the limitation that the OpenHab
-            # say method is non-blocking.
-            seconds = 2
-            time.sleep(seconds)
+            Voice.say(message, None, cast.getSinkName())
 
-            lastCast = casts[-1]
-            while seconds <= MAX_SAY_WAIT_TIME_IN_SECONDS:
-                if lastCast.hasTitle(): # this means the announcement is still happening.
-                    time.sleep(1)
-                    seconds += 1
-                else: # announcement is finished.
-                    seconds = MAX_SAY_WAIT_TIME_IN_SECONDS + 1
+        cast._setLastTtsMessage(message)
 
-            pause(casts)
+    if not _testMode:
+        # Wait until the cast is available again or a specific number of seconds 
+        # has passed. This is a workaround for the limitation that the OpenHab
+        # say method is non-blocking.
+        seconds = 2
+        time.sleep(seconds)
 
-        return True
-    else:
-        log.info("Empty TTS message")
-        return False
+        lastCast = casts[-1]
+        while seconds <= MAX_SAY_WAIT_TIME_IN_SECONDS:
+            if lastCast.hasTitle(): # this means the announcement is still happening.
+                time.sleep(1)
+                seconds += 1
+            else: # announcement is finished.
+                seconds = MAX_SAY_WAIT_TIME_IN_SECONDS + 1
+
+        pause(casts)
+
+    return True
 
 # Play the given stream url.
 # @param name string; see _STREAMS
 # @param casts list of ChromeCast
 # @return boolean True if success; False if stream name is invalid.
-def playStream(name, casts = CASTS):
+def playStream(name, casts = CASTS, volume = None):
+    if None != volume and (volume < 0 or volume > 100):
+        raise ValueError('volume must be between 0 and 100')
+
     url = getStreamUrl(name)
     if None != url:
         for cast in casts:
+            if None != volume:
+                scope.events.sendCommand(cast.getVolumeName(), str(volume))
+
             if url == cast.getStreamUrl():
                 resume([cast])
             else:
@@ -118,7 +130,7 @@ def playStream(name, casts = CASTS):
 
         return True
     else:
-        log.info("Missing stream URL for '{0}'".format(name))
+        logger.info("Missing stream URL for '{0}'".format(name))
         return False
 
 # Return all available ChromeCast objects.
