@@ -7,11 +7,13 @@ from openhab.triggers import when
 from openhab.actions import Mail
 
 from aaa_modules import camera_utilities
+reload(camera_utilities)
+from aaa_modules import camera_utilities
 from aaa_modules.alert import *
 from aaa_modules.alert_manager import *
 
 # Allowed threshold in seconds between handling of the motion alarm.
-_INTERVAL_IN_SECONDS = 30
+_INTERVAL_IN_SECONDS = 60
 
 # The maximum number of snapshots to capture when a motion alarm is triggered.
 _SNAPSHOT_COUNT = 5

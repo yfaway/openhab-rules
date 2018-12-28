@@ -33,15 +33,17 @@ def retrieveSnapshots(itemPrefix, snapshotCount):
 
         time.sleep(_WAIT_TIME_AFTER_FORCE_IMAGE_UPDATE_IN_SECONDS)
 
-        rawBytes = scope.items[imageItemName].getBytes()
-        if rawBytes != previousRawBytes:
-            fileName = '{}/{}-{}.jpg'.format(_SNAPSHOT_PATH, itemPrefix, idx)
-            file = io.open(fileName, 'wb')
-            file.write(rawBytes)
-            file.close()
+        imageState = scope.items[imageItemName]
+        if scope.UnDefType.UNDEF != imageState and scope.UnDefType.NULL != imageState:
+            rawBytes = imageState.getBytes()
+            if rawBytes != previousRawBytes:
+                fileName = '{}/{}-{}.jpg'.format(_SNAPSHOT_PATH, itemPrefix, idx)
+                file = io.open(fileName, 'wb')
+                file.write(rawBytes)
+                file.close()
 
-            attachmentUrls.append('file://' + fileName)
+                attachmentUrls.append('file://' + fileName)
 
-            previousRawBytes = rawBytes
+                previousRawBytes = rawBytes
 
     return attachmentUrls
