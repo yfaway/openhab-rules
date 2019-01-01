@@ -7,9 +7,10 @@ reload(alert)
 from aaa_modules.alert import *
 
 SUBJECT = "a subject"
-BODY = 'a body'
+BODY = 'a body\n line2'
 MODULE = 'a module'
 INTERVAL_BETWEEN_ALERTS_IN_MINUTES = 5
+EMAIL_ADDRESSES = 'asdf@here.com'
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -20,6 +21,7 @@ class AlertTest(unittest.TestCase):
         self.assertEqual(None, alert.getBody())
         self.assertEqual(0, len(alert.getAttachmentUrls()))
         self.assertEqual(None, alert.getModule())
+        self.assertEqual(None, alert.getEmailAddresses())
         self.assertEqual(-1, alert.getIntervalBetweenAlertsInMinutes())
         self.assertTrue(alert.isInfoLevel())
 
@@ -50,6 +52,16 @@ class AlertTest(unittest.TestCase):
         alert = Alert.fromJson(json)
 
         self.assertEqual(SUBJECT, alert.getSubject())
+        self.assertEqual(None, alert.getBody())
+        self.assertTrue(alert.isInfoLevel())
+
+    def testFromJson_withSubjectAndEmailAddresses_returnsNewObject(self):
+        json = '{' + '"subject":"{}","emailAddresses":"{}"'.format(
+                SUBJECT, EMAIL_ADDRESSES) + '}'
+        alert = Alert.fromJson(json)
+
+        self.assertEqual(SUBJECT, alert.getSubject())
+        self.assertEqual(EMAIL_ADDRESSES, alert.getEmailAddresses())
         self.assertEqual(None, alert.getBody())
         self.assertTrue(alert.isInfoLevel())
 

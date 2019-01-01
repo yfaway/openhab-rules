@@ -76,8 +76,10 @@ def updateStream(event):
         events.sendCommand(_STREAM_ITEM_NAME, selectedCasts[0].getStreamName())
 
     volumeItemName = selectedCasts[0].getVolumeName()
-    events.sendCommand('VT_Master_ChromeCastVolume', 
-            str(items[volumeItemName].intValue()))
+    volumeState = items[volumeItemName]
+    if UnDefType.UNDEF != volumeState and UnDefType.NULL != volumeState:
+        events.sendCommand('VT_Master_ChromeCastVolume', 
+                str(volumeState.intValue()))
 
 @rule("Play the music when the switch is turn on")
 @when("Item VT_Master_PlayMusic changed to ON")
@@ -117,6 +119,9 @@ def pauseMusic(event):
 def playMusicWhenBathroomFanTurnOn(event):
     index = event.itemName.rfind("_")
     castPrefix = event.itemName[0:index] + "_ChromeCast"
+
+    events.sendCommand(_SOURCE_ITEM_NAME, castPrefix)
+    events.sendCommand(_STREAM_ITEM_NAME, "CD101.9 NY Smooth Jazz")
     casts = cast_manager.findCasts(StringType(castPrefix))
 
     if len(casts) > 0:
@@ -126,7 +131,7 @@ def playMusicWhenBathroomFanTurnOn(event):
 @rule("Stop music when a bathroom fan is turned off")
 @when("Member of gFanSwitch changed to OFF")
 @when("Member of gSecondFloorLightSwitch changed to OFF")
-def playMusicWhenBathroomFanTurnOff(event):
+def stopMusicWhenBathroomFanTurnOff(event):
     index = event.itemName.rfind("_")
     castPrefix = event.itemName[0:index] + "_ChromeCast"
     casts = cast_manager.findCasts(StringType(castPrefix))
@@ -136,6 +141,10 @@ def playMusicWhenBathroomFanTurnOff(event):
 # False otherwise
 # @param itemName string
 def matchSelectedSource(itemName):
+    if UnDefType.UNDEF == items[_SOURCE_ITEM_NAME] \
+            or UnDefType.NULL == items[_SOURCE_ITEM_NAME]:
+        return False
+
     selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
     matchedCast = next(ifilter(lambda item: item.getPrefix() in itemName, 
                 selectedCasts), None)

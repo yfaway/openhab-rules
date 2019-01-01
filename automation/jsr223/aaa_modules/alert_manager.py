@@ -64,7 +64,10 @@ class AlertManager:
 
     @staticmethod
     def _emailAlert(alert):
-        emailAddresses = AlertManager._getEmailAddresses()
+        emailAddresses = alert.getEmailAddresses()
+        if None == emailAddresses:
+            emailAddresses = AlertManager._getEmailAddresses()
+
         if None == emailAddresses or len(emailAddresses) == 0:
             raise ValueError('Missing email addresses.')
 

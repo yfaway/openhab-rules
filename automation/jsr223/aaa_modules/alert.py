@@ -55,7 +55,8 @@ class Alert:
     # @throw ValueError if jsonString contains invalid values
     @classmethod
     def fromJson(cls, jsonString):
-        obj = json.loads(jsonString)
+        # set strict to false to allow control characters in the json string
+        obj = json.loads(jsonString, strict=False)
 
         subject = obj.get('subject', None)
         if None == subject or '' == subject:
@@ -86,17 +87,21 @@ class Alert:
                     + str(intervalBetweenAlertsInMinutes))
 
         attachmentUrls = []
+
+        emailAddresses = obj.get('emailAddresses', None)
         return cls(level, subject, body, attachmentUrls, module,
-                intervalBetweenAlertsInMinutes)
+                intervalBetweenAlertsInMinutes, emailAddresses)
 
     def __init__(self, level, subject, body = None, attachmentUrls = [],
-            module = None, intervalBetweenAlertsInMinutes = -1):
+            module = None, intervalBetweenAlertsInMinutes = -1,
+            emailAddresses = None):
         self.level = level
         self.subject = subject
         self.body = body
         self.attachmentUrls = attachmentUrls
         self.module = module
         self.intervalBetweenAlertsInMinutes = intervalBetweenAlertsInMinutes
+        self.emailAddresses = emailAddresses
 
     def getSubject(self):
         return self.subject
@@ -111,6 +116,12 @@ class Alert:
     # @return string
     def getModule(self):
         return self.module
+
+    # Returns the overriding email addresses to be used instead of the default
+    # email addresses.
+    # @return string or None if not specified
+    def getEmailAddresses(self):
+        return self.emailAddresses
 
     # @return int
     def getIntervalBetweenAlertsInMinutes(self):
