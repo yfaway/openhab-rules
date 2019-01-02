@@ -1,9 +1,9 @@
 # Controls the Ecobee thermostat.
 
 from org.slf4j import Logger, LoggerFactory
-from openhab.actions import EcobeeAction
-from openhab.rules import rule
-from openhab.triggers import when
+from core.actions import EcobeeAction
+from core.rules import rule
+from core.triggers import when
 from org.joda.time import DateTime
 
 from aaa_modules import security_manager

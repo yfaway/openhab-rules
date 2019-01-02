@@ -1,5 +1,5 @@
 import sys
-from openhab import osgi
+from core import osgi
 
 __all__ = []
 

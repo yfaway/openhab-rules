@@ -1,10 +1,10 @@
 import time
 
 from org.slf4j import Logger, LoggerFactory
-from openhab import osgi
-from openhab.rules import rule
-from openhab.triggers import when
-from openhab.actions import Mail
+from core import osgi
+from core.rules import rule
+from core.triggers import when
+from core.actions import Mail
 
 from aaa_modules import camera_utilities
 reload(camera_utilities)

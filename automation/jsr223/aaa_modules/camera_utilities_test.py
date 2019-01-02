@@ -1,8 +1,8 @@
 import unittest
 
 from org.slf4j import Logger, LoggerFactory
-from openhab.jsr223 import scope
-from openhab.testing import run_test
+from core.jsr223 import scope
+from core.testing import run_test
 
 from aaa_modules import camera_utilities
 reload(camera_utilities)

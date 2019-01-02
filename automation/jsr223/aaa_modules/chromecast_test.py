@@ -1,5 +1,5 @@
 import unittest
-from openhab.testing import run_test
+from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
 
 from aaa_modules import chromecast

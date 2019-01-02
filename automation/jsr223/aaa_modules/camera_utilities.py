@@ -1,7 +1,7 @@
 import io
 import time
 from org.slf4j import Logger, LoggerFactory
-from openhab.jsr223 import scope
+from core.jsr223 import scope
 
 # The location to store snapshot images
 _SNAPSHOT_PATH = '/tmp'

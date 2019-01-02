@@ -1,7 +1,7 @@
 import unittest
 
 from org.slf4j import Logger, LoggerFactory
-from openhab.testing import run_test
+from core.testing import run_test
 
 from aaa_modules import alert
 reload(alert)

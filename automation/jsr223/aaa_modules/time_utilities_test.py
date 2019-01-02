@@ -2,7 +2,7 @@ import unittest
 import time
 import datetime
 from org.slf4j import Logger, LoggerFactory
-from openhab.testing import run_test
+from core.testing import run_test
 
 from aaa_modules import time_utilities
 reload(time_utilities)

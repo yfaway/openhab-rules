@@ -1,9 +1,9 @@
 import unittest
 import time
 
-from openhab.testing import run_test
+from core.jsr223 import scope
+from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
-from openhab.jsr223 import scope
 
 from aaa_modules import cast_manager
 reload(cast_manager)

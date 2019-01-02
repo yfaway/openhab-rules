@@ -4,9 +4,9 @@
 import time
 
 from org.slf4j import Logger, LoggerFactory
-from openhab import osgi
-from openhab.rules import rule
-from openhab.triggers import when
+from core import osgi
+from core.rules import rule
+from core.triggers import when
 from org.joda.time import DateTime
 
 from aaa_modules import cast_manager

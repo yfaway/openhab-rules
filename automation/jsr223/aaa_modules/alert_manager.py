@@ -1,6 +1,6 @@
 import time
 from org.slf4j import Logger, LoggerFactory
-from openhab.actions import Mail
+from core.actions import Mail
 
 from aaa_modules import alert
 reload(alert)

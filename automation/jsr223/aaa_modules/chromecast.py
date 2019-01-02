@@ -1,7 +1,7 @@
 # Represents a Chromecast, Chromecast Audio, or a Google Home device.
 
 from org.slf4j import Logger, LoggerFactory
-from openhab.jsr223 import scope
+from core.jsr223 import scope
 
 LOG = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 

@@ -1,5 +1,5 @@
-from openhab.rules import rule
-from openhab.triggers import when
+from core.rules import rule
+from core.triggers import when
 
 from aaa_modules import cast_manager
 reload(cast_manager)

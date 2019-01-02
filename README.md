@@ -46,20 +46,23 @@ Voice
 These add-ons are used to play audio files, stream, or text to speech (TTS). Either Google Cloud TTS or VocieRSS would work. The "Marry TTS" is very slow on the Raspberry PI. Once downloaded, in the Paper UI, go to Configuration -> System -> Voice (at the very end of the page) to configure the default engine.
 
 # Current Functionalities
-## Alerts (email)
-* Generic framework to send alerts from any rules. The alert currently just emails owners.
+## Alerts (email & TTS audio)
+* Generic alert API in Python. By default all alerts go to email addresses. If the alert's level is warning or criticial, it also go to the audio sinks (speakers) through the text to speech (TTS) service.
+* A separate python rule listens to changes in a string item to support legacy alerts from xtend rules.
 
 ## Ecobee Thermostat
 * Change the thermostat to 'away' mode (climate ref) when the system is armed away. 'Away' mode should have lower heat setting and higher cool setting. Proactively change to away mode rather than relying on the static setting in the thermostat should save more energy.
 * In the winter turn on the far when owner is at home. This helps to circulate the air to the second floor.
 
-## Display
+## Display (Basic UI)
 * Garage door status.
-* Presence.
 * Security system status.
+* Presence.
 * Indoor temperature & humidity and forecasted weather inclduing Environment Canada alert.
 * Lights, fans, and smart plug status.
 * Motion sensors states
+* Music stream control: play a stream over 1 or multiple chrome casts; pause, play and control volume.
+* Camera snapshot viewer.
 
 ## Indoor Temperature/Humidity
 * Send alert when indoor temperature or humidity value is outside the allowed ranges.

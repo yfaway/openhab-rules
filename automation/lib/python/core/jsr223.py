@@ -46,7 +46,7 @@ class _Jsr223ModuleFinder(object):
             sys.modules[fullname] = m
                 
     def find_module(self, fullname, path=None):
-        if fullname == "openhab.jsr223.scope":
+        if fullname == "core.jsr223.scope":
             return self
         
 sys.meta_path.append(_Jsr223ModuleFinder())
@@ -56,5 +56,3 @@ def get_automation_manager():
     _get_scope_value(scope, "scriptExtension").importPreset("RuleSupport")
     automation_manager = _get_scope_value(scope, "automationManager")
     return automation_manager
-
-

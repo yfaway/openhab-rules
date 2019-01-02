@@ -1,10 +1,10 @@
 import unittest
 
 from org.slf4j import Logger, LoggerFactory
-from openhab.jsr223 import scope
+from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.types import StringType
-from openhab.testing import run_test
+from core.testing import run_test
 
 from aaa_modules.alert_manager import *
 import alert_sender

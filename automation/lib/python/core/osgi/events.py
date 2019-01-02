@@ -1,24 +1,21 @@
-import traceback
 import uuid
+import java.util
+import traceback
 
 from org.osgi.framework import FrameworkUtil
 from org.osgi.service.event import EventHandler, EventConstants, EventAdmin
 from org.osgi.service.cm import ManagedService
 
-from org.eclipse.smarthome.config.core import Configuration
 from org.eclipse.smarthome.automation.handler import TriggerHandler
 
-import openhab
-from openhab.jsr223 import scope
+import core
+from core.jsr223 import scope
+from core.osgi import bundle_context
+from core.log import logging, LOG_PREFIX
+
+log = logging.getLogger(LOG_PREFIX + ".osgi.events")
+
 scope.scriptExtension.importPreset("RuleSupport")
-
-from openhab.osgi import bundle_context
-from openhab.log import logging
-
-import uuid
-import java.util
-
-log = logging.getLogger("jython.openhab.osgi.events")
 
 def hashtable(*key_values):
     """
@@ -31,7 +28,7 @@ def hashtable(*key_values):
     return ht
 
 class OsgiEventAdmin(object):
-    log = logging.getLogger("jython.openhab.osgi.events.OsgiEventAdmin")
+    log = logging.getLogger(LOG_PREFIX + ".osgi.events.OsgiEventAdmin")
     
     _event_handler = None
     _event_listeners = []
@@ -43,22 +40,22 @@ class OsgiEventAdmin(object):
             self.registration = bundle_context.registerService(
                 EventHandler, self, hashtable((EventConstants.EVENT_TOPIC, ["*"])))
             self.log.info("Registered openHAB OSGI event listener service")
-            self.log.debug("registration=%s", self.registration)
+            self.log.debug("Registration: [{}]".format(self.registration))
             
         def handleEvent(self, event):
-            self.log.debug("handling event %s", event)
+            self.log.debug("Handling event: [{}]".format(event))
             for listener in OsgiEventAdmin._event_listeners:
                 try:
                     listener(event)
                 except:
-                    self.log.error("Listener failed: %s", traceback.format_exc())
+                    self.log.error("Listener failed: [{}]".format(traceback.format_exc()))
         
         def dispose(self):
             self.registration.unregister()
 
     @classmethod
     def add_listener(cls, listener):
-        cls.log.debug("adding listener admin=%s %s", id(cls), listener)
+        cls.log.debug("Adding listener admin: [{} {}]".format (id(cls), listener))
         cls._event_listeners.append(listener)
         if len(cls._event_listeners) == 1:
             if cls._event_handler is None:
@@ -66,7 +63,7 @@ class OsgiEventAdmin(object):
             
     @classmethod
     def remove_listener(cls, listener):
-        cls.log.debug("removing listener %s", listener)
+        cls.log.debug("Removing listener: [{}]".format(listener))
         if listener in cls._event_listeners:
             cls._event_listeners.remove(listener)
         if len(cls._event_listeners) == 0:
@@ -92,7 +89,7 @@ class OsgiEventTrigger(scope.Trigger):
         self.filter = filter or (lambda event: True)
         triggerId = type(self).__name__ + "-" + uuid.uuid1().hex
         config = Configuration()
-        scope.Trigger.__init__(self, triggerId, openhab.OSGI_TRIGGER_ID, config)
+        scope.Trigger.__init__(self, triggerId, core.OSGI_TRIGGER_ID, config)
         global osgi_triggers
         osgi_triggers[self.id] = self
         
@@ -103,7 +100,7 @@ class OsgiEventTrigger(scope.Trigger):
         return event
     
 def log_event(event):
-    log.info("OSGI event: %s (%s)", event, type(event).__name__)
+    log.info("OSGI event: [{} ({})]".format(event, type(event).__name__))
     if isinstance(event, dict):
         for name in event:
             value = event[name]
@@ -115,6 +112,3 @@ def log_event(event):
         
 def event_dict(event):
     return { key: event.getProperty(key) for key in event.getPropertyNames() }
-
-
-    

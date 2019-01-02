@@ -1,8 +1,8 @@
 # This file processes legacy Xtend alert messages sent through the
 # VT_AlertSender string item.
 from org.slf4j import Logger, LoggerFactory
-from openhab.rules import rule
-from openhab.triggers import when
+from core.rules import rule
+from core.triggers import when
 
 from aaa_modules import alert_manager
 reload(alert_manager)
