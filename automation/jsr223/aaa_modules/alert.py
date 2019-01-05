@@ -119,9 +119,9 @@ class Alert:
 
     # Returns the overriding email addresses to be used instead of the default
     # email addresses.
-    # @return string or None if not specified
+    # @return a list of email addresses; empty list if not specified
     def getEmailAddresses(self):
-        return self.emailAddresses
+        return [] if None == self.emailAddresses else self.emailAddresses.split(';')
 
     # @return int
     def getIntervalBetweenAlertsInMinutes(self):

@@ -65,7 +65,7 @@ class AlertManager:
     @staticmethod
     def _emailAlert(alert):
         emailAddresses = alert.getEmailAddresses()
-        if None == emailAddresses:
+        if [] == emailAddresses:
             emailAddresses = AlertManager._getEmailAddresses()
 
         if None == emailAddresses or len(emailAddresses) == 0:

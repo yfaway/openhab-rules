@@ -21,7 +21,7 @@ class AlertTest(unittest.TestCase):
         self.assertEqual(None, alert.getBody())
         self.assertEqual(0, len(alert.getAttachmentUrls()))
         self.assertEqual(None, alert.getModule())
-        self.assertEqual(None, alert.getEmailAddresses())
+        self.assertEqual([], alert.getEmailAddresses())
         self.assertEqual(-1, alert.getIntervalBetweenAlertsInMinutes())
         self.assertTrue(alert.isInfoLevel())
 
@@ -61,7 +61,8 @@ class AlertTest(unittest.TestCase):
         alert = Alert.fromJson(json)
 
         self.assertEqual(SUBJECT, alert.getSubject())
-        self.assertEqual(EMAIL_ADDRESSES, alert.getEmailAddresses())
+        self.assertEqual(1, len(alert.getEmailAddresses()))
+        self.assertEqual(EMAIL_ADDRESSES, alert.getEmailAddresses()[0])
         self.assertEqual(None, alert.getBody())
         self.assertTrue(alert.isInfoLevel())
 
