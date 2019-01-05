@@ -19,7 +19,7 @@ scriptExtension.importPreset("RuleSupport")
 scriptExtension.importPreset("RuleSimple")
 
 MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
-log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 # The period of time in seconds (from the last timestamp a switch was turned
 # off) to ignore the ON command trigged by the motion sensor. This takes care
@@ -38,6 +38,18 @@ ILLUMINANCE_THRESHOLD_IN_LUX = 8
 # nothing. This is because the user is getting out of the zone, and thus it
 # is wrong to turn on another light.
 TAG_SHARED_MOTION_SENSOR = "shared-motion-sensor"
+
+# Indicates that the switch must not be turned on when the associated 
+# motion sensor is triggered.
+TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR = "disable-triggering-from-motion-sensor"
+
+# A metadata item to indicate which light to turn off when the current light
+# is switched on.
+META_TURN_OFF_OTHER_LIGHT = 'turnOff'
+
+# A meta data item to indicate that this light shouldn't be turned on when a
+# motion event is triggered, if the other light is already on.
+META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON = 'disableMotionTriggeringIfOtherLightIsOn'
 
 lastOffTimes = {}
 
@@ -112,19 +124,18 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
     # the light on.
     #
     # Check to see if the motion sensor is allowed to trigger the light.
-    disableAlwaysItemName = triggeringItem.name + "_DisableTriggeringAlways"
-    if disableAlwaysItemName in items and items[disableAlwaysItemName] == ON:
+    if switchItem.hasTag(TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR):
         return
 
     # Check to see if there is a dependent relationship between lights.
     # I.e. if light B is already on, then don't turn on light A if its
     # motion sensor is triggered.
-    disableIfItemName = triggeringItem.name + "_DisableTriggeringIf"
-    if disableIfItemName in items \
-        and UnDefType.NULL != items[disableIfItemName] \
-        and UnDefType.UNDEF != items[disableIfItemName]:
+    meta = MetadataRegistry.get(
+            MetadataKey(META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON,
+                switchName)) 
+    if None != meta and meta.value in items:
         # see if the other light is on
-        theOtherLight = itemRegistry.getItem(items[disableIfItemName].toString())
+        theOtherLight = itemRegistry.getItem(meta.value)
 
         if switch_manager.isSwitchOn(theOtherLight):
             return
@@ -157,9 +168,12 @@ def setTimerWhenSwitchIsTurnedOn(switchEvent):
             if timerItemName in items:
                 events.sendCommand(timerItemName, "ON")
 
-            stringItemName = triggeringItem.name + "_TurnOffOtherLight"
-            if stringItemName in items:
-                events.sendCommand(items[stringItemName].toString(), "OFF")
+            meta = MetadataRegistry.get(MetadataKey(META_TURN_OFF_OTHER_LIGHT,
+                        switchEvent.itemName)) 
+            if None != meta:
+                stringItemName = meta.value
+                if stringItemName in items:
+                    events.sendCommand(stringItemName, "OFF")
     else:
       if timerItemName in items:
             events.sendCommand(timerItemName, "OFF")
@@ -191,14 +205,12 @@ def turnOffWallSwitch(timerEvent):
 #@rule("Hello World timer rule")
 #@when("Time cron 0/45 * * * * ?")
 #def hellowWorldDecorator(event):
-    #log.info("*** playing music")
-    #say("Anna and Abby, it is time to go to bed.")
     #item = itemRegistry.getItem("SF_Lobby_LightSwitch")
 
     #turnOffWallSwitch("FF_Foyer_LightSwitch_Timer")
     #meta = MetadataRegistry.get(MetadataKey("light", "SF_Lobby_LightSwitch")) 
     #config = meta.configuration
-    #log.info("meta: " + str(config["level"]))
+    #logger.info("meta: " + str(config["level"]))
 
 
 # TODO remove when @when supports "System started".

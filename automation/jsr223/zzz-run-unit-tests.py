@@ -74,4 +74,4 @@ def runTests():
     if len(result.failures) > 0:
         logger.error(_formatErrors(result.failures))
 
-runTests()
+#runTests()
