@@ -15,6 +15,10 @@ from aaa_modules import security_manager
 reload(security_manager)
 from aaa_modules import security_manager
 
+from aaa_modules import time_utilities
+reload(time_utilities)
+from aaa_modules import time_utilities
+
 scriptExtension.importPreset("RuleSupport")
 scriptExtension.importPreset("RuleSimple")
 
@@ -50,6 +54,8 @@ META_TURN_OFF_OTHER_LIGHT = 'turnOff'
 # A meta data item to indicate that this light shouldn't be turned on when a
 # motion event is triggered, if the other light is already on.
 META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON = 'disableMotionTriggeringIfOtherLightIsOn'
+
+META_DIMMING_SETTING = 'dimmable'
 
 lastOffTimes = {}
 
@@ -148,7 +154,22 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
                     return
         # else - pass through
 
-    events.sendCommand(switchItem.name, "ON")
+    if isinstance(switchItem, DimmerItem):
+        meta = MetadataRegistry.get(
+                MetadataKey(META_DIMMING_SETTING, switchName)) 
+        if None != meta:
+            config = meta.configuration
+            level = config['level']
+            timeRanges = config['timeRanges']
+
+            if time_utilities.isInTimeRange(timeRanges):
+                events.sendCommand(switchItem.name, str(level))
+            else:
+                events.sendCommand(switchItem.name, "100")
+        else:
+            events.sendCommand(switchItem.name, "100")
+    else:
+        events.sendCommand(switchItem.name, "ON")
 
 @rule("Set a timer to turn off the switch after it was programatically turned on")
 @when("Member of gWallSwitch changed")

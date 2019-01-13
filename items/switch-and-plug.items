@@ -24,21 +24,21 @@ Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloo
     turnOff="SF_Lobby_LightSwitch",
     disableMotionTriggeringIfOtherLightIsOn="FF_Office_LightSwitch"}
 Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="2m,command=OFF"}
+  { expire="2m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
 Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
   (FF_Foyer_LightSwitch_MotionSensor) 
-  {channel="mqtt:topic:mything:FoyerMotionSensor"}
+  { channel="mqtt:topic:mything:FoyerMotionSensor"}
 
 Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node8:switch_binary", turnOff="FF_Foyer_LightSwitch"}
 Switch FF_Office_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="15m,command=OFF"}
+  { expire="15m,command=OFF"}
 Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
-  {channel="mqtt:topic:mything:OfficeMotionSensor"}
+  { channel="mqtt:topic:mything:OfficeMotionSensor"}
 
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
@@ -46,20 +46,21 @@ Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirst
     turnOff="FF_Foyer_LightSwitch",
     disableMotionTriggeringIfOtherLightIsOn="FF_GreatRoom_LightSwitch" }
 Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="5m,command=OFF"}
+  { expire="5m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
   (FF_Kitchen_LightSwitch_MotionSensor) 
-  {channel="mqtt:topic:mything:PantryMotionSensor"}
+  { channel="mqtt:topic:mything:PantryMotionSensor"}
 Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 
-  {channel="mqtt:topic:mything:PantryIlluminance"}
+  { channel="mqtt:topic:mything:PantryIlluminance"}
 
 Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [disable-triggering-from-motion-sensor]
-  { channel="zwave:device:9e4ce05e:node7:switch_binary", turnOff="FF_Kitchen_LightSwitch"}
+  { channel="zwave:device:9e4ce05e:node7:switch_binary",
+    turnOff="FF_Kitchen_LightSwitch"}
 Switch FF_GreatRoom_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="30m,command=OFF"}
+  { expire="30m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_GreatRoom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor)
 
@@ -67,45 +68,47 @@ Switch SF_MasterWashroom_LightSwitch "Master Washroom Light"
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node4:switch_binary", turnOff="SF_Lobby_LightSwitch" }
 Switch SF_MasterWashroom_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="10m,command=OFF"}
+  { expire="10m,command=OFF"}
 Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%d]"
   (gIlluminance) 
-  {channel="mqtt:topic:mything:MasterWashroomIlluminance"}
+  { channel="mqtt:topic:mything:MasterWashroomIlluminance"}
 // This wash room has two motion sensors (one in the standing shower area).
 Group:Switch:OR(ON,OFF) SF_MasterWashroom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motion Sensor"
   (SF_MasterWashroom_LightSwitch_MotionSensor) 
-  {channel="mqtt:topic:mything:MasterWashroomLightMotionSensor"}
+  { channel="mqtt:topic:mything:MasterWashroomLightMotionSensor"}
 
 
 Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" 
   (gWallSwitch, gFanSwitch) 
-  {channel="zwave:device:9e4ce05e:node15:switch_binary" }
+  { channel="zwave:device:9e4ce05e:node15:switch_binary" }
 Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) 
-  {expire="15m,command=OFF"}
+  { expire="15m,command=OFF"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
-  {channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
+  { channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
 
 Group:Switch:OR(ON,OFF) SF_MainWashroom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MainWashroom_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node9:switch_binary" }
 Switch SF_MainWashroom_FanSwitch_Timer (gWallSwitchTimer) 
-  {expire="15m,command=OFF"}
+  { expire="15m,command=OFF"}
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MainWashroom_LightSwitch_MotionSensor) 
-  {channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
+  { channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
 
 Dimmer SF_Lobby_LightSwitch "Lobby Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
-  { channel="zwave:device:9e4ce05e:node10:switch_dimmer", turnOff="FF_Foyer_LightSwitch", light="dimming" [level=10, timeRange="21-7"] }
+  { channel="zwave:device:9e4ce05e:node10:switch_dimmer",
+    turnOff="FF_Foyer_LightSwitch",
+    dimmable="true" [level=2, timeRanges="21-8"] }
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  {channel="mqtt:topic:mything:SecondFloorMotionSensor"}
+  { channel="mqtt:topic:mything:SecondFloorMotionSensor"}
 Switch SF_Lobby_LightSwitch_Timer (gWallSwitchTimer) 
-  {expire="2m,command=OFF"}
+  { expire="2m,command=OFF"}
 
 /**
  * Smart plugs.
@@ -114,10 +117,10 @@ Group gPlug
 Group gPlugPower
 
 Switch FF_GreatRoom_Plug "Great Room Plug" (gPlug)
-  {channel="tplinksmarthome:hs100:greatroom:switch"}
+  { channel="tplinksmarthome:hs100:greatroom:switch"}
 
 // Not include in gPlug group as that intefere with the PC's suspense function
 Switch FF_Office_Plug "Office Plug"
-  {channel="tplinksmarthome:hs110:office:switch"}
+  { channel="tplinksmarthome:hs110:office:switch"}
 Number FF_Office_Plug_Power "Office Plug Power [%d Watts]" (gPlugPower)
-  {channel="tplinksmarthome:hs110:office:power"}
+  { channel="tplinksmarthome:hs110:office:power"}

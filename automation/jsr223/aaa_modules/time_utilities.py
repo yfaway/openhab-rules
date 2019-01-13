@@ -1,4 +1,7 @@
 import time
+from org.slf4j import Logger, LoggerFactory
+
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 # @param epochSeconds int seconds since epoch, optional
 # @return true if it is kids' nap or sleep time.
@@ -14,19 +17,19 @@ def isKidsSleepTime(epochSeconds = None):
         return False
 
 # Determines if the current time is in the timeRange string.
-# @param timeRanges string one or multiple time range in 24-hour format.
+# @param timeRangesString string one or multiple time range in 24-hour format.
 #     Example: '10-12', or '6-9, 7-7, 8:30 - 14:45', or '19 - 8' (wrap around)
 # @param epochSeconds int seconds since epoch, optional
 # @return boolean
-def isInTimeRange(timeRanges, epochSeconds = None):
-    if None == timeRanges or 0 == len(timeRanges):
+def isInTimeRange(timeRangesString, epochSeconds = None):
+    if None == timeRangesString or 0 == len(timeRangesString):
         raise ValueError('Must have at least one time range.')
 
     timeStruct = time.localtime(epochSeconds)
     hour = timeStruct[3]
     minute = timeStruct[4]
 
-    for range in timeRanges:
+    for range in _stringToTimeRangeLists(timeRangesString):
         startHour, startMinute, endHour, endMinute = range
         if startHour <= endHour: 
             if hour < startHour:
@@ -38,8 +41,12 @@ def isInTimeRange(timeRanges, epochSeconds = None):
             continue
 
         if endMinute == 0:
-            if hour >= endHour:
-                continue
+            if startHour <= endHour:
+                if hour >= endHour:
+                    continue
+            else: # wrap around
+                if (hour < startHour or hour > 23) and (hour < 0 or hour > endHour):
+                    continue
         else: # minutes are > 0
             if hour > endHour or minute > endMinute:
                 continue

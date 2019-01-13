@@ -46,52 +46,57 @@ class TimeUtilitiesTest(unittest.TestCase):
 
     def testIsInTimeRange_sameHour_returnTrue(self):
         dt = datetime.datetime(2018, 12, 25, 7, 58)
-        self.assertTrue(time_utilities.isInTimeRange([[7, 0, 7, 59]],
+        self.assertTrue(time_utilities.isInTimeRange('7',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_negativeSameHour_returnFalse(self):
         dt = datetime.datetime(2018, 12, 25, 7, 58)
-        self.assertFalse(time_utilities.isInTimeRange([[8, 0, 8, 59]],
+        self.assertFalse(time_utilities.isInTimeRange('8',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_negativeLargerThanEndMinute_returnFalse(self):
         dt = datetime.datetime(2018, 12, 25, 7, 58)
-        self.assertFalse(time_utilities.isInTimeRange([[8, 0, 8, 30]],
+        self.assertFalse(time_utilities.isInTimeRange('8 - 8:30',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_noEndMinute_returnTrue(self):
         dt = datetime.datetime(2018, 12, 25, 7, 58)
-        self.assertTrue(time_utilities.isInTimeRange([[7, 0, 8, 0]],
+        self.assertTrue(time_utilities.isInTimeRange('7 - 8',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_negativeNoEndMinute_returnFalse(self):
         dt = datetime.datetime(2018, 12, 25, 8, 58)
-        self.assertFalse(time_utilities.isInTimeRange([[7, 0, 8, 0]],
+        self.assertFalse(time_utilities.isInTimeRange('7-8',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_wrapAround_returnTrue(self):
         dt = datetime.datetime(2018, 12, 25, 7, 58)
-        self.assertTrue(time_utilities.isInTimeRange([[21, 0, 9, 0]],
+        self.assertTrue(time_utilities.isInTimeRange('21 - 9',
+                    time.mktime(dt.timetuple())))
+
+    def testIsInTimeRange_wrapAround2_returnTrue(self):
+        dt = datetime.datetime(2018, 12, 25, 18, 22)
+        self.assertTrue(time_utilities.isInTimeRange('18 - 7',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_negativeWrapAround1_returnFalse(self):
         dt = datetime.datetime(2018, 12, 25, 10, 58)
-        self.assertFalse(time_utilities.isInTimeRange([[21, 0, 9, 0]],
+        self.assertFalse(time_utilities.isInTimeRange('21 - 9',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_negativeWrapAround2_returnFalse(self):
         dt = datetime.datetime(2018, 12, 25, 20, 58)
-        self.assertFalse(time_utilities.isInTimeRange([[21, 0, 9, 0]],
+        self.assertFalse(time_utilities.isInTimeRange('21 - 9',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_multipleRanges_returnTrue(self):
         dt = datetime.datetime(2018, 12, 25, 7, 58)
-        self.assertTrue(time_utilities.isInTimeRange([[4, 0, 5, 0], [7, 0, 7, 59]],
+        self.assertTrue(time_utilities.isInTimeRange('4-5, 7- 8',
                     time.mktime(dt.timetuple())))
 
     def testIsInTimeRange_negativeMultipleRanges_returnTrue(self):
         dt = datetime.datetime(2018, 12, 25, 10, 58)
-        self.assertFalse(time_utilities.isInTimeRange([[4, 0, 5, 0], [7, 0, 7, 59]],
+        self.assertFalse(time_utilities.isInTimeRange('4-5, 8',
                     time.mktime(dt.timetuple())))
 
     def testStringToTimeRangeLists_noRange_throwsError(self):
@@ -157,4 +162,4 @@ class TimeUtilitiesTest(unittest.TestCase):
         self.assertEqual([13, 0, 15, 0], list[2])
         self.assertEqual([16, 0, 17, 30], list[3])
 
-run_test(TimeUtilitiesTest, logger) 
+#run_test(TimeUtilitiesTest, logger) 
