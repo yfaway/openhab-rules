@@ -21,6 +21,6 @@ def sendAlert(event):
     if AlertManager.processAlert(alert):
         return True
     else:
-        logger.error('Failed to send alert {}' % alert.toString())
+        logger.error('Failed to send alert {}'.format(alert.toString()))
         return False
 

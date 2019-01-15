@@ -125,7 +125,7 @@ def playMusicWhenBathroomFanTurnOn(event):
     casts = cast_manager.findCasts(StringType(castPrefix))
 
     if len(casts) > 0:
-        volume = 25 if time_utilities.isKidsSleepTime() else 45
+        volume = 25 if time_utilities.isKidsSleepTime() else 35
         cast_manager.playStream("CD101.9 NY Smooth Jazz", casts, volume)
 
 @rule("Stop music when a bathroom fan is turned off")

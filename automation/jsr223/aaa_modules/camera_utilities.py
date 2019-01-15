@@ -21,10 +21,9 @@ def retrieveSnapshots(itemPrefix, snapshotCount):
     imageItemName = itemPrefix + '_Image'
     updateItemName = itemPrefix + '_UpdateImage'
 
+    logger.info('Retrieving {} snapshots'.format(snapshotCount))
     previousRawBytes = []
     for idx in range(snapshotCount):
-        logger.info('Retrieving snapshot {}'.format(idx))
-
         # Flip the state of the update channel to force retrieval of new image
         if scope.items[updateItemName] == scope.OnOffType.ON:
             scope.events.sendCommand(updateItemName, "OFF")

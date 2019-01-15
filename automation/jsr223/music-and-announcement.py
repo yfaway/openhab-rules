@@ -20,11 +20,13 @@ from aaa_modules import cast_manager
 MORNING_TIME_RANGE = (6, 9)
 MAX_MORNING_MUSIC_START_COUNT = 2
 
+LOG_PREFIX = '[Morning Annoucement]'
+
 # If set, implies the user hasn't left yet, and thus do not trigger additional
 # annoucement.
 inSession = False
 
-log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 morningMusicStartCount = 0
 
 @rule("Play music on the first 2 morning visits to kitchen")
@@ -36,6 +38,7 @@ def playAnnouncementAndMusicInTheMorning(event):
     if isInMorningTimeRange() and \
             morningMusicStartCount < MAX_MORNING_MUSIC_START_COUNT:
         if not inSession:
+            logger.info('{} Playing morning annoucement.'.format(LOG_PREFIX))
             inSession = True
             msg = getMorningAnnouncement()
             casts = cast_manager.getFirstFloorCasts()
@@ -43,11 +46,16 @@ def playAnnouncementAndMusicInTheMorning(event):
             cast_manager.playMessage(msg, casts)
             cast_manager.playStream("WWFM Classical", casts)
             morningMusicStartCount += 1
+        else:
+            logger.info('{} Not in session.'.format(LOG_PREFIX))
 
 @rule("Reset morningMusicStartCount to 0 at 5AM")
 @when("Time cron 0 0 5 1/1 * ? *")
 def resetMorningMusicStartCount(event):
+    global morningMusicStartCount
+    global inSession
     morningMusicStartCount = 0
+    inSession = False
 
 @rule("Stop morning music when front door is open")
 @when("Item FF_FrontDoor_Tripped changed to ON")
@@ -55,6 +63,7 @@ def resetMorningMusicStartCount(event):
 def pauseMorningMusic(event):
     global inSession
     if isInMorningTimeRange() and inSession:
+        logger.info('{} Pausing morning music.'.format(LOG_PREFIX))
         cast_manager.pause()
         inSession = False
 
@@ -62,7 +71,7 @@ def pauseMorningMusic(event):
 @when("Item VT_GreatRoom_PlayMorningAnnouncement changed to ON")
 def playMorningAnnouncement(event):
     msg = getMorningAnnouncement()
-    log.info("Saying: " + msg)
+    logger.info("{} Saying: {}".format(LOG_PREFIX, msg))
     cast_manager.playMessage(msg)
     events.sendCommand(event.itemName, 'OFF')
 
@@ -86,6 +95,7 @@ def getMorningAnnouncement():
         message += " It is going to snow today."
 
     return message
-#cast_manager.pause()
+
 #morningMusicStartCount = 0
+#inSession = False
 #playAnnouncementAndMusicInTheMorning(None)
