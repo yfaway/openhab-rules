@@ -1,0 +1,64 @@
+import unittest
+import time
+
+from core.jsr223 import scope
+from core.testing import run_test
+from org.slf4j import Logger, LoggerFactory
+from org.eclipse.smarthome.core.library.items import SwitchItem
+
+from aaa_modules.layout_model import switch
+reload(switch)
+from aaa_modules.layout_model.switch import Light
+
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+
+LIGHT_SWITCH_NAME = 'TestLightName'
+TIMER_NAME = 'TestTimerName'
+
+# Unit tests for alert_manager.
+class LightTest(unittest.TestCase):
+
+    def setUp(self):
+        scope.itemRegistry.remove(LIGHT_SWITCH_NAME)
+        scope.itemRegistry.remove(TIMER_NAME)
+
+        self.lightItem = SwitchItem(LIGHT_SWITCH_NAME)
+        scope.itemRegistry.add(self.lightItem)
+
+        self.timerItem = SwitchItem(TIMER_NAME)
+        scope.itemRegistry.add(self.timerItem)
+
+        self.lightItem.setState(scope.OnOffType.OFF)
+        self.timerItem.setState(scope.OnOffType.OFF)
+
+        self.light = Light(self.lightItem, self.timerItem)
+
+    def tearDown(self):
+        scope.itemRegistry.remove(self.lightItem.getName())
+        scope.itemRegistry.remove(self.timerItem.getName())
+
+    def testTurnOn_lightWasOff_returnsExpected(self):
+        self.light.turnOn(scope.events)
+        time.sleep(0.1)
+        self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
+        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+
+    def testTurnOn_lightWasAlreadyOn_timerIsRenewed(self):
+        self.lightItem.setState(scope.OnOffType.ON)
+        self.timerItem.setState(scope.OnOffType.OFF)
+
+        self.light.turnOn(scope.events)
+        time.sleep(0.1)
+        self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
+        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+
+    def testTurnOff_bothLightAndTimerOn_timerIsRenewed(self):
+        self.lightItem.setState(scope.OnOffType.ON)
+        self.timerItem.setState(scope.OnOffType.ON)
+
+        self.light.turnOff(scope.events)
+        time.sleep(0.1)
+        self.assertEqual(scope.OnOffType.OFF, self.lightItem.getState())
+        self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
+
+run_test(LightTest, logger) 
