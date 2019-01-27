@@ -15,7 +15,7 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 LIGHT_SWITCH_NAME = 'TestLightName'
 TIMER_NAME = 'TestTimerName'
 
-# Unit tests for alert_manager.
+# Unit tests for switch.py.
 class LightTest(unittest.TestCase):
 
     def setUp(self):

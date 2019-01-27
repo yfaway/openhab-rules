@@ -21,6 +21,7 @@ def isKidsSleepTime(epochSeconds = None):
 #     Example: '10-12', or '6-9, 7-7, 8:30 - 14:45', or '19 - 8' (wrap around)
 # @param epochSeconds int seconds since epoch, optional
 # @return boolean
+# @throw ValueError if the time range string is invalid
 def isInTimeRange(timeRangesString, epochSeconds = None):
     if None == timeRangesString or 0 == len(timeRangesString):
         raise ValueError('Must have at least one time range.')
@@ -29,7 +30,7 @@ def isInTimeRange(timeRangesString, epochSeconds = None):
     hour = timeStruct[3]
     minute = timeStruct[4]
 
-    for range in _stringToTimeRangeLists(timeRangesString):
+    for range in stringToTimeRangeLists(timeRangesString):
         startHour, startMinute, endHour, endMinute = range
         if startHour <= endHour: 
             if hour < startHour:
@@ -58,7 +59,8 @@ def isInTimeRange(timeRangesString, epochSeconds = None):
 # Return a list of time ranges. Each list item is itself a list of 4 elements:
 # startTime, startMinute, endTime, endMinute.
 # @return list
-def _stringToTimeRangeLists(timeRangesString):
+# @throw ValueError if the time range string is invalid
+def stringToTimeRangeLists(timeRangesString):
     if None == timeRangesString or 0 == len(timeRangesString):
         raise ValueError('Must have at least one time range.')
 

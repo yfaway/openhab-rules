@@ -34,13 +34,13 @@ class TimeUtilitiesTest(unittest.TestCase):
 
     def testIsInTimeRange_noRange_throwsError(self):
         with self.assertRaises(ValueError) as cm:
-            time_utilities._stringToTimeRangeLists([])
+            time_utilities.stringToTimeRangeLists([])
 
         self.assertEqual('Must have at least one time range.', cm.exception.args[0])
 
     def testIsInTimeRange_none_throwsError(self):
         with self.assertRaises(ValueError) as cm:
-            time_utilities._stringToTimeRangeLists(None)
+            time_utilities.stringToTimeRangeLists(None)
 
         self.assertEqual('Must have at least one time range.', cm.exception.args[0])
 
@@ -101,61 +101,61 @@ class TimeUtilitiesTest(unittest.TestCase):
 
     def testStringToTimeRangeLists_noRange_throwsError(self):
         with self.assertRaises(ValueError) as cm:
-            time_utilities._stringToTimeRangeLists('')
+            time_utilities.stringToTimeRangeLists('')
 
         self.assertEqual('Must have at least one time range.', cm.exception.args[0])
 
     def testStringToTimeRangeLists_none_throwsError(self):
         with self.assertRaises(ValueError) as cm:
-            time_utilities._stringToTimeRangeLists(None)
+            time_utilities.stringToTimeRangeLists(None)
 
         self.assertEqual('Must have at least one time range.', cm.exception.args[0])
 
     def testStringToTimeRangeLists_wrongFormat_throwsError(self):
         with self.assertRaises(ValueError) as cm:
-            time_utilities._stringToTimeRangeLists('9, 3:2:3-5')
+            time_utilities.stringToTimeRangeLists('9, 3:2:3-5')
 
         self.assertEqual('Must be in format "HH" or "HH:MM".', cm.exception.args[0])
 
     def testStringToTimeRangeLists_invalidHour_throwsError(self):
         with self.assertRaises(ValueError) as cm:
-            time_utilities._stringToTimeRangeLists('24')
+            time_utilities.stringToTimeRangeLists('24')
 
         self.assertEqual('Hour must be between 0 and 23 inclusive.', cm.exception.args[0])
 
     def testStringToTimeRangeLists_invalidMinute_throwsError(self):
         with self.assertRaises(ValueError) as cm:
-            time_utilities._stringToTimeRangeLists('7 - 8:60')
+            time_utilities.stringToTimeRangeLists('7 - 8:60')
 
         self.assertEqual('Minute must be between 0 and 59 inclusive.', cm.exception.args[0])
 
     def testStringToTimeRangeLists_oneRangeWithSameHourNoMinutes_returnsExpected(self):
-        list = time_utilities._stringToTimeRangeLists("7")
+        list = time_utilities.stringToTimeRangeLists("7")
         self.assertEqual(1, len(list))
         self.assertEqual([7, 0, 7, 59], list[0])
 
     def testStringToTimeRangeLists_oneRangeWithDiffHourNoMinutes_returnsExpected(self):
-        list = time_utilities._stringToTimeRangeLists("7 - 12")
+        list = time_utilities.stringToTimeRangeLists("7 - 12")
         self.assertEqual(1, len(list))
         self.assertEqual([7, 0, 12, 0], list[0])
 
     def testStringToTimeRangeLists_oneRangeWithDiffHourPartialMinutes_returnsExpected(self):
-        list = time_utilities._stringToTimeRangeLists("7:10 - 12")
+        list = time_utilities.stringToTimeRangeLists("7:10 - 12")
         self.assertEqual(1, len(list))
         self.assertEqual([7, 10, 12, 0], list[0])
 
     def testStringToTimeRangeLists_oneRangeWithDiffHourMinutes_returnsExpected(self):
-        list = time_utilities._stringToTimeRangeLists("7:10 - 12:30")
+        list = time_utilities.stringToTimeRangeLists("7:10 - 12:30")
         self.assertEqual(1, len(list))
         self.assertEqual([7, 10, 12, 30], list[0])
 
     def testStringToTimeRangeLists_wrapAroundHour_returnsExpected(self):
-        list = time_utilities._stringToTimeRangeLists("21 - 7")
+        list = time_utilities.stringToTimeRangeLists("21 - 7")
         self.assertEqual(1, len(list))
         self.assertEqual([21, 0, 7, 0], list[0])
 
     def testStringToTimeRangeLists_multipleRanges_returnsExpected(self):
-        list = time_utilities._stringToTimeRangeLists("7:10 - 8:30, 9, 13 - 15, 16-17:30")
+        list = time_utilities.stringToTimeRangeLists("7:10 - 8:30, 9, 13 - 15, 16-17:30")
         self.assertEqual(4, len(list))
         self.assertEqual([7, 10, 8, 30], list[0])
         self.assertEqual([9, 0, 9, 59], list[1])
