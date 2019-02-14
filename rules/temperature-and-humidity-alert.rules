@@ -38,7 +38,7 @@ then
     var msg = "{"
     msg += "\"subject\":\"" + subject + "\""
     msg += ",\"module\":\"Temperature\""
-    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":" + ALERT_INTERVAL_IN_MINUTES
     msg += "}"
     VT_AlertSender.postUpdate(msg)
   }
@@ -62,7 +62,7 @@ then
     var msg = "{"
     msg += "\"subject\":\"" + subject + "\""
     msg += ",\"module\":\"Humidity\""
-    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":" + ALERT_INTERVAL_IN_MINUTES
     msg += "}"
     VT_AlertSender.postUpdate(msg)
   }
@@ -86,7 +86,7 @@ then
     var msg = "{"
     msg += "\"subject\":\"" + subject + "\""
     msg += ",\"module\":\"Temperature\""
-    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":" + ALERT_INTERVAL_IN_MINUTES
     msg += "}"
     VT_AlertSender.postUpdate(msg)
   }

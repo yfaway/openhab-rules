@@ -66,7 +66,6 @@ then
     var msg = "{"
     msg += "\"subject\":\"" + subject + "\""
     msg += ",\"body\":\"" + body + "\""
-    msg += ",\"module\":\"Weather-Rain\""
     msg += "}"
     VT_AlertSender.postUpdate(msg)
 
@@ -98,7 +97,7 @@ then
     var msg = "{"
     msg += "\"subject\":\"" + subject + "\""
     msg += ",\"module\":\"Weather-WindSpeed\""
-    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + WIND_ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":" + WIND_ALERT_INTERVAL_IN_MINUTES
     msg += "}"
     VT_AlertSender.postUpdate(msg)
   }
@@ -131,7 +130,6 @@ then
   var msg = "{"
   msg += "\"subject\":\"" + subject + "\""
   msg += ",\"body\":\"" + body + "\""
-  msg += ",\"module\":\"Weather-Alert\""
   msg += "}"
   VT_AlertSender.postUpdate(msg)
 end

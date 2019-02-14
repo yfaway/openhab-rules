@@ -37,7 +37,7 @@ then
     var msg = "{"
     msg += "\"subject\":\"" + subject + "\""
     msg += ",\"module\":\"" + ALERT_MODULE_TRIPPED + "\""
-    msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+    msg += ",\"intervalBetweenAlertsInMinutes\":" + ALERT_INTERVAL_IN_MINUTES
     msg += "}"
 
     VT_AlertSender.postUpdate(msg)
@@ -63,7 +63,7 @@ then
   var msg = "{"
   msg += "\"subject\":\"" + subject + "\""
   msg += ",\"module\":\"" + ALERT_MODULE_ARM_STATE_CHANGED + "\""
-  msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+  msg += ",\"intervalBetweenAlertsInMinutes\":" + ALERT_INTERVAL_IN_MINUTES
   msg += "}"
 
   VT_AlertSender.postUpdate(msg)
