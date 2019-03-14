@@ -149,7 +149,7 @@ then
       msg += ",\"subject\":\"Revised travel route\""
       msg += ",\"body\":\"" + body + "\""
       msg += ",\"module\":\"" + prefix + "\""
-      msg += ",\"intervalBetweenAlertsInMinutes\":\"" + ALERT_INTERVAL_IN_MINUTES + "\""
+      msg += ",\"intervalBetweenAlertsInMinutes\":" + ALERT_INTERVAL_IN_MINUTES
       msg += "}"
 
       VT_AlertSender.postUpdate(msg)

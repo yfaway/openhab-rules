@@ -36,7 +36,7 @@ class AlertManager:
         if None == alert:
             raise ValueError('Invalid alert.')
 
-        logger.info("Processing alert\n{}".format(alert.toString()))
+        logger.info(u"Processing alert\n{}".format(alert.toString()))
 
         if None != alert.getModule():
             intervalInSeconds = alert.getIntervalBetweenAlertsInMinutes() * 60

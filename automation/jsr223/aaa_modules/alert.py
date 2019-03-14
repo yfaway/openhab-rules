@@ -138,7 +138,7 @@ class Alert:
 
     # Returns a user readable string containing this object's info.
     def toString(self):
-        returnedVal = ''
+        returnedVal = u''
         if self.isInfoLevel():
             returnedVal += '[INFO]'
         elif self.isWarningLevel():
@@ -146,7 +146,7 @@ class Alert:
         else:
             returnedVal += '[CRITICAL]'
 
-        returnedVal += ' {}\n{}\n{}'.format(self.getSubject(), self.getBody(), 
+        returnedVal += u' {}\n{}\n{}'.format(self.getSubject(), self.getBody(), 
                 str(self.getAttachmentUrls()))
 
         return returnedVal
