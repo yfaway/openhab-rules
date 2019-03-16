@@ -99,6 +99,11 @@ class TimeUtilitiesTest(unittest.TestCase):
         self.assertFalse(time_utilities.isInTimeRange('4-5, 8',
                     time.mktime(dt.timetuple())))
 
+    def testIsInTimeRange_singleRangeCurrentMinuteLessThanStartMinute_returnTrue(self):
+        dt = datetime.datetime(2019, 3, 15, 22, 30)
+        self.assertTrue(time_utilities.isInTimeRange('18:45 - 23:00',
+                    time.mktime(dt.timetuple())))
+
     def testStringToTimeRangeLists_noRange_throwsError(self):
         with self.assertRaises(ValueError) as cm:
             time_utilities.stringToTimeRangeLists('')

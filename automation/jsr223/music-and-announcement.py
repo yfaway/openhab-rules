@@ -13,6 +13,10 @@ from aaa_modules import cast_manager
 reload(cast_manager)
 from aaa_modules import cast_manager
 
+from aaa_modules import time_utilities
+reload(time_utilities)
+from aaa_modules import time_utilities
+
 # The follow two constants define the morning time range and the # of times
 # announcement and music will automatically be played. The counter is
 # incremented by one when music is played successfully (nothing else was
@@ -24,7 +28,10 @@ LOG_PREFIX = '[Morning Annoucement]'
 
 # If set, implies the user hasn't left yet, and thus do not trigger additional
 # annoucement.
-inSession = False
+inMorningSession = False
+
+# Indicates if music was already played at dinner time.
+inDinnerSession = False
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 morningMusicStartCount = 0
@@ -33,47 +40,61 @@ morningMusicStartCount = 0
 @when("Item FF_Kitchen_LightSwitch_MotionSensor changed to ON")
 def playAnnouncementAndMusicInTheMorning(event):
     global morningMusicStartCount
-    global inSession
+    global inMorningSession
 
     if isInMorningTimeRange() and \
             morningMusicStartCount < MAX_MORNING_MUSIC_START_COUNT:
-        if not inSession:
+        if not inMorningSession:
             logger.info('{} Playing morning annoucement.'.format(LOG_PREFIX))
-            inSession = True
+            inMorningSession = True
             msg = getMorningAnnouncement()
             casts = cast_manager.getFirstFloorCasts()
 
             cast_manager.playMessage(msg, casts)
             cast_manager.playStream("WWFM Classical", casts)
             morningMusicStartCount += 1
-        else:
-            logger.info('{} Not in session.'.format(LOG_PREFIX))
+#        else:
+#            logger.info('{} Not in session.'.format(LOG_PREFIX))
 
-@rule("Reset morningMusicStartCount to 0 at 5AM")
+@rule("Reset music states at 5AM")
 @when("Time cron 0 0 5 1/1 * ? *")
-def resetMorningMusicStartCount(event):
+def resetMusicStates(event):
     global morningMusicStartCount
-    global inSession
+    global inMorningSession
+    global inDinnerSession
+
     morningMusicStartCount = 0
-    inSession = False
+    inMorningSession = False
+    inDinnerSession = False
 
 @rule("Stop morning music when front door is open")
 @when("Item FF_FrontDoor_Tripped changed to ON")
 @when("Item FF_GarageDoor_Tripped changed to ON")
 def pauseMorningMusic(event):
-    global inSession
-    if isInMorningTimeRange() and inSession:
+    global inMorningSession
+    if isInMorningTimeRange() and inMorningSession:
         logger.info('{} Pausing morning music.'.format(LOG_PREFIX))
         cast_manager.pause()
-        inSession = False
+        inMorningSession = False
 
-@rule("Play morning announcement")
+@rule("Play morning announcement when click on a button")
 @when("Item VT_GreatRoom_PlayMorningAnnouncement changed to ON")
 def playMorningAnnouncement(event):
     msg = getMorningAnnouncement()
-    logger.info("{} Saying: {}".format(LOG_PREFIX, msg))
+    logger.info(u"{} Saying: {}".format(LOG_PREFIX, msg))
     cast_manager.playMessage(msg)
     events.sendCommand(event.itemName, 'OFF')
+
+@rule("Play music at dinner time")
+@when("Item FF_Kitchen_LightSwitch_MotionSensor changed to ON")
+def playMusicAtDinnerTime(event):
+    global inDinnerSession
+    if time_utilities.isDinnerTime():
+        if not inDinnerSession:
+            casts = cast_manager.getFirstFloorCasts()
+            cast_manager.playStream("Meditation - Yimago Radio 4", casts, 40)
+
+            inDinnerSession = True
 
 # @return True if the current hour is within the time range; False otherwise.
 def isInMorningTimeRange():
@@ -82,7 +103,7 @@ def isInMorningTimeRange():
 
 # @return a string containing the current's weather and today's forecast.
 def getMorningAnnouncement():
-    message = 'Good morning. It is {} degree currently; the weather ' \
+    message = u'Good morning. It is {} degree currently; the weather ' \
         'condition is {}. Forecasted temperature range is between {} and {} ' \
         'degrees.'.format(
             items['VT_Weather_Temperature'].intValue(),
@@ -97,5 +118,5 @@ def getMorningAnnouncement():
     return message
 
 #morningMusicStartCount = 0
-#inSession = False
-#playAnnouncementAndMusicInTheMorning(None)
+#inDinnerSession = False
+#playMusicAtDinnerTime(None)

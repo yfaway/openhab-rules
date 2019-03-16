@@ -3,6 +3,9 @@ from org.slf4j import Logger, LoggerFactory
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
+def isDinnerTime():
+    return isInTimeRange("18:45 - 20:00")
+
 # @param epochSeconds int seconds since epoch, optional
 # @return true if it is kids' nap or sleep time.
 def isKidsSleepTime(epochSeconds = None):
@@ -38,7 +41,7 @@ def isInTimeRange(timeRangesString, epochSeconds = None):
         else: # wrap around scenario
             pass
 
-        if minute < startMinute:
+        if hour == startHour and minute < startMinute:
             continue
 
         if endMinute == 0:
