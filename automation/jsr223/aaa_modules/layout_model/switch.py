@@ -1,7 +1,10 @@
 import time
 from org.eclipse.smarthome.core.library.types import OnOffType
 
-# Represents a light or fan switch.
+# Represents a light or fan switch. Each switch is associated with a timer
+# item. Whent he switch is turned on, the timer is turned on as well. As the
+# timer expires, the switch is turned off (if it is not off already). If the
+# switch is turned off not by the timer, the timer is cancelled.
 class Switch:
     # Ctor
     # @param switchItem org.eclipse.smarthome.core.library.items.SwitchItem
