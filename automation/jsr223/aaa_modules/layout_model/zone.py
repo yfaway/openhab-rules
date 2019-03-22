@@ -59,3 +59,24 @@ class Zone:
                 isProcessed = True
         
         return isProcessed
+
+    def onSwitchTurnedOn(self, events, itemName):
+        isProcessed = False
+
+        switches = self.getDevicesByType(Switch)
+        for switch in switches:
+            if switch.onSwitchTurnedOn(events, itemName):
+                isProcessed = True
+        
+        return isProcessed
+
+    def onSwitchTurnedOff(self, events, itemName):
+        isProcessed = False
+
+        switches = self.getDevicesByType(Switch)
+        for switch in switches:
+            if switch.onSwitchTurnedOff(events, itemName):
+                isProcessed = True
+        
+        return isProcessed
+

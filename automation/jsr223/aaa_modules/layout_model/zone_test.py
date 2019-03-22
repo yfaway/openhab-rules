@@ -70,7 +70,6 @@ class ZoneTest(unittest.TestCase):
 
         time.sleep(0.1)
         self.assertEqual(scope.OnOffType.OFF, self.lightItem.getState())
-        self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
     def testOnTimerExpired_invalidTimerItem_returnsFalse(self):
         zone = Zone('ff', [self.light])
@@ -78,6 +77,26 @@ class ZoneTest(unittest.TestCase):
         isProcessed = zone.onTimerExpired(scope.events, 'dummy name')
         self.assertFalse(isProcessed)
 
+    def testOnSwitchedTurnedOn_validItemName_returnsTrue(self):
+        self.timerItem.setState(scope.OnOffType.OFF)
 
+        zone = Zone('ff', [self.light])
+
+        isProcessed = zone.onSwitchTurnedOn(scope.events, self.lightItem.getName())
+        self.assertTrue(isProcessed)
+
+        time.sleep(0.1)
+        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+
+    def testOnSwitchedTurnedOff_validItemName_returnsTrue(self):
+        self.timerItem.setState(scope.OnOffType.ON)
+
+        zone = Zone('ff', [self.light])
+
+        isProcessed = zone.onSwitchTurnedOff(scope.events, self.lightItem.getName())
+        self.assertTrue(isProcessed)
+
+        time.sleep(0.1)
+        self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
 run_test(ZoneTest, logger) 

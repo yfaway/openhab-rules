@@ -41,7 +41,6 @@ class LightTest(unittest.TestCase):
         self.light.turnOn(scope.events)
         time.sleep(0.1)
         self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
-        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
 
     def testTurnOn_lightWasAlreadyOn_timerIsRenewed(self):
         self.lightItem.setState(scope.OnOffType.ON)
@@ -52,6 +51,21 @@ class LightTest(unittest.TestCase):
         self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
 
+    def testOnSwitchTurnedOn_validParams_timerIsTurnedOn(self):
+        self.lightItem.setState(scope.OnOffType.ON)
+        self.timerItem.setState(scope.OnOffType.OFF)
+
+        isProcessed = self.light.onSwitchTurnedOn(
+                scope.events, self.lightItem.getName())
+        time.sleep(0.1)
+        self.assertTrue(isProcessed)
+        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+
+    def testOnSwitchTurnedOn_invalidItemName_returnsFalse(self):
+        isProcessed = self.light.onSwitchTurnedOn(
+                scope.events, "wrong name")
+        self.assertFalse(isProcessed)
+
     def testTurnOff_bothLightAndTimerOn_timerIsRenewed(self):
         self.lightItem.setState(scope.OnOffType.ON)
         self.timerItem.setState(scope.OnOffType.ON)
@@ -59,6 +73,20 @@ class LightTest(unittest.TestCase):
         self.light.turnOff(scope.events)
         time.sleep(0.1)
         self.assertEqual(scope.OnOffType.OFF, self.lightItem.getState())
+
+    def testOnSwitchTurnedOff_validParams_timerIsTurnedOn(self):
+        self.lightItem.setState(scope.OnOffType.OFF)
+        self.timerItem.setState(scope.OnOffType.ON)
+
+        isProcessed = self.light.onSwitchTurnedOff(
+                scope.events, self.lightItem.getName())
+        time.sleep(0.1)
+        self.assertTrue(isProcessed)
         self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
+
+    def testOnSwitchTurnedOff_invalidItemName_returnsFalse(self):
+        isProcessed = self.light.onSwitchTurnedOff(
+                scope.events, "wrong name")
+        self.assertFalse(isProcessed)
 
 run_test(LightTest, logger) 

@@ -2,7 +2,7 @@ import time
 from org.eclipse.smarthome.core.library.types import OnOffType
 
 # Represents a light or fan switch. Each switch is associated with a timer
-# item. Whent he switch is turned on, the timer is turned on as well. As the
+# item. When the switch is turned on, the timer is turned on as well. As the
 # timer expires, the switch is turned off (if it is not off already). If the
 # switch is turned off not by the timer, the timer is cancelled.
 class Switch:
@@ -25,20 +25,49 @@ class Switch:
     def turnOn(self, events):
         if OnOffType.ON != self.switchItem.getState():
             events.sendCommand(self.switchItem.getName(), "ON")
-        
-        self._handleCommonOnAction(events)
+        else: # already on, renew timer
+            events.sendCommand(self.timerItem.getName(), "ON")
 
     # Turn off this light.
     def turnOff(self, events):
         if OnOffType.ON == self.switchItem.getState():
             events.sendCommand(self.switchItem.getName(), "OFF")
 
-        if OnOffType.OFF != self.switchItem.getState():
-            events.sendCommand(self.timerItem.getName(), "OFF")
-
     # Returns true if the switch is turned on; false otherwise.
     def isOn(self):
         return OnOffType.ON == self.switchItem.getState()
+
+    # Invoked when a switch on event is triggered. Note that a switch can be
+    # turned on through this class' turnOn method, or through the event bus, or
+    # manually by the user.
+    # The following actions are done:
+    #   - the on timestamp is set;
+    #   - the timer item is set to ON.
+    # @param events scope.events
+    # @param itemName string - the name of the item triggering the event
+    # @return True if itemName refers to this switch; False otherwise
+    def onSwitchTurnedOn(self, events, itemName):
+        isProcessed = (self.getSwitchItem().getName() == itemName)
+        if isProcessed:
+            self._handleCommonOnAction(events)
+
+        return isProcessed
+
+    # Invoked when a switch off event is triggered. Note that a switch can be
+    # turned off through this class' turnOff method, or through the event bus,
+    # or manually by the user.
+    # The following actions are done:
+    #   - the timer item is set to OFF.
+    # @param events scope.events
+    # @param itemName string - the name of the item triggering the event
+    # @return True if itemName refers to this switch; False otherwise
+    def onSwitchTurnedOff(self, events, itemName):
+        isProcessed = (self.getSwitchItem().getName() == itemName)
+        if isProcessed:
+            if OnOffType.OFF != self.timerItem.getState():
+                events.sendCommand(self.timerItem.getName(), "OFF")
+
+        return isProcessed
 
     def getSwitchItem(self):
         return self.switchItem
