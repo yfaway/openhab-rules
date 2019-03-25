@@ -4,14 +4,14 @@ from org.slf4j import Logger, LoggerFactory
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 def isDinnerTime():
-    return isInTimeRange("18:45 - 20:00")
+    return isInTimeRange("17:50 - 20:00")
 
 # @param epochSeconds int seconds since epoch, optional
 # @return true if it is kids' nap or sleep time.
 def isKidsSleepTime(epochSeconds = None):
     timeStruct = time.localtime(epochSeconds)
     hourOfDay = timeStruct[3]
-    if hourOfDay >= 21 or hourOfDay < 8: # regular sleep time
+    if hourOfDay >= 20 or hourOfDay < 8: # regular sleep time
         return True
     elif hourOfDay >= 13 and hourOfDay <= 16: # nap time
         dayOfWeek = timeStruct[6]

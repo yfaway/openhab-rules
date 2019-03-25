@@ -103,7 +103,7 @@ Dimmer SF_Lobby_LightSwitch "Lobby Light"
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node10:switch_dimmer",
     turnOff="FF_Foyer_LightSwitch",
-    dimmable="true" [level=2, timeRanges="21-8"] }
+    dimmable="true" [level=2, timeRanges="20-8"] }
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:mything:SecondFloorMotionSensor"}
