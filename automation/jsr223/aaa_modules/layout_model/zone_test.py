@@ -11,34 +11,43 @@ reload(zone)
 from aaa_modules.layout_model.zone import Zone
 
 from aaa_modules.layout_model.switch import Light
+from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.dimmer import Dimmer
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 LIGHT_SWITCH_NAME = 'TestLightName'
+MOTION_SENSOR_SWITCH_NAME = 'TestMotionSensorName'
 TIMER_NAME = 'TestTimerName'
 
 # Unit tests for zone_manager.py.
 class ZoneTest(unittest.TestCase):
 
     def setUp(self):
+        scope.itemRegistry.remove(MOTION_SENSOR_SWITCH_NAME)
         scope.itemRegistry.remove(LIGHT_SWITCH_NAME)
         scope.itemRegistry.remove(TIMER_NAME)
 
         self.lightItem = SwitchItem(LIGHT_SWITCH_NAME)
         scope.itemRegistry.add(self.lightItem)
 
+        self.motionSensorItem = SwitchItem(MOTION_SENSOR_SWITCH_NAME)
+        scope.itemRegistry.add(self.motionSensorItem)
+
         self.timerItem = SwitchItem(TIMER_NAME)
         scope.itemRegistry.add(self.timerItem)
 
+        self.motionSensorItem.setState(scope.OnOffType.OFF)
         self.lightItem.setState(scope.OnOffType.OFF)
         self.timerItem.setState(scope.OnOffType.OFF)
 
         self.light = Light(self.lightItem, self.timerItem)
+        self.motionSensor = MotionSensor(self.motionSensorItem)
 
     def tearDown(self):
-        scope.itemRegistry.remove(self.lightItem.getName())
         scope.itemRegistry.remove(self.timerItem.getName())
+        scope.itemRegistry.remove(self.motionSensorItem.getName())
+        scope.itemRegistry.remove(self.lightItem.getName())
 
     def testAddDevice_validDevice_deviceAdded(self):
         zone = Zone('ff')
@@ -98,5 +107,17 @@ class ZoneTest(unittest.TestCase):
 
         time.sleep(0.1)
         self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
+
+    def testOnMotionSensorTurnedOn_validItemName_returnsTrue(self):
+        self.assertFalse(self.light.isOn())
+
+        zone = Zone('ff', [self.light, self.motionSensor])
+
+        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+                self.motionSensor.getSwitchItem().getName())
+        self.assertTrue(isProcessed)
+
+        time.sleep(0.1)
+        self.assertTrue(self.light.isOn())
 
 run_test(ZoneTest, logger) 

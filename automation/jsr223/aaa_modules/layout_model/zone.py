@@ -13,7 +13,22 @@ class Level:
 #reload(switch)
 from aaa_modules.layout_model.switch import Switch
 
+#from aaa_modules.layout_model import motion_sensor
+#reload(motion_sensor)
+from aaa_modules.layout_model.motion_sensor import MotionSensor
+
 # Represent a zone such as a room, foyer, porch, or lobby.
+# Each zone holds a number of devices/sensors such as switches, motion sensors,
+# or temperature sensor.
+# There are two sets of operation on each zone:
+#   1. Active operations such as turn on a light/fan in a zone. These are
+#      represented by functions such as turnOnLight(), turnOffLight(); and
+#   2. Passive operations triggered by events such onTimerExpired(),
+#      onSwitchTurnedOn(), and so on.
+# The passive triggering is needed because the interaction with the devices or
+# sensors might happen outside the interface exposed by this class. It could
+# be a manually action on the switch by the user, or a direct send command 
+# through the OpenHab event bus.
 class Zone:
     def __init__(self, name, devices = [], level = Level.UNDEFINED):
         self.name = name
@@ -49,6 +64,9 @@ class Zone:
     def isOccupied(self, minutesFromLastMotionEvent = 5):
         pass
 
+    # Determines if the timer itemName is associated with a switch in this
+    # zone; if yes, turns off the switch and returns True. Otherwise returns
+    # False.
     def onTimerExpired(self, events, itemName):
         isProcessed = False
 
@@ -60,6 +78,10 @@ class Zone:
         
         return isProcessed
 
+    # If itemName belongs to this zone, dispatches the event to the associated
+    # Switch object, and returns True. Otherwise return False.
+    # @return boolean
+    # @see Switch::onSwitchTurnedOn
     def onSwitchTurnedOn(self, events, itemName):
         isProcessed = False
 
@@ -70,6 +92,10 @@ class Zone:
         
         return isProcessed
 
+    # If itemName belongs to this zone, dispatches the event to the associated
+    # Switch object, and returns True. Otherwise return False.
+    # @return boolean
+    # @see Switch::onSwitchTurnedOff
     def onSwitchTurnedOff(self, events, itemName):
         isProcessed = False
 
@@ -77,6 +103,22 @@ class Zone:
         for switch in switches:
             if switch.onSwitchTurnedOff(events, itemName):
                 isProcessed = True
+        
+        return isProcessed
+
+    # If the motion sensor belongs to this zone, turns on the associated
+    # switch, and returns True. Otherwise return False.
+    # @return boolean
+    # @see Switch::onSwitchTurnedOff
+    def onMotionSensorTurnedOn(self, events, itemName):
+        isProcessed = False
+
+        sensors = self.getDevicesByType(MotionSensor)
+        if any(s.getSwitchItem().getName() == itemName for s in sensors):
+            for switch in self.getDevicesByType(Switch):
+                switch.turnOn(events)
+
+            isProcessed = True
         
         return isProcessed
 
