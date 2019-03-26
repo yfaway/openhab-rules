@@ -66,6 +66,28 @@ class ZoneTest(unittest.TestCase):
         self.assertEqual(1, len(zone.getDevicesByType(Light)))
         self.assertEqual(0, len(zone.getDevicesByType(Dimmer)))
 
+    def testIsOccupied_everythingOff_returnsFalse(self):
+        zone = Zone('ff', [self.light, self.motionSensor])
+        self.assertFalse(zone.isOccupied())
+
+    def testIsOccupied_switchIsOn_returnsTrue(self):
+        zone = Zone('ff', [self.light, self.motionSensor])
+        self.light.turnOn(scope.events)
+        time.sleep(0.1)
+
+        self.assertTrue(zone.isOccupied())
+
+    def testIsOccupied_motionEventTriggeredButLightIsOff_returnsTrue(self):
+        zone = Zone('ff', [self.light, self.motionSensor])
+        self.motionSensor.onMotionSensorTurnedOn(
+                scope.events, MOTION_SENSOR_SWITCH_NAME)
+        time.sleep(0.1)
+
+        self.light.turnOff(scope.events)
+        time.sleep(0.1)
+
+        self.assertTrue(zone.isOccupied())
+
     def testOnTimerExpired_validTimerItem_returnsTrue(self):
 
         self.lightItem.setState(scope.OnOffType.ON)

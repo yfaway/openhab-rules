@@ -12,9 +12,6 @@ class Level:
 #from aaa_modules.layout_model import switch
 #reload(switch)
 from aaa_modules.layout_model.switch import Switch
-
-#from aaa_modules.layout_model import motion_sensor
-#reload(motion_sensor)
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 
 # Represent a zone such as a room, foyer, porch, or lobby.
@@ -59,10 +56,21 @@ class Zone:
     def getLevel(self):
         return self.level
 
-    # Returns true if the zone has at least one switch turned on, or if a
+    # Returns True if the zone has at least one switch turned on, or if a
     # motion event was triggered within the provided # of minutes.
+    # @return bool
     def isOccupied(self, minutesFromLastMotionEvent = 5):
-        pass
+        occupied = False
+
+        motionSensors = self.getDevicesByType(MotionSensor)
+        if any(s.isOccupied(minutesFromLastMotionEvent) for s in motionSensors):
+            occupied = True
+        else:
+            switches = self.getDevicesByType(Switch)
+            if any(s.isOn() for s in switches):
+                occupied = True
+
+        return occupied
 
     # Determines if the timer itemName is associated with a switch in this
     # zone; if yes, turns off the switch and returns True. Otherwise returns
@@ -114,7 +122,7 @@ class Zone:
         isProcessed = False
 
         sensors = self.getDevicesByType(MotionSensor)
-        if any(s.getSwitchItem().getName() == itemName for s in sensors):
+        if any(s.onMotionSensorTurnedOn(events, itemName) for s in sensors):
             for switch in self.getDevicesByType(Switch):
                 switch.turnOn(events)
 
