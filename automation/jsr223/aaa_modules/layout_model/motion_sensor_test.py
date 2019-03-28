@@ -51,4 +51,5 @@ class MotionSensorTest(unittest.TestCase):
         time.sleep(0.1)
         self.assertTrue(self.motionSensor.isOccupied())
 
+
 run_test(MotionSensorTest, logger) 

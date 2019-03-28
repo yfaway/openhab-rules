@@ -28,17 +28,17 @@ class Dimmer(Light):
     # 100%. The associated timer item is also turned on.
     # @override
     def turnOn(self, events):
-        if OnOffType.ON != self.switchItem.getState():
+        if OnOffType.ON != self.getItem().getState():
             if time_utilities.isInTimeRange(self.timeRanges):
-                events.sendCommand(self.switchItem.getName(),
+                events.sendCommand(self.getItemName(),
                         str(self.dimLevel))
             else:
-                events.sendCommand(self.switchItem.getName(), "100")
+                events.sendCommand(self.getItemName(), "100")
 
         self._handleCommonOnAction(events)
 
     # Returns true if the dimmer is turned on; false otherwise.
     # @override
     def isOn(self):
-        return self.switchItem.state > scope.DecimalType(0)
+        return self.getItem().state > scope.DecimalType(0)
 

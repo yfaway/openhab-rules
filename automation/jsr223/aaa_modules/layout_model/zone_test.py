@@ -136,7 +136,7 @@ class ZoneTest(unittest.TestCase):
         zone = Zone('ff', [self.light, self.motionSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getSwitchItem().getName())
+                self.motionSensor.getItemName())
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)

@@ -86,7 +86,5 @@ class DimmerTest(unittest.TestCase):
         self.dimmer.turnOff(scope.events)
         time.sleep(0.1)
         self.assertFalse(self.dimmer.isOn())
-        self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
 run_test(DimmerTest, logger) 
-
