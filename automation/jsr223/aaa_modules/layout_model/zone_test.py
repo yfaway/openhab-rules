@@ -1,53 +1,57 @@
-import unittest
 import time
 
 from core.jsr223 import scope
 from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
+from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
 from aaa_modules.layout_model import zone
 reload(zone)
 from aaa_modules.layout_model.zone import Zone
 
+from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.switch import Light
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.dimmer import Dimmer
 
+from aaa_modules.layout_model.device_test import DeviceTest
+
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
-LIGHT_SWITCH_NAME = 'TestLightName'
+ILLUMINANCE_THRESHOLD_IN_LUX = 10
 MOTION_SENSOR_SWITCH_NAME = 'TestMotionSensorName'
-TIMER_NAME = 'TestTimerName'
+ITEMS = [SwitchItem('TestLightName'),
+      SwitchItem('TestTimerName'),
+      SwitchItem(MOTION_SENSOR_SWITCH_NAME),
+      NumberItem('IlluminanceSensorName') ]
 
 # Unit tests for zone_manager.py.
-class ZoneTest(unittest.TestCase):
+class ZoneTest(DeviceTest):
 
     def setUp(self):
-        scope.itemRegistry.remove(MOTION_SENSOR_SWITCH_NAME)
-        scope.itemRegistry.remove(LIGHT_SWITCH_NAME)
-        scope.itemRegistry.remove(TIMER_NAME)
+        super(ZoneTest, self).setUp()
 
-        self.lightItem = SwitchItem(LIGHT_SWITCH_NAME)
-        scope.itemRegistry.add(self.lightItem)
+        self.lightItem = self.getItems()[0]
+        self.timerItem = self.getItems()[1]
+        self.motionSensorItem = self.getItems()[2]
+        self.illuminanceSensorItem = self.getItems()[3]
 
-        self.motionSensorItem = SwitchItem(MOTION_SENSOR_SWITCH_NAME)
-        scope.itemRegistry.add(self.motionSensorItem)
-
-        self.timerItem = SwitchItem(TIMER_NAME)
-        scope.itemRegistry.add(self.timerItem)
-
-        self.motionSensorItem.setState(scope.OnOffType.OFF)
-        self.lightItem.setState(scope.OnOffType.OFF)
-        self.timerItem.setState(scope.OnOffType.OFF)
-
+        self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
         self.light = Light(self.lightItem, self.timerItem)
+        self.lightWithIlluminance = Light(self.lightItem, self.timerItem,
+                ILLUMINANCE_THRESHOLD_IN_LUX)
         self.motionSensor = MotionSensor(self.motionSensorItem)
 
-    def tearDown(self):
-        scope.itemRegistry.remove(self.timerItem.getName())
-        scope.itemRegistry.remove(self.motionSensorItem.getName())
-        scope.itemRegistry.remove(self.lightItem.getName())
+    def getItems(self, resetState = False):
+        if resetState:
+            for item in ITEMS:
+                if isinstance(item, SwitchItem):
+                    item.setState(scope.OnOffType.OFF)
+                elif isinstance(item, SwitchItem):
+                    item.setState(UndefState)
+
+        return ITEMS
 
     def testAddDevice_validDevice_deviceAdded(self):
         zone = Zone('ff')
@@ -130,10 +134,36 @@ class ZoneTest(unittest.TestCase):
         time.sleep(0.1)
         self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
-    def testOnMotionSensorTurnedOn_validItemName_returnsTrue(self):
+    def testOnMotionSensorTurnedOn_validItemNameNoIlluminanceSensor_turnsOnLight(self):
         self.assertFalse(self.light.isOn())
 
         zone = Zone('ff', [self.light, self.motionSensor])
+
+        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+                self.motionSensor.getItemName())
+        self.assertTrue(isProcessed)
+
+        time.sleep(0.1)
+        self.assertTrue(self.light.isOn())
+
+    def testOnMotionSensorTurnedOn_illuminanceAboveThreshold_returnsFalse(self):
+        self.assertFalse(self.light.isOn())
+        self.illuminanceSensorItem.setState(DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX + 1))
+
+        zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
+                self.illuminanceSensor])
+
+        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+                self.motionSensor.getItemName())
+        self.assertFalse(isProcessed)
+        self.assertFalse(self.light.isOn())
+
+    def testOnMotionSensorTurnedOn_illuminanceBelowThreshold_turnsOnLight(self):
+        self.assertFalse(self.light.isOn())
+        self.illuminanceSensorItem.setState(DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
+
+        zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
+                self.illuminanceSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName())

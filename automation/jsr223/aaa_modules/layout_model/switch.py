@@ -80,8 +80,15 @@ class Switch(Device):
 
 # Represents a regular light.
 class Light(Switch):
-    def __init__(self, switchItem, timerItem):
+    # @param illuminanceLevel the illuminance level in LUX unit. The light should only
+    #     be turned on if the light level is below this unit.
+    def __init__(self, switchItem, timerItem, illuminanceLevel = None):
         Switch.__init__(self, switchItem, timerItem)
+        self._illuminanceLevel = illuminanceLevel
+
+    # Returns the illuminance level in LUX unit. Returns None if not applicable.
+    def getIlluminanceThreshold(self):
+        return self._illuminanceLevel
 
 # Represents a regular light.
 class Fan(Switch):

@@ -11,8 +11,9 @@ class Level:
 
 #from aaa_modules.layout_model import switch
 #reload(switch)
-from aaa_modules.layout_model.switch import Switch
+from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
+from aaa_modules.layout_model.switch import Light, Switch
 
 # Represent a zone such as a room, foyer, porch, or lobby.
 # Each zone holds a number of devices/sensors such as switches, motion sensors,
@@ -123,10 +124,21 @@ class Zone:
 
         sensors = self.getDevicesByType(MotionSensor)
         if any(s.onMotionSensorTurnedOn(events, itemName) for s in sensors):
-            for switch in self.getDevicesByType(Switch):
-                switch.turnOn(events)
+            illuminances = [s.getIlluminanceLevel() for s in self.getDevicesByType(
+                    IlluminanceSensor)]
+            zoneIlluminance = -1
+            if len(illuminances) > 0:
+                zoneIlluminance = max(illuminances)
 
-            isProcessed = True
+            for switch in self.getDevicesByType(Switch):
+                if isinstance(switch, Light):
+                    if (None == switch.getIlluminanceThreshold() or 
+                            zoneIlluminance < switch.getIlluminanceThreshold()):
+                        switch.turnOn(events)
+                        isProcessed = True
+                else:
+                    switch.turnOn(events)
+                    isProcessed = True
         
         return isProcessed
 
