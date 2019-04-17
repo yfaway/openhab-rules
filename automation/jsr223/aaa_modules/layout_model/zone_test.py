@@ -92,6 +92,17 @@ class ZoneTest(DeviceTest):
 
         self.assertTrue(zone.isOccupied())
 
+    def testGetIlluminanceLevel_noSensor_returnsMinusOne(self):
+        zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor])
+        self.assertEqual(-1, zone.getIlluminanceLevel())
+
+    def testGetIlluminanceLevel_withSensor_returnsPositiveValue(self):
+        self.illuminanceSensorItem.setState(DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX))
+
+        zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
+                self.illuminanceSensor])
+        self.assertEqual(ILLUMINANCE_THRESHOLD_IN_LUX, zone.getIlluminanceLevel())
+
     def testOnTimerExpired_validTimerItem_returnsTrue(self):
 
         self.lightItem.setState(scope.OnOffType.ON)
@@ -171,5 +182,6 @@ class ZoneTest(DeviceTest):
 
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
+
 
 run_test(ZoneTest, logger) 

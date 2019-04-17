@@ -27,6 +27,11 @@ from aaa_modules.layout_model.switch import Light, Switch
 # sensors might happen outside the interface exposed by this class. It could
 # be a manually action on the switch by the user, or a direct send command 
 # through the OpenHab event bus.
+# All the onXxx methods accept two parameters: the core.jsr223.scope.events
+# object and the string itemName. The zone will perform appropriate actions
+# for each of these events. For example, a motion event will turn on the light
+# if it is dark or if it is evening time; a timer expiry event will turn off
+# the associated light if it is currently on.
 class Zone:
     def __init__(self, name, devices = [], level = Level.UNDEFINED):
         self.name = name
@@ -56,6 +61,18 @@ class Zone:
 
     def getLevel(self):
         return self.level
+
+    # Retrieve the maximum illuminance level from one or more IlluminanceSensor.
+    # If no sensor is available, return -1.
+    # @return int
+    def getIlluminanceLevel(self):
+        illuminances = [s.getIlluminanceLevel() for s in self.getDevicesByType(
+                IlluminanceSensor)]
+        zoneIlluminance = -1
+        if len(illuminances) > 0:
+            zoneIlluminance = max(illuminances)
+
+        return zoneIlluminance
 
     # Returns True if the zone has at least one switch turned on, or if a
     # motion event was triggered within the provided # of minutes.
@@ -124,11 +141,7 @@ class Zone:
 
         sensors = self.getDevicesByType(MotionSensor)
         if any(s.onMotionSensorTurnedOn(events, itemName) for s in sensors):
-            illuminances = [s.getIlluminanceLevel() for s in self.getDevicesByType(
-                    IlluminanceSensor)]
-            zoneIlluminance = -1
-            if len(illuminances) > 0:
-                zoneIlluminance = max(illuminances)
+            zoneIlluminance = self.getIlluminanceLevel()
 
             for switch in self.getDevicesByType(Switch):
                 if isinstance(switch, Light):
