@@ -11,6 +11,7 @@ class Level:
 
 #from aaa_modules.layout_model import switch
 #reload(switch)
+from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light, Switch
@@ -62,7 +63,7 @@ class Zone:
     def getLevel(self):
         return self.level
 
-    # Retrieve the maximum illuminance level from one or more IlluminanceSensor.
+    # Retrieves the maximum illuminance level from one or more IlluminanceSensor.
     # If no sensor is available, return -1.
     # @return int
     def getIlluminanceLevel(self):
@@ -73,6 +74,16 @@ class Zone:
             zoneIlluminance = max(illuminances)
 
         return zoneIlluminance
+
+    # Returns True if it is light-on time; returns false if it is no. Returns
+    # None if there is no AstroSensor to determine the time.
+    # @return bool or None
+    def isLightOnTime(self):
+        astroSensors = self.getDevicesByType(AstroSensor)
+        if len(astroSensors) == 0:
+            return None
+        else:
+            return any(s.isLightOnTime() for s in astroSensors)
 
     # Returns True if the zone has at least one switch turned on, or if a
     # motion event was triggered within the provided # of minutes.
@@ -137,21 +148,24 @@ class Zone:
     # @return boolean
     # @see Switch::onSwitchTurnedOff
     def onMotionSensorTurnedOn(self, events, itemName):
+        motionSensors = self.getDevicesByType(MotionSensor)
+        if not any(s.onMotionSensorTurnedOn(events, itemName) for s in motionSensors):
+            return False
+
         isProcessed = False
+        lightOnTime = self.isLightOnTime()
+        zoneIlluminance = self.getIlluminanceLevel()
 
-        sensors = self.getDevicesByType(MotionSensor)
-        if any(s.onMotionSensorTurnedOn(events, itemName) for s in sensors):
-            zoneIlluminance = self.getIlluminanceLevel()
-
-            for switch in self.getDevicesByType(Switch):
-                if isinstance(switch, Light):
-                    if (None == switch.getIlluminanceThreshold() or 
-                            zoneIlluminance < switch.getIlluminanceThreshold()):
-                        switch.turnOn(events)
-                        isProcessed = True
-                else:
+        for switch in self.getDevicesByType(Switch):
+            if isinstance(switch, Light):
+                if (lightOnTime or
+                        None == switch.getIlluminanceThreshold() or 
+                        zoneIlluminance < switch.getIlluminanceThreshold()):
                     switch.turnOn(events)
                     isProcessed = True
+            else:
+                switch.turnOn(events)
+                isProcessed = True
         
         return isProcessed
 

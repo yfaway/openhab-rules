@@ -22,19 +22,18 @@ class AstroSensorTest(DeviceTest):
 
     def getItems(self, resetState = False):
         if resetState:
-            ITEMS[0].setState(StringType('EVENING'))
+            ITEMS[0].setState(StringType(AstroSensor.LIGHT_ON_TIMES[0]))
 
         return ITEMS
 
     def testIsLightOnTime_eveningTime_returnsTrue(self):
-        validValues = ["EVENING", "NIGHT", "BED"]
-        for value in validValues:
+        for value in AstroSensor.LIGHT_ON_TIMES:
             ITEMS[0].setState(StringType(value))
             self.assertTrue(self.astroSensor.isLightOnTime())
 
     def testIsLightOnTime_dayTime_returnsFalse(self):
-        validValues = ["MORNING", "DAY", "AFTERNOON"]
-        for value in validValues:
+        invalidValues = ["MORNING", "DAY", "AFTERNOON"]
+        for value in invalidValues:
             ITEMS[0].setState(StringType(value))
             self.assertFalse(self.astroSensor.isLightOnTime())
 

@@ -4,12 +4,14 @@ from core.jsr223 import scope
 from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import NumberItem
+from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
 from aaa_modules.layout_model import zone
 reload(zone)
 from aaa_modules.layout_model.zone import Zone
 
+from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.switch import Light
 from aaa_modules.layout_model.motion_sensor import MotionSensor
@@ -24,7 +26,8 @@ MOTION_SENSOR_SWITCH_NAME = 'TestMotionSensorName'
 ITEMS = [SwitchItem('TestLightName'),
       SwitchItem('TestTimerName'),
       SwitchItem(MOTION_SENSOR_SWITCH_NAME),
-      NumberItem('IlluminanceSensorName') ]
+      NumberItem('IlluminanceSensorName'),
+      StringItem('AstroSensorName')]
 
 # Unit tests for zone_manager.py.
 class ZoneTest(DeviceTest):
@@ -32,16 +35,15 @@ class ZoneTest(DeviceTest):
     def setUp(self):
         super(ZoneTest, self).setUp()
 
-        self.lightItem = self.getItems()[0]
-        self.timerItem = self.getItems()[1]
-        self.motionSensorItem = self.getItems()[2]
-        self.illuminanceSensorItem = self.getItems()[3]
+        [self.lightItem, self.timerItem, self.motionSensorItem,
+         self.illuminanceSensorItem, self.astroSensorItem] = self.getItems()
 
         self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
         self.light = Light(self.lightItem, self.timerItem)
         self.lightWithIlluminance = Light(self.lightItem, self.timerItem,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
         self.motionSensor = MotionSensor(self.motionSensorItem)
+        self.astroSensor = AstroSensor(self.astroSensorItem)
 
     def getItems(self, resetState = False):
         if resetState:
@@ -102,6 +104,20 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
                 self.illuminanceSensor])
         self.assertEqual(ILLUMINANCE_THRESHOLD_IN_LUX, zone.getIlluminanceLevel())
+
+    def testIsLightOnTime_noSensor_returnsNone(self):
+        zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor])
+        self.assertEqual(None, zone.isLightOnTime())
+
+    def testIsLightOnTime_withSensorIndicatesDayTime_returnsFalse(self):
+        self.astroSensorItem.setState(StringType('MORNING'))
+        zone = Zone('ff', [self.lightWithIlluminance, self.astroSensor])
+        self.assertFalse(zone.isLightOnTime())
+
+    def testIsLightOnTime_withSensorIndicatesEveningTime_returnsTrue(self):
+        self.astroSensorItem.setState(StringType(AstroSensor.LIGHT_ON_TIMES[0]))
+        zone = Zone('ff', [self.lightWithIlluminance, self.astroSensor])
+        self.assertTrue(zone.isLightOnTime())
 
     def testOnTimerExpired_validTimerItem_returnsTrue(self):
 
@@ -183,5 +199,39 @@ class ZoneTest(DeviceTest):
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
 
+    def testOnMotionSensorTurnedOn_notLightOnTime_returnsFalse(self):
+        self.astroSensorItem.setState(StringType('MORNING'))
+
+        zone = Zone('ff', [self.light, self.astroSensor])
+
+        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+                self.motionSensor.getItemName())
+        self.assertFalse(isProcessed)
+
+    def testOnMotionSensorTurnedOn_notLightOnTimeButIlluminanceBelowThreshold_turnsOnLight(self):
+        self.assertFalse(self.light.isOn())
+        self.illuminanceSensorItem.setState(DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
+        self.astroSensorItem.setState(StringType('MORNING'))
+
+        zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
+                self.illuminanceSensor, self.astroSensor])
+
+        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+                self.motionSensor.getItemName())
+        self.assertTrue(isProcessed)
+        time.sleep(0.1)
+        self.assertTrue(self.light.isOn())
+
+    def testOnMotionSensorTurnedOn_lightOnTime_turnsOnLight(self):
+        self.assertFalse(self.light.isOn())
+
+        self.astroSensorItem.setState(StringType(AstroSensor.LIGHT_ON_TIMES[0]))
+        zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
+
+        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+                self.motionSensor.getItemName())
+        self.assertTrue(isProcessed)
+        time.sleep(0.1)
+        self.assertTrue(self.light.isOn())
 
 run_test(ZoneTest, logger) 
