@@ -1,7 +1,7 @@
 from org.eclipse.smarthome.core.library.types import OnOffType
 
 # The base class that all other sensors and switches derive from.
-class Device:
+class Device(object):
     # Ctor
     # @param openhabItem org.eclipse.smarthome.core.items.Item
     # @throw ValueError if any parameter is invalid
@@ -21,3 +21,9 @@ class Device:
     def getItemName(self):
         return self.item.getName()
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+    def __unicode__(self):
+        str = u"{}: {}".format(self.__class__.__name__, self.item.getName())
+        return str

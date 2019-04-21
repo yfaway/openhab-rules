@@ -36,3 +36,8 @@ class MotionSensor(Device):
         self.lastOnTimestamp = time.time()
 
         return matched
+
+    # @override
+    def __unicode__(self):
+        return u"{}, lastOnTimestamp: {}".format(
+                super(MotionSensor, self).__unicode__(), self.lastOnTimestamp)

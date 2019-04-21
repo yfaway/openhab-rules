@@ -1,6 +1,8 @@
 import time
 from org.eclipse.smarthome.core.library.types import OnOffType
 
+from aaa_modules.layout_model import device
+reload(device)
 from aaa_modules.layout_model.device import Device
 
 # Represents a light or fan switch. Each switch is associated with a timer
@@ -78,6 +80,12 @@ class Switch(Device):
         # start or renew timer
         events.sendCommand(self.timerItem.getName(), "ON")
 
+    # @override
+    def __unicode__(self):
+        return u"{}, {}".format(
+                super(Switch, self).__unicode__(), self.timerItem.getName())
+
+
 # Represents a regular light.
 class Light(Switch):
     # @param illuminanceLevel the illuminance level in LUX unit. The light should only
@@ -89,6 +97,11 @@ class Light(Switch):
     # Returns the illuminance level in LUX unit. Returns None if not applicable.
     def getIlluminanceThreshold(self):
         return self._illuminanceLevel
+
+    # @override
+    def __unicode__(self):
+        return u"{}, illuminance: {}".format(
+                super(Light, self).__unicode__(), self._illuminanceLevel)
 
 # Represents a regular light.
 class Fan(Switch):

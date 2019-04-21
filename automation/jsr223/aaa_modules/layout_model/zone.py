@@ -3,14 +3,22 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 # The vertical levels.
 class Level:
-    UNDEFINED = 0
+    UNDEFINED = -1
+    BASEMENT = 0
     FIRST_FLOOR = 1
     SECOND_FLOOR = 2
     THIRD_FLOOR = 3
-    BASEMENT = 4
 
-#from aaa_modules.layout_model import switch
-#reload(switch)
+from aaa_modules.layout_model import switch
+reload(switch)
+from aaa_modules.layout_model import astro_sensor
+reload(astro_sensor)
+from aaa_modules.layout_model import illuminance_sensor
+reload(illuminance_sensor)
+from aaa_modules.layout_model import motion_sensor
+reload(motion_sensor)
+from aaa_modules.layout_model import dimmer
+reload(dimmer)
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
@@ -169,3 +177,13 @@ class Zone:
         
         return isProcessed
 
+    def __str__(self):
+            return unicode(self).encode('utf-8')
+
+    def __unicode__(self):
+        str = u"Zone: {}, floor {}, {} devices".format(
+                self.name, self.level, len(self.devices))
+        for d in self.devices:
+            str += u"\n  {}".format(unicode(d))
+
+        return str

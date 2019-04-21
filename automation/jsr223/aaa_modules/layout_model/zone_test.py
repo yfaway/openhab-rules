@@ -3,6 +3,7 @@ import time
 from core.jsr223 import scope
 from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
+from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
@@ -12,10 +13,11 @@ reload(zone)
 from aaa_modules.layout_model.zone import Zone
 
 from aaa_modules.layout_model.astro_sensor import AstroSensor
+from aaa_modules.layout_model.dimmer import Dimmer
+from aaa_modules.layout_model.switch import Fan
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.switch import Light
 from aaa_modules.layout_model.motion_sensor import MotionSensor
-from aaa_modules.layout_model.dimmer import Dimmer
 
 from aaa_modules.layout_model.device_test import DeviceTest
 
@@ -27,7 +29,10 @@ ITEMS = [SwitchItem('TestLightName'),
       SwitchItem('TestTimerName'),
       SwitchItem(MOTION_SENSOR_SWITCH_NAME),
       NumberItem('IlluminanceSensorName'),
-      StringItem('AstroSensorName')]
+      StringItem('AstroSensorName'),
+      DimmerItem('TestDimmerName'),
+      SwitchItem('TestFanName'),
+    ]
 
 # Unit tests for zone_manager.py.
 class ZoneTest(DeviceTest):
@@ -36,7 +41,8 @@ class ZoneTest(DeviceTest):
         super(ZoneTest, self).setUp()
 
         [self.lightItem, self.timerItem, self.motionSensorItem,
-         self.illuminanceSensorItem, self.astroSensorItem] = self.getItems()
+         self.illuminanceSensorItem, self.astroSensorItem, self.dimmerItem,
+         self.fan] = self.getItems()
 
         self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
         self.light = Light(self.lightItem, self.timerItem)
@@ -44,6 +50,8 @@ class ZoneTest(DeviceTest):
                 ILLUMINANCE_THRESHOLD_IN_LUX)
         self.motionSensor = MotionSensor(self.motionSensorItem)
         self.astroSensor = AstroSensor(self.astroSensorItem)
+        self.dimmer = Dimmer(self.dimmerItem, self.timerItem, 100, "0-23:59")
+        self.fan = Fan(self.lightItem, self.timerItem)
 
     def getItems(self, resetState = False):
         if resetState:
@@ -233,5 +241,13 @@ class ZoneTest(DeviceTest):
         self.assertTrue(isProcessed)
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
+
+    def testStr_noParam_returnsNonEmptyString(self):
+        zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor, 
+                self.illuminanceSensor, self.dimmer, self.fan])
+        info = str(zone)
+
+        self.assertTrue(len(info) > 0)
+        # logger.info(info)
 
 run_test(ZoneTest, logger) 

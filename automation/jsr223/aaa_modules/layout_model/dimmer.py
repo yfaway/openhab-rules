@@ -43,3 +43,7 @@ class Dimmer(Light):
     def isOn(self):
         return self.getItem().state > scope.DecimalType(0)
 
+    # @override
+    def __unicode__(self):
+        return u"{}, dimLevel: {}, timeRanges: {}".format(
+                super(Dimmer, self).__unicode__(), self.dimLevel, self.timeRanges)
