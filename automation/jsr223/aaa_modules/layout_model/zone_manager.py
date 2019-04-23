@@ -1,5 +1,3 @@
-from aaa_modules.layout_model import zone
-reload(zone)
 from aaa_modules.layout_model.zone import Zone
 
 class ZoneManager:
@@ -31,18 +29,35 @@ class ZoneManager:
     def getZones():
         return [z for z in ZoneManager.zones]
 
+    # Dispatches the motion sensor turned on event to each zone.
+    # @return True if at least one zone processed the event; False otherwise
     @staticmethod
-    def onMotionSensorTriggered(itemName):
-        pass
+    def onMotionSensorTurnedOn(events, itemName):
+        returnValues = [
+            z.onMotionSensorTurnedOn(events, itemName) for z in ZoneManager.zones]
+        return any(returnValues)
 
+    # Dispatches the timer expiry event to each zone.
+    # @return True if at least one zone processed the event; False otherwise
     @staticmethod
-    def onTimerExpired(itemName):
-        pass
+    def onTimerExpired(events, itemName):
+        returnValues = [
+            z.onTimerExpired(events, itemName) for z in ZoneManager.zones]
+        return any(returnValues)
 
+    # Dispatches the switch turned on event to each zone.
+    # @return True if at least one zone processed the event; False otherwise
     @staticmethod
-    def onSwitchTurnedOn(itemName):
-        pass
+    def onSwitchTurnedOn(events, itemName):
+        returnValues = [
+            z.onSwitchTurnedOn(events, itemName) for z in ZoneManager.zones]
+        return any(returnValues)
 
+    # Dispatches the switch turned off event to each zone.
+    # @return True if at least one zone processed the event; False otherwise
     @staticmethod
-    def onSwitchTurnedOff(itemName):
-        pass
+    def onSwitchTurnedOff(events, itemName):
+        returnValues = [
+            z.onSwitchTurnedOff(events, itemName) for z in ZoneManager.zones]
+        return any(returnValues)
+
