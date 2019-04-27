@@ -1,14 +1,26 @@
 import re
 
+from core import osgi
 from core.jsr223 import scope
+from org.eclipse.smarthome.core.items import Metadata
+from org.eclipse.smarthome.core.items import MetadataKey
 from org.slf4j import Logger, LoggerFactory
 
 from aaa_modules.layout_model.zone import Zone, Level
 from aaa_modules.layout_model.astro_sensor import AstroSensor
+from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Fan, Light
 
+META_DIMMING_SETTING = 'dimmable'
+
+# The light level threshold; if it is below this value, turn on the light.
+ILLUMINANCE_THRESHOLD_IN_LUX = 8
+
+TIME_OF_DAY_ITEM_NAME = 'VT_Time_Of_Day'
+
+MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 # Construct the zones from the existing items in OpenHab, using this naming
@@ -41,9 +53,21 @@ class ZoneParser:
 
             openHabItem = itemRegistry.getItem(itemName)
             if 'LightSwitch' == deviceName:
-                light = Light(openHabItem,
-                        itemRegistry.getItem(itemName + '_Timer'))
-                zone.addDevice(light)
+                timerItem = itemRegistry.getItem(itemName + '_Timer')
+
+                meta = MetadataRegistry.get(
+                        MetadataKey(META_DIMMING_SETTING, itemName)) 
+                if None != meta:
+                    config = meta.configuration
+                    level = config['level'].intValue()
+                    timeRanges = config['timeRanges']
+
+                    switch = Dimmer(openHabItem, timerItem, level, timeRanges,
+                            ILLUMINANCE_THRESHOLD_IN_LUX)
+                else:
+                    switch = Light(openHabItem, timerItem, ILLUMINANCE_THRESHOLD_IN_LUX)
+
+                zone.addDevice(switch)
             elif 'FanSwitch' == deviceName:
                 fan = Fan(openHabItem,
                         itemRegistry.getItem(itemName + '_Timer'))
@@ -51,12 +75,20 @@ class ZoneParser:
             elif 'LightSwitch_Illuminance' == deviceName:
                 illuminanceSensor = IlluminanceSensor(openHabItem)
                 zone.addDevice(illuminanceSensor)
-            elif 'MotionSensor' in deviceName:
+            elif deviceName.endswith('MotionSensor'):
                 motionSensor = MotionSensor(openHabItem)
                 zone.addDevice(motionSensor)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneKey] = zone
+
+            # end looping items
+
+        astroSensor = AstroSensor(itemRegistry.getItem(TIME_OF_DAY_ITEM_NAME))
+        for z in zoneMap.values():
+            if len(z.getDevicesByType(Light)) > 0 or \
+                    len(z.getDevicesByType(Dimmer)) > 0:
+                z.addDevice(astroSensor)
 
         return zoneMap.values()
                 

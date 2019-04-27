@@ -9,17 +9,10 @@ class Level:
     SECOND_FLOOR = 2
     THIRD_FLOOR = 3
 
-from aaa_modules.layout_model import switch
-reload(switch)
-from aaa_modules.layout_model import astro_sensor
-reload(astro_sensor)
-from aaa_modules.layout_model import illuminance_sensor
-reload(illuminance_sensor)
-from aaa_modules.layout_model import motion_sensor
-reload(motion_sensor)
-from aaa_modules.layout_model import dimmer
-reload(dimmer)
+#from aaa_modules.layout_model import switch
+#reload(switch)
 from aaa_modules.layout_model.astro_sensor import AstroSensor
+from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light, Switch

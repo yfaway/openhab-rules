@@ -1,5 +1,3 @@
-import unittest
-
 from core.jsr223 import scope
 from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
