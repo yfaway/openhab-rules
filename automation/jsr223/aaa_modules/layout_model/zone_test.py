@@ -10,7 +10,7 @@ from org.eclipse.smarthome.core.library.items import SwitchItem
 
 from aaa_modules.layout_model import zone
 reload(zone)
-from aaa_modules.layout_model.zone import Zone
+from aaa_modules.layout_model.zone import Zone, Level
 
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
@@ -62,6 +62,32 @@ class ZoneTest(DeviceTest):
                     item.setState(UndefState)
 
         return ITEMS
+
+    def testZoneCtor_validParams_gettersReturnValidValues(self):
+        zoneName = 'bed room'
+        zone = Zone(zoneName, [self.light], Level.SECOND_FLOOR)
+        self.assertEqual(zoneName, zone.getName())
+        self.assertEqual(Level.SECOND_FLOOR, zone.getLevel())
+        self.assertEqual(str(Level.SECOND_FLOOR) + '_' + zoneName, zone.getId())
+        self.assertEqual(1, len(zone.getDevices()))
+
+    def testContainsOpenHabItem_negativeValue_returnsFalse(self):
+        zone = Zone('name', [self.light], Level.SECOND_FLOOR)
+        self.assertFalse(zone.containsOpenHabItem('blahblah'))
+
+    def testContainsOpenHabItem_validNameButWrongType_returnsFalse(self):
+        zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
+        self.assertFalse(zone.containsOpenHabItem(
+                    self.light.getItemName(), MotionSensor))
+
+    def testContainsOpenHabItem_validNameWithNoTypeSpecified_returnsTrue(self):
+        zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
+        self.assertTrue(zone.containsOpenHabItem(self.light.getItemName()))
+
+    def testContainsOpenHabItem_validNameWithTypeSpecified_returnsTrue(self):
+        zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
+        self.assertTrue(zone.containsOpenHabItem(
+                    self.light.getItemName(), Light))
 
     def testAddDevice_validDevice_deviceAdded(self):
         zone = Zone('ff')
@@ -249,5 +275,6 @@ class ZoneTest(DeviceTest):
 
         self.assertTrue(len(info) > 0)
         # logger.info(info)
+
 
 run_test(ZoneTest, logger) 

@@ -9,13 +9,15 @@ class Level:
     SECOND_FLOOR = 2
     THIRD_FLOOR = 3
 
-#from aaa_modules.layout_model import switch
-#reload(switch)
+from aaa_modules.layout_model.actions import turn_on_switch
+reload(turn_on_switch)
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light, Switch
+
+from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 
 # Represent a zone such as a room, foyer, porch, or lobby.
 # Each zone holds a number of devices/sensors such as switches, motion sensors,
@@ -58,11 +60,25 @@ class Zone:
             raise ValueError('cls must not be None')
         return [d for d in self.devices if isinstance(d, cls)]
 
+    def getId(self):
+        return str(self.getLevel()) + '_' + self.getName()
+
     def getName(self):
         return self.name
 
     def getLevel(self):
         return self.level
+
+    # Returns True if this zone contains the given itemName; returns False 
+    # otherwise.
+    # @param itemName string
+    # @param sensorType Device an optional sub-class of Device. If specified,
+    #     will search for itemName for those device types only. Otherwise,
+    #     search for all devices/sensors.
+    def containsOpenHabItem(self, itemName, sensorType = None):
+        sensors = self.getDevices() if None == sensorType \
+            else self.getDevicesByType(sensorType)
+        return any(s.getItemName() == itemName for s in sensors)
 
     # Retrieves the maximum illuminance level from one or more IlluminanceSensor.
     # If no sensor is available, return -1.
@@ -149,26 +165,10 @@ class Zone:
     # @return boolean
     # @see Switch::onSwitchTurnedOff
     def onMotionSensorTurnedOn(self, events, itemName):
-        motionSensors = self.getDevicesByType(MotionSensor)
-        if not any(s.onMotionSensorTurnedOn(events, itemName) for s in motionSensors):
-            return False
+        if not self.containsOpenHabItem(itemName, MotionSensor):
+            return False 
 
-        isProcessed = False
-        lightOnTime = self.isLightOnTime()
-        zoneIlluminance = self.getIlluminanceLevel()
-
-        for switch in self.getDevicesByType(Switch):
-            if isinstance(switch, Light):
-                if (lightOnTime or
-                        None == switch.getIlluminanceThreshold() or 
-                        zoneIlluminance < switch.getIlluminanceThreshold()):
-                    switch.turnOn(events)
-                    isProcessed = True
-            else:
-                switch.turnOn(events)
-                isProcessed = True
-        
-        return isProcessed
+        return TurnOnSwitch().onAction(events, self)
 
     def __str__(self):
             return unicode(self).encode('utf-8')
