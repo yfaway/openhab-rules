@@ -99,7 +99,7 @@ then
     msg += ",\"module\":\"Weather-WindSpeed\""
     msg += ",\"intervalBetweenAlertsInMinutes\":" + WIND_ALERT_INTERVAL_IN_MINUTES
     msg += "}"
-    VT_AlertSender.postUpdate(msg)
+    // VT_AlertSender.postUpdate(msg)
   }
 end
 

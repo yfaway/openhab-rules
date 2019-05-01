@@ -23,8 +23,8 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 # Track the last motion alarm event for each camera; itemPrefix -> int.
 lastMotionEvents = {}
 
-@rule("Send snapshot images")
-@when("Member of gCameraMotionAlarm changed to ON")
+#@rule("Send snapshot images")
+#@when("Member of gCameraMotionAlarm changed to ON")
 def sendSnapshot(event):
     global lastMotionEvents
 
@@ -48,7 +48,7 @@ def sendSnapshot(event):
     # todo: use warning instead of info for evening hours.
     alert = Alert.createInfoAlert('[{}] Camera motion alarm triggered'.format(prefix),
             None, attachmentUrls)
-    result = AlertManager.processAlert(alert)
-    if not result:
-        logger.info('Failed to send camera snapshots')
+    # result = AlertManager.processAlert(alert)
+    # if not result:
+    #     logger.info('Failed to send camera snapshots')
 
