@@ -276,5 +276,4 @@ class ZoneTest(DeviceTest):
         self.assertTrue(len(info) > 0)
         # logger.info(info)
 
-
 run_test(ZoneTest, logger) 

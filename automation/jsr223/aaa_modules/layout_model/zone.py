@@ -37,10 +37,16 @@ from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 # if it is dark or if it is evening time; a timer expiry event will turn off
 # the associated light if it is currently on.
 class Zone:
-    def __init__(self, name, devices = [], level = Level.UNDEFINED):
+    # Creates a new zone.
+    # @param string the zone name
+    # @param devices the list of Device objects
+    # @param level Level the zone's physical level
+    # @param neighbors the list of optional neighbor zones.
+    def __init__(self, name, devices = [], level = Level.UNDEFINED, neighbors = []):
         self.name = name
         self.level = level
-        self.devices = devices
+        self.devices = [d for d in devices]
+        self.neighbors = [n for n in neighbors]
 
     def addDevice(self, device):
         if None == device:
@@ -52,13 +58,21 @@ class Zone:
             raise ValueError('device must not be None')
         self.devices.remove(device)
 
+    # Returns a copy of the list of devices.
     def getDevices(self):
         return [d for d in self.devices]
 
+    # Returns a list of devices matching the given type.
+    # @param cls Device the device type
     def getDevicesByType(self, cls):
         if None == cls:
             raise ValueError('cls must not be None')
         return [d for d in self.devices if isinstance(d, cls)]
+
+    def addNeighbor(self, neighbor):
+        if None == neighbor:
+            raise ValueError('neighbor must not be None')
+        self.neighbors.append(neighbor)
 
     def getId(self):
         return str(self.getLevel()) + '_' + self.getName()
@@ -68,6 +82,10 @@ class Zone:
 
     def getLevel(self):
         return self.level
+
+    # Returns a copy of the list of neighboring zones.
+    def getNeighbors(self):
+        return [n for n in self.neighbors]
 
     # Returns True if this zone contains the given itemName; returns False 
     # otherwise.
@@ -178,5 +196,10 @@ class Zone:
                 self.name, self.level, len(self.devices))
         for d in self.devices:
             str += u"\n  {}".format(unicode(d))
+
+        if len(self.neighbors) > 0:
+            for n in self.neighbors:
+                str += u"\n  Neighbor: {}, {}".format(
+                        n.getZone().getName(), unicode(n.getType()))
 
         return str

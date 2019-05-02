@@ -6,6 +6,10 @@ from org.eclipse.smarthome.core.items import Metadata
 from org.eclipse.smarthome.core.items import MetadataKey
 from org.slf4j import Logger, LoggerFactory
 
+from aaa_modules.layout_model import zone
+reload(zone)
+
+from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
@@ -15,10 +19,20 @@ from aaa_modules.layout_model.switch import Fan, Light
 
 META_DIMMING_SETTING = 'dimmable'
 
+# A metadata item to indicate which light to turn off when the current light
+# is switched on.
+META_TURN_OFF_OTHER_LIGHT = 'turnOff'
+
+# A meta data item to indicate that this light shouldn't be turned on when a
+# motion event is triggered, if the other light is already on.
+META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON = 'disableMotionTriggeringIfOtherLightIsOn'
+
 # The light level threshold; if it is below this value, turn on the light.
 ILLUMINANCE_THRESHOLD_IN_LUX = 8
 
 TIME_OF_DAY_ITEM_NAME = 'VT_Time_Of_Day'
+
+ITEM_NAME_PATTERN = '([^_]+)_([^_]+)_(.+)' # level_location_deviceName
 
 MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
@@ -33,11 +47,13 @@ class ZoneParser:
     # @return a list of aaa_modules.layout_model.zone.Zone objects
     @staticmethod
     def parse(items, itemRegistry):
-        zoneMap = {}
-        keyPattern = '([^_]+)_([^_]+)_(.+)' # level_location_deviceName
+        zoneMap = {} # map from string zoneId to Zone
+
+        # Each item is a list of 3 items: zone id, zone id, neighbort type.
+        neighbors = [] 
 
         for itemName in items.keys():
-            match = re.search('([^_]+)_([^_]+)_(.+)', itemName)
+            match = re.search(ITEM_NAME_PATTERN, itemName)
             if not match:
                 continue
 
@@ -45,14 +61,37 @@ class ZoneParser:
             location = match.group(2)
             deviceName = match.group(3)
             
-            zoneKey = levelString + '_' + location
-            if zoneKey in zoneMap:
-                zone = zoneMap[zoneKey]
+            zoneId = ZoneParser.getZoneIdFromItemName(itemName)
+            if zoneId in zoneMap:
+                zone = zoneMap[zoneId]
             else:
                 zone = Zone(location, [], ZoneParser.getZoneLevel(levelString))
 
             openHabItem = itemRegistry.getItem(itemName)
             if 'LightSwitch' == deviceName:
+                # open space relationship
+                turnOffMeta = MetadataRegistry.get(
+                        MetadataKey(META_TURN_OFF_OTHER_LIGHT, itemName)) 
+                if None != turnOffMeta:
+                    neighborZoneId = ZoneParser.getZoneIdFromItemName(
+                            turnOffMeta.value)
+
+                    neighbor = [zoneId, neighborZoneId, NeighborType.OPEN_SPACE]
+                    neighbors.append(neighbor)
+
+                # master-slave open space relationship
+                masterSlaveMeta = MetadataRegistry.get(
+                        MetadataKey(META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON,
+                            itemName)) 
+                if None != masterSlaveMeta:
+                    masterZoneId = ZoneParser.getZoneIdFromItemName(masterSlaveMeta.value)
+
+                    neighborForward = [masterZoneId, zoneId, NeighborType.OPEN_SPACE_SLAVE]
+                    neighbors.append(neighborForward)
+
+                    neighborReverse = [zoneId, masterZoneId, NeighborType.OPEN_SPACE_MASTER]
+                    neighbors.append(neighborReverse)
+
                 timerItem = itemRegistry.getItem(itemName + '_Timer')
 
                 meta = MetadataRegistry.get(
@@ -80,7 +119,7 @@ class ZoneParser:
                 zone.addDevice(motionSensor)
 
             if len(zone.getDevices()) > 0:
-                zoneMap[zoneKey] = zone
+                zoneMap[zoneId] = zone
 
             # end looping items
 
@@ -90,9 +129,26 @@ class ZoneParser:
                     len(z.getDevicesByType(Dimmer)) > 0:
                 z.addDevice(astroSensor)
 
-        return zoneMap.values()
-                
+        for neighborInfo in neighbors:
+            zone = zoneMap[neighborInfo[0]]
+            neighbor = zoneMap[neighborInfo[1]]
 
+            zone.addNeighbor(Neighbor(neighbor, neighborInfo[2]))
+
+        return zoneMap.values()
+
+    # @return string
+    @staticmethod
+    def getZoneIdFromItemName(itemName):
+        match = re.search(ITEM_NAME_PATTERN, itemName)
+        if not match:
+            raise ValueError('Invalid item name pattern: ' + itemName)
+
+        levelString = match.group(1)
+        location = match.group(2)
+
+        return str(ZoneParser.getZoneLevel(levelString)) + '_' + location
+                
     # @return aaa_modules.layout_model.zone.Level 
     @staticmethod
     def getZoneLevel(levelString):

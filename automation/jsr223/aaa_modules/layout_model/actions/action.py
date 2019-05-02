@@ -5,7 +5,7 @@ class Action(object):
 
     # Subclass must override this method with its own handling.
     # @param events scope.events
-    # @param zone Zone
+    # @param zone Zone the zone where the action takes place
     # @return True if the event is processed; False otherwise.
     def onAction(self, events, zone):
         pass
