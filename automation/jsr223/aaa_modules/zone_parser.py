@@ -6,8 +6,8 @@ from org.eclipse.smarthome.core.items import Metadata
 from org.eclipse.smarthome.core.items import MetadataKey
 from org.slf4j import Logger, LoggerFactory
 
-from aaa_modules.layout_model import zone
-reload(zone)
+from aaa_modules.layout_model import neighbor
+reload(neighbor)
 
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
@@ -106,17 +106,17 @@ class ZoneParser:
                 else:
                     switch = Light(openHabItem, timerItem, ILLUMINANCE_THRESHOLD_IN_LUX)
 
-                zone.addDevice(switch)
+                zone = zone.addDevice(switch)
             elif 'FanSwitch' == deviceName:
                 fan = Fan(openHabItem,
                         itemRegistry.getItem(itemName + '_Timer'))
-                zone.addDevice(fan)
+                zone = zone.addDevice(fan)
             elif 'LightSwitch_Illuminance' == deviceName:
                 illuminanceSensor = IlluminanceSensor(openHabItem)
-                zone.addDevice(illuminanceSensor)
+                zone = zone.addDevice(illuminanceSensor)
             elif deviceName.endswith('MotionSensor'):
                 motionSensor = MotionSensor(openHabItem)
-                zone.addDevice(motionSensor)
+                zone = zone.addDevice(motionSensor)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneId] = zone
@@ -131,11 +131,39 @@ class ZoneParser:
 
         for neighborInfo in neighbors:
             zone = zoneMap[neighborInfo[0]]
-            neighbor = zoneMap[neighborInfo[1]]
+            zone = zone.addNeighbor(Neighbor(neighborInfo[1], neighborInfo[2]))
+            zoneMap[neighborInfo[0]] = zone
 
-            zone.addNeighbor(Neighbor(neighbor, neighborInfo[2]))
+        return [ZoneParser.normalizeNeighbors(z) for z in zoneMap.values()]
 
-        return zoneMap.values()
+    # If a zone has the same neighbor with more than one OPEN_SPACE type,
+    # remove the generic one NeighborType.OPEN_SPACE
+    # @return Zone new object
+    @staticmethod
+    def normalizeNeighbors(zone):
+        zoneIdToType = {}
+        for neighbor in zone.getNeighbors():
+            zoneId = neighbor.getZoneId()
+            if zoneId in zoneIdToType:
+                types = zoneIdToType[zoneId]
+            else:
+                types = []
+                zoneIdToType[zoneId] = types
+
+            types.append(neighbor.getType())
+
+        for types in zoneIdToType.values():
+            if NeighborType.OPEN_SPACE_MASTER in types \
+                or NeighborType.OPEN_SPACE_SLAVE in types:
+                if NeighborType.OPEN_SPACE in types:
+                    types.remove(NeighborType.OPEN_SPACE)
+
+        zone = Zone(zone.getName(), zone.getDevices(), zone.getLevel(), [])
+        for zoneId in zoneIdToType.keys():
+            for type in zoneIdToType[zoneId]:
+                zone = zone.addNeighbor(Neighbor(zoneId, type))
+
+        return zone
 
     # @return string
     @staticmethod

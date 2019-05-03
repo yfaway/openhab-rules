@@ -90,15 +90,14 @@ class ZoneTest(DeviceTest):
                     self.light.getItemName(), Light))
 
     def testAddDevice_validDevice_deviceAdded(self):
-        zone = Zone('ff')
-        zone.addDevice(self.light)
+        zone = Zone('ff').addDevice(self.light)
         self.assertEqual(1, len(zone.getDevices()))
 
     def testRemoveDevice_validDevice_deviceRemoved(self):
         zone = Zone('ff', [self.light])
         self.assertEqual(1, len(zone.getDevices()))
 
-        zone.removeDevice(self.light)
+        zone = zone.removeDevice(self.light)
         self.assertEqual(0, len(zone.getDevices()))
 
     def testGetDevicesByType_validType_deviceRemoved(self):

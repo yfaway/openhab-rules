@@ -18,20 +18,20 @@ class NeighborType:
 
 class Neighbor:
     # Creates a new object
-    # @param zone Zone
+    # @param zoneId string
     # @param type NeighborType
-    def __init__(self, zone, type):
-        if None == zone:
-            raise ValueError('zone must not be None')
+    def __init__(self, zoneId, type):
+        if None == zoneId or '' == zoneId:
+            raise ValueError('zoneId must not be None or empty')
 
         if None == type:
             raise ValueError('type must not be None')
 
-        self.zone = zone
+        self.zoneId = zoneId
         self.type = type
 
-    def getZone(self):
-        return self.zone
+    def getZoneId(self):
+        return self.zoneId
 
     def getType(self):
         return self.type

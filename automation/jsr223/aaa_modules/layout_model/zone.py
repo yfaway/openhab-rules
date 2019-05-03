@@ -22,6 +22,10 @@ from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 # Represent a zone such as a room, foyer, porch, or lobby.
 # Each zone holds a number of devices/sensors such as switches, motion sensors,
 # or temperature sensor.
+# Each zone instance is immutable. The various add/remove methods return a new
+# Zone object. Note however that the OpenHab item underlying each
+# device/sensor is not (the state changes).
+#
 # There are two sets of operation on each zone:
 #   1. Active operations such as turn on a light/fan in a zone. These are
 #      represented by functions such as turnOnLight(), turnOffLight(); and
@@ -36,6 +40,8 @@ from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 # for each of these events. For example, a motion event will turn on the light
 # if it is dark or if it is evening time; a timer expiry event will turn off
 # the associated light if it is currently on.
+#
+# @Immutable (the Zone object only)
 class Zone:
     # Creates a new zone.
     # @param string the zone name
@@ -48,15 +54,27 @@ class Zone:
         self.devices = [d for d in devices]
         self.neighbors = [n for n in neighbors]
 
+    # Creates a new zone that is an exact copy of this one, but has the
+    # additional device.
+    # @return Zone A NEW object.
     def addDevice(self, device):
         if None == device:
             raise ValueError('device must not be None')
-        self.devices.append(device)
 
+        newDevices = list(self.devices)
+        newDevices.append(device)
+        return Zone(self.name, newDevices, self.level, list(self.neighbors))
+
+    # Creates a new zone that is an exact copy of this one less the given
+    # device
+    # @return Zone A NEW object.
     def removeDevice(self, device):
         if None == device:
             raise ValueError('device must not be None')
-        self.devices.remove(device)
+
+        newDevices = list(self.devices)
+        newDevices.remove(device)
+        return Zone(self.name, newDevices, self.level, list(self.neighbors))
 
     # Returns a copy of the list of devices.
     def getDevices(self):
@@ -69,10 +87,17 @@ class Zone:
             raise ValueError('cls must not be None')
         return [d for d in self.devices if isinstance(d, cls)]
 
+    # Creates a new zone that is an exact copy of this one, but has the
+    # additional neighbor.
+    # @return Zone A NEW object.
     def addNeighbor(self, neighbor):
         if None == neighbor:
             raise ValueError('neighbor must not be None')
-        self.neighbors.append(neighbor)
+
+        newNeighbors = list(self.neighbors)
+        newNeighbors.append(neighbor)
+
+        return Zone(self.name, list(self.devices), self.level, newNeighbors)
 
     def getId(self):
         return str(self.getLevel()) + '_' + self.getName()
@@ -200,6 +225,6 @@ class Zone:
         if len(self.neighbors) > 0:
             for n in self.neighbors:
                 str += u"\n  Neighbor: {}, {}".format(
-                        n.getZone().getName(), unicode(n.getType()))
+                        n.getZoneId(), unicode(n.getType()))
 
         return str
