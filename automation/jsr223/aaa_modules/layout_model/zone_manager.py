@@ -29,12 +29,21 @@ class ZoneManager:
     def getZones():
         return [z for z in ZoneManager.zones.values()]
 
+    # Returns the zone associated with the given zoneId.
+    # @param zoneId string the value returned by Zone::getId()
+    # @return Zone the associated zone or None if the zoneId is not found
+    @staticmethod
+    def getZoneById(zoneId):
+        return ZoneManager.zones[zoneId] if zoneId in ZoneManager.zones else None
+
     # Dispatches the motion sensor turned on event to each zone.
     # @return True if at least one zone processed the event; False otherwise
     @staticmethod
     def onMotionSensorTurnedOn(events, itemName):
         returnValues = [
-            z.onMotionSensorTurnedOn(events, itemName) for z in ZoneManager.zones.values()]
+            z.onMotionSensorTurnedOn(
+                    events, itemName, ZoneManager.getZoneById) 
+            for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     # Dispatches the timer expiry event to each zone.

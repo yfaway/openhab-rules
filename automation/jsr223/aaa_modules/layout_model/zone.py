@@ -12,7 +12,6 @@ class Level:
 from aaa_modules.layout_model.actions import turn_on_switch
 reload(turn_on_switch)
 from aaa_modules.layout_model.astro_sensor import AstroSensor
-from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light, Switch
@@ -161,6 +160,11 @@ class Zone:
 
         return occupied
 
+    # Returns True if at least one light is on; returns False otherwise.
+    # @return bool
+    def isLightOn(self):
+        return any(l.isOn() for l in self.getDevicesByType(Light))
+
     # Determines if the timer itemName is associated with a switch in this
     # zone; if yes, turns off the switch and returns True. Otherwise returns
     # False.
@@ -205,13 +209,15 @@ class Zone:
 
     # If the motion sensor belongs to this zone, turns on the associated
     # switch, and returns True. Otherwise return False.
+    # @param getZoneByIdFn lambda a function that returns a Zone object given
+    #     a zone id string
     # @return boolean
     # @see Switch::onSwitchTurnedOff
-    def onMotionSensorTurnedOn(self, events, itemName):
+    def onMotionSensorTurnedOn(self, events, itemName, getZoneByIdFn):
         if not self.containsOpenHabItem(itemName, MotionSensor):
             return False 
 
-        return TurnOnSwitch().onAction(events, self)
+        return TurnOnSwitch().onAction(events, self, getZoneByIdFn)
 
     def __str__(self):
             return unicode(self).encode('utf-8')

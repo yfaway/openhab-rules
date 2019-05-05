@@ -200,7 +200,7 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.motionSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName())
+                self.motionSensor.getItemName(), None)
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
@@ -214,7 +214,7 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName())
+                self.motionSensor.getItemName(), None)
         self.assertFalse(isProcessed)
         self.assertFalse(self.light.isOn())
 
@@ -226,7 +226,7 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName())
+                self.motionSensor.getItemName(), None)
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
@@ -238,7 +238,7 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.astroSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName())
+                self.motionSensor.getItemName(), None)
         self.assertFalse(isProcessed)
 
     def testOnMotionSensorTurnedOn_notLightOnTimeButIlluminanceBelowThreshold_turnsOnLight(self):
@@ -250,7 +250,7 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor, self.astroSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName())
+                self.motionSensor.getItemName(), None)
         self.assertTrue(isProcessed)
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
@@ -262,7 +262,7 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName())
+                self.motionSensor.getItemName(), None)
         self.assertTrue(isProcessed)
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())

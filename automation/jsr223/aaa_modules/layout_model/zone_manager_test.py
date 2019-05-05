@@ -49,6 +49,9 @@ class ZoneManagerTest(DeviceTest):
         self.dimmer = Dimmer(self.dimmerItem, self.timerItem, 100, "0-23:59")
         self.fan = Fan(self.lightItem, self.timerItem)
 
+    def tearDown(self):
+        ZoneManager.removeAllZones()
+
     def getItems(self, resetState = False):
         if resetState:
             for item in ITEMS:
@@ -59,10 +62,6 @@ class ZoneManagerTest(DeviceTest):
 
         return ITEMS
 
-
-    def tearDown(self):
-        ZoneManager.removeAllZones()
-
     def testAddZone_validZone_zoneAdded(self):
         zone1 = Zone('ff')
         ZoneManager.addZone(zone1)
@@ -71,6 +70,21 @@ class ZoneManagerTest(DeviceTest):
         zone2 = Zone('2f')
         ZoneManager.addZone(zone2)
         self.assertEqual(2, len(ZoneManager.getZones()))
+
+    def testGetZoneById_validZoneId_returnValidZone(self):
+        zone1 = Zone('ff')
+        ZoneManager.addZone(zone1)
+
+        zone2 = Zone('2f')
+        ZoneManager.addZone(zone2)
+
+        self.assertEqual(zone1.getName(),
+                ZoneManager.getZoneById(zone1.getId()).getName())
+        self.assertEqual(zone2.getName(),
+                ZoneManager.getZoneById(zone2.getId()).getName())
+
+    def testGetZoneById_invalidZoneId_returnNone(self):
+        self.assertTrue(None == ZoneManager.getZoneById('invalid zone id'))
 
     def testRemoveZone_validZone_zoneRemoved(self):
         zone1 = Zone('ff')

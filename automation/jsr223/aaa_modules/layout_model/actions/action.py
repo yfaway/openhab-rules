@@ -6,6 +6,8 @@ class Action(object):
     # Subclass must override this method with its own handling.
     # @param events scope.events
     # @param zone Zone the zone where the action takes place
+    # @param getZoneByIdFn lambda a function that returns a Zone object given
+    #     a zone id string
     # @return True if the event is processed; False otherwise.
-    def onAction(self, events, zone):
+    def onAction(self, events, zone, getZoneByIdFn):
         pass
