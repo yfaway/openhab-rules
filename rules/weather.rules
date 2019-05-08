@@ -67,7 +67,7 @@ then
     msg += "\"subject\":\"" + subject + "\""
     msg += ",\"body\":\"" + body + "\""
     msg += "}"
-    VT_AlertSender.postUpdate(msg)
+    // VT_AlertSender.postUpdate(msg)
 
   }
   else {
