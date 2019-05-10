@@ -10,12 +10,8 @@ from core.triggers import when
 from org.joda.time import DateTime
 
 from aaa_modules import cast_manager
-reload(cast_manager)
-from aaa_modules import cast_manager
-
 from aaa_modules import time_utilities
-reload(time_utilities)
-from aaa_modules import time_utilities
+from aaa_modules.environment_canada import Forecast, EnvCanada
 
 # The follow two constants define the morning time range and the # of times
 # announcement and music will automatically be played. The counter is
@@ -110,10 +106,19 @@ def getMorningAnnouncement():
             items['VT_Weather_Condition'].toString(),
             items['VT_Weather_ForecastTempMin'].intValue(),
             items['VT_Weather_ForecastTempMax'].intValue())
-    if items['VT_Weather_ForecastRain'] > DecimalType(0):
-        message += " It is going to rain today."
-    elif items['VT_Weather_ForecastSnow'] > DecimalType(0):
-        message += " It is going to snow today."
+
+    forecasts = EnvCanada.retrieveHourlyForecast('Ottawa', 12)
+    rainPeriods = [f for f in forecasts if \
+                 'High' == f.getPrecipationProbability() or \
+                 'Medium' == f.getPrecipationProbability()]
+    if len(rainPeriods) > 0:
+        if len(rainPeriods) == 1:
+            message += u" There will be precipation at {}.".format(
+                    rainPeriods[0].getUserFriendlyForecastTime())
+        else:
+            message += u" There will be precipation from {} to {}.".format(
+                    rainPeriods[0].getUserFriendlyForecastTime(),
+                    rainPeriods[-1].getUserFriendlyForecastTime())
 
     return message
 

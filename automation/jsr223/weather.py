@@ -12,19 +12,21 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 @when("Time cron 0 20 6 ? * MON-FRI *")
 @when("Time cron 0 0 8 ? * SAT,SUN *")
 def alertIfRainInShortermForecast(event):
-    forecasts = EnvCanada.retrieveForecast(
-            'https://www.weather.gc.ca/forecast/hourly/on-118_metric_e.html',
-            10)
+    forecasts = EnvCanada.retrieveHourlyForecast('Ottawa', 12)
     rainPeriods = [f for f in forecasts if \
                  'High' == f.getPrecipationProbability() or \
                  'Medium' == f.getPrecipationProbability()]
     if len(rainPeriods) > 0:
-        subject = u"Possible rain today from {} to {}".format(
-                rainPeriods[0].getForecastTime(),
-                rainPeriods[-1].getForecastTime())
+        if len(rainPeriods) == 1:
+            subject = u"Possible precipation at {}".format(
+                    rainPeriods[0].getUserFriendlyForecastTime())
+        else:
+            subject = u"Possible precipation from {} to {}".format(
+                    rainPeriods[0].getUserFriendlyForecastTime(),
+                    rainPeriods[-1].getUserFriendlyForecastTime())
 
         body = u'Forecasts:\n'
-        body += u"{} {:7} {:25} {:6} {:6}\n".format('Hour: ', 'Celsius',
+        body += u"{:5} {:7} {:25} {:6} {:6}\n".format('Hour: ', 'Celsius',
                 'Condition', 'Prob.', 'Wind')
         for f in forecasts:
             body += unicode(f) + '\n'
