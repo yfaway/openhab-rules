@@ -165,6 +165,13 @@ class Zone:
     def isLightOn(self):
         return any(l.isOn() for l in self.getDevicesByType(Light))
 
+    # Turn off all the lights in the zone.
+    # @param events scope.events
+    def turnOffLights(self, events):
+        for l in self.getDevicesByType(Light):
+            if l.isOn():
+                l.turnOff(events)
+
     # Determines if the timer itemName is associated with a switch in this
     # zone; if yes, turns off the switch and returns True. Otherwise returns
     # False.

@@ -22,14 +22,25 @@ class TurnOnSwitch(Action):
 
                     isProcessed = True
                     if None != getZoneByIdFn:
-                        for neighbor in zone.getNeighbors():
-                            adjacentZone = getZoneByIdFn(neighbor.getZoneId())
-                            if NeighborType.OPEN_SPACE_MASTER == neighbor.getType():
-                                if adjacentZone.isLightOn():
-                                    isProcessed = False
+                        masterZones = [getZoneByIdFn(n.getZoneId()) \
+                            for n in zone.getNeighbors() \
+                            if NeighborType.OPEN_SPACE_MASTER == n.getType()]
+                        if any(z.isLightOn() for z in masterZones):
+                            isProcessed = False
 
                     if isProcessed:
                         switch.turnOn(events)
+
+                # now shut off any the light in any shared space zones
+                if None != getZoneByIdFn:
+                    adjacentZones = [getZoneByIdFn(n.getZoneId()) \
+                        for n in zone.getNeighbors() \
+                        if (NeighborType.OPEN_SPACE == n.getType() or \
+                                NeighborType.OPEN_SPACE_SLAVE == n.getType()) ]
+
+                    for z in adjacentZones:
+                        if z.isLightOn():
+                            z.turnOffLights(events)
             else:
                 switch.turnOn(events)
                 isProcessed = True

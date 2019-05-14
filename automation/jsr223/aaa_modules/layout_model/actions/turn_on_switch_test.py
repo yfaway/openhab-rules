@@ -76,10 +76,44 @@ class TurnOnSwitchTest(DeviceTest):
 
         self.assertFalse(self.turnOn())
 
-    def testOnAction_openSpacMastereNeighborIsOff_returnsFalse(self):
+    def testOnAction_openSpaceMasterNeighborIsOff_returnsFalse(self):
         self.setUpNeighborRelationship(NeighborType.OPEN_SPACE_MASTER, False) 
 
         self.assertTrue(self.turnOn())
+
+    def testOnAction_openSpaceNeighborIsOn_returnsTrueAndTurnOffNeighbor(self):
+        self.setUpNeighborRelationship(NeighborType.OPEN_SPACE, True) 
+        self.assertTrue(self.zone2.isLightOn())
+
+        self.assertTrue(self.turnOn())
+        time.sleep(0.1)
+        self.assertFalse(self.zone2.isLightOn())
+
+    def testOnAction_openSpaceNeighborIsOff_returnsTrue(self):
+        self.setUpNeighborRelationship(NeighborType.OPEN_SPACE, False) 
+        self.assertFalse(self.zone2.isLightOn())
+
+        self.assertTrue(self.turnOn())
+        time.sleep(0.1)
+        self.assertTrue(self.zone1.isLightOn())
+        self.assertFalse(self.zone2.isLightOn())
+
+    def testOnAction_openSpaceSlaveNeighborIsOn_returnsTrueAndTurnOffNeighbor(self):
+        self.setUpNeighborRelationship(NeighborType.OPEN_SPACE_SLAVE, True) 
+        self.assertTrue(self.zone2.isLightOn())
+
+        self.assertTrue(self.turnOn())
+        time.sleep(0.1)
+        self.assertFalse(self.zone2.isLightOn())
+
+    def testOnAction_openSpaceSlaveNeighborIsOff_returnsTrue(self):
+        self.setUpNeighborRelationship(NeighborType.OPEN_SPACE_SLAVE, False) 
+        self.assertFalse(self.zone2.isLightOn())
+
+        self.assertTrue(self.turnOn())
+        time.sleep(0.1)
+        self.assertTrue(self.zone1.isLightOn())
+        self.assertFalse(self.zone2.isLightOn())
 
     def turnOn(self):
         return TurnOnSwitch().onAction(

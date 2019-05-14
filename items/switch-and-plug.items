@@ -24,7 +24,7 @@ Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloo
     turnOff="SF_Lobby_LightSwitch",
     disableMotionTriggeringIfOtherLightIsOn="FF_Office_LightSwitch"}
 Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer) 
-  { expire="2m,command=OFF"}
+  { expire="3m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
 Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
