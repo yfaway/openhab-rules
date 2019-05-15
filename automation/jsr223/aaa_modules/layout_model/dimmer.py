@@ -1,10 +1,7 @@
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.types import OnOffType
     
-from aaa_modules.layout_model import switch
-reload(switch)
 from aaa_modules.layout_model.switch import Light
-
 from aaa_modules import time_utilities
 
 # Represents a light dimmer with the dimm level value ranges from 1 to 100.

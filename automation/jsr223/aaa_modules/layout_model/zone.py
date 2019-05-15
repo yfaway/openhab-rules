@@ -1,3 +1,12 @@
+from aaa_modules.layout_model.actions import turn_on_switch
+reload(turn_on_switch)
+from aaa_modules.layout_model.astro_sensor import AstroSensor
+from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
+from aaa_modules.layout_model.motion_sensor import MotionSensor
+from aaa_modules.layout_model.switch import Light, Switch
+
+from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
+
 from org.slf4j import Logger, LoggerFactory
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -9,25 +18,34 @@ class Level:
     SECOND_FLOOR = 2
     THIRD_FLOOR = 3
 
-from aaa_modules.layout_model.actions import turn_on_switch
-reload(turn_on_switch)
-from aaa_modules.layout_model.astro_sensor import AstroSensor
-from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
-from aaa_modules.layout_model.motion_sensor import MotionSensor
-from aaa_modules.layout_model.switch import Light, Switch
-
-from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
-
 # Represent a zone such as a room, foyer, porch, or lobby.
 # Each zone holds a number of devices/sensors such as switches, motion sensors,
-# or temperature sensor.
-# Each zone instance is immutable. The various add/remove methods return a new
+# or temperature sensors.
+#
+# A zone might have zero, one or multiple adjacent zones. The adjacent zones
+# can be further classified into closed space (i.e. a wall exists between the
+# two zones, open space, open space slave (the neighbor is a less important
+# zone), and open space master. This layout-like structure is useful for
+# certain scenario such as light control.
+# See #addNeighbor(), #getNeighbors().
+#
+# Each zone instance is IMMUTABLE. The various add/remove methods return a new
 # Zone object. Note however that the OpenHab item underlying each
 # device/sensor is not (the state changes).
+# See #addDevice(), #removeDevice(), #addNeighbor()
+# 
+# The zone itself doesn't know how to operate a device/sensor. The sensors
+# themselves (all sensors derive from Device class) exposes the possible
+# operations. Generally, the zone needs not know about the exact types of 
+# sensors it contains. However, controlling the light is a very common case
+# for home automation; thus it does references to several virtual/physical
+# sensors to determine the astro time, the illuminance, and the motion sensor.
+# See #getDevices(), #getDevicesByType().
 #
 # There are two sets of operation on each zone:
 #   1. Active operations such as turn on a light/fan in a zone. These are
-#      represented by functions such as turnOnLight(), turnOffLight(); and
+#      represented by common functions such as #turnOnLights(),
+#      #turnOffLights(); and
 #   2. Passive operations triggered by events such onTimerExpired(),
 #      onSwitchTurnedOn(), and so on.
 # The passive triggering is needed because the interaction with the devices or

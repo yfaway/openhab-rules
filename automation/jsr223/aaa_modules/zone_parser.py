@@ -127,7 +127,8 @@ class ZoneParser:
         for z in zoneMap.values():
             if len(z.getDevicesByType(Light)) > 0 or \
                     len(z.getDevicesByType(Dimmer)) > 0:
-                z.addDevice(astroSensor)
+                z = z.addDevice(astroSensor)
+                zoneMap[z.getId()] = z
 
         for neighborInfo in neighbors:
             zone = zoneMap[neighborInfo[0]]

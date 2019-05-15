@@ -136,3 +136,4 @@ class TurnOnSwitchTest(DeviceTest):
         return getZone
 
 run_test(TurnOnSwitchTest, logger) 
+
