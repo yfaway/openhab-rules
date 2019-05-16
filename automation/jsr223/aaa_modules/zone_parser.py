@@ -6,9 +6,6 @@ from org.eclipse.smarthome.core.items import Metadata
 from org.eclipse.smarthome.core.items import MetadataKey
 from org.slf4j import Logger, LoggerFactory
 
-from aaa_modules.layout_model import neighbor
-reload(neighbor)
-
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 from aaa_modules.layout_model.astro_sensor import AstroSensor
@@ -26,6 +23,10 @@ META_TURN_OFF_OTHER_LIGHT = 'turnOff'
 # A meta data item to indicate that this light shouldn't be turned on when a
 # motion event is triggered, if the other light is already on.
 META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON = 'disableMotionTriggeringIfOtherLightIsOn'
+
+# Indicates that the switch must not be turned on when the associated 
+# motion sensor is triggered.
+TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR = "disable-triggering-from-motion-sensor"
 
 # The light level threshold; if it is below this value, turn on the light.
 ILLUMINANCE_THRESHOLD_IN_LUX = 8
@@ -94,6 +95,10 @@ class ZoneParser:
 
                 timerItem = itemRegistry.getItem(itemName + '_Timer')
 
+                disableMotionSensorTriggering = openHabItem.hasTag(
+                        TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR)
+
+                # dimmer setting
                 meta = MetadataRegistry.get(
                         MetadataKey(META_DIMMING_SETTING, itemName)) 
                 if None != meta:
@@ -102,9 +107,12 @@ class ZoneParser:
                     timeRanges = config['timeRanges']
 
                     switch = Dimmer(openHabItem, timerItem, level, timeRanges,
-                            ILLUMINANCE_THRESHOLD_IN_LUX)
+                            ILLUMINANCE_THRESHOLD_IN_LUX,
+                            disableMotionSensorTriggering)
                 else:
-                    switch = Light(openHabItem, timerItem, ILLUMINANCE_THRESHOLD_IN_LUX)
+                    switch = Light(openHabItem, timerItem,
+                            ILLUMINANCE_THRESHOLD_IN_LUX,
+                            disableMotionSensorTriggering)
 
                 zone = zone.addDevice(switch)
             elif 'FanSwitch' == deviceName:

@@ -17,31 +17,37 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 class TurnOnSwitch(Action):
     def onAction(self, events, zone, getZoneByIdFn):
         isProcessed = False
+        canTurnOffOtherZones = False
         lightOnTime = zone.isLightOnTime()
         zoneIlluminance = zone.getIlluminanceLevel()
 
         for switch in zone.getDevicesByType(Switch):
+            if not switch.canBeTriggeredByMotionSensor():
+                continue
+
+            canTurnOffOtherZones = True
+
             if isinstance(switch, Light):
                 if (lightOnTime or
                         None == switch.getIlluminanceThreshold() or 
                         zoneIlluminance < switch.getIlluminanceThreshold()):
-
                     isProcessed = True
-                    if None != getZoneByIdFn:
-                        masterZones = [getZoneByIdFn(n.getZoneId()) \
-                            for n in zone.getNeighbors() \
-                            if NeighborType.OPEN_SPACE_MASTER == n.getType()]
-                        if any(z.isLightOn() for z in masterZones):
-                            isProcessed = False
+                    
+                if isProcessed and None != getZoneByIdFn:
+                    masterZones = [getZoneByIdFn(n.getZoneId()) \
+                        for n in zone.getNeighbors() \
+                        if NeighborType.OPEN_SPACE_MASTER == n.getType()]
+                    if any(z.isLightOn() for z in masterZones):
+                        isProcessed = False
 
-                    if isProcessed:
-                        switch.turnOn(events)
+                if isProcessed:
+                    switch.turnOn(events)
             else:
                 switch.turnOn(events)
                 isProcessed = True
 
         # now shut off any the light in any shared space zones
-        if None != getZoneByIdFn:
+        if canTurnOffOtherZones and None != getZoneByIdFn:
             adjacentZones = [getZoneByIdFn(n.getZoneId()) \
                 for n in zone.getNeighbors() \
                 if (NeighborType.OPEN_SPACE == n.getType() or \

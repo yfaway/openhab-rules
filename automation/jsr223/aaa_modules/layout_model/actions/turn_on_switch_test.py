@@ -71,6 +71,16 @@ class TurnOnSwitchTest(DeviceTest):
 
         self.assertFalse(self.turnOn())
 
+    def testOnAction_switchDisablesTriggeringByMotionSensor_returnsFalse(self):
+        self.light1 = Light(self.lightItem1, self.timerItem1,
+                ILLUMINANCE_THRESHOLD_IN_LUX, True)
+        self.zone1 = Zone('foyer', [self.light1, self.illuminanceSensor])
+
+        self.illuminanceSensorItem.setState(
+                DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
+
+        self.assertFalse(self.turnOn())
+
     def testOnAction_openSpaceMasterNeighborIsOn_returnsFalse(self):
         self.setUpNeighborRelationship(NeighborType.OPEN_SPACE_MASTER, True) 
 
@@ -136,4 +146,3 @@ class TurnOnSwitchTest(DeviceTest):
         return getZone
 
 run_test(TurnOnSwitchTest, logger) 
-

@@ -9,8 +9,10 @@ class Dimmer(Light):
     # Constructs a new object.
     # @throw ValueError if any parameter is invalid
     def __init__(self, switchItem, timerItem, dimLevel = 5, timeRanges = None,
-            illuminanceLevel = None):
-        Light.__init__(self, switchItem, timerItem, illuminanceLevel)
+            illuminanceLevel = None,
+            disableTrigeringFromMotionSensor = False):
+        Light.__init__(self, switchItem, timerItem, illuminanceLevel,
+                disableTrigeringFromMotionSensor)
 
         if dimLevel < 0 or dimLevel > 100:
             raise ValueError('dimLevel must be between 0 and 100 inclusive')

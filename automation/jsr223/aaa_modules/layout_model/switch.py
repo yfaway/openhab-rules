@@ -13,14 +13,20 @@ class Switch(Device):
     # Ctor
     # @param switchItem org.eclipse.smarthome.core.library.items.SwitchItem
     # @param timerItem org.eclipse.smarthome.core.library.items.SwitchItem
+    # @param disableTrigeringFromMotionSensor bool a flag to indicate whether
+    #     the switch should be turned on when motion sensor is triggered.
+    #     There is no logic associate with this value in this class; it is 
+    #     used by external classes through the getter.
     # @throw ValueError if any parameter is invalid
-    def __init__(self, switchItem, timerItem):
+    def __init__(self, switchItem, timerItem,
+            disableTrigeringFromMotionSensor = False):
         Device.__init__(self, switchItem)
 
         if None == timerItem:
             raise ValueError('timerItem must not be None')
 
         self.timerItem = timerItem
+        self.disableTrigeringFromMotionSensor = disableTrigeringFromMotionSensor
 
     # Turns on this light, if it is not on yet. In either case, the associated
     # timer item is also turned on.
@@ -74,6 +80,15 @@ class Switch(Device):
     def getTimerItem(self):
         return self.timerItem
 
+    # Returns True if this switch can be turned on when a motion sensor is
+    # triggered.
+    # A False value might be desired if two switches share the same motion
+    # sensor, and only one switch shall be turned on when the motion sensor is
+    # triggered.
+    # @return bool
+    def canBeTriggeredByMotionSensor(self):
+        return not self.disableTrigeringFromMotionSensor
+
     # Misc common things to do when a switch is turned on.
     def _handleCommonOnAction(self, events):
         self.lastLightOnSecondSinceEpoch = time.time()
@@ -90,8 +105,10 @@ class Switch(Device):
 class Light(Switch):
     # @param illuminanceLevel the illuminance level in LUX unit. The light should only
     #     be turned on if the light level is below this unit.
-    def __init__(self, switchItem, timerItem, illuminanceLevel = None):
-        Switch.__init__(self, switchItem, timerItem)
+    def __init__(self, switchItem, timerItem, illuminanceLevel = None,
+            disableTrigeringFromMotionSensor = False):
+        Switch.__init__(self, switchItem, timerItem,
+                disableTrigeringFromMotionSensor)
         self._illuminanceLevel = illuminanceLevel
 
     # Returns the illuminance level in LUX unit. Returns None if not applicable.
