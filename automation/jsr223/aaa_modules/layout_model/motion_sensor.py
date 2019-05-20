@@ -1,8 +1,6 @@
 import time
 from org.eclipse.smarthome.core.library.types import OnOffType
 
-from aaa_modules.layout_model import device
-reload(device)
 from aaa_modules.layout_model.device import Device
 
 # Represents a motion sensor; the underlying OpenHab object is a SwitchItem.

@@ -1,8 +1,6 @@
 import time
 from org.eclipse.smarthome.core.library.types import OnOffType
 
-from aaa_modules.layout_model import device
-reload(device)
 from aaa_modules.layout_model.device import Device
 
 # Represents a light or fan switch. Each switch is associated with a timer
@@ -27,6 +25,7 @@ class Switch(Device):
 
         self.timerItem = timerItem
         self.disableTrigeringFromMotionSensor = disableTrigeringFromMotionSensor
+        self.lastOffTimestampInSeconds = None
 
     # Turns on this light, if it is not on yet. In either case, the associated
     # timer item is also turned on.
@@ -72,10 +71,17 @@ class Switch(Device):
     def onSwitchTurnedOff(self, events, itemName):
         isProcessed = (self.getItemName() == itemName)
         if isProcessed:
+            self.lastOffTimestampInSeconds = time.time()
             if OnOffType.OFF != self.timerItem.getState():
                 events.sendCommand(self.timerItem.getName(), "OFF")
 
         return isProcessed
+
+    # Returns the timestamp in epoch seconds the switch was last turned off.
+    # @return None if the timestamp is not available, or an integer presenting
+    #     the epoch seconds
+    def getLastOffTimestampInSeconds(self):
+        return self.lastOffTimestampInSeconds
 
     def getTimerItem(self):
         return self.timerItem

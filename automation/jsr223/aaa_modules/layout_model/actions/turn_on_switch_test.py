@@ -10,9 +10,6 @@ from aaa_modules.layout_model.actions import turn_on_switch
 reload(turn_on_switch)
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 
-from aaa_modules.layout_model import zone
-reload(zone)
-
 from aaa_modules.layout_model.zone import Zone, Level
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.astro_sensor import AstroSensor
@@ -75,6 +72,14 @@ class TurnOnSwitchTest(DeviceTest):
         self.light1 = Light(self.lightItem1, self.timerItem1,
                 ILLUMINANCE_THRESHOLD_IN_LUX, True)
         self.zone1 = Zone('foyer', [self.light1, self.illuminanceSensor])
+
+        self.illuminanceSensorItem.setState(
+                DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
+
+        self.assertFalse(self.turnOn())
+
+    def testOnAction_switchWasJustTurnedOff_returnsFalse(self):
+        self.light1.onSwitchTurnedOff(scope.events, self.light1.getItemName())
 
         self.illuminanceSensorItem.setState(
                 DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))

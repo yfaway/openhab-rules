@@ -1,3 +1,5 @@
+import time
+
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.actions.action import Action
@@ -15,6 +17,13 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 # any adjacent zones of type OPEN_SPACE, and OPEN_SPACE_SLAVE that currently
 # has the light on, will be sent a command to shut off the light.
 class TurnOnSwitch(Action):
+    # The period of time in seconds (from the last timestamp a switch was
+    # turned off) to ignore the motion sensor event. This takes care of the
+    # scenario when the user manually turns off a light, but that physical
+    # spot is covered by a motion sensor, which immediately turns on the light
+    # again.
+    DELAY_AFTER_LAST_OFF_TIME_IN_SECONDS = 8
+
     def onAction(self, events, zone, getZoneByIdFn):
         isProcessed = False
         canTurnOffOtherZones = False
@@ -24,6 +33,11 @@ class TurnOnSwitch(Action):
         for switch in zone.getDevicesByType(Switch):
             if not switch.canBeTriggeredByMotionSensor():
                 continue
+
+            if None != switch.getLastOffTimestampInSeconds():
+                if (time.time() - switch.getLastOffTimestampInSeconds()) <= \
+                    TurnOnSwitch.DELAY_AFTER_LAST_OFF_TIME_IN_SECONDS:
+                    continue
 
             canTurnOffOtherZones = True
 

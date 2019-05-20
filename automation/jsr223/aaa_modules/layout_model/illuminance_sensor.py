@@ -1,5 +1,3 @@
-from aaa_modules.layout_model import device
-reload(device)
 from aaa_modules.layout_model.device import Device
 
 # Represents a light/illuminance sensor; the underlying OpenHab object is a
