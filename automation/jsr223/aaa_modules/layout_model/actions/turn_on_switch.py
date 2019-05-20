@@ -3,6 +3,7 @@ import time
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.actions.action import Action
+from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
 from org.slf4j import Logger, LoggerFactory
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
@@ -34,10 +35,18 @@ class TurnOnSwitch(Action):
             if not switch.canBeTriggeredByMotionSensor():
                 continue
 
+            # Break if switch was just turned off.
             if None != switch.getLastOffTimestampInSeconds():
                 if (time.time() - switch.getLastOffTimestampInSeconds()) <= \
                     TurnOnSwitch.DELAY_AFTER_LAST_OFF_TIME_IN_SECONDS:
                     continue
+
+            # Break if the switch of a neighbor sharing the motion sensor was
+            # just turned off.
+            #openSpaceZones = [getZoneByIdFn(n.getZoneId()) \
+            #    for n in zone.getNeighbors() if n.isOpenSpace()]
+            #sharedMotionSensorZones = [z in openSpaceZones \
+            #    if zone.shareSensorWith(z, MotionSensor)]
 
             canTurnOffOtherZones = True
 
@@ -60,15 +69,8 @@ class TurnOnSwitch(Action):
                 switch.turnOn(events)
                 isProcessed = True
 
-        # now shut off any the light in any shared space zones
-        if canTurnOffOtherZones and None != getZoneByIdFn:
-            adjacentZones = [getZoneByIdFn(n.getZoneId()) \
-                for n in zone.getNeighbors() \
-                if (NeighborType.OPEN_SPACE == n.getType() or \
-                        NeighborType.OPEN_SPACE_SLAVE == n.getType()) ]
-
-            for z in adjacentZones:
-                if z.isLightOn():
-                    z.turnOffLights(events)
+        # Now shut off the light in any shared space zones
+        if canTurnOffOtherZones:
+            TurnOffAdjacentZones().onAction(events, zone, getZoneByIdFn)
         
         return isProcessed

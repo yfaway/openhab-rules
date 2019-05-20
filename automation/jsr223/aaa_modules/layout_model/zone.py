@@ -1,5 +1,6 @@
 from aaa_modules.layout_model.actions import turn_on_switch
 reload(turn_on_switch)
+from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
@@ -69,7 +70,7 @@ class Zone:
         self.name = name
         self.level = level
         self.devices = [d for d in devices]
-        self.neighbors = [n for n in neighbors]
+        self.neighbors = list(neighbors)
 
     # Creates a new zone that is an exact copy of this one, but has the
     # additional device.
@@ -127,7 +128,7 @@ class Zone:
 
     # Returns a copy of the list of neighboring zones.
     def getNeighbors(self):
-        return [n for n in self.neighbors]
+        return list(self.neighbors)
 
     # Returns True if this zone contains the given itemName; returns False 
     # otherwise.
@@ -206,14 +207,17 @@ class Zone:
 
     # If itemName belongs to this zone, dispatches the event to the associated
     # Switch object, and returns True. Otherwise return False.
+    # @param getZoneByIdFn lambda a function that returns a Zone object given
+    #     a zone id string
     # @return boolean
     # @see Switch::onSwitchTurnedOn
-    def onSwitchTurnedOn(self, events, itemName):
+    def onSwitchTurnedOn(self, events, itemName, getZoneByIdFn):
         isProcessed = False
 
         switches = self.getDevicesByType(Switch)
         for switch in switches:
             if switch.onSwitchTurnedOn(events, itemName):
+                TurnOffAdjacentZones().onAction(events, self, getZoneByIdFn)
                 isProcessed = True
         
         return isProcessed

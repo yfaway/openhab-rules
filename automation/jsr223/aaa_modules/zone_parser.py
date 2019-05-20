@@ -50,7 +50,7 @@ class ZoneParser:
     def parse(items, itemRegistry):
         zoneMap = {} # map from string zoneId to Zone
 
-        # Each item is a list of 3 items: zone id, zone id, neighbort type.
+        # Each item is a list of 3 items: zone id, zone id, neighbor type.
         neighbors = [] 
 
         for itemName in items.keys():
@@ -207,3 +207,4 @@ for z in zones:
     output += '\n' + str(z)
 
 logger.info(output)
+

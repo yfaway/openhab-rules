@@ -59,7 +59,8 @@ class ZoneManager:
     @staticmethod
     def onSwitchTurnedOn(events, itemName):
         returnValues = [
-            z.onSwitchTurnedOn(events, itemName) for z in ZoneManager.zones.values()]
+            z.onSwitchTurnedOn(events, itemName, ZoneManager.getZoneById)
+            for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     # Dispatches the switch turned off event to each zone.

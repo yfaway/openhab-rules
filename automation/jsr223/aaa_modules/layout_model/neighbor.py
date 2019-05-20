@@ -35,3 +35,10 @@ class Neighbor:
 
     def getType(self):
         return self.type
+
+    # Returns True if the neighbor is not closed space.
+    # @return boolean
+    def isOpenSpace(self):
+        return NeighborType.OPEN_SPACE == self.getType() or \
+                NeighborType.OPEN_SPACE_MASTER == self.getType() or \
+                NeighborType.OPEN_SPACE_SLAVE == self.getType()

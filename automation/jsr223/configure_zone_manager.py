@@ -3,6 +3,8 @@ from core import osgi
 from core.rules import rule
 from core.triggers import when
 
+from aaa_modules import switch_manager
+
 # temporary reloads during development
 from aaa_modules.layout_model import zone
 reload(zone)
@@ -29,8 +31,31 @@ def initializeZoneManager():
 
 #@rule("Turn on light when motion sensor triggered")
 #@when("Member of gWallSwitchMotionSensor changed to ON")
-def onMotionSensor(motionSensorEvent):
-    ZoneManager.onMotionSensorTurnedOn(events, motionSensorEvent.itemName)
+def onMotionSensor(event):
+    if not ZoneManager.onMotionSensorTurnedOn(events, event.itemName):
+        logger.info('Motion event for {} is not processed.'.format(
+                    event.itemName))
+
+#@rule("Dispatch switch changed event")
+#@when("Member of gWallSwitch changed")
+def onSwitchIsChanged(event):
+    triggeringItem = itemRegistry.getItem(event.itemName)
+
+    if switch_manager.isSwitchOn(triggeringItem):
+        if not ZoneManager.onSwitchTurnedOn(events, event.itemName):
+            logger.info('Switch on event for {} is not processed.'.format(
+                        event.itemName))
+    else:
+        if not ZoneManager.onSwitchTurnedOff(events, event.itemName):
+            logger.info('Switch off event for {} is not processed.'.format(
+                        event.itemName))
+
+#@rule("Dispatch timer expired event")
+#@when("Member of gWallSwitchTimer changed to OFF")
+def onTimerExpired(event):
+    if not ZoneManager.onTimerExpired(events, event.itemName):
+        logger.info('Timer event for {} is not processed.'.format(
+                    event.itemName))
 
 initializeZoneManager()
 
