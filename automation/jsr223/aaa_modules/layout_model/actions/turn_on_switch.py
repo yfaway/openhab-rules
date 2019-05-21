@@ -2,6 +2,7 @@ import time
 
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.switch import Light, Switch
+from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.actions.action import Action
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
@@ -43,10 +44,17 @@ class TurnOnSwitch(Action):
 
             # Break if the switch of a neighbor sharing the motion sensor was
             # just turned off.
-            #openSpaceZones = [getZoneByIdFn(n.getZoneId()) \
-            #    for n in zone.getNeighbors() if n.isOpenSpace()]
-            #sharedMotionSensorZones = [z in openSpaceZones \
-            #    if zone.shareSensorWith(z, MotionSensor)]
+            openSpaceZones = [getZoneByIdFn(n.getZoneId()) \
+                for n in zone.getNeighbors() if n.isOpenSpace()]
+            sharedMotionSensorZones = [z for z in openSpaceZones 
+                if zone.shareSensorWith(z, MotionSensor)]
+            theirSwitches = reduce(lambda a, b : a + b,
+                    [z.getDevicesByType(Switch) for z in sharedMotionSensorZones],
+                    [])
+            if any(time.time() - s.getLastOffTimestampInSeconds() <= \
+                        TurnOnSwitch.DELAY_AFTER_LAST_OFF_TIME_IN_SECONDS \
+                    for s in theirSwitches):
+                continue
 
             canTurnOffOtherZones = True
 

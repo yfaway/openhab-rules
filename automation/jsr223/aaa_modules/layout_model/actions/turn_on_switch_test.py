@@ -14,6 +14,7 @@ from aaa_modules.layout_model.zone import Zone, Level
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
+from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light
 
 from aaa_modules.layout_model.device_test import DeviceTest
@@ -26,6 +27,8 @@ ITEMS = [SwitchItem('TestLightName1'),
       SwitchItem('TestLightName2'),
       SwitchItem('TestTimerName2'),
       NumberItem('IlluminanceSensorName'),
+      SwitchItem('TestMotionSensor1'),
+      SwitchItem('TestMotionSensor2'),
     ]
 
 # Unit tests for zone_manager.py.
@@ -35,16 +38,19 @@ class TurnOnSwitchTest(DeviceTest):
         super(TurnOnSwitchTest, self).setUp()
 
         [self.lightItem1, self.timerItem1, self.lightItem2, self.timerItem2,
-            self.illuminanceSensorItem] = self.getItems()
+            self.illuminanceSensorItem, self.motionSensorItem1,
+            self.motionSensorItem2] = self.getItems()
 
         self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
         self.light1 = Light(self.lightItem1, self.timerItem1,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
         self.light2 = Light(self.lightItem2, self.timerItem2,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
+        self.motionSensor1 = MotionSensor(self.motionSensorItem1)
+        self.motionSensor2 = MotionSensor(self.motionSensorItem2)
 
-        self.zone1 = Zone('foyer', [self.light1, self.illuminanceSensor])
-        self.zone2 = Zone('office', [self.light2, self.illuminanceSensor])
+        self.zone1 = Zone('foyer', [self.light1, self.illuminanceSensor, self.motionSensor1])
+        self.zone2 = Zone('office', [self.light2, self.illuminanceSensor, self.motionSensor2])
 
     def getItems(self, resetState = False):
         if resetState:
@@ -68,6 +74,7 @@ class TurnOnSwitchTest(DeviceTest):
 
         self.assertFalse(self.turnOn())
 
+
     def testOnAction_switchDisablesTriggeringByMotionSensor_returnsFalse(self):
         self.light1 = Light(self.lightItem1, self.timerItem1,
                 ILLUMINANCE_THRESHOLD_IN_LUX, True)
@@ -80,6 +87,32 @@ class TurnOnSwitchTest(DeviceTest):
 
     def testOnAction_switchWasJustTurnedOff_returnsFalse(self):
         self.light1.onSwitchTurnedOff(scope.events, self.light1.getItemName())
+
+        self.illuminanceSensorItem.setState(
+                DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
+
+        self.assertFalse(self.turnOn())
+
+    def testOnAction_adjacentZoneWasNotOn_returnsTrue(self):
+        self.setUpNeighborRelationship(NeighborType.OPEN_SPACE, True) 
+
+        # shared channel
+        self.motionSensor1.getChannel = lambda : 'a channel'
+        self.motionSensor2.getChannel = lambda : 'a channel'
+
+        self.illuminanceSensorItem.setState(
+                DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
+
+        self.assertTrue(self.turnOn())
+
+    def testOnAction_adjacentZoneWasJustTurnedOff_returnsFalse(self):
+        self.setUpNeighborRelationship(NeighborType.OPEN_SPACE, True) 
+
+        # shared channel
+        self.motionSensor1.getChannel = lambda : 'a channel'
+        self.motionSensor2.getChannel = lambda : 'a channel'
+
+        self.light2.onSwitchTurnedOff(scope.events, self.light2.getItemName())
 
         self.illuminanceSensorItem.setState(
                 DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))

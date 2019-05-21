@@ -25,7 +25,7 @@ class Switch(Device):
 
         self.timerItem = timerItem
         self.disableTrigeringFromMotionSensor = disableTrigeringFromMotionSensor
-        self.lastOffTimestampInSeconds = None
+        self.lastOffTimestampInSeconds = -1
 
     # Turns on this light, if it is not on yet. In either case, the associated
     # timer item is also turned on.
@@ -78,7 +78,7 @@ class Switch(Device):
         return isProcessed
 
     # Returns the timestamp in epoch seconds the switch was last turned off.
-    # @return None if the timestamp is not available, or an integer presenting
+    # @return -1 if the timestamp is not available, or an integer presenting
     #     the epoch seconds
     def getLastOffTimestampInSeconds(self):
         return self.lastOffTimestampInSeconds

@@ -184,6 +184,23 @@ class Zone:
     def isLightOn(self):
         return any(l.isOn() for l in self.getDevicesByType(Light))
 
+    # Returns True if this zone shares at least one sensor of the given
+    # sensorType with the provider zone.
+    # Two sensors are considered the same if they link to the same channel.
+    # @return bool
+    # @see #Device#getChannel()
+    def shareSensorWith(self, zone, sensorType):
+        ourSensorChannels = [s.getChannel()
+            for s in self.getDevicesByType(sensorType)
+            if None != s.getChannel()]
+
+        theirSensorChannels = [s.getChannel()
+            for s in zone.getDevicesByType(sensorType)
+            if None != s.getChannel()]
+
+        intersection = set(ourSensorChannels).intersection(theirSensorChannels)
+        return len(intersection) > 0
+
     # Turn off all the lights in the zone.
     # @param events scope.events
     def turnOffLights(self, events):

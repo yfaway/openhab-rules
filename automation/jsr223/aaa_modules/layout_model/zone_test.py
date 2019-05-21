@@ -152,6 +152,25 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.lightWithIlluminance, self.astroSensor])
         self.assertTrue(zone.isLightOnTime())
 
+    def testShareSensorWith_noSharedSensors_returnsFalse(self):
+        zone1 = Zone('ff', [self.lightWithIlluminance, self.astroSensor])
+        zone2 = Zone('foyer', [])
+
+        self.assertFalse(zone1.shareSensorWith(zone2, Light))
+
+    def testShareSensorWith_sharedSensorsWithNoChannel_returnsFalse(self):
+        zone1 = Zone('ff', [self.lightWithIlluminance, self.astroSensor])
+        zone2 = Zone('foyer', [self.lightWithIlluminance])
+
+        self.assertFalse(zone1.shareSensorWith(zone2, Light))
+
+    def testShareSensorWith_sharedSensorsWithChannel_returnsTrue(self):
+        zone1 = Zone('ff', [self.lightWithIlluminance, self.astroSensor])
+        zone2 = Zone('foyer', [self.lightWithIlluminance])
+
+        self.lightWithIlluminance.getChannel = lambda : 'a channel'
+        self.assertTrue(zone1.shareSensorWith(zone2, Light))
+
     def testOnTimerExpired_validTimerItem_returnsTrue(self):
 
         self.lightItem.setState(scope.OnOffType.ON)
@@ -177,7 +196,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onSwitchTurnedOn(scope.events, self.lightItem.getName())
+        isProcessed = zone.onSwitchTurnedOn(scope.events, self.lightItem.getName(), None)
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
