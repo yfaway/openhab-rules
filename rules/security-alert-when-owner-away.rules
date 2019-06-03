@@ -50,7 +50,7 @@ then
         val zoneLocation = gZone.members.findFirst[ z | z.name == zoneName ].label
 
         val subject = "Someone is at the house (owners not in presence). The zone tripped is: " + zoneLocation
-        VT_AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
+        // VT_AlertSender.postUpdate("{\"subject\":\"" + subject + "\"}")
 
         lastAlertTimestamp = now
       }
