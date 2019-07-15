@@ -30,19 +30,21 @@ log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 @rule("Turn off fan when armed away")
 @when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
 def resume(event):
-    EcobeeAction.ecobeeSetHold(ECOBEE_ID, None, None, _AWAY_CLIMATE_REF, None,
-            None, None, None)
-    log.info("[Thermostat] Changed to Away mode")
+    if not security_manager.isInVacation(items):
+        EcobeeAction.ecobeeSetHold(ECOBEE_ID, None, None, _AWAY_CLIMATE_REF, None,
+                None, None, None)
+        log.info("[Thermostat] Changed to Away mode")
 
 @rule("Turn on fan when unarmed and is in winter")
 @when(security_manager.WHEN_CHANGED_FROM_ARM_AWAY_TO_UNARMED)
 def holdFanOn(event):
-    EcobeeAction.ecobeeResumeProgram(ECOBEE_ID, True)
-    log.info("[Thermostat] Resumed normal schedule")
+    if not security_manager.isInVacation(items):
+        EcobeeAction.ecobeeResumeProgram(ECOBEE_ID, True)
+        log.info("[Thermostat] Resumed normal schedule")
 
-    if isInWinter():
-        EcobeeAction.ecobeeSetHold(ECOBEE_ID, _HOLD_FAN_PARAMS, None, None, None, None)
-        log.info("[Thermostat] Turned on fan")
+        if isInWinter():
+            EcobeeAction.ecobeeSetHold(ECOBEE_ID, _HOLD_FAN_PARAMS, None, None, None, None)
+            log.info("[Thermostat] Turned on fan")
 
 def isInWinter():
     month = DateTime.now().getMonthOfYear()

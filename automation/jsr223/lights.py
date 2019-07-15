@@ -185,7 +185,7 @@ def setTimerWhenSwitchIsTurnedOn(switchEvent):
         # simulate presence (thief prevention). The simulation rule has full
         # control of the lights; thus we don't want to enable the timer.
         isFanItem = "FanSwitch" in triggeringItem.name
-        if items['VT_In_Vacation'] != ON or isFanItem:
+        if (not security_manager.isInVacation(items)) or isFanItem:
             if timerItemName in items:
                 events.sendCommand(timerItemName, "ON")
 
