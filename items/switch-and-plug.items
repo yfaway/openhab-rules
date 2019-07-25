@@ -76,17 +76,19 @@ Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%
 Group:Switch:OR(ON,OFF) SF_MasterWashroom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motion Sensor"
-  (SF_MasterWashroom_LightSwitch_MotionSensor) 
+  (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
   { channel="mqtt:topic:mything:MasterWashroomLightMotionSensor"}
-
-
-Switch SF_MasterWashroom_FanSwitch "Master Washroom Fan" 
-  (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node17:switch_binary" }
-Switch SF_MasterWashroom_FanSwitch_Timer (gWallSwitchTimer) 
-  { expire="15m,command=OFF"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
+  { channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
+
+Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan" 
+  (gWallSwitch, gFanSwitch) 
+  { channel="zwave:device:9e4ce05e:node17:switch_binary" }
+Switch SF_MasterWashroomShower_FanSwitch_Timer (gWallSwitchTimer) 
+  { expire="15m,command=OFF"}
+Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
+  (gWallSwitchMotionSensor) 
   { channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
 
 Switch SF_MainWashroom_LightSwitch "Main Washroom Light" 

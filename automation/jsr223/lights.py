@@ -76,8 +76,8 @@ def setLightOnTime(event):
 def turnOffAllLights(event):
     events.sendCommand(switch_manager.GROUP_LIGHT_SWITCH, "OFF")
 
-@rule("Turn on light when motion sensor triggered")
-@when("Member of gWallSwitchMotionSensor changed to ON")
+#@rule("Turn on light when motion sensor triggered")
+#@when("Member of gWallSwitchMotionSensor changed to ON")
 def turnOnSwitchOrRenewTimer(motionSensorEvent):
     triggeringItem = itemRegistry.getItem(motionSensorEvent.itemName)
     localIdx = triggeringItem.name.rfind("_")
@@ -171,8 +171,8 @@ def turnOnSwitchOrRenewTimer(motionSensorEvent):
     else:
         events.sendCommand(switchItem.name, "ON")
 
-@rule("Set a timer to turn off the switch after it was programatically turned on")
-@when("Member of gWallSwitch changed")
+#@rule("Set a timer to turn off the switch after it was programatically turned on")
+#@when("Member of gWallSwitch changed")
 def setTimerWhenSwitchIsTurnedOn(switchEvent):
     triggeringItem = itemRegistry.getItem(switchEvent.itemName)
 
@@ -201,8 +201,8 @@ def setTimerWhenSwitchIsTurnedOn(switchEvent):
 
       lastOffTimes[triggeringItem.name] = DateTime.now().getMillis()
 
-@rule("Turn off wall switch when timer expires")
-@when("Member of gWallSwitchTimer changed to OFF")
+#@rule("Turn off wall switch when timer expires")
+#@when("Member of gWallSwitchTimer changed to OFF")
 def turnOffWallSwitch(timerEvent):
     triggeringItem = itemRegistry.getItem(timerEvent.itemName)
     localIdx = triggeringItem.name.rfind("_")
