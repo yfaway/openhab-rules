@@ -37,7 +37,7 @@ class Switch(Device):
 
     # Turn off this light.
     def turnOff(self, events):
-        if OnOffType.ON == self.getItem().getState():
+        if self.isOn():
             events.sendCommand(self.getItemName(), "OFF")
 
     # Returns true if the switch is turned on; false otherwise.
