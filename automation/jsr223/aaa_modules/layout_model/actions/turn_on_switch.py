@@ -81,9 +81,7 @@ class TurnOnSwitch(Action):
                 continue
 
             if isinstance(switch, Light):
-                if (lightOnTime or
-                        None == switch.getIlluminanceThreshold() or 
-                        zoneIlluminance < switch.getIlluminanceThreshold()):
+                if lightOnTime or switch.isLowIlluminance(zoneIlluminance):
                     isProcessed = True
                     
                 if isProcessed and None != getZoneByIdFn:

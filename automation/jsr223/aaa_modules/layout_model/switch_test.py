@@ -89,4 +89,19 @@ class LightTest(unittest.TestCase):
                 scope.events, "wrong name")
         self.assertFalse(isProcessed)
 
+    def testIsLowIlluminance_noThresholdSet_returnsFalse(self):
+        self.assertFalse(self.light.isLowIlluminance(10))
+
+    def testIsLowIlluminance_currentIlluminanceNotAvailable_returnsFalse(self):
+        self.light = Light(self.lightItem, self.timerItem, 50)
+        self.assertFalse(self.light.isLowIlluminance(-1))
+
+    def testIsLowIlluminance_currentIlluminanceAboveThreshold_returnsFalse(self):
+        self.light = Light(self.lightItem, self.timerItem, 50)
+        self.assertFalse(self.light.isLowIlluminance(60))
+
+    def testIsLowIlluminance_currentIlluminanceBelowThreshold_returnsTrue(self):
+        self.light = Light(self.lightItem, self.timerItem, 50)
+        self.assertTrue(self.light.isLowIlluminance(10))
+
 run_test(LightTest, logger) 

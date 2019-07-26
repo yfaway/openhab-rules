@@ -101,6 +101,10 @@ class Switch(Device):
         # start or renew timer
         events.sendCommand(self.timerItem.getName(), "ON")
 
+    # Always return False.
+    def isLowIlluminance(self, currentIlluminance):
+        return False
+
     # @override
     def __unicode__(self):
         return u"{}, {}".format(
@@ -120,6 +124,19 @@ class Light(Switch):
     # Returns the illuminance level in LUX unit. Returns None if not applicable.
     def getIlluminanceThreshold(self):
         return self._illuminanceLevel
+
+    # Returns False if this light has no illuminance threshold or if 
+    # currentIlluminance is less than 0. Otherwise returns True if the
+    # currentIlluminance is less than threshold.
+    # @override
+    def isLowIlluminance(self, currentIlluminance):
+        if None == self.getIlluminanceThreshold():
+            return False
+
+        if currentIlluminance < 0: # current illuminance not available
+            return False
+
+        return currentIlluminance < self.getIlluminanceThreshold()
 
     # @override
     def __unicode__(self):
