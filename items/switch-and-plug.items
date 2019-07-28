@@ -73,13 +73,11 @@ Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%
   (gIlluminance) 
   { channel="mqtt:topic:mything:MasterWashroomIlluminance"}
 // This wash room has two motion sensors (one in the standing shower area).
-Group:Switch:OR(ON,OFF) SF_MasterWashroom_LightSwitch_MotionSensor 
-  (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motion Sensor"
-  (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:mything:MasterWashroomLightMotionSensor"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
-  (gWallSwitchMotionSensor, SF_MasterWashroom_LightSwitch_MotionSensor) 
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
 
 Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan" 
@@ -88,7 +86,7 @@ Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan"
 Switch SF_MasterWashroomShower_FanSwitch_Timer (gWallSwitchTimer) 
   { expire="15m,command=OFF"}
 Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
-  (gWallSwitchMotionSensor) 
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
 
 Switch SF_MainWashroom_LightSwitch "Main Washroom Light" 
@@ -100,10 +98,8 @@ Switch SF_MainWashroom_LightSwitch_Timer (gWallSwitchTimer)
 //  (gIlluminance) 
 //  { channel="mqtt:topic:mything:MainWashroomIlluminance"}
 
-Group:Switch:OR(ON,OFF) SF_MainWashroom_LightSwitch_MotionSensor 
-  (gWallSwitchMotionSensor, gSecondFloorMotionSensors)
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
-  (gWallSwitchMotionSensor, SF_MainWashroom_LightSwitch_MotionSensor) 
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
 
 Switch SF_MainWashroomShower_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
@@ -111,7 +107,7 @@ Switch SF_MainWashroomShower_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwi
 Switch SF_MainWashroomShower_FanSwitch_Timer (gWallSwitchTimer) 
   { expire="15m,command=OFF"}
 Switch SF_MainWashroomShower_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
-  (gWallSwitchMotionSensor) 
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
 
 Dimmer SF_Lobby_LightSwitch "Lobby Light" 

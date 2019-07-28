@@ -1,5 +1,3 @@
-from aaa_modules.layout_model.actions import turn_on_switch
-reload(turn_on_switch)
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
