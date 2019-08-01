@@ -4,3 +4,5 @@ transform/owner-email-addresses.map
 transform/routes.map
 *.swp
 *.swo
+sphinx/_build
+*.pyc
