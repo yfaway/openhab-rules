@@ -1,35 +1,49 @@
-
 from core import osgi
 from org.eclipse.smarthome.core.items import Metadata
 from org.eclipse.smarthome.core.items import MetadataKey
 
 MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
 
-# The base class that all other sensors and switches derive from.
 class Device(object):
-    # Ctor
-    # @param openhabItem org.eclipse.smarthome.core.items.Item
-    # @throw ValueError if any parameter is invalid
+    '''
+    The base class that all other sensors and switches derive from.
+    '''
+
     def __init__(self, openhabItem):
+        '''
+        Ctor
+
+        :param org.eclipse.smarthome.core.items.Item openhabItem:
+        :raise ValueError: if any parameter is invalid
+        '''
         if None == openhabItem:
             raise ValueError('openhabItem must not be None')
 
         self.item = openhabItem
 
-    # Returns the backed OpenHab item.
-    # @return org.eclipse.smarthome.core.items.Item
     def getItem(self):
+        '''
+        Returns the backed OpenHab item.
+
+        :rtype: org.eclipse.smarthome.core.items.Item
+        '''
         return self.item
 
-    # Returns the backed OpenHab item name.
-    # @return string
     def getItemName(self):
+        '''
+        Returns the backed OpenHab item name.
+
+        :rtype: str
+        '''
         return self.item.getName()
 
-    # Returns the OpenHab channel string linked with the item.
-    # @return string the channel string or None if the item is not linked to
-    #     a channel
     def getChannel(self):
+        '''
+        Returns the OpenHab channel string linked with the item.
+
+        :rtype: str the channel string or None if the item is not linked to
+        a channel
+        '''
         channelMeta = MetadataRegistry.get(
                 MetadataKey('channel', self.getItemName())) 
         if None != channelMeta:

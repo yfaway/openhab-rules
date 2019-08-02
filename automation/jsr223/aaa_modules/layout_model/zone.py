@@ -19,21 +19,21 @@ class Level:
 
 class Zone:
     """
-    Represent a zone such as a room, foyer, porch, or lobby.
+    Represent a zone such as a room, foyer, porch, or lobby. 
     Each zone holds a number of devices/sensors such as switches, motion sensors,
     or temperature sensors.
-
+    
     A zone might have zero, one or multiple adjacent zones. The adjacent zones
     can be further classified into closed space (i.e. a wall exists between the
     two zones, open space, open space slave (the neighbor is a less important
     zone), and open space master. This layout-like structure is useful for
     certain scenario such as light control.
-
+    
     Each zone instance is IMMUTABLE. The various add/remove methods return a new
     Zone object. Note however that the OpenHab item underlying each
     device/sensor is not (the state changes).
     See #addDevice(), #removeDevice(), #addNeighbor()
-
+    
     The zone itself doesn't know how to operate a device/sensor. The sensors
     themselves (all sensors derive from Device class) exposes the possible
     operations. Generally, the zone needs not know about the exact types of 
@@ -41,7 +41,7 @@ class Zone:
     for home automation; thus it does references to several virtual/physical
     sensors to determine the astro time, the illuminance, and the motion sensor.
     See #getDevices(), #getDevicesByType().
-
+    
     There are two sets of operation on each zone:
       1. Active operations such as turn on a light/fan in a zone. These are
          represented by common functions such as #turnOnLights(),
@@ -57,7 +57,7 @@ class Zone:
     for each of these events. For example, a motion event will turn on the light
     if it is dark or if it is evening time; a timer expiry event will turn off
     the associated light if it is currently on.
-
+    
     @Immutable (the Zone object only)
     """
 

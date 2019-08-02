@@ -11,29 +11,34 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 DEBUG = False
 
-# Turns on a switch (fan, dimmer or regular light), after being triggered by
-# a motion event.
-# If the switch is a dimmer or light, it is only turned on if:
-#   1. It is evening time, or
-#   2. The illuminance is below a threshold.
-#
-# A light/dimmer switch won't be turned on if:
-#   1. The light has the flag set to ignore motion event, or
-#   2. The adjacent zone is of type OPEN_SPACE_MASTER with the light on, or
-#   3. The light was jsut turned off, or
-#   4. The neighbor zone has a light switch that shares the same motion sensor,
-#      and that light switch was just recently turned off.
-#
-# No matter whether the switch is turned on or not (see the condition above),
-# any adjacent zones of type OPEN_SPACE, and OPEN_SPACE_SLAVE that currently
-# has the light on, will be sent a command to shut off the light.
 class TurnOnSwitch(Action):
-    # The period of time in seconds (from the last timestamp a switch was
-    # turned off) to ignore the motion sensor event. This takes care of the
-    # scenario when the user manually turns off a light, but that physical
-    # spot is covered by a motion sensor, which immediately turns on the light
-    # again.
+    '''
+    Turns on a switch (fan, dimmer or regular light), after being triggered by
+    a motion event.
+    If the switch is a dimmer or light, it is only turned on if:
+    1. It is evening time, or
+    2. The illuminance is below a threshold.
+
+    A light/dimmer switch won't be turned on if:
+    1. The light has the flag set to ignore motion event, or
+    2. The adjacent zone is of type OPEN_SPACE_MASTER with the light on, or
+    3. The light was jsut turned off, or
+    4. The neighbor zone has a light switch that shares the same motion sensor,
+    and that light switch was just recently turned off.
+
+    No matter whether the switch is turned on or not (see the condition above),
+    any adjacent zones of type OPEN_SPACE, and OPEN_SPACE_SLAVE that currently
+    has the light on, will be sent a command to shut off the light.
+    '''
+
     DELAY_AFTER_LAST_OFF_TIME_IN_SECONDS = 8
+    '''
+    The period of time in seconds (from the last timestamp a switch was
+    turned off) to ignore the motion sensor event. This takes care of the
+    scenario when the user manually turns off a light, but that physical
+    spot is covered by a motion sensor, which immediately turns on the light
+    again.
+    '''
 
     def onAction(self, events, zone, getZoneByIdFn):
         isProcessed = False

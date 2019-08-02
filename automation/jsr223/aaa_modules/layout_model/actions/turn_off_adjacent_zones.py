@@ -1,9 +1,11 @@
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.actions.action import Action
 
-# Turn off the lights in the zones adjacent to the current zone if those zones
-# are of the OPEN_SPACE and OPEN_SPACE_SLAVE type.
 class TurnOffAdjacentZones(Action):
+    '''
+    Turn off the lights in the zones adjacent to the current zone if those zones
+    are of the OPEN_SPACE and OPEN_SPACE_SLAVE type.
+    '''
 
     def onAction(self, events, zone, getZoneByIdFn):
         if None != getZoneByIdFn:

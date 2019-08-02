@@ -1,14 +1,22 @@
 from aaa_modules.layout_model.device import Device
 
-# Represents a light/illuminance sensor; the underlying OpenHab object is a
-# NumberItem.
 class IlluminanceSensor(Device):
-    # Ctor
-    # @param numberItem org.eclipse.smarthome.core.library.items.NumberItem
-    # @throw ValueError if any parameter is invalid
+    '''
+    Represents a light/illuminance sensor; the underlying OpenHab object is a
+    NumberItem.
+    '''
+
     def __init__(self, numberItem):
+        '''
+        Ctor
+
+        :param org.eclipse.smarthome.core.library.items.NumberItem numberItem:
+        :raise ValueError: if any parameter is invalid
+        '''
         Device.__init__(self, numberItem)
 
-    # Returns an positive integer representing the LUX value.
     def getIlluminanceLevel(self):
+        '''
+        Returns an positive integer representing the LUX value.
+        '''
         return self.getItem().getState().intValue()
