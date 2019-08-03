@@ -10,12 +10,16 @@ _WAIT_TIME_AFTER_FORCE_IMAGE_UPDATE_IN_SECONDS = 2
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
-# Retrieve {@link _SNAPSHOT_COUNT} snapshots.
-# @param itemPrefix stirng the camera item prefix; the items Image and
-#     UpdateImage are created from the prefix.
-# @param snapshotCount int
-# @return list of snapshot URLs
 def retrieveSnapshots(itemPrefix, snapshotCount):
+    '''
+    Retrieve the supplied number of snapshots.
+
+    :param str itemPrefix: the camera item prefix; the items Image and\
+    UpdateImage are created from the prefix.
+    :param int snapshotCount: the # of snapshot images to retrieve
+    :return: list of snapshot URLs
+    :rtype: list(str)
+    '''
     attachmentUrls = []
 
     imageItemName = itemPrefix + '_Image'

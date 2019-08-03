@@ -12,6 +12,7 @@ Welcome to Zone Manager API's documentation!
    :maxdepth: 2
 
    APIs/layout.rst
+   APIs/utilities.rst
    scripts/scripts.rst
 
 

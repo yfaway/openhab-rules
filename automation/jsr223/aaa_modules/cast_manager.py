@@ -1,5 +1,7 @@
-# Functions that work with Google Chromecasts and Google Home.
-# @see ChromeCast
+'''
+Contains functions that work with Google Chromecasts and Google Home.
+@see ChromeCast
+'''
 
 import time
 
@@ -48,33 +50,42 @@ _STREAMS = {
 # If set, the TTS message won't be sent to the chromecasts.
 _testMode = False
 
-# Pauses the passed-in chrome cast player.
-# @param casts list of ChromeCast
 def pause(casts = CASTS):
+    '''
+    Pauses the passed-in chrome cast player.
+
+    :param list(ChromeCast) casts:
+    '''
     for cast in casts:
         scope.events.sendCommand(cast.getPlayerName(), "PAUSE")
 
-# Resumes playing on the passed-in chrome casts.
-# @param casts list of ChromeCast
 def resume(casts = CASTS):
+    '''
+    Resumes playing on the passed-in chrome casts.
+
+    :param list(ChromeCast) casts:
+    '''
     for cast in casts:
         if scope.OnOffType.ON == scope.items[cast.getIdleItemName()]:
             Audio.playStream(cast.getSinkName(), cast.getStreamUrl())
         else:
             scope.events.sendCommand(cast.getPlayerName(), "PLAY")
 
-# Play the given message on one or more ChromeCast and wait till it finishes 
-# (up to MAX_SAY_WAIT_TIME_IN_SECONDS seconds). Afterward, pause the player.
-# After this call, cast.isActive() will return False.
-# 
-# If _testMode is True, no message will be sent to the cast.
-# @param message string the message to tts
-# @param casts list of ChromeCast
-# @param volume int the volume value, 0 to 100 inclusive
-# @return boolean True if success; False if stream name is invalid.
-# @throws ValueError if volume is not in the 0 - 100 inclusive range, or if
-#     message is None or empty.
 def playMessage(message, casts = CASTS, volume = 50):
+    '''
+    Play the given message on one or more ChromeCast and wait till it finishes 
+    (up to MAX_SAY_WAIT_TIME_IN_SECONDS seconds). Afterward, pause the player.
+    After this call, cast.isActive() will return False.
+
+    If _testMode is True, no message will be sent to the cast.
+
+    :param str message: the message to tts
+    :param list(ChromeCast) casts: 
+    :param int volume: the volume value, 0 to 100 inclusive
+    :return: boolean True if success; False if stream name is invalid.
+    :raise: ValueError if volume is not in the 0 - 100 inclusive range, or if\
+    message is None or empty.
+    '''
     if volume < 0 or volume > 100:
         raise ValueError('volume must be between 0 and 100')
 
@@ -107,11 +118,15 @@ def playMessage(message, casts = CASTS, volume = 50):
 
     return True
 
-# Play the given stream url.
-# @param name string; see _STREAMS
-# @param casts list of ChromeCast
-# @return boolean True if success; False if stream name is invalid.
 def playStream(name, casts = CASTS, volume = None):
+    '''
+    Play the given stream url.
+
+    :param str name: see _STREAMS
+    :param list(ChromeCast) casts:
+    :return: boolean True if success; False if stream name is invalid.
+    '''
+
     if None != volume and (volume < 0 or volume > 100):
         raise ValueError('volume must be between 0 and 100')
 
@@ -132,21 +147,30 @@ def playStream(name, casts = CASTS, volume = None):
         logger.info("Missing stream URL for '{0}'".format(name))
         return False
 
-# Return all available ChromeCast objects.
-# @return list of Chromecast
 def getAllCasts():
+    '''
+    Return all available ChromeCast objects.
+
+    :rtype: list(ChromeCast)
+    '''
+
     return CASTS
 
-# Return the ChromeCast objects on the first floor.
-# @return list of Chromecast
 def getFirstFloorCasts():
+    '''
+    Return the ChromeCast objects on the first floor.
+    :rtype: list(ChromeCast)
+    '''
     return [ CASTS[0] ]
 
-# Return a list of ChromeCast. If prefix is UNDEF, NULL, or "ALL", return
-# all casts. Otherwise returns the matching casts.
-# @param prefix StringItem or string
-# @return list of ChromeCast
 def findCasts(prefix):
+    '''
+    Return a list of ChromeCast. If prefix is UNDEF, NULL, or "ALL", return
+    all casts. Otherwise returns the matching casts.
+
+    :param StringItem_or_str prefix:
+    :rtype: list(ChromeCast)
+    '''
     if scope.UnDefType.UNDEF == prefix \
             or scope.UnDefType.NULL == prefix \
             or scope.StringType("ALL") == prefix \
@@ -157,21 +181,30 @@ def findCasts(prefix):
     else: # assume to be string
         return filter(lambda cast: cast.getPrefix() == prefix, CASTS)
 
-# Returns the stream associated with the given name.
-# @return string could be None if not found
 def getStreamUrl(name):
+    '''
+    Returns the stream associated with the given name.
+
+    :rtype: str or None if not found
+    '''
     if name in _STREAMS:
         return _STREAMS[name]
     else:
         return None
 
-# Returns a list of stream names.
-# @return list
 def getAllStreamNames():
+    '''
+    Returns a list of stream names.
+
+    :rtype: list(str)
+    '''
     return _STREAMS.keys()
 
-# Switches on/off the test mode.
-# @param mode boolean
 def _setTestMode(mode):
+    '''
+    Switches on/off the test mode.
+
+    :param boolean mode:
+    '''
     global _testMode
     _testMode = mode

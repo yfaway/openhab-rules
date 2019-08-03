@@ -16,23 +16,40 @@ _EMAIL_PROPERTIES_FILE = '/etc/openhab2/transform/owner-email-addresses.map'
 _EMAIL_KEY = 'ALL_OWNER_EMAIL_ADDRESSES'
 
 class AlertManager:
-    # If set, the TTS message won't be sent to the chromecasts.
+    '''
+    Process an alert.
+    The current implementation will send out an email. If the alert is at
+    critical level, a TTS message will also be sent to all audio sinks.
+    '''
+
     _testMode = False
+    '''
+    If set, the TTS message won't be sent to the chromecasts.
+    '''
 
-    # Used in unit testing to make sure that the email alert function was invoked,
-    # without having to sent any actual email.
     _lastEmailedSubject = None
+    '''
+    Used in unit testing to make sure that the email alert function was invoked,
+    without having to sent any actual email.
+    '''
 
-    # Tracks the timestamp of the last alert in a module.
     _moduleTimestamps = {}
+    '''
+    Tracks the timestamp of the last alert in a module.
+    '''
 
-    # Processes the provided alert.
-    # If the alert's level is WARNING or CRITICAL, the TTS subject will be played
-    # on the ChromeCasts.
-    # @return True if alert was processed; False otherwise.
-    # @throws ValueError if alert is None
     @staticmethod
     def processAlert(alert):
+        '''
+        Processes the provided alert.
+        If the alert's level is WARNING or CRITICAL, the TTS subject will be played
+        on the ChromeCasts.
+
+        :param Alert alert: the alert to be processed
+        :return: True if alert was processed; False otherwise.
+        :raise: ValueError if alert is None
+        '''
+
         if None == alert:
             raise ValueError('Invalid alert.')
 
@@ -56,9 +73,11 @@ class AlertManager:
         return True
 
 
-    # Reset the internal states of this class.
     @staticmethod
     def reset():
+        '''
+        Reset the internal states of this class.
+        '''
         AlertManager._lastEmailedSubject = None
         AlertManager._moduleTimestamps = {}
 
@@ -78,19 +97,21 @@ class AlertManager:
 
         AlertManager._lastEmailedSubject = alert.getSubject()
 
-    # @return list of email addresses
     @staticmethod
     def _getEmailAddresses():
+        '''
+        :return: list of email addresses
+        '''
         props = AlertManager._loadProperties(_EMAIL_PROPERTIES_FILE)
         emails = props[_EMAIL_KEY].split(';')
 
         return emails
 
-    # @see https://stackoverflow.com/a/31852401
     @staticmethod
     def _loadProperties(filepath, sep='=', comment_char='#'):
 	"""
 	Read the file passed as parameter as a properties file.
+        @see https://stackoverflow.com/a/31852401
 	"""
 	props = {}
 	with open(filepath, "rt") as f:
@@ -103,9 +124,11 @@ class AlertManager:
 		    props[key] = value 
 	return props
 
-    # Switches on/off the test mode.
-    # @param mode boolean
     @staticmethod
     def _setTestMode(mode):
+        '''
+        Switches on/off the test mode.
+        @param mode boolean
+        '''
         AlertManager._testMode = mode
 

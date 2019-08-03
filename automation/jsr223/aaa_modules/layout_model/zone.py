@@ -1,3 +1,47 @@
+"""
+Represent a zone such as a room, foyer, porch, or lobby. 
+Each zone holds a number of devices/sensors such as switches, motion sensors,
+or temperature sensors.
+
+A zone might have zero, one or multiple adjacent zones. The adjacent zones
+can be further classified into closed space (i.e. a wall exists between the
+two zones, open space, open space slave (the neighbor is a less important
+zone), and open space master. This layout-like structure is useful for
+certain scenario such as light control.
+
+Each zone instance is IMMUTABLE. The various add/remove methods return a new
+Zone object. Note however that the OpenHab item underlying each
+device/sensor is not (the state changes).
+See #addDevice(), #removeDevice(), #addNeighbor()
+
+The zone itself doesn't know how to operate a device/sensor. The sensors
+themselves (all sensors derive from Device class) exposes the possible
+operations. Generally, the zone needs not know about the exact types of 
+sensors it contains. However, controlling the light is a very common case
+for home automation; thus it does references to several virtual/physical
+sensors to determine the astro time, the illuminance, and the motion sensor.
+See #getDevices(), #getDevicesByType().
+
+There are two sets of operation on each zone:
+  1. Active operations such as turn on a light/fan in a zone. These are\
+     represented by common functions such as #turnOnLights(),\
+     #turnOffLights(); and
+  2. Passive operations triggered by events such onTimerExpired(),\
+     onSwitchTurnedOn(), and so on.
+The passive triggering is needed because the interaction with the devices or
+sensors might happen outside the interface exposed by this class. It could
+be a manually action on the switch by the user, or a direct send command 
+through the OpenHab event bus.
+All the onXxx methods accept two parameters: the core.jsr223.scope.events
+object and the string itemName. The zone will perform appropriate actions
+for each of these events. For example, a motion event will turn on the light
+if it is dark or if it is evening time; a timer expiry event will turn off
+the associated light if it is currently on.
+
+@Immutable (the Zone object only)
+"""
+
+
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
@@ -19,58 +63,16 @@ class Level:
 
 class Zone:
     """
-    Represent a zone such as a room, foyer, porch, or lobby. 
-    Each zone holds a number of devices/sensors such as switches, motion sensors,
-    or temperature sensors.
-    
-    A zone might have zero, one or multiple adjacent zones. The adjacent zones
-    can be further classified into closed space (i.e. a wall exists between the
-    two zones, open space, open space slave (the neighbor is a less important
-    zone), and open space master. This layout-like structure is useful for
-    certain scenario such as light control.
-    
-    Each zone instance is IMMUTABLE. The various add/remove methods return a new
-    Zone object. Note however that the OpenHab item underlying each
-    device/sensor is not (the state changes).
-    See #addDevice(), #removeDevice(), #addNeighbor()
-    
-    The zone itself doesn't know how to operate a device/sensor. The sensors
-    themselves (all sensors derive from Device class) exposes the possible
-    operations. Generally, the zone needs not know about the exact types of 
-    sensors it contains. However, controlling the light is a very common case
-    for home automation; thus it does references to several virtual/physical
-    sensors to determine the astro time, the illuminance, and the motion sensor.
-    See #getDevices(), #getDevicesByType().
-    
-    There are two sets of operation on each zone:
-      1. Active operations such as turn on a light/fan in a zone. These are
-         represented by common functions such as #turnOnLights(),
-         #turnOffLights(); and
-      2. Passive operations triggered by events such onTimerExpired(),
-         onSwitchTurnedOn(), and so on.
-    The passive triggering is needed because the interaction with the devices or
-    sensors might happen outside the interface exposed by this class. It could
-    be a manually action on the switch by the user, or a direct send command 
-    through the OpenHab event bus.
-    All the onXxx methods accept two parameters: the core.jsr223.scope.events
-    object and the string itemName. The zone will perform appropriate actions
-    for each of these events. For example, a motion event will turn on the light
-    if it is dark or if it is evening time; a timer expiry event will turn off
-    the associated light if it is currently on.
-    
-    @Immutable (the Zone object only)
+    Creates a new zone.
+
+    :param str name: the zone name
+    :param list(Device) devices: the list of Device objects
+    :param Level level: the zone's physical level
+    :param list(Neigbor) neighbors: the list of optional neighbor zones.
     """
 
+
     def __init__(self, name, devices = [], level = Level.UNDEFINED, neighbors = []):
-        """
-        Creates a new zone.
-
-        :param str name: the zone name
-        :param list(Device) devices: the list of Device objects
-        :param Level level: the zone's physical level
-        :param list(Neigbor) neighbors: the list of optional neighbor zones.
-        """
-
         self.name = name
         self.level = level
         self.devices = [d for d in devices]
