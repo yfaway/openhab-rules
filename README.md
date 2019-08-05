@@ -1,3 +1,5 @@
+> **_NOTE:_** The reuseable APIs is being documented at https://yfaway.github.io/. Eventually all the doc will go there as well.
+
 # openhab-rules
 A set of rules for my house.
 
