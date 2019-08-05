@@ -1,14 +1,23 @@
+'''
+Utility class containing a set of time related functions.
+'''
+
 import time
 from org.slf4j import Logger, LoggerFactory
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 def isDinnerTime():
+    '''
+    :rtype: bool
+    '''
     return isInTimeRange("17:50 - 20:00")
 
-# @param epochSeconds int seconds since epoch, optional
-# @return true if it is kids' nap or sleep time.
 def isKidsSleepTime(epochSeconds = None):
+    '''
+    :param int epochSeconds: seconds since epoch, optional
+    :return: true if it is kids' nap or sleep time.
+    '''
     timeStruct = time.localtime(epochSeconds)
     hourOfDay = timeStruct[3]
     if hourOfDay >= 20 or hourOfDay < 8: # regular sleep time
@@ -19,13 +28,17 @@ def isKidsSleepTime(epochSeconds = None):
     else:
         return False
 
-# Determines if the current time is in the timeRange string.
-# @param timeRangesString string one or multiple time range in 24-hour format.
-#     Example: '10-12', or '6-9, 7-7, 8:30 - 14:45', or '19 - 8' (wrap around)
-# @param epochSeconds int seconds since epoch, optional
-# @return boolean
-# @throw ValueError if the time range string is invalid
 def isInTimeRange(timeRangesString, epochSeconds = None):
+    '''
+    Determines if the current time is in the timeRange string.
+
+    :param str timeRangesString: one or multiple time range in 24-hour format.\
+        Example: '10-12', or '6-9, 7-7, 8:30 - 14:45', or '19 - 8' (wrap around)
+    :param int epochSeconds: seconds since epoch, optional
+    :rtype: boolean
+    :raise: ValueError if the time range string is invalid
+    '''
+
     if None == timeRangesString or 0 == len(timeRangesString):
         raise ValueError('Must have at least one time range.')
 
@@ -59,11 +72,14 @@ def isInTimeRange(timeRangesString, epochSeconds = None):
 
     return False
 
-# Return a list of time ranges. Each list item is itself a list of 4 elements:
-# startTime, startMinute, endTime, endMinute.
-# @return list
-# @throw ValueError if the time range string is invalid
 def stringToTimeRangeLists(timeRangesString):
+    '''
+    Return a list of time ranges. Each list item is itself a list of 4 elements:
+    startTime, startMinute, endTime, endMinute.
+
+    :rtype: list
+    :raise: ValueError if the time range string is invalid
+    '''
     if None == timeRangesString or 0 == len(timeRangesString):
         raise ValueError('Must have at least one time range.')
 

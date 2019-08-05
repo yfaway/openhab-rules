@@ -6,11 +6,13 @@ from aaa_modules.layout_model.device import Device
 class MotionSensor(Device):
     '''
     Represents a motion sensor; the underlying OpenHab object is a SwitchItem.
-
-    :param org.eclipse.smarthome.core.library.items.SwitchItem switchItem:
-    :raise ValueError: if any parameter is invalid
     '''
+
     def __init__(self, switchItem):
+        '''
+        :param org.eclipse.smarthome.core.library.items.SwitchItem switchItem:
+        :raise ValueError: if any parameter is invalid
+        '''
         Device.__init__(self, switchItem)
         self.lastOnTimestamp = -1
 

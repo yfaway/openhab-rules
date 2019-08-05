@@ -38,16 +38,23 @@ ITEM_NAME_PATTERN = '([^_]+)_([^_]+)_(.+)' # level_location_deviceName
 MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
-# Construct the zones from the existing items in OpenHab, using this naming
-# convention: Floor_Location_ItemType
-# For example, item "Switch FF_Foyer_LightSwitch ..." will create a zone named
-# 'Foyer' at the first floor; and the zone contains a Light object.
 class ZoneParser:
-    # @param items scope.items
-    # @param itemRegistry scope.itemRegistry
-    # @return a list of aaa_modules.layout_model.zone.Zone objects
+    '''
+    Construct the zones from the existing items in OpenHab, using this naming
+    convention: Floor_Location_ItemType
+    For example, item "Switch FF_Foyer_LightSwitch ..." will create a zone named
+    'Foyer' at the first floor; and the zone contains a Light object.
+
+    See :class:`.ZoneManager` and :class:`.Zone`.
+    '''
+
     @staticmethod
     def parse(items, itemRegistry):
+        '''
+        :param scope.items items:
+        :param scope.itemRegistry itemRegistry:
+        :rtype: list(Zone)
+        '''
         zoneMap = {} # map from string zoneId to Zone
 
         # Each item is a list of 3 items: zone id, zone id, neighbor type.
@@ -62,11 +69,11 @@ class ZoneParser:
             location = match.group(2)
             deviceName = match.group(3)
             
-            zoneId = ZoneParser.getZoneIdFromItemName(itemName)
+            zoneId = ZoneParser._getZoneIdFromItemName(itemName)
             if zoneId in zoneMap:
                 zone = zoneMap[zoneId]
             else:
-                zone = Zone(location, [], ZoneParser.getZoneLevel(levelString))
+                zone = Zone(location, [], ZoneParser._getZoneLevel(levelString))
 
             openHabItem = itemRegistry.getItem(itemName)
             if 'LightSwitch' == deviceName:
@@ -74,7 +81,7 @@ class ZoneParser:
                 turnOffMeta = MetadataRegistry.get(
                         MetadataKey(META_TURN_OFF_OTHER_LIGHT, itemName)) 
                 if None != turnOffMeta:
-                    neighborZoneId = ZoneParser.getZoneIdFromItemName(
+                    neighborZoneId = ZoneParser._getZoneIdFromItemName(
                             turnOffMeta.value)
 
                     neighbor = [zoneId, neighborZoneId, NeighborType.OPEN_SPACE]
@@ -85,7 +92,7 @@ class ZoneParser:
                         MetadataKey(META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON,
                             itemName)) 
                 if None != masterSlaveMeta:
-                    masterZoneId = ZoneParser.getZoneIdFromItemName(masterSlaveMeta.value)
+                    masterZoneId = ZoneParser._getZoneIdFromItemName(masterSlaveMeta.value)
 
                     neighborForward = [masterZoneId, zoneId, NeighborType.OPEN_SPACE_SLAVE]
                     neighbors.append(neighborForward)
@@ -143,13 +150,16 @@ class ZoneParser:
             zone = zone.addNeighbor(Neighbor(neighborInfo[1], neighborInfo[2]))
             zoneMap[neighborInfo[0]] = zone
 
-        return [ZoneParser.normalizeNeighbors(z) for z in zoneMap.values()]
+        return [ZoneParser._normalizeNeighbors(z) for z in zoneMap.values()]
 
-    # If a zone has the same neighbor with more than one OPEN_SPACE type,
-    # remove the generic one NeighborType.OPEN_SPACE
-    # @return Zone new object
     @staticmethod
-    def normalizeNeighbors(zone):
+    def _normalizeNeighbors(zone):
+        '''
+        If a zone has the same neighbor with more than one OPEN_SPACE type,
+        remove the generic one NeighborType.OPEN_SPACE
+
+        :rtype: Zone new object
+        '''
         zoneIdToType = {}
         for neighbor in zone.getNeighbors():
             zoneId = neighbor.getZoneId()
@@ -174,9 +184,11 @@ class ZoneParser:
 
         return zone
 
-    # @return string
     @staticmethod
-    def getZoneIdFromItemName(itemName):
+    def _getZoneIdFromItemName(itemName):
+        '''
+        :rtype: str
+        '''
         match = re.search(ITEM_NAME_PATTERN, itemName)
         if not match:
             raise ValueError('Invalid item name pattern: ' + itemName)
@@ -184,11 +196,13 @@ class ZoneParser:
         levelString = match.group(1)
         location = match.group(2)
 
-        return str(ZoneParser.getZoneLevel(levelString)) + '_' + location
+        return str(ZoneParser._getZoneLevel(levelString)) + '_' + location
                 
-    # @return aaa_modules.layout_model.zone.Level 
     @staticmethod
-    def getZoneLevel(levelString):
+    def _getZoneLevel(levelString):
+        '''
+        :rtype: Level 
+        '''
         if 'BM' == levelString:
             return Level.BASEMENT
         elif 'FF' == levelString:

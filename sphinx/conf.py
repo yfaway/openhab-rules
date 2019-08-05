@@ -177,12 +177,10 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+autodoc_default_options = {
+    'special-members': '__init__',
+}
+
 
 # base modules that should be mock'd
 autodoc_mock_imports = ['org', 'core', 'java', 'configuration']
-
-# -- Mock --------------------------------------------------------------------
-
-# allows autodoc to import modules that import things that Sphinx can't import
-
-

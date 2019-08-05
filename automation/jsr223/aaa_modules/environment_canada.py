@@ -1,9 +1,18 @@
+'''
+An utility class to retrieve the weather forecast from the Environment Canada
+service.
+https://www.weather.gc.ca/forecast/
+'''
+
 import re
 import time
 import urllib2
 
-# Represent the weather forecast.
 class Forecast(object):
+    '''
+    Represent the weather forecast.
+    '''
+
     def __init__(self, forecastTime, temperature, condition,
             precipationProbability, wind):
         self._forecastTime = forecastTime
@@ -12,14 +21,21 @@ class Forecast(object):
         self._precipationProbability = precipationProbability
         self._wind = wind
 
-    # Return the hour in 24-hour format.
-    # @return int
     def getForecastTime(self):
+        '''
+        Return the hour in 24-hour format.
+
+        :rtype: int
+        '''
         return self._forecastTime
 
-    # Returns the forecast hour in user friendly format (1AM, 2PM,...)
-    # @return string
     def getUserFriendlyForecastTime(self):
+        '''
+        Returns the forecast hour in user friendly format (1AM, 2PM,...)
+
+        :rtype: str
+        '''
+
         hour = self._forecastTime
 
         if hour == 0:
@@ -31,31 +47,49 @@ class Forecast(object):
         else:
             return str(hour - 12) + ' PM'
 
-    # Return the temperature in Celcius.
-    # @return int
     def getTemperature(self):
+        '''
+        Return the temperature in Celcius.
+
+        :rtype: int
+        '''
         return self._temperature
     
-    # Return the weather condition.
-    # @return string
     def getCondition(self):
+        '''
+        Return the weather condition.
+
+        :rtype: str
+        '''
         return self._condition
 
-    # Return the precipation probability.
-    # Possible values: High (70%+), Medium (60% - 70%), Low (< 40%), or Nil (0%).
-    # @return string
     def getPrecipationProbability(self):
+        '''
+        Return the precipation probability.
+        Possible values: High (70%+), Medium (60% - 70%), Low (< 40%), or Nil (0%).
+
+        :rtype: str
+        '''
         return self._precipationProbability
 
-    # Return the wind info such as "15 NW".
-    # @return string
     def getWind(self):
+        '''
+        Return the wind info such as "15 NW".
+
+        :rtype: str
+        '''
         return self._wind
 
     def __str__(self):
+        '''
+        :rtype: str
+        '''
         return unicode(self).encode('utf-8')
 
     def __unicode__(self):
+        '''
+        :rtype: unicode
+        '''
         str = u"{:5}: {:7} {:25} {:6} {:6}".format(self.getForecastTime(),
                 self.getTemperature(), self.getCondition(),
                 self.getPrecipationProbability(), self.getWind())
@@ -63,19 +97,29 @@ class Forecast(object):
 
 
 class EnvCanada(object):
-    # Mapping from lowercase city name to the env canada identifier.
-    CITY_FORECAST_MAPPING = { 'ottawa' : 'on-118' }
+    '''
+    Utility class to retreive the hourly forecast.
+    '''
 
-    # Retrieves the hourly forecast for the given city.
-    # @param cityOrUrl string - the city name or the Environment Canada website
-    #    'https://www.weather.gc.ca/forecast/hourly/on-118_metric_e.html'
-    # @param hourCount int - the # of forecast hour to get, starting from
-    #     the next hour relative to the current time.
-    # @return list of Forecast objects
-    # @throw ValueError if cityOrUrl points to an invalid city, or if 
-    #     hourCount is more than 24 and less than 1.
+
+    CITY_FORECAST_MAPPING = { 'ottawa' : 'on-118' }
+    '''
+    Mapping from lowercase city name to the env canada identifier.
+    '''
+
     @staticmethod
     def retrieveHourlyForecast(cityOrUrl, hourCount = 12):
+        '''
+        Retrieves the hourly forecast for the given city.
+
+        :param str cityOrUrl: the city name or the Environment Canada website\
+            'https://www.weather.gc.ca/forecast/hourly/on-118_metric_e.html'
+        :param int hourCount: the # of forecast hour to get, starting from \
+            the next hour relative to the current time.
+        :rtype: list(Forecast)
+        :raise: ValueError if cityOrUrl points to an invalid city, or if \
+            hourCount is more than 24 and less than 1.
+        '''
         if hourCount > 24 or hourCount < 1:
             raise ValueError("hourCount must be between 1 and 24.")
 

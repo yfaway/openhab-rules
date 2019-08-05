@@ -15,12 +15,13 @@ class Switch(Device):
             disableTrigeringFromMotionSensor = False):
         '''
         Ctor
+
         :param org.eclipse.smarthome.core.library.items.SwitchItem switchItem:
         :param org.eclipse.smarthome.core.library.items.SwitchItem timerItem:
-        :param bool disableTrigeringFromMotionSensor: a flag to indicate whether
-        the switch should be turned on when motion sensor is triggered.
-        There is no logic associate with this value in this class; it is 
-        used by external classes through the getter.
+        :param bool disableTrigeringFromMotionSensor: a flag to indicate whether \
+            the switch should be turned on when motion sensor is triggered.\
+            There is no logic associate with this value in this class; it is \
+            used by external classes through the getter.
         :raise ValueError: if any parameter is invalid
         '''
         Device.__init__(self, switchItem)
@@ -104,6 +105,7 @@ class Switch(Device):
         return self.lastOffTimestampInSeconds
 
     def getTimerItem(self):
+        ''' :rtype: str the underlying item name '''
         return self.timerItem
 
     def canBeTriggeredByMotionSensor(self):
@@ -125,29 +127,23 @@ class Switch(Device):
         events.sendCommand(self.timerItem.getName(), "ON")
 
     def isLowIlluminance(self, currentIlluminance):
-        '''
-        Always return False.
-        '''
+        ''' Always return False.  '''
         return False
 
     def __unicode__(self):
-        '''
-        @override
-        '''
+        ''' @override '''
         return u"{}, {}".format(
                 super(Switch, self).__unicode__(), self.timerItem.getName())
 
 
 class Light(Switch):
-    '''
-    Represents a regular light.
-    '''
+    ''' Represents a regular light.  '''
 
     def __init__(self, switchItem, timerItem, illuminanceLevel = None,
             disableTrigeringFromMotionSensor = False):
         '''
         :param int illuminanceLevel: the illuminance level in LUX unit. The \
-        light should only be turned on if the light level is below this unit.
+            light should only be turned on if the light level is below this unit.
         '''
         Switch.__init__(self, switchItem, timerItem,
                 disableTrigeringFromMotionSensor)
@@ -156,6 +152,8 @@ class Light(Switch):
     def getIlluminanceThreshold(self):
         '''
         Returns the illuminance level in LUX unit. Returns None if not applicable.
+
+        :rtype: int or None
         '''
         return self._illuminanceLevel
 
@@ -182,8 +180,6 @@ class Light(Switch):
                 super(Light, self).__unicode__(), self._illuminanceLevel)
 
 class Fan(Switch):
-    '''
-    Represents a fan switch.
-    '''
+    ''' Represents a fan switch.  '''
     def __init__(self, switchItem, timerItem):
         Switch.__init__(self, switchItem, timerItem)
