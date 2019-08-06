@@ -10,13 +10,21 @@ from org.slf4j import Logger, LoggerFactory
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 class Level:
-    '''The vertical levels.'''
+    ''' An enum of the vertical levels.'''
 
     UNDEFINED = -1   #: Undefined
     BASEMENT = 0     #: The basement
     FIRST_FLOOR = 1  #: The first floor
     SECOND_FLOOR = 2 #: The second floor
     THIRD_FLOOR = 3  #: The third floor
+
+class ZoneEvent:
+    ''' An enum of triggering zone events. '''
+
+    UNDEFINED = -1        #: Undefined
+    MOTION = 1            #: A motion triggered event
+    SWITCH_TURNED_ON = 2  #: A switch turned-on event
+    SWITCH_TURNED_OFF = 3 #: A switch turned-on event
 
 class Zone:
     """
@@ -62,20 +70,24 @@ class Zone:
     @Immutable (the Zone object only)
     """
 
-    def __init__(self, name, devices = [], level = Level.UNDEFINED, neighbors = []):
+    def __init__(self, name, devices = [], level = Level.UNDEFINED,
+            neighbors = [], actions = {}):
         """
         Creates a new zone.
 
         :param str name: the zone name
         :param list(Device) devices: the list of Device objects
         :param zone.Level level: the zone's physical level
-        :param list(Neigbor) neighbors: the list of optional neighbor zones.
+        :param list(Neighbor) neighbors: the list of optional neighbor zones.
+        :param dict(ZoneEvent -> list(Action)) actions: the optional \
+            dictionary from :class:`.ZoneEvent` to :class:`.Action`
         """
 
         self.name = name
         self.level = level
         self.devices = [d for d in devices]
         self.neighbors = list(neighbors)
+        self.actions = dict(actions) # shallow copy
 
     def addDevice(self, device):
         '''
@@ -90,7 +102,8 @@ class Zone:
 
         newDevices = list(self.devices)
         newDevices.append(device)
-        return Zone(self.name, newDevices, self.level, list(self.neighbors))
+        return Zone(self.name, newDevices, self.level, list(self.neighbors),
+                dict(self.actions))
 
     def removeDevice(self, device):
         '''
@@ -105,7 +118,8 @@ class Zone:
 
         newDevices = list(self.devices)
         newDevices.remove(device)
-        return Zone(self.name, newDevices, self.level, list(self.neighbors))
+        return Zone(self.name, newDevices, self.level, list(self.neighbors),
+                dict(self.actions))
 
     def getDevices(self):
         '''
@@ -139,7 +153,37 @@ class Zone:
         newNeighbors = list(self.neighbors)
         newNeighbors.append(neighbor)
 
-        return Zone(self.name, list(self.devices), self.level, newNeighbors)
+        return Zone(self.name, list(self.devices), self.level, newNeighbors,
+                dict(self.actions))
+
+    def addAction(self, zoneEvent, action):
+        '''
+        Creates a new zone that is an exact copy of this one, but has the
+        additional action mapping.
+
+        :param ZoneEvent zoneEvent:
+        :param Action action:
+        :return: A NEW object.
+        :rtype: Zone 
+        '''
+        newActions = dict(self.actions)
+        if newActions.has_key(zoneEvent):
+            newActions[zoneEvent].append(action)
+        else:
+            newActions[zoneEvent] = [action]
+
+        return Zone(self.name, list(self.devices), self.level, 
+                list(self.neighbors), newActions)
+
+    def getActions(self, zoneEvent):
+        '''
+        :return: the list of actions for the provided zoneEvent
+        :rtype: list(Action)
+        '''
+        if self.actions.has_key(zoneEvent):
+            return self.actions[zoneEvent]
+        else:
+            return []
 
     def getId(self):
         ''' :rtype: str '''
@@ -328,7 +372,12 @@ class Zone:
         if not self.containsOpenHabItem(itemName, MotionSensor):
             return False 
 
-        return TurnOnSwitch().onAction(events, self, getZoneByIdFn)
+        processed = False
+        for a in self.getActions(ZoneEvent.MOTION):
+            if a.onAction(events, self, getZoneByIdFn):
+                processed = True
+
+        return processed
 
     def __str__(self):
             return unicode(self).encode('utf-8')

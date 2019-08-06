@@ -20,7 +20,10 @@ from aaa_modules.layout_model.actions import turn_on_switch
 reload(turn_on_switch)
 
 from aaa_modules.zone_parser import ZoneParser
+from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
+from aaa_modules.layout_model.switch import Switch
+from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -28,7 +31,12 @@ def initializeZoneManager():
     zones = ZoneParser.parse(items, itemRegistry)
 
     ZoneManager.removeAllZones()
+
+    turnOnSwitchAction = TurnOnSwitch()
     for z in zones:
+        if len(z.getDevicesByType(Switch)) > 0:
+            z = z.addAction(ZoneEvent.MOTION, turnOnSwitchAction)
+
         ZoneManager.addZone(z)
 
     logger.info("Configured ZoneManager with {} zones.".format(len(zones)))
@@ -60,5 +68,6 @@ def onTimerExpired(event):
     if not ZoneManager.onTimerExpired(events, event.itemName):
         logger.info('Timer event for {} is not processed.'.format(
                     event.itemName))
+
 
 initializeZoneManager()

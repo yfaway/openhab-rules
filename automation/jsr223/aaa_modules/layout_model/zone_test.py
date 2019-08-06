@@ -10,7 +10,7 @@ from org.eclipse.smarthome.core.library.items import SwitchItem
 
 from aaa_modules.layout_model import zone
 reload(zone)
-from aaa_modules.layout_model.zone import Zone, Level
+from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
@@ -18,6 +18,9 @@ from aaa_modules.layout_model.switch import Fan
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.switch import Light
 from aaa_modules.layout_model.motion_sensor import MotionSensor
+
+from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
+from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
 from aaa_modules.layout_model.device_test import DeviceTest
 
@@ -104,6 +107,17 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light])
         self.assertEqual(1, len(zone.getDevicesByType(Light)))
         self.assertEqual(0, len(zone.getDevicesByType(Dimmer)))
+
+    def testAddAction_oneValidAction_actionAdded(self):
+        zone = Zone('ff').addAction(ZoneEvent.MOTION, TurnOnSwitch)
+        self.assertEqual(1, len(zone.getActions(ZoneEvent.MOTION)))
+
+        self.assertEqual(0, len(zone.getActions(ZoneEvent.SWITCH_TURNED_ON)))
+
+    def testAddAction_twoValidAction_actionAdded(self):
+        zone = Zone('ff').addAction(ZoneEvent.MOTION, TurnOnSwitch)
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOffAdjacentZones)
+        self.assertEqual(2, len(zone.getActions(ZoneEvent.MOTION)))
 
     def testIsOccupied_everythingOff_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor])
