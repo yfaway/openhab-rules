@@ -24,6 +24,7 @@ from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.switch import Switch
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
+from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -33,9 +34,11 @@ def initializeZoneManager():
     ZoneManager.removeAllZones()
 
     turnOnSwitchAction = TurnOnSwitch()
+    turnOffAdjacentZonesAction = TurnOffAdjacentZones()
     for z in zones:
         if len(z.getDevicesByType(Switch)) > 0:
             z = z.addAction(ZoneEvent.MOTION, turnOnSwitchAction)
+            z = z.addAction(ZoneEvent.SWITCH_TURNED_ON, turnOffAdjacentZonesAction)
 
         ZoneManager.addZone(z)
 

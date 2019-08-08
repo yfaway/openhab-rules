@@ -231,6 +231,7 @@ class ZoneTest(DeviceTest):
         self.assertFalse(self.light.isOn())
 
         zone = Zone('ff', [self.light, self.motionSensor])
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName(), None)
@@ -245,6 +246,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
                 self.illuminanceSensor])
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName(), None)
@@ -257,6 +259,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
                 self.illuminanceSensor])
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName(), None)
@@ -269,6 +272,7 @@ class ZoneTest(DeviceTest):
         self.astroSensorItem.setState(StringType('MORNING'))
 
         zone = Zone('ff', [self.light, self.astroSensor])
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName(), None)
@@ -281,6 +285,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
                 self.illuminanceSensor, self.astroSensor])
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName(), None)
@@ -293,6 +298,7 @@ class ZoneTest(DeviceTest):
 
         self.astroSensorItem.setState(StringType(AstroSensor.LIGHT_ON_TIMES[0]))
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName(), None)

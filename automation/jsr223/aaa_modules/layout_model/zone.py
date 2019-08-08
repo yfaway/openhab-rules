@@ -1,10 +1,7 @@
-from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light, Switch
-
-from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 
 from org.slf4j import Logger, LoggerFactory
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
@@ -324,7 +321,8 @@ class Zone:
     def onSwitchTurnedOn(self, events, itemName, getZoneByIdFn):
         '''
         If itemName belongs to this zone, dispatches the event to the associated
-        Switch object, and returns True. Otherwise return False.
+        Switch object, execute the associated actions, and returns True.
+        Otherwise return False.
 
         See :meth:`.Switch.onSwitchTurnedOn`
 
@@ -333,11 +331,14 @@ class Zone:
         :rtype: boolean
         '''
         isProcessed = False
+        actions = self.getActions(ZoneEvent.SWITCH_TURNED_ON)
 
         switches = self.getDevicesByType(Switch)
         for switch in switches:
             if switch.onSwitchTurnedOn(events, itemName):
-                TurnOffAdjacentZones().onAction(events, self, getZoneByIdFn)
+                for a in actions:
+                    a.onAction(events, self, getZoneByIdFn)
+
                 isProcessed = True
         
         return isProcessed
@@ -345,17 +346,22 @@ class Zone:
     def onSwitchTurnedOff(self, events, itemName):
         '''
         If itemName belongs to this zone, dispatches the event to the associated
-        Switch object, and returns True. Otherwise return False.
+        Switch object, execute the associated actions, and returns True.
+        Otherwise return False.
 
         See :meth:`.Switch.onSwitchTurnedOff`
 
         :rtype: boolean
         '''
         isProcessed = False
+        actions = self.getActions(ZoneEvent.SWITCH_TURNED_OFF)
 
         switches = self.getDevicesByType(Switch)
         for switch in switches:
             if switch.onSwitchTurnedOff(events, itemName):
+                for a in actions:
+                    a.onAction(events, self, getZoneByIdFn)
+
                 isProcessed = True
         
         return isProcessed
@@ -363,7 +369,8 @@ class Zone:
     def onMotionSensorTurnedOn(self, events, itemName, getZoneByIdFn):
         '''
         If the motion sensor belongs to this zone, turns on the associated
-        switch, and returns True. Otherwise return False.
+        switch, execute the associated actions, and returns True. Otherwise
+        return False.
 
         :param lambda getZoneByIdFn: a function that returns a Zone object\
             given a zone id string
