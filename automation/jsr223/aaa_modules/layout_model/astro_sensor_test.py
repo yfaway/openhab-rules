@@ -13,7 +13,7 @@ logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 ITEMS = [StringItem('AstroSensorName')]
 
-# Unit tests for illuminance_sensor.py.
+# Unit tests for astro_sensor.py.
 class AstroSensorTest(DeviceTest):
 
     def setUp(self):
