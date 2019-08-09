@@ -4,6 +4,7 @@ from core.jsr223 import scope
 from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
 
+from aaa_modules.layout_model.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
@@ -32,5 +33,6 @@ class ZoneParserTest(unittest.TestCase):
         self.assertTrue(any(len(z.getDevicesByType(IlluminanceSensor)) > 0 for z in zones))
         self.assertTrue(any(len(z.getDevicesByType(Light)) > 0 for z in zones))
         self.assertTrue(any(len(z.getDevicesByType(MotionSensor)) > 0 for z in zones))
+        self.assertTrue(any(len(z.getDevicesByType(AlarmPartition)) > 0 for z in zones))
 
 run_test(ZoneParserTest, logger) 

@@ -8,6 +8,7 @@ from org.slf4j import Logger, LoggerFactory
 
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
+from aaa_modules.layout_model.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
@@ -76,62 +77,11 @@ class ZoneParser:
                 zone = Zone(location, [], ZoneParser._getZoneLevel(levelString))
 
             openHabItem = itemRegistry.getItem(itemName)
-            if 'LightSwitch' == deviceName:
-                # open space relationship
-                turnOffMeta = MetadataRegistry.get(
-                        MetadataKey(META_TURN_OFF_OTHER_LIGHT, itemName)) 
-                if None != turnOffMeta:
-                    neighborZoneId = ZoneParser._getZoneIdFromItemName(
-                            turnOffMeta.value)
 
-                    neighbor = [zoneId, neighborZoneId, NeighborType.OPEN_SPACE]
-                    neighbors.append(neighbor)
-
-                # master-slave open space relationship
-                masterSlaveMeta = MetadataRegistry.get(
-                        MetadataKey(META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON,
-                            itemName)) 
-                if None != masterSlaveMeta:
-                    masterZoneId = ZoneParser._getZoneIdFromItemName(masterSlaveMeta.value)
-
-                    neighborForward = [masterZoneId, zoneId, NeighborType.OPEN_SPACE_SLAVE]
-                    neighbors.append(neighborForward)
-
-                    neighborReverse = [zoneId, masterZoneId, NeighborType.OPEN_SPACE_MASTER]
-                    neighbors.append(neighborReverse)
-
-                timerItem = itemRegistry.getItem(itemName + '_Timer')
-
-                disableMotionSensorTriggering = openHabItem.hasTag(
-                        TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR)
-
-                # dimmer setting
-                meta = MetadataRegistry.get(
-                        MetadataKey(META_DIMMING_SETTING, itemName)) 
-                if None != meta:
-                    config = meta.configuration
-                    level = config['level'].intValue()
-                    timeRanges = config['timeRanges']
-
-                    switch = Dimmer(openHabItem, timerItem, level, timeRanges,
-                            ILLUMINANCE_THRESHOLD_IN_LUX,
-                            disableMotionSensorTriggering)
-                else:
-                    switch = Light(openHabItem, timerItem,
-                            ILLUMINANCE_THRESHOLD_IN_LUX,
-                            disableMotionSensorTriggering)
-
-                zone = zone.addDevice(switch)
-            elif 'FanSwitch' == deviceName:
-                fan = Fan(openHabItem,
-                        itemRegistry.getItem(itemName + '_Timer'))
-                zone = zone.addDevice(fan)
-            elif 'LightSwitch_Illuminance' == deviceName:
-                illuminanceSensor = IlluminanceSensor(openHabItem)
-                zone = zone.addDevice(illuminanceSensor)
-            elif deviceName.endswith('MotionSensor'):
-                motionSensor = MotionSensor(openHabItem)
-                zone = zone.addDevice(motionSensor)
+            zone = ZoneParser._addSwitches(
+                    deviceName, openHabItem, zone, itemRegistry, neighbors)
+            zone = ZoneParser._addAlarmPartition(
+                    deviceName, openHabItem, zone, itemRegistry)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneId] = zone
@@ -151,6 +101,81 @@ class ZoneParser:
             zoneMap[neighborInfo[0]] = zone
 
         return [ZoneParser._normalizeNeighbors(z) for z in zoneMap.values()]
+
+    @staticmethod
+    def _addAlarmPartition(deviceName, openHabItem, zone, itemRegistry):
+        if 'AlarmPartition' == deviceName:
+            itemName = openHabItem.getName()
+            alarmModeItem = itemRegistry.getItem(itemName + '_ArmMode')
+
+            alarm = AlarmPartition(openHabItem, alarmModeItem)
+            zone = zone.addDevice(alarm)
+
+        return zone
+
+    @staticmethod
+    def _addSwitches(deviceName, openHabItem, zone, itemRegistry, neighbors):
+        itemName = openHabItem.getName()
+        zoneId = zone.getId()
+
+        if 'LightSwitch' == deviceName:
+            # open space relationship
+            turnOffMeta = MetadataRegistry.get(
+                    MetadataKey(META_TURN_OFF_OTHER_LIGHT, itemName)) 
+            if None != turnOffMeta:
+                neighborZoneId = ZoneParser._getZoneIdFromItemName(
+                        turnOffMeta.value)
+
+                neighbor = [zoneId, neighborZoneId, NeighborType.OPEN_SPACE]
+                neighbors.append(neighbor)
+
+            # master-slave open space relationship
+            masterSlaveMeta = MetadataRegistry.get(
+                    MetadataKey(META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON,
+                        itemName)) 
+            if None != masterSlaveMeta:
+                masterZoneId = ZoneParser._getZoneIdFromItemName(masterSlaveMeta.value)
+
+                neighborForward = [masterZoneId, zoneId, NeighborType.OPEN_SPACE_SLAVE]
+                neighbors.append(neighborForward)
+
+                neighborReverse = [zoneId, masterZoneId, NeighborType.OPEN_SPACE_MASTER]
+                neighbors.append(neighborReverse)
+
+            timerItem = itemRegistry.getItem(itemName + '_Timer')
+
+            disableMotionSensorTriggering = openHabItem.hasTag(
+                    TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR)
+
+            # dimmer setting
+            meta = MetadataRegistry.get(
+                    MetadataKey(META_DIMMING_SETTING, itemName)) 
+            if None != meta:
+                config = meta.configuration
+                level = config['level'].intValue()
+                timeRanges = config['timeRanges']
+
+                switch = Dimmer(openHabItem, timerItem, level, timeRanges,
+                        ILLUMINANCE_THRESHOLD_IN_LUX,
+                        disableMotionSensorTriggering)
+            else:
+                switch = Light(openHabItem, timerItem,
+                        ILLUMINANCE_THRESHOLD_IN_LUX,
+                        disableMotionSensorTriggering)
+
+            zone = zone.addDevice(switch)
+        elif 'FanSwitch' == deviceName:
+            fan = Fan(openHabItem,
+                    itemRegistry.getItem(itemName + '_Timer'))
+            zone = zone.addDevice(fan)
+        elif 'LightSwitch_Illuminance' == deviceName:
+            illuminanceSensor = IlluminanceSensor(openHabItem)
+            zone = zone.addDevice(illuminanceSensor)
+        elif deviceName.endswith('MotionSensor'):
+            motionSensor = MotionSensor(openHabItem)
+            zone = zone.addDevice(motionSensor)
+
+        return zone
 
     @staticmethod
     def _normalizeNeighbors(zone):
