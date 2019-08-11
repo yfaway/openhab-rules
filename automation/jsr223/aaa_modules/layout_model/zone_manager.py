@@ -1,4 +1,5 @@
 from aaa_modules.layout_model.zone import Zone
+from aaa_modules.layout_model.device import Device
 
 class ZoneManager:
     """
@@ -55,6 +56,23 @@ class ZoneManager:
         :rtype: Zone
         """
         return ZoneManager.zones[zoneId] if zoneId in ZoneManager.zones else None
+
+    @staticmethod
+    def getDevicesByType(cls):
+        '''
+        Returns a list of devices in all zones matching the given type.
+
+        :param Device cls: the device type
+        :rtype: list(Device)
+        '''
+        if None == cls:
+            raise ValueError('cls must not be None')
+
+        devices = []
+        for zone in ZoneManager.zones.values():
+            devices = devices + zone.getDevicesByType(cls)
+
+        return devices
 
     @staticmethod
     def onMotionSensorTurnedOn(events, itemName):

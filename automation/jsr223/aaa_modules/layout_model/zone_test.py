@@ -74,6 +74,26 @@ class ZoneTest(DeviceTest):
         self.assertEqual(str(Level.SECOND_FLOOR) + '_' + zoneName, zone.getId())
         self.assertEqual(1, len(zone.getDevices()))
 
+    def testCreateExternalZone_validParams_returnsAnExternalZone(self):
+        zoneName = 'bed room'
+        zone = Zone.createExternalZone(zoneName)
+        self.assertEqual(zoneName, zone.getName())
+        self.assertTrue(zone.isExternal())
+
+    def testCreateFirstFloorZone_validParams_returnsAFirstFloorZone(self):
+        zoneName = 'bed room'
+        zone = Zone.createFirstFloorZone(zoneName)
+        self.assertEqual(zoneName, zone.getName())
+        self.assertEqual(Level.FIRST_FLOOR, zone.getLevel())
+        self.assertFalse(zone.isExternal())
+
+    def testCreateSecondFloorZone_validParams_returnsASecondFloorZone(self):
+        zoneName = 'bed room'
+        zone = Zone.createSecondFloorZone(zoneName)
+        self.assertEqual(zoneName, zone.getName())
+        self.assertEqual(Level.SECOND_FLOOR, zone.getLevel())
+        self.assertFalse(zone.isExternal())
+
     def testContainsOpenHabItem_negativeValue_returnsFalse(self):
         zone = Zone('name', [self.light], Level.SECOND_FLOOR)
         self.assertFalse(zone.containsOpenHabItem('blahblah'))

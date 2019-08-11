@@ -1,6 +1,7 @@
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
+from aaa_modules.layout_model.device import Device
 from aaa_modules.layout_model.switch import Light, Switch
 
 from org.slf4j import Logger, LoggerFactory
@@ -68,7 +69,7 @@ class Zone:
     """
 
     def __init__(self, name, devices = [], level = Level.UNDEFINED,
-            neighbors = [], actions = {}):
+            neighbors = [], actions = {}, external = False):
         """
         Creates a new zone.
 
@@ -78,6 +79,7 @@ class Zone:
         :param list(Neighbor) neighbors: the list of optional neighbor zones.
         :param dict(ZoneEvent -> list(Action)) actions: the optional \
             dictionary from :class:`.ZoneEvent` to :class:`.Action`
+        :param bool external: indicates if the zone is external
         """
 
         self.name = name
@@ -85,6 +87,34 @@ class Zone:
         self.devices = [d for d in devices]
         self.neighbors = list(neighbors)
         self.actions = dict(actions) # shallow copy
+        self.external = external
+
+    @staticmethod
+    def createExternalZone(name):
+        """
+        Creates an external zone with the given name.
+        :rtype: Zone
+        """
+        params = { 'name': name, 'external': True }
+        return Zone(**params)
+
+    @staticmethod
+    def createFirstFloorZone(name):
+        """
+        Creates an internal first floor zone with the given name.
+        :rtype: Zone
+        """
+        params = { 'name': name, 'level': Level.FIRST_FLOOR }
+        return Zone(**params)
+
+    @staticmethod
+    def createSecondFloorZone(name):
+        """
+        Creates an internal second floor zone with the given name.
+        :rtype: Zone
+        """
+        params = { 'name': name, 'level': Level.SECOND_FLOOR }
+        return Zone(**params)
 
     def addDevice(self, device):
         '''
@@ -93,14 +123,19 @@ class Zone:
 
         :return: A NEW object.
         :rtype: Zone
+        :raise ValueError: if device is None or is not a subclass of :class:`.Device`
         '''
         if None == device:
             raise ValueError('device must not be None')
 
+        if not isinstance(device, Device):
+            raise ValueError('device must be an instance of Device')
+
         newDevices = list(self.devices)
         newDevices.append(device)
-        return Zone(self.name, newDevices, self.level, list(self.neighbors),
-                dict(self.actions))
+
+        params = self._createCtorParamDictionary('devices', newDevices)
+        return Zone(**params)
 
     def removeDevice(self, device):
         '''
@@ -109,14 +144,19 @@ class Zone:
 
         :return: A NEW object.
         :rtype: Zone 
+        :raise ValueError: if device is None or is not a subclass of :class:`.Device`
         '''
         if None == device:
             raise ValueError('device must not be None')
 
+        if not isinstance(device, Device):
+            raise ValueError('device must be an instance of Device')
+
         newDevices = list(self.devices)
         newDevices.remove(device)
-        return Zone(self.name, newDevices, self.level, list(self.neighbors),
-                dict(self.actions))
+
+        params = self._createCtorParamDictionary('devices', newDevices)
+        return Zone(**params)
 
     def getDevices(self):
         '''
@@ -131,6 +171,7 @@ class Zone:
         Returns a list of devices matching the given type.
 
         :param Device cls: the device type
+        :rtype: list(Device)
         '''
         if None == cls:
             raise ValueError('cls must not be None')
@@ -150,8 +191,8 @@ class Zone:
         newNeighbors = list(self.neighbors)
         newNeighbors.append(neighbor)
 
-        return Zone(self.name, list(self.devices), self.level, newNeighbors,
-                dict(self.actions))
+        params = self._createCtorParamDictionary('neighbors', newNeighbors)
+        return Zone(**params)
 
     def addAction(self, zoneEvent, action):
         '''
@@ -169,8 +210,8 @@ class Zone:
         else:
             newActions[zoneEvent] = [action]
 
-        return Zone(self.name, list(self.devices), self.level, 
-                list(self.neighbors), newActions)
+        params = self._createCtorParamDictionary('actions', newActions)
+        return Zone(**params)
 
     def getActions(self, zoneEvent):
         '''
@@ -189,6 +230,13 @@ class Zone:
     def getName(self):
         ''' :rtype: str '''
         return self.name
+
+    def isExternal(self):
+        """
+        :return: True if the this is an external zone
+        :rtype: bool
+        """
+        return self.external
 
     def getLevel(self):
         ''' :rtype: zone.Level'''
@@ -401,3 +449,23 @@ class Zone:
                         n.getZoneId(), unicode(n.getType()))
 
         return str
+
+    def _createCtorParamDictionary(self, keyToReplace, newValue):
+        """
+        A helper method to return a list of ctor parameters.
+        
+        :param str keyToReplace: the key to override
+        :param any newValue: the new value to replace
+        :rtype: dict
+        """
+
+        params = {
+            'name': self.name,
+            'devices': self.devices,
+            'level': self.level,
+            'neighbors': self.neighbors,
+            'actions': self.actions,
+            'external': self.external }
+        params[keyToReplace] = newValue
+
+        return params
