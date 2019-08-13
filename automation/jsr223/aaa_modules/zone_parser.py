@@ -6,6 +6,9 @@ from org.eclipse.smarthome.core.items import Metadata
 from org.eclipse.smarthome.core.items import MetadataKey
 from org.slf4j import Logger, LoggerFactory
 
+from aaa_modules.layout_model import zone
+reload(zone)
+
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
@@ -36,6 +39,8 @@ TIME_OF_DAY_ITEM_NAME = 'VT_Time_Of_Day'
 
 ITEM_NAME_PATTERN = '([^_]+)_([^_]+)_(.+)' # level_location_deviceName
 
+ZONE_NAME_PATTERN = 'Zone_([^_]+)' # Zone_Name
+
 MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -61,6 +66,20 @@ class ZoneParser:
         # Each item is a list of 3 items: zone id, zone id, neighbor type.
         neighbors = [] 
 
+        # pre-add all zone items
+        for itemName in items.keys():
+            match = re.search(ZONE_NAME_PATTERN, itemName)
+            if not match:
+                continue
+
+            zoneName = match.group(1)
+            (zone, localNeighbors) = ZoneParser._createZone(itemName, zoneName)
+
+            zoneMap[zone.getId()] = zone
+            for n in localNeighbors:
+                neighbors.append(n)
+
+        # now add the items
         for itemName in items.keys():
             match = re.search(ITEM_NAME_PATTERN, itemName)
             if not match:
@@ -202,7 +221,8 @@ class ZoneParser:
                 if NeighborType.OPEN_SPACE in types:
                     types.remove(NeighborType.OPEN_SPACE)
 
-        zone = Zone(zone.getName(), zone.getDevices(), zone.getLevel(), [])
+        zone = Zone(zone.getName(), zone.getDevices(), zone.getLevel(), [],
+                {}, zone.isExternal())
         for zoneId in zoneIdToType.keys():
             for type in zoneIdToType[zoneId]:
                 zone = zone.addNeighbor(Neighbor(zoneId, type))
@@ -239,6 +259,35 @@ class ZoneParser:
         else:
             return Level.BASEMENT
 
+    @staticmethod
+    def _createZone(itemName, zoneName):
+        '''
+        :return: the zone associated with the itemName
+        :rtype: Zone
+        '''
+        levelMeta = MetadataRegistry.get(MetadataKey('level', itemName)) 
+        if None == levelMeta:
+            raise ValueError('The zone level must be specified as BM, FF, SF, or TF')
+
+        level = ZoneParser._getZoneLevel(levelMeta.value)
+
+        externalMeta = MetadataRegistry.get(MetadataKey('external', itemName)) 
+        if None != externalMeta and "true" == externalMeta.value.lower():
+            zone = Zone.createExternalZone(zoneName, level)
+        else:
+            zone = Zone(zoneName, [], level)
+
+        neighbors = []
+
+        openSpaceMeta = MetadataRegistry.get(
+                MetadataKey('openSpaceNeighbors', itemName))
+        if None != openSpaceMeta:
+            for neighborId in openSpaceMeta.value.split(','):
+                neighborId = neighborId.strip()
+                neighbors.append([zone.getId(), neighborId, NeighborType.OPEN_SPACE])
+            
+        return [zone, neighbors]
+
 zones = ZoneParser.parse(scope.items, scope.itemRegistry)
 logger.info("{} zones".format(len(zones)))
 output = ''
@@ -246,4 +295,3 @@ for z in zones:
     output += '\n' + str(z)
 
 logger.info(output)
-

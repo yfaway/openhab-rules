@@ -90,12 +90,12 @@ class Zone:
         self.external = external
 
     @staticmethod
-    def createExternalZone(name):
+    def createExternalZone(name, level = Level.FIRST_FLOOR):
         """
         Creates an external zone with the given name.
         :rtype: Zone
         """
-        params = { 'name': name, 'external': True }
+        params = { 'name': name, 'level': level, 'external': True }
         return Zone(**params)
 
     @staticmethod
@@ -438,8 +438,11 @@ class Zone:
             return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        str = u"Zone: {}, floor {}, {} devices".format(
-                self.name, self.level, len(self.devices))
+        str = u"Zone: {}, floor {}, {}, {} devices".format(
+                self.name,
+                self.level,
+                ('external' if self.isExternal() else 'internal'),
+                len(self.devices))
         for d in self.devices:
             str += u"\n  {}".format(unicode(d))
 

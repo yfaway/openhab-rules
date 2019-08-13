@@ -19,6 +19,12 @@ Group:Switch:OR(ON,OFF) gSecondFloorLightSwitch "Active First Floor Lights [%d]"
 // Used to send an ON/OFF command to all controlled fans
 Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
+String Zone_Porch 
+  { level="FF", external="true", openSpaceNeighbors="SF_Foyer, FF_Office" }
+
+Switch FF_Porch_MotionSensor "Porch Motion Sensor"
+  { channel="mqtt:topic:mything:FoyerMotionSensor" }
+
 Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node2:switch_binary",
     turnOff="SF_Lobby_LightSwitch",
