@@ -48,6 +48,11 @@ class TurnOnSwitch(Action):
         zoneIlluminance = zone.getIlluminanceLevel()
 
         for switch in zone.getDevicesByType(Switch):
+            if switch.isOn():
+                switch.turnOn(events) # renew the timer if a switch is already on
+                isProcessed = True
+                continue
+
             if not switch.canBeTriggeredByMotionSensor():
                 # A special case: if a switch is configured not to be
                 # triggered by a motion sensor, it means there is already 

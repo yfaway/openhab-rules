@@ -74,6 +74,13 @@ class TurnOnSwitchTest(DeviceTest):
 
         self.assertFalse(self.turnOn())
 
+    def testOnAction_renewTimerIfLightIsAlreadyOnEvenIfIlluminanceIsAboveThreshold_returnsTrue(self):
+        self.illuminanceSensorItem.setState(
+                DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX + 1))
+        self.light1.turnOn(scope.events)
+        time.sleep(0.1)
+
+        self.assertTrue(self.turnOn())
 
     def testOnAction_switchDisablesTriggeringByMotionSensor_returnsFalse(self):
         self.light1 = Light(self.lightItem1, self.timerItem1,
