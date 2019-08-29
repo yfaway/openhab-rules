@@ -9,9 +9,6 @@ class TurnOffAdjacentZones(Action):
     '''
 
     def onAction(self, events, zone, getZoneByIdFn):
-        if not zone.isLightOn():
-            return False
-
         if None != getZoneByIdFn:
             adjacentZones = [getZoneByIdFn(n.getZoneId()) \
                 for n in zone.getNeighbors() \

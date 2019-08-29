@@ -4,6 +4,7 @@ from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.actions.action import Action
+
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
 from org.slf4j import Logger, LoggerFactory
