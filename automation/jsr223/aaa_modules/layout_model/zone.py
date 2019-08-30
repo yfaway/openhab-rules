@@ -3,6 +3,7 @@ from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.device import Device
 from aaa_modules.layout_model.switch import Light, Switch
+from aaa_modules.layout_model.devices.plug import Plug
 
 from org.slf4j import Logger, LoggerFactory
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
@@ -67,6 +68,12 @@ class Zone:
 
     @Immutable (the Zone object only)
     """
+
+    POWER_USAGE_THRESHOLD_IN_WATT = 8
+    '''
+    The plug power usage threshold; if it is above this value, the light won't
+    be turned off.
+    '''
 
     def __init__(self, name, devices = [], level = Level.UNDEFINED,
             neighbors = [], actions = {}, external = False):
@@ -358,12 +365,17 @@ class Zone:
         '''
         isProcessed = False
 
-        switches = self.getDevicesByType(Switch)
-        for switch in switches:
-            if switch.getTimerItem().getName() == itemName:
-                switch.turnOff(events)
-                isProcessed = True
-        
+        # find active plugs
+        plugs = [p for p in self.getDevicesByType(Plug) 
+            if p.hasPowerReading() and p.getWattage() > Zone.POWER_USAGE_THRESHOLD_IN_WATT]
+
+        if len(plugs) == 0: # no active smart plug
+            switches = self.getDevicesByType(Switch)
+            for switch in switches:
+                if switch.getTimerItem().getName() == itemName:
+                    switch.turnOff(events)
+                    isProcessed = True
+            
         return isProcessed
 
     def onSwitchTurnedOn(self, events, itemName, getZoneByIdFn):

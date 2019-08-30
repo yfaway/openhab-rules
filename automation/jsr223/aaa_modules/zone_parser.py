@@ -11,6 +11,9 @@ reload(zone)
 
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
+
+from aaa_modules.layout_model.devices.plug import Plug
+
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
@@ -99,6 +102,8 @@ class ZoneParser:
 
             zone = ZoneParser._addSwitches(
                     deviceName, openHabItem, zone, itemRegistry, neighbors)
+            zone = ZoneParser._addPlugs(
+                    deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addAlarmPartition(
                     deviceName, openHabItem, zone, itemRegistry)
 
@@ -129,6 +134,22 @@ class ZoneParser:
 
             alarm = AlarmPartition(openHabItem, alarmModeItem)
             zone = zone.addDevice(alarm)
+
+        return zone
+
+    @staticmethod
+    def _addPlugs(deviceName, openHabItem, zone, itemRegistry):
+        if 'Plug' == deviceName:
+            itemName = openHabItem.getName()
+            
+            powerItemName = itemName + '_Power'
+            if powerItemName in scope.items:
+                powerItem = itemRegistry.getItem(itemName + '_Power')
+            else:
+                powerItem = None
+
+            plug = Plug(openHabItem, powerItem)
+            zone = zone.addDevice(plug)
 
         return zone
 
