@@ -268,7 +268,7 @@ class ZoneTest(DeviceTest):
         time.sleep(0.1)
         self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
-    def testOnMotionSensorTurnedOn_validItemNameNoIlluminanceSensor_turnsOnLight(self):
+    def testOnMotionSensorTurnedOn_validItemNameNoIlluminanceSensorNoAstroSensor_returnsFalse(self):
         self.assertFalse(self.light.isOn())
 
         zone = Zone('ff', [self.light, self.motionSensor])
@@ -276,10 +276,7 @@ class ZoneTest(DeviceTest):
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
                 self.motionSensor.getItemName(), None)
-        self.assertTrue(isProcessed)
-
-        time.sleep(0.1)
-        self.assertTrue(self.light.isOn())
+        self.assertFalse(isProcessed)
 
     def testOnMotionSensorTurnedOn_illuminanceAboveThreshold_returnsFalse(self):
         self.assertFalse(self.light.isOn())
