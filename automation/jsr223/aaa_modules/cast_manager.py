@@ -118,6 +118,18 @@ def playMessage(message, casts = CASTS, volume = 50):
 
     return True
 
+def playSoundFile(localFile, casts = CASTS, volume = None):
+    '''
+    Play the provided local sound file. See '/etc/openhab2/sound'.
+    '''
+    for cast in casts:
+        if None != volume:
+            scope.events.sendCommand(cast.getVolumeName(), str(volume))
+
+        Audio.playSound(localFile)
+
+    return True
+
 def playStream(name, casts = CASTS, volume = None):
     '''
     Play the given stream url.
