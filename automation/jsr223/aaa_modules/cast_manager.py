@@ -69,6 +69,7 @@ def resume(casts = CASTS):
         if scope.OnOffType.ON == scope.items[cast.getIdleItemName()]:
             Audio.playStream(cast.getSinkName(), cast.getStreamUrl())
         else:
+            Audio.playStream(cast.getSinkName(), cast.getStreamUrl())
             scope.events.sendCommand(cast.getPlayerName(), "PLAY")
 
 def playMessage(message, casts = CASTS, volume = 50):
@@ -102,7 +103,7 @@ def playMessage(message, casts = CASTS, volume = 50):
     if not _testMode:
         # Wait until the cast is available again or a specific number of seconds 
         # has passed. This is a workaround for the limitation that the OpenHab
-        # say method is non-blocking.
+        # 'say' method is non-blocking.
         seconds = 2
         time.sleep(seconds)
 
@@ -118,15 +119,27 @@ def playMessage(message, casts = CASTS, volume = 50):
 
     return True
 
-def playSoundFile(localFile, casts = CASTS, volume = None):
+def playSoundFile(localFile, durationInSecs, casts = CASTS, volume = None):
     '''
     Play the provided local sound file. See '/etc/openhab2/sound'.
+
+    :param str localFile: a sound file located in '/etc/openhab2/sound'
+    :param int durationInSecs: the duration of the sound file in seconds
+    :rtype: boolean
     '''
     for cast in casts:
+        wasActive = cast.isActive()
+        previousVolume = scope.items[cast.getVolumeName()].intValue()
+
         if None != volume:
             scope.events.sendCommand(cast.getVolumeName(), str(volume))
 
-        Audio.playSound(localFile)
+        Audio.playSound(cast.getSinkName(), localFile)
+
+        if wasActive:
+            time.sleep(durationInSecs + 1)
+            scope.events.sendCommand(cast.getVolumeName(), str(previousVolume))
+            resume([cast])
 
     return True
 

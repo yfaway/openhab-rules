@@ -14,7 +14,8 @@ not sleep time.
 '''
 
 # Sound files are in /etc/openhab2/sound folder
-BELL_URL = 'bright-tibetan-bell.wav'
+BELL_URL = 'bell-outside.wav'
+BELL_DURATION_IN_SECS = 15
 
 @rule("Play mindfullness bell")
 @when("Time cron 0 0/15 * 1/1 * ? *")
@@ -25,6 +26,6 @@ def playMindfullnessBell(event):
     if hour > 7 and hour <= 23:
         casts = cast_manager.getFirstFloorCasts()
 
-        cast_manager.playSoundFile(BELL_URL, casts, 40)
+        cast_manager.playSoundFile(BELL_URL, BELL_DURATION_IN_SECS, casts, 60)
 
 #playMindfullnessBell(None)
