@@ -13,7 +13,7 @@ reload(dimmer)
 from aaa_modules.layout_model import zone
 reload(zone)
 from aaa_modules.layout_model import zone_manager
-reload(zone_manager)
+#reload(zone_manager)
 from aaa_modules import zone_parser
 reload(zone_parser)
 from aaa_modules.layout_model.actions import turn_on_switch

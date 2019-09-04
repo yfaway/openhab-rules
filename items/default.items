@@ -34,7 +34,7 @@ Group:Contact:OR(OPEN, CLOSED) gZoneStatus "A zone is open"
 
 Switch FF_Foyer_AlarmPartition 
   {channel="dscalarm:partition:706cd89d:partition1:partition_in_alarm"}
-Switch FF_Foyer_AlarmPartition_ArmMode
+Number FF_Foyer_AlarmPartition_ArmMode
   {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
 
 Switch PARTITION1_IN_ALARM (DSCAlarmPartitions) 
