@@ -1,5 +1,5 @@
 from aaa_modules.layout_model.device import Device
-from org.eclipse.smarthome.core.library.types import OnOffType
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 class Plug(Device):
     '''
@@ -25,7 +25,7 @@ class Plug(Device):
         :return: True if the partition is in alarm; False otherwise
         :rtype: bool
         '''
-        return OnOffType.ON == self.getItem().getState()
+        return PE.isInStateOn(self.getItem().getState())
 
     def hasPowerReading(self):
         '''
@@ -42,13 +42,13 @@ class Plug(Device):
         if None == self.powerReadingItem:
             raise ValueError("Plug has no power reading capability")
 
-        return self.powerReadingItem.getState().intValue()
+        return PE.getIntegerStateValue(self.powerReadingItem, 0)
 
     def turnOn(self, events):
         '''
         Turns on this plug, if it is not on yet.
         '''
-        if OnOffType.ON != self.getItem().getState():
+        if not self.isOn():
             events.sendCommand(self.getItemName(), "ON")
 
     def turnOff(self, events):

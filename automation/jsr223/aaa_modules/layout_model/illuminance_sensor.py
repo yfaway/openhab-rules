@@ -1,4 +1,5 @@
 from aaa_modules.layout_model.device import Device
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 class IlluminanceSensor(Device):
     '''
@@ -19,4 +20,7 @@ class IlluminanceSensor(Device):
         '''
         Returns an positive integer representing the LUX value.
         '''
-        return self.getItem().getState().intValue()
+        if PE.isStateAvailable(self.getItem().getState()):
+            return self.getItem().getState().intValue()
+        else:
+            return 0

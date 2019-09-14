@@ -5,9 +5,6 @@ from aaa_modules.layout_model.device import Device
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.devices.plug import Plug
 
-from org.slf4j import Logger, LoggerFactory
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
-
 class Level:
     ''' An enum of the vertical levels.'''
 
