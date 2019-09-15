@@ -7,8 +7,6 @@ from core.triggers import when
 from org.joda.time import DateTime
 
 from aaa_modules import security_manager
-reload(security_manager)
-from aaa_modules import security_manager
 
 ECOBEE_ID = '411921197263'
 

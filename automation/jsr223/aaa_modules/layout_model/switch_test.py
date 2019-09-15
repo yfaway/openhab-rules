@@ -6,8 +6,8 @@ from core.testing import run_test
 from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
-from aaa_modules.layout_model import switch
-reload(switch)
+#from aaa_modules.layout_model import switch
+#reload(switch)
 from aaa_modules.layout_model.switch import Light
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")

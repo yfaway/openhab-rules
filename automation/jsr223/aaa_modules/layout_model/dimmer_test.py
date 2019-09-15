@@ -7,8 +7,8 @@ from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
-from aaa_modules.layout_model import dimmer
-reload(dimmer)
+#from aaa_modules.layout_model import dimmer
+#reload(dimmer)
 from aaa_modules.layout_model.dimmer import Dimmer
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")

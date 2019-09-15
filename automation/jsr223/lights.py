@@ -8,15 +8,7 @@ from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
 
 from aaa_modules import switch_manager
-reload(switch_manager)
-from aaa_modules import switch_manager
-
 from aaa_modules import security_manager
-reload(security_manager)
-from aaa_modules import security_manager
-
-from aaa_modules import time_utilities
-reload(time_utilities)
 from aaa_modules import time_utilities
 
 scriptExtension.importPreset("RuleSupport")

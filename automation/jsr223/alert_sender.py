@@ -4,8 +4,6 @@ from org.slf4j import Logger, LoggerFactory
 from core.rules import rule
 from core.triggers import when
 
-from aaa_modules import alert_manager
-reload(alert_manager)
 from aaa_modules.alert_manager import *
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")

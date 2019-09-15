@@ -18,9 +18,8 @@ from org.joda.time import DateTime
 from org.eclipse.smarthome.model.script.actions import Audio
 from org.eclipse.smarthome.model.script.actions import Voice
 
-from aaa_modules import chromecast
-reload(chromecast)
 from aaa_modules.chromecast import *
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 MAX_SAY_WAIT_TIME_IN_SECONDS = 20
 

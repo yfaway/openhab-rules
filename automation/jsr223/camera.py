@@ -7,8 +7,6 @@ from core.triggers import when
 from core.actions import Mail
 
 from aaa_modules import camera_utilities
-reload(camera_utilities)
-from aaa_modules import camera_utilities
 from aaa_modules.alert import *
 from aaa_modules.alert_manager import *
 

@@ -12,17 +12,8 @@ from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.joda.time import DateTime
 
 from aaa_modules import cast_manager
-reload(cast_manager)
-from aaa_modules import cast_manager
-
-from aaa_modules import chromecast
-reload(chromecast)
 from aaa_modules.chromecast import *
-
 from aaa_modules import security_manager
-reload(security_manager)
-from aaa_modules import security_manager
-
 from aaa_modules import time_utilities
 
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"

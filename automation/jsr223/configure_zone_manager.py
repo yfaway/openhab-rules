@@ -5,20 +5,6 @@ from core.triggers import when
 from aaa_modules import switch_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-# temporary reloads during development
-from aaa_modules.layout_model import switch
-reload(switch)
-from aaa_modules.layout_model import dimmer
-reload(dimmer)
-from aaa_modules.layout_model import zone
-reload(zone)
-from aaa_modules.layout_model import zone_manager
-#reload(zone_manager)
-from aaa_modules import zone_parser
-reload(zone_parser)
-from aaa_modules.layout_model.actions import turn_on_switch
-reload(turn_on_switch)
-
 from aaa_modules.zone_parser import ZoneParser
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager

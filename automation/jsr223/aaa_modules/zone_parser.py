@@ -4,11 +4,8 @@ from core import osgi
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.items import Metadata
 from org.eclipse.smarthome.core.items import MetadataKey
-from org.slf4j import Logger, LoggerFactory
 
-from aaa_modules.layout_model import zone
-reload(zone)
-
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 
@@ -45,7 +42,6 @@ ITEM_NAME_PATTERN = '([^_]+)_([^_]+)_(.+)' # level_location_deviceName
 ZONE_NAME_PATTERN = 'Zone_([^_]+)' # Zone_Name
 
 MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 class ZoneParser:
     '''
@@ -310,9 +306,8 @@ class ZoneParser:
         return [zone, neighbors]
 
 zones = ZoneParser.parse(scope.items, scope.itemRegistry)
-logger.info("{} zones".format(len(zones)))
-output = ''
+output = "{} zones".format(len(zones))
 for z in zones:
     output += '\n' + str(z)
 
-logger.info(output)
+#PE.logInfo(output)

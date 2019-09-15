@@ -4,11 +4,6 @@ from core.rules import rule
 from core.triggers import when
 
 from aaa_modules import cast_manager
-reload(cast_manager)
-from aaa_modules import cast_manager
-
-from aaa_modules import switch_manager
-reload(switch_manager)
 from aaa_modules import switch_manager
 
 from org.slf4j import Logger, LoggerFactory

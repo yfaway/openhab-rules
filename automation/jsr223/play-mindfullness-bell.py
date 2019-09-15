@@ -1,17 +1,13 @@
 import time
 
-from org.slf4j import Logger, LoggerFactory
 from core import osgi
 from core.rules import rule
 from core.triggers import when
 
 from aaa_modules import cast_manager
-from aaa_modules import time_utilities
-
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 '''
 Play the mindfullness bell every 15 minutes if someone is home and if it is
@@ -23,7 +19,7 @@ BELL_URL = 'bell-outside.wav'
 BELL_DURATION_IN_SECS = 15
 
 @rule("Play mindfullness bell")
-@when("Time cron 0 0/15 * 1/1 * ? *")
+@when("Time cron 0 0/25 * 1/1 * ? *")
 def playMindfullnessBell(event):
     timeStruct = time.localtime()
     hour = timeStruct[3]
@@ -43,5 +39,4 @@ def playMindfullnessBell(event):
     cast_manager.playSoundFile(
             BELL_URL, BELL_DURATION_IN_SECS, casts, volume)
 
-
-playMindfullnessBell(None)
+#playMindfullnessBell(None)

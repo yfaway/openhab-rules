@@ -2,12 +2,8 @@ import time
 from org.slf4j import Logger, LoggerFactory
 from core.actions import Mail
 
-from aaa_modules import alert
-reload(alert)
 from aaa_modules.alert import *
 
-from aaa_modules import cast_manager
-reload(cast_manager)
 from aaa_modules import cast_manager
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
