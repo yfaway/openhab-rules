@@ -46,8 +46,15 @@ _STREAMS = {
     "Radio Paradise - Rock": "http://stream-dc2.radioparadise.com:80/mp3-192",
 }
 
+# Constant to fix a bug in OpenHab. For some reasons, OH might invoke the
+# script twice.
+COMMAND_INTERVAL_THRESHOLD_IN_SECONDS = 30
+
 # If set, the TTS message won't be sent to the chromecasts.
 _testMode = False
+
+_lastCommandTimestamp = time.time()
+_lastCommand = None
 
 def pause(casts = CASTS):
     '''
@@ -120,12 +127,24 @@ def playMessage(message, casts = CASTS, volume = 50):
 
 def playSoundFile(localFile, durationInSecs, casts = CASTS, volume = None):
     '''
-    Play the provided local sound file. See '/etc/openhab2/sound'.
+    Plays the provided local sound file. See '/etc/openhab2/sound'.
+    Returns immediately if the same command was recently executed (see
+    COMMAND_INTERVAL_THRESHOLD_IN_SECONDS).
 
     :param str localFile: a sound file located in '/etc/openhab2/sound'
     :param int durationInSecs: the duration of the sound file in seconds
     :rtype: boolean
     '''
+    global _lastCommandTimestamp
+    global _lastCommand
+
+    if localFile == _lastCommand:
+        if (time.time() - _lastCommandTimestamp) <= COMMAND_INTERVAL_THRESHOLD_IN_SECONDS:
+            return
+
+    _lastCommandTimestamp = time.time()
+    _lastCommand = localFile
+
     for cast in casts:
         wasActive = cast.isActive()
         previousVolume = scope.items[cast.getVolumeName()].intValue()
