@@ -23,7 +23,8 @@ String Zone_Porch
   { level="FF", external="true", openSpaceNeighbors="SF_Foyer, FF_Office" }
 
 Switch FF_Porch_MotionSensor "Porch Motion Sensor"
-  { channel="mqtt:topic:mything:FoyerMotionSensor" }
+  (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
+  { channel="mqtt:topic:mything:PorchMotionSensor" }
 
 Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node2:switch_binary",

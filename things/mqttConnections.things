@@ -2,6 +2,8 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
 {
     Thing mqtt:topic:mything {
     Channels:
+      Type switch : PorchMotionSensor "Porch Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d0002047fe0", commandTopic="zigbee2mqtt/0x00158d0002047fe0", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type switch : FoyerMotionSensor "Foyer Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000204c7ef", commandTopic="zigbee2mqtt/0x00158d000204c7ef", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type switch : OfficeMotionSensor "Office Motion Sensor"

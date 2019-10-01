@@ -1,8 +1,9 @@
 '''
 Contain utility methods and constants dealing with the house's security sytem.
 '''
-
-from org.eclipse.smarthome.core.library.types import OnOffType
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+from aaa_modules.layout_model.alarm_partition import AlarmPartition
+from aaa_modules.layout_model.zone_manager import ZoneManager
 
 ITEM_NAME_PARTITION_ARM_MODE = "PARTITION1_ARM_MODE"
 ''' The item name for the partition arm mode.  '''
@@ -32,9 +33,28 @@ WHEN_CHANGED_FROM_ARM_AWAY_TO_UNARMED = "Item {0} changed from {1:d} to {2:d}".f
         ITEM_NAME_PARTITION_ARM_MODE, STATE_ARM_AWAY, STATE_UNARMED)
 ''' The @when condition when system is changed from armed away to unarmed.  '''
 
+
 def isInVacation(items):
     '''
     :param scope.items items:
     :return: True if the house is set to vacation mode.
     '''
-    return items['VT_In_Vacation'] == OnOffType.ON
+    return PE.isInStateOn(items['VT_In_Vacation'])
+
+
+class SecurityManager:
+    '''
+    Provide quick access to the alarm partition of the zones.
+    '''
+
+    @staticmethod
+    def isArmedAway():
+        '''
+        :return: True if at least one zone is armed-away
+        '''
+        securityPartitions = ZoneManager.getDevicesByType(AlarmPartition)
+        if len(securityPartitions) > 0:
+            if AlarmPartition.STATE_ARM_AWAY == securityPartitions[0].getArmMode():
+                return True
+
+        return False

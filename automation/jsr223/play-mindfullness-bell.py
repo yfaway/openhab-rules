@@ -5,9 +5,7 @@ from core.rules import rule
 from core.triggers import when
 
 from aaa_modules import cast_manager
-from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-from aaa_modules.layout_model.zone_manager import ZoneManager
-from aaa_modules.layout_model.alarm_partition import AlarmPartition
+from aaa_modules.security_manager  import SecurityManager as SM
 
 '''
 Play the mindfullness bell every 15 minutes if someone is home and if it is
@@ -28,10 +26,8 @@ def playMindfullnessBell(event):
         return
 
     # not triggered if house is armed away
-    securityPartitions = ZoneManager.getDevicesByType(AlarmPartition)
-    if len(securityPartitions) > 0:
-        if AlarmPartition.STATE_ARM_AWAY == securityPartitions[0].getArmMode():
-            return
+    if SM.isArmedAway():
+        return
 
     casts = cast_manager.getFirstFloorCasts()
 
