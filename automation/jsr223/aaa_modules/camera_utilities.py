@@ -1,14 +1,65 @@
+from datetime import datetime, timedelta
 import io
+import os.path
 import time
-from org.slf4j import Logger, LoggerFactory
+
 from core.jsr223 import scope
+
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 # The location to store snapshot images
 _SNAPSHOT_PATH = '/tmp'
 
 _WAIT_TIME_AFTER_FORCE_IMAGE_UPDATE_IN_SECONDS = 2
 
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+def retrieveSnapshotsFromFileSystem(
+        maxNumberOfSeconds = 15,
+        offsetSeconds = 5,
+        epochSeconds = time.time(),
+        camera = 'Camera1',
+        imageLocation = '/home/pi/motion-os'):
+
+    '''
+    Retrieve the still camera images from the specified folder. The image files
+    must be in this folder structure:
+        {year}-{month}-{day}/{hour}-{minute}-{sec}
+    Example: 2019-11-06/22-54-02.jpg.
+    If any of the field is less than 10, then it must be padded by '0'. These
+    are the structures written out by MotionEyeOS.
+
+    :param int maxNumberOfSeconds: the maximum # of seconds to retrieve the
+        images for
+    :param int offsetSeconds: the # of seconds before the epochSeconds to
+        retrieve the images for
+    :param str camera: the name of the camera
+    :param int epochSeconds: the time the motion triggered time
+    :return: list of snapshot URLs or empty list if there is no snapshot
+    :rtype: list(str)
+    '''
+
+    pad = lambda x: "0{}".format(x) if x < 10 else x
+
+    urls = []
+
+    if imageLocation.endswith('/'):
+        imageLocation = imageLocation[:-1]
+
+    currentTime = datetime.fromtimestamp(epochSeconds)
+    path = "{}/{}/{}-{}-{}".format(imageLocation, camera, currentTime.year,
+            currentTime.month, pad(currentTime.day))
+
+    for second in range(-offsetSeconds, maxNumberOfSeconds - offsetSeconds):
+        delta = timedelta(seconds = second)
+        instant = currentTime + delta
+        fileName = "{}-{}-{}.jpg".format(pad(instant.hour),
+                pad(instant.minute), pad(instant.second))
+        pathAndFilename = "{}/{}".format(path, fileName)
+
+        if os.path.exists(pathAndFilename):
+            url = "file://{}".format(pathAndFilename)
+            urls.append(url)
+
+    return urls
 
 def retrieveSnapshots(itemPrefix, snapshotCount):
     '''
@@ -25,7 +76,7 @@ def retrieveSnapshots(itemPrefix, snapshotCount):
     imageItemName = itemPrefix + '_Image'
     updateItemName = itemPrefix + '_UpdateImage'
 
-    logger.info('Retrieving {} snapshots'.format(snapshotCount))
+    PE.logInfo('Retrieving {} snapshots'.format(snapshotCount))
     previousRawBytes = []
     for idx in range(snapshotCount):
         # Flip the state of the update channel to force retrieval of new image
