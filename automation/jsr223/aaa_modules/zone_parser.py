@@ -9,6 +9,7 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 
+from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.layout_model.devices.plug import Plug
 
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
@@ -96,6 +97,8 @@ class ZoneParser:
 
             openHabItem = itemRegistry.getItem(itemName)
 
+            zone = ZoneParser._addCamera(
+                    deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addSwitches(
                     deviceName, openHabItem, zone, itemRegistry, neighbors)
             zone = ZoneParser._addPlugs(
@@ -121,6 +124,14 @@ class ZoneParser:
             zoneMap[neighborInfo[0]] = zone
 
         return [ZoneParser._normalizeNeighbors(z) for z in zoneMap.values()]
+
+    @staticmethod
+    def _addCamera(deviceName, openHabItem, zone, itemRegistry):
+        if 'Camera' == deviceName:
+            camera = Camera(openHabItem, zone.getName())
+            zone = zone.addDevice(camera)
+
+        return zone
 
     @staticmethod
     def _addAlarmPartition(deviceName, openHabItem, zone, itemRegistry):

@@ -175,6 +175,8 @@ sitemap default label="HV Home"
 
   Text label="Motion Sensors" icon="motion" {
     Frame label="Motion Sensors" {
+      Switch item=FF_Porch_MotionSensor
+
       Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor
       Switch item=FF_Office_LightSwitch_MotionSensor
 

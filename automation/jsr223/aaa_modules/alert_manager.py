@@ -1,12 +1,9 @@
 import time
-from org.slf4j import Logger, LoggerFactory
 from core.actions import Mail
 
 from aaa_modules.alert import *
-
 from aaa_modules import cast_manager
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 _EMAIL_PROPERTIES_FILE = '/etc/openhab2/transform/owner-email-addresses.map'
 _EMAIL_KEY = 'ALL_OWNER_EMAIL_ADDRESSES'
@@ -49,7 +46,7 @@ class AlertManager:
         if None == alert:
             raise ValueError('Invalid alert.')
 
-        logger.info(u"Processing alert\n{}".format(alert.toString()))
+        PE.logInfo(u"Processing alert\n{}".format(alert.toString()))
 
         if None != alert.getModule():
             intervalInSeconds = alert.getIntervalBetweenAlertsInMinutes() * 60

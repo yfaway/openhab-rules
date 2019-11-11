@@ -3,9 +3,6 @@ Utility class containing a set of time related functions.
 '''
 
 import time
-from org.slf4j import Logger, LoggerFactory
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 def isDinnerTime():
     '''

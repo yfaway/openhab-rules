@@ -3,6 +3,7 @@ from aaa_modules.alert import *
 from aaa_modules.alert_manager import *
 from aaa_modules.camera_utilities import retrieveSnapshotsFromFileSystem
 from aaa_modules.layout_model.actions.action import Action
+from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.security_manager  import SecurityManager as SM
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
@@ -17,27 +18,35 @@ class AlertOnEntraceActivity(Action):
     def onAction(self, events, zone, getZoneByIdFn):
         currentEpoch = time.time()
 
-        time.sleep(20) # wait for a bit to retrieve more images
+        cameras = zone.getDevicesByType(Camera)
+        if len(cameras) == 0:
+            PE.logInfo("No camera found for zone {}".format(zone.getName()))
+            return
+
+        camera = cameras[0]
+        if not camera.hasMotionEvent():
+            PE.logInfo("Camera doesn't indicate motion event; likely a false positive PIR event.")
+            return
+
+        time.sleep(10) # wait for a bit to retrieve more images
 
         offsetSeconds = 5
         maxNumberOfSeconds = 15
-        attachmentUrls = retrieveSnapshotsFromFileSystem(
-                maxNumberOfSeconds, offsetSeconds, currentEpoch,
-                zone.getName())
+        attachmentUrls = camera.getSnapshotUrls(currentEpoch,
+                maxNumberOfSeconds, offsetSeconds)
 
         if len(attachmentUrls) > 0:
             timeStruct = time.localtime()
             hour = timeStruct[3]
 
-            if SM.isArmedAway() or (hour >= 1 and hour <= 6):
-                msg = 'Activity detected at the {} area.'.format(
-                        zone.getName(), len(attachmentUrls))
+            msg = 'Activity detected at the {} area.'.format(
+                    zone.getName(), len(attachmentUrls))
 
-                alert = Alert.createInfoAlert(msg, None, attachmentUrls)
+            #if SM.isArmedAway() or (hour >= 1 and hour <= 6):
+            alert = Alert.createWarningAlert(msg, None, attachmentUrls)
+            AlertManager.processAlert(alert)
 
-                AlertManager.processAlert(alert)
-
-                return True
+            return True
         else:
             PE.logInfo("No images from {} camera.".format(zone.getName()))
 

@@ -22,6 +22,8 @@ Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 String Zone_Porch 
   { level="FF", external="true", openSpaceNeighbors="SF_Foyer, FF_Office" }
 
+String FF_Porch_Camera "Porch Camera" (gCamera)
+
 Switch FF_Porch_MotionSensor "Porch Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
   { channel="mqtt:topic:mything:PorchMotionSensor" }
