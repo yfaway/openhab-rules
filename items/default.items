@@ -57,9 +57,9 @@ Switch FF_PatioDoor_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone
 Switch FF_GreatRoom_MotionSensor_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone4:zone_in_alarm"}
 Switch FF_Windows_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone5:zone_in_alarm"}
 
-Switch FF_FrontDoor_Tripped (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor) 
+Switch FF_Porch_Door (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor) 
   {channel="dscalarm:zone:706cd89d:zone1:zone_tripped"}
-Switch FF_GarageDoor_Tripped (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor) 
+Switch FF_Foyer_Door (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor) 
   {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
 Switch FF_PatioDoor_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
 Switch FF_GreatRoom_MotionSensor_Tripped 

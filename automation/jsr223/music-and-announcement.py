@@ -47,7 +47,7 @@ def playAnnouncementAndMusicInTheMorning(event):
             casts = cast_manager.getFirstFloorCasts()
 
             cast_manager.playMessage(msg, casts)
-            cast_manager.playStream("WWFM Classical", casts)
+            cast_manager.playStream("WWFM Classical", casts, 35)
             morningMusicStartCount += 1
 #        else:
 #            logger.info('{} Not in session.'.format(LOG_PREFIX))
@@ -64,8 +64,8 @@ def resetMusicStates(event):
     inDinnerSession = False
 
 @rule("Stop morning music when front door is open")
-@when("Item FF_FrontDoor_Tripped changed to ON")
-@when("Item FF_GarageDoor_Tripped changed to ON")
+@when("Item FF_Porch_Door changed to ON")
+@when("Item FF_Foyer_Door changed to ON")
 def pauseMorningMusic(event):
     global inMorningSession
     if isInMorningTimeRange() and inMorningSession:

@@ -1,6 +1,6 @@
 import time
-from org.eclipse.smarthome.core.library.types import OnOffType
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device import Device
 
 class Switch(Device):
@@ -38,7 +38,7 @@ class Switch(Device):
         Turns on this light, if it is not on yet. In either case, the associated
         timer item is also turned on.
         '''
-        if OnOffType.ON != self.getItem().getState():
+        if not PE.isInStateOn(self.getItem().getState()):
             events.sendCommand(self.getItemName(), "ON")
         else: # already on, renew timer
             events.sendCommand(self.timerItem.getName(), "ON")
@@ -54,7 +54,7 @@ class Switch(Device):
         '''
         Returns true if the switch is turned on; false otherwise.
         '''
-        return OnOffType.ON == self.getItem().getState()
+        return PE.isInStateOn(self.getItem().getState())
 
     def onSwitchTurnedOn(self, events, itemName):
         '''
@@ -90,7 +90,7 @@ class Switch(Device):
         isProcessed = (self.getItemName() == itemName)
         if isProcessed:
             self.lastOffTimestampInSeconds = time.time()
-            if OnOffType.OFF != self.timerItem.getState():
+            if not PE.isInStateOff(self.timerItem.getState()):
                 events.sendCommand(self.timerItem.getName(), "OFF")
 
         return isProcessed

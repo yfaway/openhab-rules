@@ -10,6 +10,7 @@ from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 
 from aaa_modules.layout_model.devices.camera import Camera
+from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.layout_model.devices.plug import Plug
 
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
@@ -99,6 +100,8 @@ class ZoneParser:
 
             zone = ZoneParser._addCamera(
                     deviceName, openHabItem, zone, itemRegistry)
+            zone = ZoneParser._addDoor(
+                    deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addSwitches(
                     deviceName, openHabItem, zone, itemRegistry, neighbors)
             zone = ZoneParser._addPlugs(
@@ -130,6 +133,14 @@ class ZoneParser:
         if 'Camera' == deviceName:
             camera = Camera(openHabItem, zone.getName())
             zone = zone.addDevice(camera)
+
+        return zone
+
+    @staticmethod
+    def _addDoor(deviceName, openHabItem, zone, itemRegistry):
+        if 'Door' == deviceName:
+            door = Door(openHabItem)
+            zone = zone.addDevice(door)
 
         return zone
 

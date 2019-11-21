@@ -5,6 +5,8 @@ from aaa_modules.layout_model.device import Device
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.devices.plug import Plug
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+
 class Level:
     ''' An enum of the vertical levels.'''
 
@@ -422,6 +424,20 @@ class Zone:
                 isProcessed = True
         
         return isProcessed
+
+    def onContactOpen(self, events, itemName, getZoneByIdFn):
+        '''
+        :param lambda getZoneByIdFn: a function that returns a Zone object \
+            given a zone id string
+        :rtype: boolean
+        '''
+        return False
+
+    def onContactClosed(self, events, itemName):
+        '''
+        :rtype: boolean
+        '''
+        return False
 
     def onMotionSensorTurnedOn(self, events, itemName, getZoneByIdFn):
         '''

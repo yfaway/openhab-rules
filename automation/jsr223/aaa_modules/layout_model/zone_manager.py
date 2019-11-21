@@ -132,6 +132,33 @@ class ZoneManager:
         return any(returnValues)
 
     @staticmethod
+    def onContactOpen(events, itemName):
+        """
+        Dispatches the contact (door/windows) open event to each zone.
+
+        :return: True if at least one zone processed the event; False otherwise
+        :rtype: bool
+        """
+        ZoneManager._updateDeviceLastActivatedTime(itemName)
+
+        returnValues = [
+            z.onContactOpen(events, itemName, ZoneManager.getZoneById)
+            for z in ZoneManager.zones.values()]
+        return any(returnValues)
+
+    @staticmethod
+    def onContactClosed(events, itemName):
+        """
+        Dispatches the contact closed event to each zone.
+
+        :return: True if at least one zone processed the event; False otherwise
+        :rtype: bool
+        """
+        returnValues = [
+            z.onContactClosed(events, itemName) for z in ZoneManager.zones.values()]
+        return any(returnValues)
+
+    @staticmethod
     def _updateDeviceLastActivatedTime(itemName):
         """
         Determine if the itemName is associated with a managed device. If yes,

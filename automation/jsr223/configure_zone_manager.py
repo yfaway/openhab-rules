@@ -59,12 +59,25 @@ def onSwitchIsChanged(event):
             PE.logInfo('Switch off event for {} is not processed.'.format(
                         event.itemName))
 
+@rule("Dispatch contact changed event")
+@when("Member of gZoneTripped changed")
+def onDoorOrWindowsChanged(event):
+    triggeringItem = itemRegistry.getItem(event.itemName)
+
+    if PE.isInStateOn(triggeringItem.getState()):
+        if not ZoneManager.onContactOpen(events, event.itemName):
+            PE.logInfo('Contact open event for {} is not processed.'.format(
+                        event.itemName))
+    else:
+        if not ZoneManager.onContactClosed(events, event.itemName):
+            PE.logInfo('Contact closed event for {} is not processed.'.format(
+                        event.itemName))
+
 @rule("Dispatch timer expired event")
 @when("Member of gWallSwitchTimer changed to OFF")
 def onTimerExpired(event):
     if not ZoneManager.onTimerExpired(events, event.itemName):
         PE.logInfo('Timer event for {} is not processed.'.format(
                     event.itemName))
-
 
 initializeZoneManager()

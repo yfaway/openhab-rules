@@ -1,6 +1,7 @@
 from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.types import UnDefType
 from org.eclipse.smarthome.core.library.types import OnOffType
+from org.eclipse.smarthome.core.library.types import OpenClosedType
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
@@ -20,6 +21,7 @@ class PlatformEncapsulator:
     @staticmethod
     def isInStateOn(state):
         '''
+        :param org.eclipse.smarthome.core.types.State state:
         :return: True if the state is ON.
         '''
 
@@ -28,10 +30,29 @@ class PlatformEncapsulator:
     @staticmethod
     def isInStateOff(state):
         '''
+        :param org.eclipse.smarthome.core.types.State state:
         :return: True if the state is OFF.
         '''
 
         return OnOffType.OFF == state
+
+    @staticmethod
+    def isInStateOpen(state):
+        '''
+        :param org.eclipse.smarthome.core.types.State state:
+        :return: True if the state is OPEN.
+        '''
+
+        return OpenClosedType.OPEN == state
+
+    @staticmethod
+    def isInStateClosed(state):
+        '''
+        :param org.eclipse.smarthome.core.types.State state:
+        :return: True if the state is CLOSED.
+        '''
+
+        return OpenClosedType.CLOSED == state
 
     @staticmethod
     def getIntegerStateValue(item, defaultVal):

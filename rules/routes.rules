@@ -35,8 +35,8 @@ var long lastCheckTimeStamp = 0
 
 rule "Retrieve route info"
 when
-  Item FF_FrontDoor_Tripped changed to ON or
-  Item FF_GarageDoor_Tripped changed to ON
+  Item FF_Porch_Door changed to ON or
+  Item FF_Foyer_Door changed to ON
 then
 
   // Bail out early if we just request a route recently.
