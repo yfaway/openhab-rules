@@ -4,19 +4,33 @@ from aaa_modules.alert_manager import *
 from aaa_modules.camera_utilities import retrieveSnapshotsFromFileSystem
 from aaa_modules.layout_model.actions.action import Action
 from aaa_modules.layout_model.devices.camera import Camera
+from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.security_manager  import SecurityManager as SM
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 class AlertOnEntraceActivity(Action):
     '''
-    Avoid false alarm by determing if the camera also detects motion (through
-    images differential). If both the PIR sensor and the camera detect motions,
-    sends an alert if the system is armed-away or if the activity is during
-    the night.
+    The alert is triggered from a PIR motion sensor. The motion sensor
+    sometimes generate false positive event. This is remedied by determing if
+    the camera also detects motion (through the image differential). If both
+    the PIR sensor and the camera detect motions, sends an alert if the system
+    is armed-away or if the activity is during the night.
+
+    The alert is suppressed if the zone's door was just opened. This indicates
+    the occupant walking out of the house, and thus shouldn't triggered the
+    event.
     '''
 
     def onAction(self, events, zone, getZoneByIdFn):
         currentEpoch = time.time()
+
+        doorOpenPeriodInSeconds = 10
+        for door in zone.getDevicesByType(Door):
+            if door.wasRecentlyActivated(doorOpenPeriodInSeconds):
+                PE.logInfo("A door was just open for zone {}; ignore motion event.".format(
+                            zone.getName()))
+                return
+
 
         cameras = zone.getDevicesByType(Camera)
         if len(cameras) == 0:

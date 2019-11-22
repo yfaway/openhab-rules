@@ -66,8 +66,10 @@ class Device(object):
         '''
         return self.lastActivatedTimestamp
 
-    def wasActivatedInTheLastSeconds(self, seconds):
+    def wasRecentlyActivated(self, seconds):
         '''
+        :param int seconds: the past duration (from the current time) to
+            determine if the device was activated.
         :rtype: bool True if the device was activated during the specified
             seconds; False otherwise.
         '''
