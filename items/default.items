@@ -80,9 +80,9 @@ Contact FF_Windows_Status (gZoneStatus)
 /**
  * Garage door
  */
-Contact GarageDoorContact       "Garage Door [%s]" <contact> {myq="0"}
-String GarageDoorString         "Garage Door [%s]"           {myq="0"}
-Switch GarageDoorSwitch         "Garage Door Open"           {myq="0"}
+Contact GarageDoorContact       "Garage Door [%s]" <contact> {myq="CG08600DF614"}
+String GarageDoorString         "Garage Door [%s]"           {myq="CG08600DF614"}
+Switch GarageDoorSwitch         "Garage Door Open"           {myq="CG08600DF614"}
 
 
 Switch MQTT_Test "Testing..." { mqtt="<[broker:testing/mqtt/topic:state:default], >[broker:testing/mqtt/back-topic:command:*:default]" } 
