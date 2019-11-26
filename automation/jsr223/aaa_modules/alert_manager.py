@@ -58,7 +58,8 @@ class AlertManager:
 
             AlertManager._moduleTimestamps[alert.getModule()] = time.time()
 
-        AlertManager._emailAlert(alert)
+        if not alert.isAudioAlertOnly():
+            AlertManager._emailAlert(alert)
 
         if alert.isWarningLevel() or alert.isCriticalLevel():
             cast_manager.playMessage(alert.getSubject())

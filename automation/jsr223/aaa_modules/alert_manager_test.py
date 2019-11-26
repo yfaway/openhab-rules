@@ -3,16 +3,14 @@ import unittest
 from org.slf4j import Logger, LoggerFactory
 from core.testing import run_test
 
-from aaa_modules import alert
-reload(alert)
+#from aaa_modules import alert
+#reload(alert)
+
+#from aaa_modules import alert_manager
+#reload(alert_manager)
+
 from aaa_modules.alert import *
-
-from aaa_modules import alert_manager
-reload(alert_manager)
 from aaa_modules.alert_manager import *
-
-from aaa_modules import cast_manager
-reload(cast_manager)
 from aaa_modules import cast_manager
 
 logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
@@ -47,6 +45,17 @@ class AlertManagerTest(unittest.TestCase):
 
         self.assertEqual(alert.getSubject(), AlertManager._lastEmailedSubject)
 
+    def testProcessAlert_audioWarningAlert_returnsTrue(self):
+        alert = Alert.createAudioWarningAlert(SUBJECT)
+        result = AlertManager.processAlert(alert)
+        self.assertTrue(result)
+
+        casts = cast_manager.getAllCasts()
+        for cast in casts:
+            self.assertEqual(SUBJECT, cast.getLastTtsMessage())
+
+        self.assertEqual(None, AlertManager._lastEmailedSubject)
+
     def testProcessAlert_criticalAlert_returnsTrue(self):
         alert = Alert.createCriticalAlert(SUBJECT)
         result = AlertManager.processAlert(alert)
@@ -70,4 +79,4 @@ class AlertManagerTest(unittest.TestCase):
         emails = AlertManager._getEmailAddresses()
         self.assertTrue(len(emails) > 0)
 
-#run_test(AlertManagerTest, logger) 
+run_test(AlertManagerTest, logger) 

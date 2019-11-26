@@ -51,6 +51,20 @@ class Alert:
                 intervalBetweenAlertsInMinutes)
 
     @classmethod
+    def createAudioWarningAlert(cls, subject, body = None, attachmentUrls = [],
+           module = None, intervalBetweenAlertsInMinutes = -1):
+        '''
+        Creates an audio-only WARNING alert.
+
+        :param string subject:
+        :param list(str) attachmentUrls: list of URL attachment strings:
+        :param string module: (optional)
+        :param int intervalBetweenAlertsInMinutes: (optional)
+        '''
+        return cls(Level.WARNING, subject, body, attachmentUrls, module,
+                intervalBetweenAlertsInMinutes, [], True)
+
+    @classmethod
     def createCriticalAlert(cls, subject, body = None, attachmentUrls = [],
             module = None, intervalBetweenAlertsInMinutes = -1):
         '''
@@ -115,7 +129,8 @@ class Alert:
 
     def __init__(self, level, subject, body = None, attachmentUrls = [],
             module = None, intervalBetweenAlertsInMinutes = -1,
-            emailAddresses = None):
+            emailAddresses = None,
+            audioAlertOnly = False):
         self.level = level
         self.subject = subject
         self.body = body
@@ -123,6 +138,7 @@ class Alert:
         self.module = module
         self.intervalBetweenAlertsInMinutes = intervalBetweenAlertsInMinutes
         self.emailAddresses = emailAddresses
+        self.audioAlertOnly = audioAlertOnly
 
     def getSubject(self):
         '''
@@ -184,6 +200,12 @@ class Alert:
         :rtype: bool
         '''
         return Level.CRITICAL == self.level
+
+    def isAudioAlertOnly(self):
+        '''
+        :rtype: bool
+        '''
+        return self.audioAlertOnly
 
     def toString(self):
         '''
