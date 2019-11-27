@@ -1,14 +1,13 @@
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
-from aaa_modules.layout_model import zone_manager
-reload(zone_manager)
+#from aaa_modules.layout_model import zone_manager
+#reload(zone_manager)
 from aaa_modules.layout_model.zone_manager import ZoneManager
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 from aaa_modules.layout_model.device_test import DeviceTest
 from aaa_modules.layout_model.zone import Zone
@@ -17,8 +16,6 @@ from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.switch import Fan, Light, Switch
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 ITEMS = [SwitchItem('TestLightName'),
       SwitchItem('TestTimerName'),
@@ -185,5 +182,4 @@ class ZoneManagerTest(DeviceTest):
         self.assertTrue(ZoneManager.onSwitchTurnedOff(
                     scope.events, self.light.getItemName()))
 
-
-run_test(ZoneManagerTest, logger) 
+PE.runUnitTest(ZoneManagerTest)

@@ -1,12 +1,10 @@
 # This file processes legacy Xtend alert messages sent through the
 # VT_AlertSender string item.
-from org.slf4j import Logger, LoggerFactory
 from core.rules import rule
 from core.triggers import when
 
 from aaa_modules.alert_manager import *
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 _ALERT_ITEM_NAME = 'VT_AlertSender'
 
@@ -19,6 +17,6 @@ def sendAlert(event):
     if AlertManager.processAlert(alert):
         return True
     else:
-        logger.error('Failed to send alert {}'.format(alert.toString()))
+        PE.logError('Failed to send alert {}'.format(alert.toString()))
         return False
 

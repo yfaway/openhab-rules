@@ -1,17 +1,12 @@
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import NumberItem
 
-from aaa_modules.layout_model import device_test
-reload(device_test)
 from aaa_modules.layout_model.device_test import DeviceTest
 
-from aaa_modules.layout_model import illuminance_sensor
-reload(illuminance_sensor)
+#from aaa_modules.layout_model import illuminance_sensor
+#reload(illuminance_sensor)
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 ITEMS = [NumberItem('IlluminanceSensorName')]
 
@@ -34,4 +29,4 @@ class IlluminanceSensorTest(DeviceTest):
         ITEMS[0].setState(DecimalType(50))
         self.assertEqual(50, self.illuminanceSensor.getIlluminanceLevel())
 
-run_test(IlluminanceSensorTest, logger) 
+PE.runUnitTest(IlluminanceSensorTest)

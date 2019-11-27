@@ -1,18 +1,15 @@
 import unittest
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 
-from aaa_modules import alert
-reload(alert)
+#from aaa_modules import alert
+#reload(alert)
 from aaa_modules.alert import *
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 SUBJECT = "a subject"
 BODY = 'a body\n line2'
 MODULE = 'a module'
 INTERVAL_BETWEEN_ALERTS_IN_MINUTES = 5
 EMAIL_ADDRESSES = 'asdf@here.com'
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 class AlertTest(unittest.TestCase):
     def testCreateInfoAlert_withSubject_returnsNewObject(self):
@@ -105,4 +102,4 @@ class AlertTest(unittest.TestCase):
             alert = Alert.fromJson(json)
         self.assertEqual('Invalid intervalBetweenAlertsInMinutes value: -1', cm.exception.args[0])
 
-#run_test(AlertTest, logger) 
+PE.runUnitTest(AlertTest)

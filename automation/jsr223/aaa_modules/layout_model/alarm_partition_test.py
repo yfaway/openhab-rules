@@ -1,17 +1,14 @@
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import SwitchItem, NumberItem
 
 from aaa_modules.layout_model.device_test import DeviceTest
 
-from aaa_modules.layout_model import alarm_partition
-reload(alarm_partition)
+#from aaa_modules.layout_model import alarm_partition
+#reload(alarm_partition)
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 ITEMS = [SwitchItem('_AlarmStatus'), NumberItem('_AlarmMode')]
 
@@ -58,4 +55,4 @@ class AlarmPartitionTest(DeviceTest):
         self.assertEqual(AlarmPartition.STATE_UNARMED,
                 self.alarmPartition.getArmMode())
 
-run_test(AlarmPartitionTest, logger) 
+PE.runUnitTest(AlarmPartitionTest)

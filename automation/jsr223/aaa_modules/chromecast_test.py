@@ -1,12 +1,9 @@
 import unittest
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 
-from aaa_modules import chromecast
-reload(chromecast)
+#from aaa_modules import chromecast
+#reload(chromecast)
 from aaa_modules.chromecast import *
-
-LOGGER = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 PREFIX = "cast_item_"
 SINK = "sink"
@@ -39,4 +36,4 @@ class ChromeCastTest(unittest.TestCase):
         cast._setLastTtsMessage(TTS_MESSAGE)
         self.assertEqual(TTS_MESSAGE, cast.getLastTtsMessage())
 
-#run_test(ChromeCastTest, LOGGER) 
+PE.runUnitTest(ChromeCastTest)

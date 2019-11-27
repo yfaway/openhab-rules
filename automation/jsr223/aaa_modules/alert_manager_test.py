@@ -1,8 +1,5 @@
 import unittest
 
-from org.slf4j import Logger, LoggerFactory
-from core.testing import run_test
-
 #from aaa_modules import alert
 #reload(alert)
 
@@ -12,8 +9,7 @@ from core.testing import run_test
 from aaa_modules.alert import *
 from aaa_modules.alert_manager import *
 from aaa_modules import cast_manager
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 SUBJECT = 'This is a test alert'
 MODULE = 'a module'
@@ -79,4 +75,4 @@ class AlertManagerTest(unittest.TestCase):
         emails = AlertManager._getEmailAddresses()
         self.assertTrue(len(emails) > 0)
 
-run_test(AlertManagerTest, logger) 
+PE.runUnitTest(AlertManagerTest)

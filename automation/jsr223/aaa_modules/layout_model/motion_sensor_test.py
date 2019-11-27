@@ -2,15 +2,12 @@ import unittest
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
-from aaa_modules.layout_model import motion_sensor
-reload(motion_sensor)
+#from aaa_modules.layout_model import motion_sensor
+#reload(motion_sensor)
 from aaa_modules.layout_model.motion_sensor import MotionSensor
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 MOTION_SENSOR_SWITCH_NAME = 'MotionSensorName'
 
@@ -51,5 +48,4 @@ class MotionSensorTest(unittest.TestCase):
         time.sleep(0.1)
         self.assertTrue(self.motionSensor.isOccupied())
 
-
-run_test(MotionSensorTest, logger) 
+PE.runUnitTest(MotionSensorTest)

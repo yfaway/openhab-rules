@@ -1,15 +1,12 @@
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import StringItem
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device_test import DeviceTest
 
-from aaa_modules.layout_model import astro_sensor
-reload(astro_sensor)
+#from aaa_modules.layout_model import astro_sensor
+#reload(astro_sensor)
 from aaa_modules.layout_model.astro_sensor import AstroSensor
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 ITEMS = [StringItem('AstroSensorName')]
 
@@ -37,4 +34,4 @@ class AstroSensorTest(DeviceTest):
             ITEMS[0].setState(StringType(value))
             self.assertFalse(self.astroSensor.isLightOnTime())
 
-run_test(AstroSensorTest, logger) 
+PE.runUnitTest(AstroSensorTest)

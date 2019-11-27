@@ -1,6 +1,5 @@
 import time
 
-from org.slf4j import Logger, LoggerFactory
 from core import osgi
 from core.rules import rule
 from core.triggers import when
@@ -16,8 +15,6 @@ _INTERVAL_IN_SECONDS = 60
 # The maximum number of snapshots to capture when a motion alarm is triggered.
 _SNAPSHOT_COUNT = 5
 
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
-
 # Track the last motion alarm event for each camera; itemPrefix -> int.
 lastMotionEvents = {}
 
@@ -32,7 +29,7 @@ def sendSnapshot(event):
     if prefix in lastMotionEvents:
         timestamp = lastMotionEvents[prefix]
         if (time.time() - timestamp <= _INTERVAL_IN_SECONDS):
-            logger.info('[{}] Ignore event; too close to previous event.'.format(
+            PE.logInfo('[{}] Ignore event; too close to previous event.'.format(
                         prefix))
             return
 
@@ -40,7 +37,7 @@ def sendSnapshot(event):
 
     attachmentUrls = camera_utilities.retrieveSnapshots(prefix, _SNAPSHOT_COUNT)
 
-    logger.info('Sending camera snapshot with {} images'.format(
+    PE.logInfo('Sending camera snapshot with {} images'.format(
                 len(attachmentUrls)))
     
     # todo: use warning instead of info for evening hours.
@@ -48,5 +45,5 @@ def sendSnapshot(event):
             None, attachmentUrls)
     # result = AlertManager.processAlert(alert)
     # if not result:
-    #     logger.info('Failed to send camera snapshots')
+    #     PE.logInfo('Failed to send camera snapshots')
 

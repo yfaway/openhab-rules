@@ -2,14 +2,11 @@ import unittest
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 
+#from aaa_modules import cast_manager
+#reload(cast_manager)
 from aaa_modules import cast_manager
-reload(cast_manager)
-from aaa_modules import cast_manager
-
-LOGGER = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 TEST_MESSAGE = 'hello world'
 
@@ -142,4 +139,4 @@ class CastManagerTest(unittest.TestCase):
         self.assertNotEqual(None, url)
         self.assertNotEqual('', url)
 
-#run_test(CastManagerTest, LOGGER) 
+#PE.runUnitTest(CastManagerTest)

@@ -1,12 +1,10 @@
-from org.slf4j import Logger, LoggerFactory
 from core.rules import rule
 from core.triggers import when
 
 from aaa_modules.alert import Alert
 from aaa_modules.alert_manager import AlertManager
 from aaa_modules.environment_canada import Forecast, EnvCanada
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 @rule("Send emails if it is raining today.")
 @when("Time cron 0 20 6 ? * MON-FRI *")
@@ -34,4 +32,4 @@ def alertIfRainInShortermForecast(event):
         alert = Alert.createInfoAlert(subject, body)
         result = AlertManager.processAlert(alert)
         if not result:
-            logger.info('Failed to send rain alert')
+            PE.logInfo('Failed to send rain alert')

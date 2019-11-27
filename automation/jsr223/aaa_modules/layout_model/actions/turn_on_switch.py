@@ -1,14 +1,12 @@
 import time
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.actions.action import Action
 
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
-
-from org.slf4j import Logger, LoggerFactory
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 DEBUG = False
 
@@ -60,7 +58,7 @@ class TurnOnSwitch(Action):
                 # don't want to turn off the other switch.
                 canTurnOffAdjacentZones = False
                 if DEBUG:
-                    logger.info("{}: rejected - can't be triggerred by motion sensor".format(
+                    PE.logInfo("{}: rejected - can't be triggerred by motion sensor".format(
                             switch.getItemName()))
 
                 continue
@@ -70,7 +68,7 @@ class TurnOnSwitch(Action):
                 if (time.time() - switch.getLastOffTimestampInSeconds()) <= \
                     TurnOnSwitch.DELAY_AFTER_LAST_OFF_TIME_IN_SECONDS:
                     if DEBUG:
-                        logger.info("{}: rejected - switch was just turned off".format(
+                        PE.logInfo("{}: rejected - switch was just turned off".format(
                             switch.getItemName()))
                     continue
 
@@ -87,7 +85,7 @@ class TurnOnSwitch(Action):
                         TurnOnSwitch.DELAY_AFTER_LAST_OFF_TIME_IN_SECONDS \
                     for s in theirSwitches):
                 if DEBUG:
-                    logger.info("{}: rejected - can't be triggerred by motion sensor".format(
+                    PE.logInfo("{}: rejected - can't be triggerred by motion sensor".format(
                             switch.getItemName()))
                 continue
 
@@ -102,7 +100,7 @@ class TurnOnSwitch(Action):
                     if any(z.isLightOn() for z in masterZones):
                         isProcessed = False
                         if DEBUG:
-                            logger.info("{}: rejected - a master zone's light is on".format(
+                            PE.logInfo("{}: rejected - a master zone's light is on".format(
                                     switch.getItemName()))
 
                 if isProcessed:
@@ -114,7 +112,7 @@ class TurnOnSwitch(Action):
         # Now shut off the light in any shared space zones
         if canTurnOffAdjacentZones:
             if DEBUG:
-                logger.info("{}: turning off adjancent zone's light".format(
+                PE.logInfo("{}: turning off adjancent zone's light".format(
                         switch.getItemName()))
             TurnOffAdjacentZones().onAction(events, zone, getZoneByIdFn)
         

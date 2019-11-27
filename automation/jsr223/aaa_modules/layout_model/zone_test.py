@@ -1,15 +1,14 @@
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
-from aaa_modules.layout_model import zone
-reload(zone)
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+#from aaa_modules.layout_model import zone
+#reload(zone)
 from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 
 from aaa_modules.layout_model.devices.plug import Plug
@@ -24,8 +23,6 @@ from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
 from aaa_modules.layout_model.device_test import DeviceTest
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 ILLUMINANCE_THRESHOLD_IN_LUX = 10
 MOTION_SENSOR_SWITCH_NAME = 'TestMotionSensorName'
@@ -350,6 +347,5 @@ class ZoneTest(DeviceTest):
         info = str(zone)
 
         self.assertTrue(len(info) > 0)
-        # logger.info(info)
 
-run_test(ZoneTest, logger) 
+PE.runUnitTest(ZoneTest)

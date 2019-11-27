@@ -1,13 +1,9 @@
 import unittest
 
-from org.slf4j import Logger, LoggerFactory
-from core.testing import run_test
-
-from aaa_modules import environment_canada
-reload(environment_canada)
+#from aaa_modules import environment_canada
+#reload(environment_canada)
 from aaa_modules.environment_canada import Forecast, EnvCanada
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 # Unit tests for environment_canada.py.
 class EnvCanadaTest(unittest.TestCase):
@@ -49,4 +45,4 @@ class EnvCanadaTest(unittest.TestCase):
             self.assertTrue(len(forecast.getCondition()) > 0)
             self.assertTrue(len(forecast.getPrecipationProbability()) > 0)
 
-run_test(EnvCanadaTest, logger) 
+PE.runUnitTest(EnvCanadaTest)

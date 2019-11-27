@@ -1,13 +1,13 @@
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
-from aaa_modules.layout_model.actions import turn_on_switch
-reload(turn_on_switch)
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+
+#from aaa_modules.layout_model.actions import turn_on_switch
+#reload(turn_on_switch)
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 
 from aaa_modules.layout_model.zone import Zone, Level
@@ -18,8 +18,6 @@ from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light
 
 from aaa_modules.layout_model.device_test import DeviceTest
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 ILLUMINANCE_THRESHOLD_IN_LUX = 10
 ITEMS = [SwitchItem('TestLightName1'),
@@ -190,4 +188,4 @@ class TurnOnSwitchTest(DeviceTest):
 
         return getZone
 
-run_test(TurnOnSwitchTest, logger) 
+PE.runUnitTest(TurnOnSwitchTest)

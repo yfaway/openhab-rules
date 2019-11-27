@@ -1,17 +1,14 @@
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import SwitchItem, NumberItem
 
 from aaa_modules.layout_model.device_test import DeviceTest
 
-from aaa_modules.layout_model.devices import plug
-reload(plug)
+#from aaa_modules.layout_model.devices import plug
+#reload(plug)
 from aaa_modules.layout_model.devices.plug import Plug
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 ITEMS = [SwitchItem('_Plug'), NumberItem('_Power')]
 
@@ -47,4 +44,4 @@ class PlugTest(DeviceTest):
         time.sleep(0.1)
         self.assertFalse(self.plug.isOn())
 
-run_test(PlugTest, logger) 
+PE.runUnitTest(PlugTest)

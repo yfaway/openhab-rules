@@ -1,14 +1,11 @@
 import unittest
 import time
 import datetime
-from org.slf4j import Logger, LoggerFactory
-from core.testing import run_test
 
+#from aaa_modules import time_utilities
+#reload(time_utilities)
 from aaa_modules import time_utilities
-reload(time_utilities)
-from aaa_modules import time_utilities
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 # Unit tests for time_utilities.py.
 class TimeUtilitiesTest(unittest.TestCase):
@@ -167,4 +164,4 @@ class TimeUtilitiesTest(unittest.TestCase):
         self.assertEqual([13, 0, 15, 0], list[2])
         self.assertEqual([16, 0, 17, 30], list[3])
 
-#run_test(TimeUtilitiesTest, logger) 
+PE.runUnitTest(TimeUtilitiesTest)

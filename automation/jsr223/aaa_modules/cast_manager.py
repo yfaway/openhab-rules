@@ -5,7 +5,6 @@ Contains functions that work with Google Chromecasts and Google Home.
 
 import time
 
-from org.slf4j import Logger, LoggerFactory
 from core import osgi
 from core.jsr223 import scope
 from core.rules import rule
@@ -22,8 +21,6 @@ from aaa_modules.chromecast import *
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 MAX_SAY_WAIT_TIME_IN_SECONDS = 20
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 CASTS = [ChromeCast('FF_GreatRoom_ChromeCast', "chromecast:audio:greatRoom"),
          ChromeCast('SF_MasterBedroom_ChromeCast', "chromecast:audio:masterBedroom"),
@@ -187,7 +184,7 @@ def playStream(name, casts = CASTS, volume = None):
 
         return True
     else:
-        logger.info("Missing stream URL for '{0}'".format(name))
+        PE.logInfo("Missing stream URL for '{0}'".format(name))
         return False
 
 def getAllCasts():

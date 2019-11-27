@@ -4,9 +4,6 @@ from core.triggers import when
 
 from aaa_modules import switch_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-
-from aaa_modules import security_manager
-reload(security_manager)
 from aaa_modules.security_manager import SecurityManager as SM
 
 from aaa_modules.zone_parser import ZoneParser

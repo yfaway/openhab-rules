@@ -2,16 +2,14 @@ import unittest
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
+
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 #from aaa_modules.layout_model import dimmer
 #reload(dimmer)
 from aaa_modules.layout_model.dimmer import Dimmer
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 DIMMER_NAME = 'TestDimmerName'
 TIMER_NAME = 'TestTimerName'
@@ -87,4 +85,4 @@ class DimmerTest(unittest.TestCase):
         time.sleep(0.1)
         self.assertFalse(self.dimmer.isOn())
 
-run_test(DimmerTest, logger) 
+PE.runUnitTest(DimmerTest)

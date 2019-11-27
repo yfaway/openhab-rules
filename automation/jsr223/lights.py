@@ -1,4 +1,3 @@
-from org.slf4j import Logger, LoggerFactory
 from core import osgi
 from core.rules import rule
 from core.triggers import when
@@ -15,7 +14,6 @@ scriptExtension.importPreset("RuleSupport")
 scriptExtension.importPreset("RuleSimple")
 
 MetadataRegistry = osgi.get_service("org.eclipse.smarthome.core.items.MetadataRegistry")
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 # The period of time in seconds (from the last timestamp a switch was turned
 # off) to ignore the ON command trigged by the motion sensor. This takes care
@@ -223,7 +221,7 @@ def turnOffWallSwitch(timerEvent):
     #turnOffWallSwitch("FF_Foyer_LightSwitch_Timer")
     #meta = MetadataRegistry.get(MetadataKey("light", "SF_Lobby_LightSwitch")) 
     #config = meta.configuration
-    #logger.info("meta: " + str(config["level"]))
+    #PE.logInfo("meta: " + str(config["level"]))
 
 
 # TODO remove when @when supports "System started".

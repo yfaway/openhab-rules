@@ -3,7 +3,6 @@
 
 import time
 
-from org.slf4j import Logger, LoggerFactory
 from core import osgi
 from core.rules import rule
 from core.triggers import when
@@ -12,6 +11,7 @@ from org.joda.time import DateTime
 from aaa_modules import cast_manager
 from aaa_modules import time_utilities
 from aaa_modules.environment_canada import Forecast, EnvCanada
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 # The follow two constants define the morning time range and the # of times
 # announcement and music will automatically be played. The counter is
@@ -29,7 +29,6 @@ inMorningSession = False
 # Indicates if music was already played at dinner time.
 inDinnerSession = False
 
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 morningMusicStartCount = 0
 
 @rule("Play music on the first 2 morning visits to kitchen")
@@ -41,7 +40,7 @@ def playAnnouncementAndMusicInTheMorning(event):
     if isInMorningTimeRange() and \
             morningMusicStartCount < MAX_MORNING_MUSIC_START_COUNT:
         if not inMorningSession:
-            logger.info('{} Playing morning annoucement.'.format(LOG_PREFIX))
+            PE.logInfo('{} Playing morning annoucement.'.format(LOG_PREFIX))
             inMorningSession = True
             msg = getMorningAnnouncement()
             casts = cast_manager.getFirstFloorCasts()
@@ -50,7 +49,7 @@ def playAnnouncementAndMusicInTheMorning(event):
             cast_manager.playStream("WWFM Classical", casts, 35)
             morningMusicStartCount += 1
 #        else:
-#            logger.info('{} Not in session.'.format(LOG_PREFIX))
+#            PE.logInfo('{} Not in session.'.format(LOG_PREFIX))
 
 @rule("Reset music states at 5AM")
 @when("Time cron 0 0 5 1/1 * ? *")
@@ -69,7 +68,7 @@ def resetMusicStates(event):
 def pauseMorningMusic(event):
     global inMorningSession
     if isInMorningTimeRange() and inMorningSession:
-        logger.info('{} Pausing morning music.'.format(LOG_PREFIX))
+        PE.logInfo('{} Pausing morning music.'.format(LOG_PREFIX))
         cast_manager.pause()
         inMorningSession = False
 
@@ -77,7 +76,7 @@ def pauseMorningMusic(event):
 @when("Item VT_GreatRoom_PlayMorningAnnouncement changed to ON")
 def playMorningAnnouncement(event):
     msg = getMorningAnnouncement()
-    logger.info(u"{} Saying: {}".format(LOG_PREFIX, msg))
+    PE.logInfo(u"{} Saying: {}".format(LOG_PREFIX, msg))
     cast_manager.playMessage(msg)
     events.sendCommand(event.itemName, 'OFF')
 

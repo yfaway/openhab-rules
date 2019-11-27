@@ -2,15 +2,12 @@ import unittest
 import time
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 #from aaa_modules.layout_model import switch
 #reload(switch)
 from aaa_modules.layout_model.switch import Light
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 LIGHT_SWITCH_NAME = 'TestLightName'
 TIMER_NAME = 'TestTimerName'
@@ -104,4 +101,4 @@ class LightTest(unittest.TestCase):
         self.light = Light(self.lightItem, self.timerItem, 50)
         self.assertTrue(self.light.isLowIlluminance(10))
 
-run_test(LightTest, logger) 
+PE.runUnitTest(LightTest)

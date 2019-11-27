@@ -1,9 +1,8 @@
 import unittest
 
 from core.jsr223 import scope
-from core.testing import run_test
-from org.slf4j import Logger, LoggerFactory
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
@@ -11,11 +10,9 @@ from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.switch import Light, Fan
 
-from aaa_modules import zone_parser
-reload(zone_parser)
+#from aaa_modules import zone_parser
+#reload(zone_parser)
 from aaa_modules.zone_parser import ZoneParser
-
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 # Unit tests for zone_parser.py.
 class ZoneParserTest(unittest.TestCase):
@@ -35,4 +32,4 @@ class ZoneParserTest(unittest.TestCase):
         self.assertTrue(any(len(z.getDevicesByType(MotionSensor)) > 0 for z in zones))
         self.assertTrue(any(len(z.getDevicesByType(AlarmPartition)) > 0 for z in zones))
 
-run_test(ZoneParserTest, logger) 
+PE.runUnitTest(ZoneParserTest)
