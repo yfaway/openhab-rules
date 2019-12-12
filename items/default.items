@@ -61,7 +61,9 @@ Switch FF_Porch_Door (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor)
   {channel="dscalarm:zone:706cd89d:zone1:zone_tripped"}
 Switch FF_Foyer_Door (gZoneTripped, FF_Foyer_LightSwitch_MotionSensor) 
   {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
-Switch FF_PatioDoor_Tripped (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
+Switch FF_Patio_Door (gZoneTripped)
+  {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
+
 Switch FF_GreatRoom_MotionSensor_Tripped 
   (gZoneTripped, gFirstFloorMotionSensors, FF_Kitchen_LightSwitch_MotionSensor, 
    FF_GreatRoom_LightSwitch_MotionSensor)
@@ -80,7 +82,7 @@ Contact FF_Windows_Status (gZoneStatus)
 /**
  * Garage door
  */
-Contact GarageDoorContact       "Garage Door [%s]" <contact> {myq="CG08600DF614"}
+Contact FF_Garage_Door       "Garage Door [%s]" <contact> {myq="CG08600DF614"}
 String GarageDoorString         "Garage Door [%s]"           {myq="CG08600DF614"}
 Switch GarageDoorSwitch         "Garage Door Open"           {myq="CG08600DF614"}
 

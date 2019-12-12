@@ -15,7 +15,7 @@ class AlertOnExternalDoorLeftOpen(Action):
     closed (--> stop the timer)
     '''
 
-    def __init__(self, maxElapsedTimeInSeconds = 30 * 60):
+    def __init__(self, maxElapsedTimeInSeconds = 15 * 60):
         '''
         Ctor
 
@@ -41,7 +41,6 @@ class AlertOnExternalDoorLeftOpen(Action):
         def sendAlert():
             msg = 'The {} door has been opened for {} minutes.'.format(
                     zone.getName(), self.maxElapsedTimeInSeconds / 60)
-            PE.logInfo(msg)
 
             alert = Alert.createWarningAlert(msg)
             AlertManager.processAlert(alert)
@@ -61,6 +60,10 @@ class AlertOnExternalDoorLeftOpen(Action):
                 if None != timer:
                     timer.cancel()
                     del self.timers[door]
+
+                    msg = 'The {} door is now closed.'.format(zone.getName())
+                    alert = Alert.createWarningAlert(msg)
+                    AlertManager.processAlert(alert)
 
         return True
 

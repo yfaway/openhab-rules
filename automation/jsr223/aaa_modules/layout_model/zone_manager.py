@@ -155,7 +155,8 @@ class ZoneManager:
         :rtype: bool
         """
         returnValues = [
-            z.onContactClosed(events, itemName) for z in ZoneManager.zones.values()]
+            z.onContactClosed(events, itemName, ZoneManager.getZoneById)
+            for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     @staticmethod

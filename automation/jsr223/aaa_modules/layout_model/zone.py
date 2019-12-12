@@ -3,6 +3,7 @@ from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.device import Device
 from aaa_modules.layout_model.switch import Light, Switch
+from aaa_modules.layout_model.devices.contact import Contact
 from aaa_modules.layout_model.devices.plug import Plug
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
@@ -23,6 +24,8 @@ class ZoneEvent:
     MOTION = 1            #: A motion triggered event
     SWITCH_TURNED_ON = 2  #: A switch turned-on event
     SWITCH_TURNED_OFF = 3 #: A switch turned-on event
+    CONTACT_OPEN = 4      #: A contact (doors/windows) is open
+    CONTACT_CLOSED = 5    #: A contact (doors/windows) is close
 
 class Zone:
     """
@@ -431,13 +434,31 @@ class Zone:
             given a zone id string
         :rtype: boolean
         '''
-        return False
+        if not self.containsOpenHabItem(itemName, Contact):
+            return False 
 
-    def onContactClosed(self, events, itemName):
+        processed = False
+        for a in self.getActions(ZoneEvent.CONTACT_OPEN):
+            if a.onAction(events, self, getZoneByIdFn):
+                processed = True
+
+        return processed
+
+
+    def onContactClosed(self, events, itemName, getZoneByIdFn):
         '''
         :rtype: boolean
         '''
-        return False
+        if not self.containsOpenHabItem(itemName, Contact):
+            return False 
+
+        processed = False
+        for a in self.getActions(ZoneEvent.CONTACT_CLOSED):
+            if a.onAction(events, self, getZoneByIdFn):
+                processed = True
+
+        return processed
+
 
     def onMotionSensorTurnedOn(self, events, itemName, getZoneByIdFn):
         '''
