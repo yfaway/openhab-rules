@@ -85,4 +85,11 @@ def onTimerExpired(event):
         PE.logInfo('Timer event for {} is not processed.'.format(
                     event.itemName))
 
+@rule("Dispatch network device connected event")
+@when("Member of gNetworkPresence changed to ON")
+def onNetworkDeviceConnected(event):
+    if not ZoneManager.onNetworkDeviceConnected(events, event.itemName):
+        PE.logInfo('Network device connected event for {} is not processed.'.format(
+                    event.itemName))
+
 initializeZoneManager()

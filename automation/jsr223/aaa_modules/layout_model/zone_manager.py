@@ -160,6 +160,18 @@ class ZoneManager:
         return any(returnValues)
 
     @staticmethod
+    def onNetworkDeviceConnected(events, itemName):
+        """
+        Dispatches the network device connected (to local network) to each zone.
+
+        :return: True if at least one zone processed the event; False otherwise
+        :rtype: bool
+        """
+        ZoneManager._updateDeviceLastActivatedTime(itemName)
+
+        return True
+
+    @staticmethod
     def _updateDeviceLastActivatedTime(itemName):
         """
         Determine if the itemName is associated with a managed device. If yes,

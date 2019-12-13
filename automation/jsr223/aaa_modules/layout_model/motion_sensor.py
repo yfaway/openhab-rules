@@ -1,6 +1,6 @@
 import time
-from org.eclipse.smarthome.core.library.types import OnOffType
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device import Device
 
 class MotionSensor(Device):
@@ -20,7 +20,7 @@ class MotionSensor(Device):
         '''
         Returns true if the motion sensor's state is on; false otherwise.
         '''
-        return OnOffType.ON == self.getItem().getState()
+        return PE.isInStateOn(self.getItem().getState())
 
     def isOccupied(self, minutesFromLastMotionEvent = 5):
         '''

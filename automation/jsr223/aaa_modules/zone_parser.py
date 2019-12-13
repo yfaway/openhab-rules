@@ -11,6 +11,7 @@ from aaa_modules.layout_model.zone import Zone, Level
 
 from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.layout_model.devices.contact import Door
+from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
 
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
@@ -102,6 +103,8 @@ class ZoneParser:
                     deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addDoor(
                     deviceName, openHabItem, zone, itemRegistry)
+            zone = ZoneParser._addNetworkPresence(
+                    deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addSwitches(
                     deviceName, openHabItem, zone, itemRegistry, neighbors)
             zone = ZoneParser._addPlugs(
@@ -141,6 +144,14 @@ class ZoneParser:
         if 'Door' == deviceName:
             door = Door(openHabItem)
             zone = zone.addDevice(door)
+
+        return zone
+
+    @staticmethod
+    def _addNetworkPresence(deviceName, openHabItem, zone, itemRegistry):
+        if 'NetworkPresence' in deviceName:
+            presence = NetworkPresence(openHabItem)
+            zone = zone.addDevice(presence)
 
         return zone
 
