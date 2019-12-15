@@ -58,12 +58,14 @@ class AlertOnExternalDoorLeftOpen(Action):
                 self.timers[door] = timer
             else:
                 if None != timer:
-                    timer.cancel()
-                    del self.timers[door]
+                    if timer.isAlive():
+                        timer.cancel()
+                    else: # alert door now closed if a warning was previous sent
+                        msg = 'The {} door is now closed.'.format(zone.getName())
+                        alert = Alert.createWarningAlert(msg)
+                        AlertManager.processAlert(alert)
 
-                    msg = 'The {} door is now closed.'.format(zone.getName())
-                    alert = Alert.createWarningAlert(msg)
-                    AlertManager.processAlert(alert)
+                    del self.timers[door]
 
         return True
 
