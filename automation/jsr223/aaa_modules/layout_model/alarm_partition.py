@@ -1,12 +1,12 @@
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device import Device
-from org.eclipse.smarthome.core.library.types import OnOffType
 
 class AlarmPartition(Device):
     '''
     Represents a security control. Exposes methods to arm the security system,
     and provide the alarm status.
 
-    The current implementatio is for DSC Alarm system.
+    The current implementation is for DSC Alarm system.
     '''
 
     STATE_UNARMED = 0
@@ -40,7 +40,7 @@ class AlarmPartition(Device):
         :return: True if the partition is in alarm; False otherwise
         :rtype: bool
         '''
-        return OnOffType.ON == self.getItem().getState()
+        return PE.isInStateOn(self.getItem().getState())
 
     def getArmMode(self):
         '''
@@ -49,13 +49,31 @@ class AlarmPartition(Device):
         '''
         return self.armModeItem.getState().intValue()
 
+    def isArmedAway(self):
+        '''
+        :rtype: boolean
+        '''
+        return AlarmPartition.STATE_ARM_AWAY == self.getArmMode()
+
+    def isArmedStay(self):
+        '''
+        :rtype: boolean
+        '''
+        return AlarmPartition.STATE_ARM_STAY == self.getArmMode()
+
+    def isUnarmed(self):
+        '''
+        :rtype: boolean
+        '''
+        return AlarmPartition.STATE_UNARMED == self.getArmMode()
+
     def armAway(self, events):
         '''
         Arm-away the partiton.
 
         :param scope.events events:
         '''
-        events.sendCommand(self.armModeItem, AlarmPartition.STATE_ARM_AWAY)
+        events.sendCommand(self.armModeItem.getName(), str(AlarmPartition.STATE_ARM_AWAY))
 
     def armStay(self, events):
         '''
@@ -63,7 +81,7 @@ class AlarmPartition(Device):
 
         :param scope.events events:
         '''
-        events.sendCommand(self.armModeItem, AlarmPartition.STATE_ARM_STAY)
+        events.sendCommand(self.armModeItem.getName(), str(AlarmPartition.STATE_ARM_STAY))
 
     def disarm(self, events):
         '''
@@ -71,5 +89,4 @@ class AlarmPartition(Device):
 
         :param scope.events events:
         '''
-        events.sendCommand(self.armModeItem, AlarmPartition.STATE_UNARMED)
-
+        events.sendCommand(self.armModeItem.getName(), str(AlarmPartition.STATE_UNARMED))

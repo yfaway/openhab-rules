@@ -58,3 +58,15 @@ class SecurityManager:
                 return True
 
         return False
+
+    @staticmethod
+    def isArmedStay():
+        '''
+        :return: True if at least one zone is armed-stay
+        '''
+        securityPartitions = ZoneManager.getDevicesByType(AlarmPartition)
+        if len(securityPartitions) > 0:
+            if AlarmPartition.STATE_ARM_STAY == securityPartitions[0].getArmMode():
+                return True
+
+        return False

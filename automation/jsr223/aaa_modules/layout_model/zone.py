@@ -4,6 +4,7 @@ from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.device import Device
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.devices.contact import Contact
+from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
@@ -301,17 +302,21 @@ class Zone:
         else:
             return any(s.isLightOnTime() for s in astroSensors)
 
-    def isOccupied(self, minutesFromLastMotionEvent = 5):
+    def isOccupied(self, secondsFromLastEvent = 5 * 60):
         '''
-        Returns True if the zone has at least one switch turned on, or if a
-        motion event was triggered within the provided # of minutes.
+        Returns True if
+          - at least one switch turned on, or
+          - a motion event was triggered within the provided # of seconds, or
+          - a network device was active in the local network within the
+            provided # of seconds.
 
         :rtype: bool
         '''
         occupied = False
 
-        motionSensors = self.getDevicesByType(MotionSensor)
-        if any(s.isOccupied(minutesFromLastMotionEvent) for s in motionSensors):
+        presenceSensors = self.getDevicesByType(MotionSensor) + \
+            self.getDevicesByType(NetworkPresence)
+        if any(s.wasRecentlyActivated(secondsFromLastEvent) for s in presenceSensors):
             occupied = True
         else:
             switches = self.getDevicesByType(Switch)

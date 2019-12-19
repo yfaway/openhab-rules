@@ -16,7 +16,7 @@ from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExte
 
 ITEMS = [SwitchItem('Door1'), SwitchItem('Door2')]
 
-# Unit tests for zone_manager.py.
+# Unit tests for alert_on_door_left_open.py.
 class AlertOnExternalDoorLeftOpenTest(DeviceTest):
     def setUp(self):
         self.zone1 = Zone.createExternalZone('porch').addDevice(Door(ITEMS[0]))

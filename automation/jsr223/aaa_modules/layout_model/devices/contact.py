@@ -23,6 +23,12 @@ class Contact(Device):
         return PE.isInStateOpen(self.getItem().getState()) \
             or PE.isInStateOn(self.getItem().getState())
 
+    def isClosed(self):
+        '''
+        Returns true if the contact is closed; false otherwise.
+        '''
+        return not self.isOpen()
+
 class Door(Contact):
     '''
     Represents a door.
