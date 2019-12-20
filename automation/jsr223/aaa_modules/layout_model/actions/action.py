@@ -6,14 +6,14 @@ class Action(object):
     An action may rely on the states of one or more sensors in the zone.
     '''
 
-    def onAction(self, events, zone, getZoneByIdFn):
+    def onAction(self, events, zone, zoneManager):
         '''
         Subclass must override this method with its own handling.
 
         :param scope.events events:
         :param Zone zone: the zone where the action takes place
-        :param lambda getZoneByIdFn: a function that returns a Zone object given\
-        a zone id string
+        :param ImmutableZoneManager zoneManager: contains all available zones \
+            as well as useful general functions.
         :return: True if the event is processed; False otherwise.
         '''
         pass

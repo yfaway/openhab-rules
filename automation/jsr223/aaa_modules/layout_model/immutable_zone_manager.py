@@ -1,5 +1,4 @@
 from aaa_modules.layout_model.zone import Zone
-from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.device import Device
 
 class ImmutableZoneManager:
@@ -8,8 +7,11 @@ class ImmutableZoneManager:
     Instances of this class is passed to the method Action#onAction.
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, getZonesLambda, getZoneByIdLambda,
+            getDevicesByTypeLambda):
+        self.getZonesLambda = getZonesLambda
+        self.getZoneByIdLambda = getZoneByIdLambda
+        self.getDevicesByTypeLambda = getDevicesByTypeLambda
 
     def getZones(self):
         ''' 
@@ -17,7 +19,7 @@ class ImmutableZoneManager:
 
         :rtype: list(Zone)
         ''' 
-        return ZoneManager.getZones()
+        return self.getZonesLambda()
 
     def getZoneById(self, zoneId):
         """
@@ -27,7 +29,7 @@ class ImmutableZoneManager:
         :return: the associated zone or None if the zoneId is not found
         :rtype: Zone
         """
-        return ZoneManager.getZoneById(zoneId)
+        return self.getZoneByIdLambda(zoneId)
 
     def getDevicesByType(self, cls):
         '''
@@ -36,5 +38,5 @@ class ImmutableZoneManager:
         :param Device cls: the device type
         :rtype: list(Device)
         '''
-        return ZoneManager.getDevicesByType(cls)
+        return self.getDevicesByTypeLambda(cls)
 

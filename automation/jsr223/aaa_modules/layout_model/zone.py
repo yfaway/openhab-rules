@@ -385,7 +385,7 @@ class Zone:
             
         return isProcessed
 
-    def onSwitchTurnedOn(self, events, itemName, getZoneByIdFn):
+    def onSwitchTurnedOn(self, events, itemName, immutableZoneManager):
         '''
         If itemName belongs to this zone, dispatches the event to the associated
         Switch object, execute the associated actions, and returns True.
@@ -393,8 +393,8 @@ class Zone:
 
         See :meth:`.Switch.onSwitchTurnedOn`
 
-        :param lambda getZoneByIdFn: a function that returns a Zone object \
-            given a zone id string
+        :param ImmutableZoneManager immutableZoneManager: a function that \
+            returns a Zone object given a zone id string
         :rtype: boolean
         '''
         isProcessed = False
@@ -404,7 +404,7 @@ class Zone:
         for switch in switches:
             if switch.onSwitchTurnedOn(events, itemName):
                 for a in actions:
-                    a.onAction(events, self, getZoneByIdFn)
+                    a.onAction(events, self, immutableZoneManager)
 
                 isProcessed = True
         
@@ -427,16 +427,16 @@ class Zone:
         for switch in switches:
             if switch.onSwitchTurnedOff(events, itemName):
                 for a in actions:
-                    a.onAction(events, self, getZoneByIdFn)
+                    a.onAction(events, self, None)
 
                 isProcessed = True
         
         return isProcessed
 
-    def onContactOpen(self, events, itemName, getZoneByIdFn):
+    def onContactOpen(self, events, itemName, immutableZoneManager):
         '''
-        :param lambda getZoneByIdFn: a function that returns a Zone object \
-            given a zone id string
+        :param lambda immutableZoneManager: a function that returns a Zone \
+             object given a zone id string
         :rtype: boolean
         '''
         if not self.containsOpenHabItem(itemName, Contact):
@@ -444,13 +444,13 @@ class Zone:
 
         processed = False
         for a in self.getActions(ZoneEvent.CONTACT_OPEN):
-            if a.onAction(events, self, getZoneByIdFn):
+            if a.onAction(events, self, immutableZoneManager):
                 processed = True
 
         return processed
 
 
-    def onContactClosed(self, events, itemName, getZoneByIdFn):
+    def onContactClosed(self, events, itemName, immutableZoneManager):
         '''
         :rtype: boolean
         '''
@@ -459,20 +459,20 @@ class Zone:
 
         processed = False
         for a in self.getActions(ZoneEvent.CONTACT_CLOSED):
-            if a.onAction(events, self, getZoneByIdFn):
+            if a.onAction(events, self, immutableZoneManager):
                 processed = True
 
         return processed
 
 
-    def onMotionSensorTurnedOn(self, events, itemName, getZoneByIdFn):
+    def onMotionSensorTurnedOn(self, events, itemName, immutableZoneManager):
         '''
         If the motion sensor belongs to this zone, turns on the associated
         switch, execute the associated actions, and returns True. Otherwise
         return False.
 
-        :param lambda getZoneByIdFn: a function that returns a Zone object\
-            given a zone id string
+        :param ImmutableZoneManager immutableZoneManager: a function that \
+            returns a Zone object given a zone id string
         :rtype: boolean
         '''
         if not self.containsOpenHabItem(itemName, MotionSensor):
@@ -480,7 +480,7 @@ class Zone:
 
         processed = False
         for a in self.getActions(ZoneEvent.MOTION):
-            if a.onAction(events, self, getZoneByIdFn):
+            if a.onAction(events, self, immutableZoneManager):
                 processed = True
 
         return processed

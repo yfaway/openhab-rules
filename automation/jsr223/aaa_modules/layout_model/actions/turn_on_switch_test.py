@@ -169,8 +169,15 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertFalse(self.zone2.isLightOn())
 
     def turnOn(self):
-        return TurnOnSwitch().onAction(
-                events, self.zone1, self.getIdToZoneLamda())
+        class MockZoneManager:
+            def __init__(self, zone):
+                self.zone = zone
+
+            def getZoneById(self, id):
+                return self.zone
+
+        zm = MockZoneManager(self.zone2)
+        return TurnOnSwitch().onAction(events, self.zone1, zm)
 
     # Helper method to set up the relationship between zone1 and zone2.
     def setUpNeighborRelationship(self, type, neighborLightOn):
@@ -180,12 +187,5 @@ class TurnOnSwitchTest(DeviceTest):
         
         if neighborLightOn:
             self.lightItem2.setState(scope.OnOffType.ON)
-
-    # Returns a function used to retrieve the Zone from a zone id string.
-    def getIdToZoneLamda(self):
-        def getZone(zoneId):
-            return self.zone2
-
-        return getZone
 
 PE.runUnitTest(TurnOnSwitchTest)

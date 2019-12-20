@@ -1,3 +1,4 @@
+from aaa_modules.layout_model.immutable_zone_manager import ImmutableZoneManager
 from aaa_modules.layout_model.zone import Zone
 from aaa_modules.layout_model.device import Device
 
@@ -86,7 +87,7 @@ class ZoneManager:
 
         returnValues = [
             z.onMotionSensorTurnedOn(
-                    events, itemName, ZoneManager.getZoneById) 
+                    events, itemName, ZoneManager._createImmutableInstance()) 
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
@@ -115,7 +116,7 @@ class ZoneManager:
         ZoneManager._updateDeviceLastActivatedTime(itemName)
 
         returnValues = [
-            z.onSwitchTurnedOn(events, itemName, ZoneManager.getZoneById)
+            z.onSwitchTurnedOn(events, itemName, ZoneManager._createImmutableInstance())
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
@@ -142,7 +143,7 @@ class ZoneManager:
         ZoneManager._updateDeviceLastActivatedTime(itemName)
 
         returnValues = [
-            z.onContactOpen(events, itemName, ZoneManager.getZoneById)
+            z.onContactOpen(events, itemName, ZoneManager._createImmutableInstance())
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
@@ -155,7 +156,7 @@ class ZoneManager:
         :rtype: bool
         """
         returnValues = [
-            z.onContactClosed(events, itemName, ZoneManager.getZoneById)
+            z.onContactClosed(events, itemName, ZoneManager._createImmutableInstance())
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
@@ -181,3 +182,9 @@ class ZoneManager:
             devices = [d for d in zone.getDevices() if d.getItemName() == itemName]
             for d in devices:
                 d._updateLastActivatedTimestamp()
+
+    @staticmethod
+    def _createImmutableInstance():
+        return ImmutableZoneManager(ZoneManager.getZones,
+                ZoneManager.getZoneById,
+                ZoneManager.getDevicesByType)

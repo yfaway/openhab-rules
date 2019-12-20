@@ -8,9 +8,9 @@ class TurnOffAdjacentZones(Action):
     and OPEN_SPACE_SLAVE type.
     '''
 
-    def onAction(self, events, zone, getZoneByIdFn):
-        if None != getZoneByIdFn:
-            adjacentZones = [getZoneByIdFn(n.getZoneId()) \
+    def onAction(self, events, zone, zoneManager):
+        if None != zoneManager:
+            adjacentZones = [zoneManager.getZoneById(n.getZoneId()) \
                 for n in zone.getNeighbors() \
                 if (NeighborType.OPEN_SPACE == n.getType() or \
                         NeighborType.OPEN_SPACE_SLAVE == n.getType()) ]

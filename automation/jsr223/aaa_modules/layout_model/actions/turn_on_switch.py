@@ -39,7 +39,7 @@ class TurnOnSwitch(Action):
     again.
     '''
 
-    def onAction(self, events, zone, getZoneByIdFn):
+    def onAction(self, events, zone, zoneManager):
         isProcessed = False
         canTurnOffAdjacentZones = True
         lightOnTime = zone.isLightOnTime()
@@ -74,7 +74,7 @@ class TurnOnSwitch(Action):
 
             # Break if the switch of a neighbor sharing the motion sensor was
             # just turned off.
-            openSpaceZones = [getZoneByIdFn(n.getZoneId()) \
+            openSpaceZones = [zoneManager.getZoneById(n.getZoneId()) \
                 for n in zone.getNeighbors() if n.isOpenSpace()]
             sharedMotionSensorZones = [z for z in openSpaceZones 
                 if zone.shareSensorWith(z, MotionSensor)]
@@ -93,8 +93,8 @@ class TurnOnSwitch(Action):
                 if lightOnTime or switch.isLowIlluminance(zoneIlluminance):
                     isProcessed = True
                     
-                if isProcessed and None != getZoneByIdFn:
-                    masterZones = [getZoneByIdFn(n.getZoneId()) \
+                if isProcessed and None != zoneManager:
+                    masterZones = [zoneManager.getZoneById(n.getZoneId()) \
                         for n in zone.getNeighbors() \
                         if NeighborType.OPEN_SPACE_MASTER == n.getType()]
                     if any(z.isLightOn() for z in masterZones):
@@ -114,6 +114,6 @@ class TurnOnSwitch(Action):
             if DEBUG:
                 PE.logInfo("{}: turning off adjancent zone's light".format(
                         switch.getItemName()))
-            TurnOffAdjacentZones().onAction(events, zone, getZoneByIdFn)
+            TurnOffAdjacentZones().onAction(events, zone, zoneManager)
         
         return isProcessed
