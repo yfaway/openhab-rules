@@ -5,13 +5,14 @@ from core.triggers import when
 from aaa_modules import switch_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.security_manager import SecurityManager as SM
-
 from aaa_modules.zone_parser import ZoneParser
+
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.switch import Switch
 from aaa_modules.layout_model.actions.alert_on_entrance_activity import AlertOnEntraceActivity
 from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExternalDoorLeftOpen
+from aaa_modules.layout_model.actions.arm_after_front_door_closed import ArmAfterFrontDoorClosed
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
@@ -25,6 +26,7 @@ def initializeZoneManager():
     turnOffAdjacentZonesAction = TurnOffAdjacentZones()
     alertOnEntranceActivity = AlertOnEntraceActivity()
     alertOnExternalDoorLeftOpen = AlertOnExternalDoorLeftOpen()
+    armAfterFrontDoorClosed = ArmAfterFrontDoorClosed(15 * 60) # arm after 15'
 
     for z in zones:
         if len(z.getDevicesByType(Switch)) > 0:
@@ -37,9 +39,17 @@ def initializeZoneManager():
             z = z.addAction(ZoneEvent.CONTACT_OPEN, alertOnExternalDoorLeftOpen)
             z = z.addAction(ZoneEvent.CONTACT_CLOSED, alertOnExternalDoorLeftOpen)
 
+            z = z.addAction(ZoneEvent.CONTACT_CLOSED, armAfterFrontDoorClosed)
+
         ZoneManager.addZone(z)
 
     PE.logInfo("Configured ZoneManager with {} zones.".format(len(zones)))
+
+    zones = ZoneManager.getZones()
+    output = "{} zones".format(len(zones))
+    for z in zones:
+        output += '\n' + str(z)
+    PE.logInfo(output)
 
 @rule("Turn on light when motion sensor triggered")
 @when("Member of gWallSwitchMotionSensor changed to ON")

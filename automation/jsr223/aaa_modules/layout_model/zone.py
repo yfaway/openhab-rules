@@ -497,7 +497,15 @@ class Zone:
         for d in self.devices:
             str += u"\n  {}".format(unicode(d))
 
+        if len(self.actions) > 0:
+            str += u"\n"
+            for key in self.actions.keys():
+                actionList = self.actions[key]
+                for action in actionList:
+                    str += u"\n  Action: {} -> {}".format(key, unicode(type(action).__name__))
+
         if len(self.neighbors) > 0:
+            str += u"\n"
             for n in self.neighbors:
                 str += u"\n  Neighbor: {}, {}".format(
                         n.getZoneId(), unicode(n.getType()))

@@ -55,14 +55,25 @@ class ArmAfterFrontDoorClosed(Action):
                 if None != self.timer:
                     self.timer.cancel()
 
-                def armAndSendAlert():
+                elapsedTime = self.maxElapsedTimeInSeconds
 
-                    occupiedZones = [
-                        z.isOccupied(self.maxElapsedTimeInSeconds) for z in zoneManager.getZones()]
-                    if not any(occupiedZones):
+                def armAndSendAlert():
+                    # Don't know why list comprehension version like below 
+                    # doesn't work, Jython just hang on this statement:
+                    # if not any(z.isOccupied(elapsedTime) for z in zoneManager.getZones()):
+                    # Below is a work around.
+                    occupied = False
+                    for z in zoneManager.getZones():
+                        if z.isOccupied(self.maxElapsedTimeInSeconds):
+                            occupied = True
+                            break
+
+                    if occupied:
+                        PE.logInfo('Auto-arm cancelled (activities detected).')
+                    else:
                         securityPartitions[0].armAway(events)
 
-                        msg = 'The house has been automatically armed-away'
+                        msg = 'The house has been automatically armed-away (front door closed and no activity)'
                         alert = Alert.createWarningAlert(msg)
                         AlertManager.processAlert(alert)
 
