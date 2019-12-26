@@ -49,6 +49,7 @@ class TurnOnSwitch(Action):
             if switch.isOn():
                 switch.turnOn(events) # renew the timer if a switch is already on
                 isProcessed = True
+                canTurnOffAdjacentZones = False
                 continue
 
             if not switch.canBeTriggeredByMotionSensor():

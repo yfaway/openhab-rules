@@ -168,6 +168,14 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertTrue(self.zone1.isLightOn())
         self.assertFalse(self.zone2.isLightOn())
 
+    def testOnAction_renewTimerWhenBothMasterAndSlaveAreOn_returnsTrueAndNotTurningOffNeighbor(self):
+        self.setUpNeighborRelationship(NeighborType.OPEN_SPACE_SLAVE, True) 
+        self.lightItem1.setState(scope.OnOffType.ON)
+
+        self.assertTrue(self.turnOn())
+        time.sleep(0.1)
+        self.assertTrue(self.zone2.isLightOn())
+
     def turnOn(self):
         class MockZoneManager:
             def __init__(self, zone):
