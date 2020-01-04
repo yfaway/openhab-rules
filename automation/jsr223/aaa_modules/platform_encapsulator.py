@@ -81,6 +81,12 @@ class PlatformEncapsulator:
         return logger
 
     @staticmethod
+    def logDebug(message):
+        ''' Log a debug message. '''
+
+        logger.debug(message)
+
+    @staticmethod
     def logInfo(message):
         ''' Log an info message. '''
 

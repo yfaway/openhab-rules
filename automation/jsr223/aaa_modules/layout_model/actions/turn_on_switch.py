@@ -100,6 +100,13 @@ class TurnOnSwitch(Action):
                         if NeighborType.OPEN_SPACE_MASTER == n.getType()]
                     if any(z.isLightOn() for z in masterZones):
                         isProcessed = False
+
+                        # This scenario indicates that there is already 
+                        # activity in the master zone, and thus such activity
+                        # must not prematurely turns off the light in the
+                        # adjacent zone.
+                        canTurnOffAdjacentZones = False
+
                         if DEBUG:
                             PE.logInfo("{}: rejected - a master zone's light is on".format(
                                     switch.getItemName()))

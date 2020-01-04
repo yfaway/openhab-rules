@@ -38,10 +38,10 @@ class Switch(Device):
         Turns on this light, if it is not on yet. In either case, the associated
         timer item is also turned on.
         '''
-        if not PE.isInStateOn(self.getItem().getState()):
-            events.sendCommand(self.getItemName(), "ON")
-        else: # already on, renew timer
+        if self.isOn(): # already on, renew timer
             events.sendCommand(self.timerItem.getName(), "ON")
+        else: 
+            events.sendCommand(self.getItemName(), "ON")
 
     def turnOff(self, events):
         '''
