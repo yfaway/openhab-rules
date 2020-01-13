@@ -1,5 +1,5 @@
 import time
-from core.actions import Mail
+from core.jsr223.scope import actions
 
 from aaa_modules.alert import *
 from aaa_modules import cast_manager
@@ -86,8 +86,11 @@ class AlertManager:
 
         if not AlertManager._testMode:
             body = '' if alert.getBody() == None else alert.getBody()
-            Mail.sendMail(';'.join(emailAddresses), alert.getSubject(),
-                    alert.getBody(), alert.getAttachmentUrls())
+            actions.get("mail", "mail:smtp:gmail").sendMail(
+                    ';'.join(emailAddresses),
+                    alert.getSubject(),
+                    alert.getBody(),
+                    alert.getAttachmentUrls())
 
         AlertManager._lastEmailedSubject = alert.getSubject()
 

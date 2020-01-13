@@ -55,7 +55,7 @@ def initializeZoneManager():
 @when("Member of gWallSwitchMotionSensor changed to ON")
 def onMotionSensor(event):
     if not ZoneManager.onMotionSensorTurnedOn(events, event.itemName):
-        PE.logInfo('Motion event for {} is not processed.'.format(
+        PE.logDebug('Motion event for {} is not processed.'.format(
                     event.itemName))
 
 @rule("Dispatch switch changed event")
@@ -65,11 +65,11 @@ def onSwitchIsChanged(event):
 
     if switch_manager.isSwitchOn(triggeringItem):
         if not ZoneManager.onSwitchTurnedOn(events, event.itemName):
-            PE.logInfo('Switch on event for {} is not processed.'.format(
+            PE.logDebug('Switch on event for {} is not processed.'.format(
                         event.itemName))
     else:
         if not ZoneManager.onSwitchTurnedOff(events, event.itemName):
-            PE.logInfo('Switch off event for {} is not processed.'.format(
+            PE.logDebug('Switch off event for {} is not processed.'.format(
                         event.itemName))
 
 @rule("Dispatch contact changed event")
@@ -81,25 +81,25 @@ def onDoorOrWindowsChanged(event):
     if PE.isInStateOn(triggeringItem.getState()) \
         or PE.isInStateOpen(triggeringItem.getState()):
         if not ZoneManager.onContactOpen(events, event.itemName):
-            PE.logInfo('Contact open event for {} is not processed.'.format(
+            PE.logDebug('Contact open event for {} is not processed.'.format(
                         event.itemName))
     else:
         if not ZoneManager.onContactClosed(events, event.itemName):
-            PE.logInfo('Contact closed event for {} is not processed.'.format(
+            PE.logDebug('Contact closed event for {} is not processed.'.format(
                         event.itemName))
 
 @rule("Dispatch timer expired event")
 @when("Member of gWallSwitchTimer changed to OFF")
 def onTimerExpired(event):
     if not ZoneManager.onTimerExpired(events, event.itemName):
-        PE.logInfo('Timer event for {} is not processed.'.format(
+        PE.logDebug('Timer event for {} is not processed.'.format(
                     event.itemName))
 
 @rule("Dispatch network device connected event")
 @when("Member of gNetworkPresence changed to ON")
 def onNetworkDeviceConnected(event):
     if not ZoneManager.onNetworkDeviceConnected(events, event.itemName):
-        PE.logInfo('Network device connected event for {} is not processed.'.format(
+        PE.logDebug('Network device connected event for {} is not processed.'.format(
                     event.itemName))
 
 initializeZoneManager()

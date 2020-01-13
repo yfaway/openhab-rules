@@ -45,8 +45,11 @@ class ZoneManagerTest(DeviceTest):
         self.dimmer = Dimmer(self.dimmerItem, self.timerItem, 100, "0-23:59")
         self.fan = Fan(self.fanItem, self.timerItem)
 
+        self.originalZones = ZoneManager.zones
+        ZoneManager.zones = {}
+
     def tearDown(self):
-        ZoneManager.removeAllZones()
+        ZoneManager.zones = self.originalZones
 
     def getItems(self, resetState = False):
         if resetState:
