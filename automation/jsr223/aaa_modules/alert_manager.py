@@ -87,7 +87,7 @@ class AlertManager:
         if not AlertManager._testMode:
             body = '' if alert.getBody() == None else alert.getBody()
             actions.get("mail", "mail:smtp:gmail").sendMail(
-                    ';'.join(emailAddresses),
+                    ', '.join(emailAddresses),
                     alert.getSubject(),
                     alert.getBody(),
                     alert.getAttachmentUrls())
