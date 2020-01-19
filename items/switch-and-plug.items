@@ -108,7 +108,7 @@ Switch SF_MainWashroom_LightSwitch "Main Washroom Light"
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node9:switch_binary", turnOff="SF_Lobby_LightSwitch" }
 Switch SF_MainWashroom_LightSwitch_Timer (gWallSwitchTimer) 
-  { expire="10m,command=OFF"}
+  { expire="15m,command=OFF"}
 //Number SF_MainWashroom_LightSwitch_Illuminance "Main Washroom Illuminance [%d]"
 //  (gIlluminance) 
 //  { channel="mqtt:topic:mything:MainWashroomIlluminance"}

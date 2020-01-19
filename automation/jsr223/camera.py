@@ -3,7 +3,6 @@ import time
 from core import osgi
 from core.rules import rule
 from core.triggers import when
-from core.actions import Mail
 
 from aaa_modules import camera_utilities
 from aaa_modules.alert import *
