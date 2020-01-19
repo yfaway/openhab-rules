@@ -8,6 +8,8 @@ import re
 import time
 import urllib2
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+
 class Forecast(object):
     '''
     Represent the weather forecast.
@@ -140,7 +142,7 @@ class EnvCanada(object):
         timeStruct = time.localtime()
         hourOfDay = timeStruct[3]
 
-        pattern = r"""header2.*?\>(\d+)<             # temp 
+        pattern = r"""header2.*?\>(-?\d+)<           # temp 
                       .*?<p>(.*?)</p>                # condition
                       .*?header4.*?>(.+?)<           # precip probability
                       .*?abbr.*?>(.+?)</abbr> (.*?)< # wind direction and speed
@@ -156,6 +158,7 @@ class EnvCanada(object):
             index = data.find(searchString, index)
 
             subdata = data[index:]
+
             match = re.search(pattern, subdata, 
                     re.MULTILINE | re.DOTALL | re.VERBOSE)
             if not match:
