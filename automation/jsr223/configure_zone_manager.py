@@ -10,6 +10,9 @@ from aaa_modules.zone_parser import ZoneParser
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.switch import Switch
+
+from aaa_modules.layout_model.devices.activity_times import ActivityTimes
+
 from aaa_modules.layout_model.actions.alert_on_entrance_activity import AlertOnEntraceActivity
 from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExternalDoorLeftOpen
 from aaa_modules.layout_model.actions.arm_after_front_door_closed import ArmAfterFrontDoorClosed
@@ -28,7 +31,18 @@ def initializeZoneManager():
     alertOnExternalDoorLeftOpen = AlertOnExternalDoorLeftOpen()
     armAfterFrontDoorClosed = ArmAfterFrontDoorClosed(15 * 60) # arm after 15'
 
+    # add virtual devices and actions
     for z in zones:
+        if z.getName() == 'Virtual':
+            timeMap = {
+                'wakeup': '6 - 9',
+                'lunch': '12:00 - 13:30',
+                'quiet' : '14:00 - 16:00, 20:00 - 22:59',
+                'dinner': '17:50 - 20:00',
+                'sleep': '23:00 - 7:00' 
+            }
+            z = z.addDevice(ActivityTimes(timeMap))
+
         if len(z.getDevicesByType(Switch)) > 0:
             z = z.addAction(ZoneEvent.MOTION, turnOnSwitchAction)
             z = z.addAction(ZoneEvent.SWITCH_TURNED_ON, turnOffAdjacentZonesAction)

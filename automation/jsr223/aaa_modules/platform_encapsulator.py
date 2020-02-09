@@ -1,5 +1,6 @@
 from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.types import UnDefType
+from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.types import OnOffType
 from org.eclipse.smarthome.core.library.types import OpenClosedType
 
@@ -103,6 +104,10 @@ class PlatformEncapsulator:
         ''' Log an error message. '''
 
         logger.error(message)
+
+    @staticmethod
+    def createStringItem(name):
+        return StringItem(name)
 
     @staticmethod
     def runUnitTest(className):
