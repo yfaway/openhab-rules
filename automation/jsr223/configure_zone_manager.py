@@ -65,6 +65,16 @@ def initializeZoneManager():
         output += '\n' + str(z)
     PE.logInfo(output)
 
+def addContextVariables():
+    '''
+    Make the variable zm available to all scripts.
+    '''
+    if "zm" not in locals():
+        import core
+        core.JythonExtensionProvider.addValue("zm",
+                ZoneManager._createImmutableInstance())
+        core.JythonExtensionProvider.addPreset("layout_preset", ["zm"], True)
+
 @rule("Turn on light when motion sensor triggered")
 @when("Member of gWallSwitchMotionSensor changed to ON")
 def onMotionSensor(event):
@@ -117,3 +127,4 @@ def onNetworkDeviceConnected(event):
                     event.itemName))
 
 initializeZoneManager()
+addContextVariables()
