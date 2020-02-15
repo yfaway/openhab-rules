@@ -4,27 +4,6 @@ Utility class containing a set of time related functions.
 
 import time
 
-def isDinnerTime():
-    '''
-    :rtype: bool
-    '''
-    return isInTimeRange("17:50 - 20:00")
-
-def isKidsSleepTime(epochSeconds = None):
-    '''
-    :param int epochSeconds: seconds since epoch, optional
-    :return: true if it is kids' nap or sleep time.
-    '''
-    timeStruct = time.localtime(epochSeconds)
-    hourOfDay = timeStruct[3]
-    if hourOfDay >= 20 or hourOfDay < 8: # regular sleep time
-        return True
-    elif hourOfDay >= 13 and hourOfDay <= 16: # nap time
-        dayOfWeek = timeStruct[6]
-        return dayOfWeek == 5 or dayOfWeek == 6 # weekend
-    else:
-        return False
-
 def isInTimeRange(timeRangesString, epochSeconds = None):
     '''
     Determines if the current time is in the timeRange string.

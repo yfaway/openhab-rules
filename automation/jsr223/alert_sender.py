@@ -14,7 +14,7 @@ def sendAlert(event):
     json = items[_ALERT_ITEM_NAME].toString()
     alert = Alert.fromJson(json)
 
-    if AlertManager.processAlert(alert):
+    if AlertManager.processAlert(alert, zm):
         return True
     else:
         PE.logError('Failed to send alert {}'.format(alert.toString()))

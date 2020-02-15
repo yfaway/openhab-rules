@@ -30,6 +30,6 @@ def alertIfRainInShortermForecast(event):
             body += unicode(f) + '\n'
 
         alert = Alert.createInfoAlert(subject, body)
-        result = AlertManager.processAlert(alert)
+        result = AlertManager.processAlert(alert, zm)
         if not result:
             PE.logInfo('Failed to send rain alert')

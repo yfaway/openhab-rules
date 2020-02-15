@@ -9,9 +9,9 @@ from core.triggers import when
 from org.joda.time import DateTime
 
 from aaa_modules import cast_manager
-from aaa_modules import time_utilities
 from aaa_modules.environment_canada import Forecast, EnvCanada
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 
 # The follow two constants define the morning time range and the # of times
 # announcement and music will automatically be played. The counter is
@@ -84,7 +84,8 @@ def playMorningAnnouncement(event):
 @when("Item FF_Kitchen_LightSwitch_MotionSensor changed to ON")
 def playMusicAtDinnerTime(event):
     global inDinnerSession
-    if time_utilities.isDinnerTime():
+    activity = zm.getDevicesByType(ActivityTimes)[0]
+    if activity.isDinnerTime():
         if not inDinnerSession:
             casts = cast_manager.getFirstFloorCasts()
             cast_manager.playStream("Meditation - Yimago Radio 4", casts, 40)

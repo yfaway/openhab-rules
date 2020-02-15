@@ -14,7 +14,8 @@ from org.joda.time import DateTime
 from aaa_modules import cast_manager
 from aaa_modules.chromecast import *
 from aaa_modules import security_manager
-from aaa_modules import time_utilities
+
+from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 
 CLASSICAL_MUSIC_URI = "https://wwfm.streamguys1.com/live-mp3"
 
@@ -116,8 +117,11 @@ def playMusicWhenBathroomFanTurnOn(event):
     casts = cast_manager.findCasts(StringType(castPrefix))
 
     if len(casts) > 0:
-        volume = 25 if time_utilities.isKidsSleepTime() else 35
-        cast_manager.playStream("CD101.9 NY Smooth Jazz", casts, volume)
+        activity = zm.getDevicesByType(ActivityTimes)[0]
+
+        if not activity.isSleepTime():
+            volume = 25 if activity.isQuietTime() else 35
+            cast_manager.playStream("CD101.9 NY Smooth Jazz", casts, volume)
 
 @rule("Stop music when a bathroom fan is turned off")
 @when("Member of gFanSwitch changed to OFF")

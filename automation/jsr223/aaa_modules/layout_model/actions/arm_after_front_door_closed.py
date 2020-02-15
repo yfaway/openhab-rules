@@ -75,7 +75,7 @@ class ArmAfterFrontDoorClosed(Action):
 
                         msg = 'The house has been automatically armed-away (front door closed and no activity)'
                         alert = Alert.createWarningAlert(msg)
-                        AlertManager.processAlert(alert)
+                        AlertManager.processAlert(alert, zoneManager)
 
                 self.timer = Timer(self.maxElapsedTimeInSeconds, armAndSendAlert)
                 self.timer.start()

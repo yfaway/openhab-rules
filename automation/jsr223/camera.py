@@ -42,7 +42,7 @@ def sendSnapshot(event):
     # todo: use warning instead of info for evening hours.
     alert = Alert.createInfoAlert('[{}] Camera motion alarm triggered'.format(prefix),
             None, attachmentUrls)
-    # result = AlertManager.processAlert(alert)
+    # result = AlertManager.processAlert(alert, zm)
     # if not result:
     #     PE.logInfo('Failed to send camera snapshots')
 

@@ -4,6 +4,7 @@ from core.jsr223.scope import actions
 from aaa_modules.alert import *
 from aaa_modules import cast_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 
 _EMAIL_PROPERTIES_FILE = '/etc/openhab2/transform/owner-email-addresses.map'
 _EMAIL_KEY = 'ALL_OWNER_EMAIL_ADDRESSES'
@@ -32,13 +33,14 @@ class AlertManager:
     '''
 
     @staticmethod
-    def processAlert(alert):
+    def processAlert(alert, zoneManager = None):
         '''
         Processes the provided alert.
         If the alert's level is WARNING or CRITICAL, the TTS subject will be played
         on the ChromeCasts.
 
         :param Alert alert: the alert to be processed
+        :param ImmutableZoneManager zoneManager: used to retrieve the ActivityTimes
         :return: True if alert was processed; False otherwise.
         :raise: ValueError if alert is None
         '''
@@ -61,8 +63,26 @@ class AlertManager:
         if not alert.isAudioAlertOnly():
             AlertManager._emailAlert(alert)
 
-        if alert.isWarningLevel() or alert.isCriticalLevel():
-            cast_manager.playMessage(alert.getSubject())
+        # Play an audio message if the alert is warning or critical.
+        # Determine the volume based on the current zone activity.
+        volume = 0
+        if alert.isCriticalLevel():
+            volume = 60
+        elif alert.isWarningLevel():
+            if None == zoneManager:
+                volume = 60
+            else:
+                activity = zoneManager.getDevicesByType(ActivityTimes)[0]
+                if activity.isSleepTime():
+                    volume = 0
+                elif activity.isQuietTime():
+                    volume = 40
+                else:
+                    volume = 60
+
+        if volume > 0:
+            casts = cast_manager.getAllCasts()
+            cast_manager.playMessage(alert.getSubject(), casts, volume)
 
         return True
 

@@ -9,26 +9,6 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 # Unit tests for time_utilities.py.
 class TimeUtilitiesTest(unittest.TestCase):
-    def testKidsSleepTime_sleepTime_returnsTrue(self):
-        dt = datetime.datetime(2018, 12, 25, 21, 58)
-        self.assertTrue(time_utilities.isKidsSleepTime(time.mktime(dt.timetuple())))
-
-    def testKidsSleepTime_saturdayNapTime_returnsTrue(self):
-        dt = datetime.datetime(2018, 12, 22, 15, 10)
-        self.assertTrue(time_utilities.isKidsSleepTime(time.mktime(dt.timetuple())))
-
-    def testKidsSleepTime_sundayNapTime_returnsTrue(self):
-        dt = datetime.datetime(2018, 12, 23, 15, 10)
-        self.assertTrue(time_utilities.isKidsSleepTime(time.mktime(dt.timetuple())))
-
-    def testKidsSleepTime_notSleepTime_returnsTrue(self):
-        dt = datetime.datetime(2018, 12, 25, 10)
-        self.assertFalse(time_utilities.isKidsSleepTime(time.mktime(dt.timetuple())))
-
-    def testKidsSleepTime_weekdayAfternoon_returnsFalse(self):
-        dt = datetime.datetime(2018, 12, 25, 15, 10)
-        self.assertFalse(time_utilities.isKidsSleepTime(time.mktime(dt.timetuple())))
-
     def testIsInTimeRange_noRange_throwsError(self):
         with self.assertRaises(ValueError) as cm:
             time_utilities.stringToTimeRangeLists([])
