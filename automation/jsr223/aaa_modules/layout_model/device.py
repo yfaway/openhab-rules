@@ -13,7 +13,7 @@ class Device(object):
     The base class that all other sensors and switches derive from.
     '''
 
-    def __init__(self, openhabItem):
+    def __init__(self, openhabItem, batteryPowered = False):
         '''
         Ctor
 
@@ -24,6 +24,7 @@ class Device(object):
             raise ValueError('openhabItem must not be None')
 
         self.item = openhabItem
+        self.batteryPowered = batteryPowered
         self.lastActivatedTimestamp = None
 
     def getItem(self):
@@ -55,6 +56,15 @@ class Device(object):
             return channelMeta.value
         else:
             return None
+
+    def isBatteryPowered(self):
+        '''
+        Returns True if the device is powered by a batter; False otherwise.
+
+        :rtype: Boolean
+        '''
+
+        return self.batteryPowered
 
     def getLastActivatedTimestamp(self):
         '''

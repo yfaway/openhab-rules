@@ -8,12 +8,12 @@ class MotionSensor(Device):
     Represents a motion sensor; the underlying OpenHab object is a SwitchItem.
     '''
 
-    def __init__(self, switchItem):
+    def __init__(self, switchItem, batteryPowered = True):
         '''
         :param org.eclipse.smarthome.core.library.items.SwitchItem switchItem:
         :raise ValueError: if any parameter is invalid
         '''
-        Device.__init__(self, switchItem)
+        Device.__init__(self, switchItem, batteryPowered)
         self.lastOnTimestamp = -1
 
     def isOn(self):
