@@ -43,7 +43,7 @@ Switch FF_Foyer_LightSwitch_Timer (gWallSwitchTimer)
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
 Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
-  (FF_Foyer_LightSwitch_MotionSensor) 
+  (gWallSwitchMotionSensor, FF_Foyer_LightSwitch_MotionSensor) 
   { channel="mqtt:topic:mything:FoyerMotionSensor"}
 
 Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
@@ -64,7 +64,7 @@ Switch FF_Kitchen_LightSwitch_Timer (gWallSwitchTimer)
   { expire="5m,command=OFF"}
 Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
-  (FF_Kitchen_LightSwitch_MotionSensor) 
+  (gWallSwitchMotionSensor, FF_Kitchen_LightSwitch_MotionSensor) 
   { channel="mqtt:topic:mything:PantryMotionSensor"}
 Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 

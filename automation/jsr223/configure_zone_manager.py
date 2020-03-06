@@ -78,6 +78,11 @@ def addContextVariables():
 @rule("Turn on light when motion sensor triggered")
 @when("Member of gWallSwitchMotionSensor changed to ON")
 def onMotionSensor(event):
+    # Ensure that if this is a Group event (Group:Switch), the timestamp for
+    # the triggering item is also updated.
+    if "getMemberName" in dir(event):
+        ZoneManager._updateDeviceLastActivatedTime(event.getMemberName())
+
     if not ZoneManager.onMotionSensorTurnedOn(events, event.itemName):
         PE.logDebug('Motion event for {} is not processed.'.format(
                     event.itemName))
