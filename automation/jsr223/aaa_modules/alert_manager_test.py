@@ -68,8 +68,14 @@ class AlertManagerTest(unittest.TestCase):
         # but another alert with module would go through
         self.assertTrue(AlertManager.processAlert(Alert.createCriticalAlert(SUBJECT)))
 
+    def testProcessAdminAlert_warningAlert_returnsTrue(self):
+        alert = Alert.createWarningAlert(SUBJECT)
+        result = AlertManager.processAdminAlert(alert)
+        self.assertTrue(result)
+        self.assertEqual(alert.getSubject(), AlertManager._lastEmailedSubject)
+
     def testGetEmailAddresses_noParams_returnsNonEmptyList(self):
-        emails = AlertManager._getEmailAddresses()
+        emails = AlertManager._getOwnerEmailAddresses()
         self.assertTrue(len(emails) > 0)
 
 PE.runUnitTest(AlertManagerTest)

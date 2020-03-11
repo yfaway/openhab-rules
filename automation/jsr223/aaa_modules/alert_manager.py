@@ -7,7 +7,8 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 
 _EMAIL_PROPERTIES_FILE = '/etc/openhab2/transform/owner-email-addresses.map'
-_EMAIL_KEY = 'ALL_OWNER_EMAIL_ADDRESSES'
+_ADMIN_EMAIL_KEY = 'admin-email-address'
+_OWNER_EMAIL_KEY = 'owner-email-address'
 
 class AlertManager:
     '''
@@ -50,18 +51,12 @@ class AlertManager:
 
         PE.logInfo(u"Processing alert\n{}".format(alert.toString()))
 
-        if None != alert.getModule():
-            intervalInSeconds = alert.getIntervalBetweenAlertsInMinutes() * 60
-
-            if alert.getModule() in AlertManager._moduleTimestamps:
-                previousTime = AlertManager._moduleTimestamps[alert.getModule()]
-                if (time.time() - previousTime) < intervalInSeconds:
-                    return False
-
-            AlertManager._moduleTimestamps[alert.getModule()] = time.time()
+        if AlertManager._isThrottled(alert):
+            return False
 
         if not alert.isAudioAlertOnly():
-            AlertManager._emailAlert(alert)
+            AlertManager._emailAlert(
+                    alert, AlertManager._getOwnerEmailAddresses())
 
         # Play an audio message if the alert is warning or critical.
         # Determine the volume based on the current zone activity.
@@ -86,6 +81,28 @@ class AlertManager:
 
         return True
 
+    @staticmethod
+    def processAdminAlert(alert):
+        '''
+        Processes the provided alert by sending an email to the administrator.
+
+        :param Alert alert: the alert to be processed
+        :return: True if alert was processed; False otherwise.
+        :raise: ValueError if alert is None
+        '''
+
+        if None == alert:
+            raise ValueError('Invalid alert.')
+
+        PE.logInfo(u"Processing admin alert\n{}".format(alert.toString()))
+
+        if AlertManager._isThrottled(alert):
+            return False
+
+        AlertManager._emailAlert(
+                alert, AlertManager._getAdminEmailAddresses())
+
+        return True
 
     @staticmethod
     def reset():
@@ -96,10 +113,24 @@ class AlertManager:
         AlertManager._moduleTimestamps = {}
 
     @staticmethod
-    def _emailAlert(alert):
+    def _isThrottled(alert):
+        if None != alert.getModule():
+            intervalInSeconds = alert.getIntervalBetweenAlertsInMinutes() * 60
+
+            if alert.getModule() in AlertManager._moduleTimestamps:
+                previousTime = AlertManager._moduleTimestamps[alert.getModule()]
+                if (time.time() - previousTime) < intervalInSeconds:
+                    return True
+
+            AlertManager._moduleTimestamps[alert.getModule()] = time.time()
+
+        return False
+
+    @staticmethod
+    def _emailAlert(alert, defaultEmailAddresses):
         emailAddresses = alert.getEmailAddresses()
         if [] == emailAddresses:
-            emailAddresses = AlertManager._getEmailAddresses()
+            emailAddresses = defaultEmailAddresses
 
         if None == emailAddresses or len(emailAddresses) == 0:
             raise ValueError('Missing email addresses.')
@@ -115,12 +146,22 @@ class AlertManager:
         AlertManager._lastEmailedSubject = alert.getSubject()
 
     @staticmethod
-    def _getEmailAddresses():
+    def _getAdminEmailAddresses():
         '''
-        :return: list of email addresses
+        :return: list of administrator email addresses
         '''
         props = AlertManager._loadProperties(_EMAIL_PROPERTIES_FILE)
-        emails = props[_EMAIL_KEY].split(';')
+        emails = props[_ADMIN_EMAIL_KEY].split(';')
+
+        return emails
+
+    @staticmethod
+    def _getOwnerEmailAddresses():
+        '''
+        :return: list of user email addresses
+        '''
+        props = AlertManager._loadProperties(_EMAIL_PROPERTIES_FILE)
+        emails = props[_OWNER_EMAIL_KEY].split(';')
 
         return emails
 

@@ -20,8 +20,10 @@ def checkInactivity(event):
         body += "\r\n  - ".join(inactiveDevices)
 
         alert = Alert.createInfoAlert(subject, body)
-        #if not AlertManager.processAlert(alert, zm):
-        #    PE.logInfo('Failed to send inactive batter device alert')
+        if not AlertManager.processAdminAlert(alert):
+            PE.logInfo('Failed to send inactive battery device alert')
+    else:
+        PE.logInfo("No inactive battery devices detected.")
 
 def getInactiveBatteryDevices(thresholdInSeconds):
     '''

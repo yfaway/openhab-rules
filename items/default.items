@@ -48,7 +48,7 @@ Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED> (DSCAlarmKeypads)
 String FF_FrontDoor "Front Door" (gZone)
 String FF_GarageDoor "Garage Door" (gZone)
 String FF_PatioDoor "Patio Door" (gZone)
-String FF_GreatRoom_MotionSensor "Motion Sensor" (gZone)
+//String FF_GreatRoom_MotionSensor "Motion Sensor" (gZone)
 String FF_Windows "Windows" (gZone)
 
 Switch FF_FrontDoor_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone1:zone_in_alarm"}
