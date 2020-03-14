@@ -7,12 +7,6 @@ import time
 
 from core import osgi
 from core.jsr223 import scope
-from core.rules import rule
-from core.triggers import when
-from org.eclipse.smarthome.core.items import Metadata
-from org.eclipse.smarthome.core.items import MetadataKey
-from org.eclipse.smarthome.core.library.items import DimmerItem
-from org.joda.time import DateTime
 
 from org.eclipse.smarthome.model.script.actions import Audio
 from org.eclipse.smarthome.model.script.actions import Voice
