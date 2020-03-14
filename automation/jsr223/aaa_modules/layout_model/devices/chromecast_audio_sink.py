@@ -15,7 +15,7 @@ COMMAND_INTERVAL_THRESHOLD_IN_SECONDS = 30
 
 class ChromeCastAudioSink(Device):
     '''
-    Represents an ChromeCast audio sink.
+    Represents a ChromeCast audio sink.
     '''
 
     def __init__(self, prefix, sinkName):
@@ -30,7 +30,8 @@ class ChromeCastAudioSink(Device):
             "smarthome:audio sinks".
         :raise ValueError: if any parameter is invalid
         '''
-        Device.__init__(self, PE.createStringItem('AudioSink-' + sinkName))
+        Device.__init__(self, PE.createStringItem(
+                    'Chromecast-{}-{}'.format(prefix, sinkName)))
 
         self.sinkName = sinkName
         self.prefix = prefix

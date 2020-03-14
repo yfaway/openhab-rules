@@ -10,6 +10,7 @@ from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 
 from aaa_modules.layout_model.devices.camera import Camera
+from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
@@ -111,6 +112,8 @@ class ZoneParser:
                     deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addAlarmPartition(
                     deviceName, openHabItem, zone, itemRegistry)
+            zone = ZoneParser._addChromeCasts(
+                    deviceName, openHabItem, zone, itemRegistry)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneId] = zone
@@ -163,6 +166,19 @@ class ZoneParser:
 
             alarm = AlarmPartition(openHabItem, alarmModeItem)
             zone = zone.addDevice(alarm)
+
+        return zone
+
+    @staticmethod
+    def _addChromeCasts(deviceName, openHabItem, zone, itemRegistry):
+        if 'ChromeCast' == deviceName:
+            itemName = openHabItem.getName()
+
+            sinkNameMeta = MetadataRegistry.get(
+                    MetadataKey("sinkName", itemName)) 
+
+            cast = ChromeCastAudioSink(itemName, sinkNameMeta.value)
+            zone = zone.addDevice(cast)
 
         return zone
 
