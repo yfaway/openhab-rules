@@ -151,14 +151,10 @@ class ZoneTest(DeviceTest):
         self.assertTrue(zone.isOccupied())
 
     def testIsOccupied_motionEventTriggeredButLightIsOff_returnsTrue(self):
-        zone = Zone('ff', [self.light, self.motionSensor])
-        self.motionSensor.onMotionSensorTurnedOn(
-                scope.events, MOTION_SENSOR_SWITCH_NAME)
-        time.sleep(0.1)
+        self.assertFalse(self.light.isOn())
 
-        self.light.turnOff(scope.events)
-        time.sleep(0.1)
-
+        zone = Zone('ff', [self.light, self.motionSensor, self.illuminanceSensor])
+        self.motionSensor._updateLastActivatedTimestamp()
         self.assertTrue(zone.isOccupied())
 
     def testGetIlluminanceLevel_noSensor_returnsMinusOne(self):
@@ -213,7 +209,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onTimerExpired(scope.events, self.timerItem.getName())
+        isProcessed = zone.onTimerExpired(scope.events, self.timerItem)
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
@@ -231,7 +227,7 @@ class ZoneTest(DeviceTest):
         plug = Plug(self.plugItem, self.plugPowerItem)
         zone = Zone('ff', [self.light, plug])
 
-        isProcessed = zone.onTimerExpired(scope.events, self.timerItem.getName())
+        isProcessed = zone.onTimerExpired(scope.events, self.timerItem)
         self.assertFalse(isProcessed)
 
         time.sleep(0.1)
@@ -240,7 +236,7 @@ class ZoneTest(DeviceTest):
     def testOnTimerExpired_invalidTimerItem_returnsFalse(self):
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onTimerExpired(scope.events, 'dummy name')
+        isProcessed = zone.onTimerExpired(scope.events, PE.createStringItem('dummy name'))
         self.assertFalse(isProcessed)
 
     def testOnSwitchedTurnedOn_validItemName_returnsTrue(self):
@@ -248,7 +244,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onSwitchTurnedOn(scope.events, self.lightItem.getName(), None)
+        isProcessed = zone.onSwitchTurnedOn(scope.events, self.lightItem, None)
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
@@ -259,7 +255,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onSwitchTurnedOff(scope.events, self.lightItem.getName())
+        isProcessed = zone.onSwitchTurnedOff(scope.events, self.lightItem, None)
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
@@ -272,7 +268,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName(), None)
+                self.motionSensor.getItem(), None)
         self.assertFalse(isProcessed)
 
     def testOnMotionSensorTurnedOn_illuminanceAboveThreshold_returnsFalse(self):
@@ -284,7 +280,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName(), None)
+                self.motionSensor.getItem(), None)
         self.assertFalse(isProcessed)
         self.assertFalse(self.light.isOn())
 
@@ -297,7 +293,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName(), None)
+                self.motionSensor.getItem(), None)
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
@@ -310,7 +306,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName(), None)
+                self.motionSensor.getItem(), None)
         self.assertFalse(isProcessed)
 
     def testOnMotionSensorTurnedOn_notLightOnTimeButIlluminanceBelowThreshold_turnsOnLight(self):
@@ -323,7 +319,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName(), None)
+                self.motionSensor.getItem(), None)
         self.assertTrue(isProcessed)
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
@@ -336,7 +332,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItemName(), None)
+                self.motionSensor.getItem(), None)
         self.assertTrue(isProcessed)
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
@@ -347,5 +343,6 @@ class ZoneTest(DeviceTest):
         info = str(zone)
 
         self.assertTrue(len(info) > 0)
+
 
 PE.runUnitTest(ZoneTest)

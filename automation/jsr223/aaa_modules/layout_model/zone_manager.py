@@ -76,52 +76,52 @@ class ZoneManager:
         return devices
 
     @staticmethod
-    def onMotionSensorTurnedOn(events, itemName):
+    def onMotionSensorTurnedOn(events, item):
         """
         Dispatches the motion sensor turned on event to each zone.
 
         :return: True if at least one zone processed the event; False otherwise
         :rtype: bool
         """
-        ZoneManager._updateDeviceLastActivatedTime(itemName)
+        ZoneManager._updateDeviceLastActivatedTime(item.getName())
 
         returnValues = [
             z.onMotionSensorTurnedOn(
-                    events, itemName, ZoneManager._createImmutableInstance()) 
+                    events, item, ZoneManager._createImmutableInstance()) 
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     @staticmethod
-    def onTimerExpired(events, itemName):
+    def onTimerExpired(events, item):
         """
         Dispatches the timer expiry event to each zone.
 
         :param scope.events events: the global events object
-        :param str itemName:
+        :param Item item:
         :return: True if at least one zone processed the event; False otherwise
         :rtype: bool
         """
         returnValues = [
-            z.onTimerExpired(events, itemName) for z in ZoneManager.zones.values()]
+            z.onTimerExpired(events, item) for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     @staticmethod
-    def onSwitchTurnedOn(events, itemName):
+    def onSwitchTurnedOn(events, item):
         """
         Dispatches the switch turned on event to each zone.
 
         :return: True if at least one zone processed the event; False otherwise
         :rtype: bool
         """
-        ZoneManager._updateDeviceLastActivatedTime(itemName)
+        ZoneManager._updateDeviceLastActivatedTime(item.getName())
 
         returnValues = [
-            z.onSwitchTurnedOn(events, itemName, ZoneManager._createImmutableInstance())
+            z.onSwitchTurnedOn(events, item, ZoneManager._createImmutableInstance())
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     @staticmethod
-    def onSwitchTurnedOff(events, itemName):
+    def onSwitchTurnedOff(events, item):
         """
         Dispatches the switch turned off event to each zone.
 
@@ -129,26 +129,27 @@ class ZoneManager:
         :rtype: bool
         """
         returnValues = [
-            z.onSwitchTurnedOff(events, itemName) for z in ZoneManager.zones.values()]
+            z.onSwitchTurnedOff(events, item, ZoneManager._createImmutableInstance())
+            for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     @staticmethod
-    def onContactOpen(events, itemName):
+    def onContactOpen(events, item):
         """
         Dispatches the contact (door/windows) open event to each zone.
 
         :return: True if at least one zone processed the event; False otherwise
         :rtype: bool
         """
-        ZoneManager._updateDeviceLastActivatedTime(itemName)
+        ZoneManager._updateDeviceLastActivatedTime(item.getName())
 
         returnValues = [
-            z.onContactOpen(events, itemName, ZoneManager._createImmutableInstance())
+            z.onContactOpen(events, item, ZoneManager._createImmutableInstance())
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     @staticmethod
-    def onContactClosed(events, itemName):
+    def onContactClosed(events, item):
         """
         Dispatches the contact closed event to each zone.
 
@@ -156,19 +157,19 @@ class ZoneManager:
         :rtype: bool
         """
         returnValues = [
-            z.onContactClosed(events, itemName, ZoneManager._createImmutableInstance())
+            z.onContactClosed(events, item, ZoneManager._createImmutableInstance())
             for z in ZoneManager.zones.values()]
         return any(returnValues)
 
     @staticmethod
-    def onNetworkDeviceConnected(events, itemName):
+    def onNetworkDeviceConnected(events, item):
         """
         Dispatches the network device connected (to local network) to each zone.
 
         :return: True if at least one zone processed the event; False otherwise
         :rtype: bool
         """
-        ZoneManager._updateDeviceLastActivatedTime(itemName)
+        ZoneManager._updateDeviceLastActivatedTime(item.getName())
 
         return True
 

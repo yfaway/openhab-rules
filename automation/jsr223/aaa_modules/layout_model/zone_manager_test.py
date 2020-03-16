@@ -10,12 +10,16 @@ from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 from aaa_modules.layout_model.device_test import DeviceTest
-from aaa_modules.layout_model.zone import Zone
+from aaa_modules.layout_model.zone import Zone, ZoneEvent
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.dimmer import Dimmer
 from aaa_modules.layout_model.switch import Fan, Light, Switch
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
+
+from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
+
+ILLUMINANCE_THRESHOLD_IN_LUX = 8
 
 ITEMS = [SwitchItem('TestLightName'),
       SwitchItem('TestTimerName'),
@@ -39,7 +43,8 @@ class ZoneManagerTest(DeviceTest):
          self.fanItem] = self.getItems()
 
         self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
-        self.light = Light(self.lightItem, self.timerItem)
+        self.light = Light(self.lightItem, self.timerItem, 
+                ILLUMINANCE_THRESHOLD_IN_LUX)
         self.motionSensor = MotionSensor(self.motionSensorItem)
         self.astroSensor = AstroSensor(self.astroSensorItem)
         self.dimmer = Dimmer(self.dimmerItem, self.timerItem, 100, "0-23:59")
@@ -115,74 +120,77 @@ class ZoneManagerTest(DeviceTest):
 
     def testOnMotionSensorTurnedOn_noZone_returnsFalse(self):
         self.assertFalse(ZoneManager.onMotionSensorTurnedOn(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnMotionSensorTurnedOn_withNonApplicableZone_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         ZoneManager.addZone(zone)
 
         self.assertFalse(ZoneManager.onMotionSensorTurnedOn(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnMotionSensorTurnedOn_withApplicableZone_returnsTrue(self):
-        zone = Zone('ff', [self.light, self.motionSensor])
+        self.assertFalse(self.light.isOn())
+        self.illuminanceSensorItem.setState(DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
+
+        zone = Zone('ff', [self.light, self.motionSensor, self.illuminanceSensor])
+        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
         ZoneManager.addZone(zone)
 
         self.assertTrue(ZoneManager.onMotionSensorTurnedOn(
-                    scope.events, self.motionSensor.getItemName()))
+                    scope.events, self.motionSensor.getItem()))
 
     def testOnTimerExpired_noZone_returnsFalse(self):
         self.assertFalse(ZoneManager.onTimerExpired(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnTimerExpired_withNonApplicableZone_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         ZoneManager.addZone(zone)
 
         self.assertFalse(ZoneManager.onTimerExpired(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnTimerExpired_withApplicableZone_returnsTrue(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         ZoneManager.addZone(zone)
 
-        self.assertTrue(ZoneManager.onTimerExpired(
-                    scope.events, self.timerItem.getName()))
+        self.assertTrue(ZoneManager.onTimerExpired(scope.events, self.timerItem))
 
     def testOnSwitchTurnedOn_noZone_returnsFalse(self):
         self.assertFalse(ZoneManager.onSwitchTurnedOn(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnSwitchTurnedOn_withNonApplicableZone_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         ZoneManager.addZone(zone)
 
         self.assertFalse(ZoneManager.onSwitchTurnedOn(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnSwitchTurnedOn_withApplicableZone_returnsTrue(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         ZoneManager.addZone(zone)
 
         self.assertTrue(ZoneManager.onSwitchTurnedOn(
-                    scope.events, self.light.getItemName()))
+                    scope.events, self.light.getItem()))
 
     def testOnSwitchTurnedOff_noZone_returnsFalse(self):
         self.assertFalse(ZoneManager.onSwitchTurnedOff(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnSwitchTurnedOff_withNonApplicableZone_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         ZoneManager.addZone(zone)
 
         self.assertFalse(ZoneManager.onSwitchTurnedOff(
-                    scope.events, INVALID_ITEM_NAME))
+                    scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnSwitchTurnedOff_withApplicableZone_returnsTrue(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         ZoneManager.addZone(zone)
 
         self.assertTrue(ZoneManager.onSwitchTurnedOff(
-                    scope.events, self.light.getItemName()))
+                    scope.events, self.light.getItem()))
 
 PE.runUnitTest(ZoneManagerTest)

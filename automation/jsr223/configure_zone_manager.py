@@ -6,7 +6,6 @@ from aaa_modules import switch_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.security_manager import SecurityManager as SM
 from aaa_modules.zone_parser import ZoneParser
-
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.switch import Switch
@@ -83,7 +82,8 @@ def onMotionSensor(event):
     if "getMemberName" in dir(event):
         ZoneManager._updateDeviceLastActivatedTime(event.getMemberName())
 
-    if not ZoneManager.onMotionSensorTurnedOn(events, event.itemName):
+    if not ZoneManager.onMotionSensorTurnedOn(
+            events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('Motion event for {} is not processed.'.format(
                     event.itemName))
 
@@ -93,11 +93,11 @@ def onSwitchIsChanged(event):
     triggeringItem = itemRegistry.getItem(event.itemName)
 
     if switch_manager.isSwitchOn(triggeringItem):
-        if not ZoneManager.onSwitchTurnedOn(events, event.itemName):
+        if not ZoneManager.onSwitchTurnedOn(events, triggeringItem):
             PE.logDebug('Switch on event for {} is not processed.'.format(
                         event.itemName))
     else:
-        if not ZoneManager.onSwitchTurnedOff(events, event.itemName):
+        if not ZoneManager.onSwitchTurnedOff(events, triggeringItem):
             PE.logDebug('Switch off event for {} is not processed.'.format(
                         event.itemName))
 
@@ -109,27 +109,28 @@ def onDoorOrWindowsChanged(event):
 
     if PE.isInStateOn(triggeringItem.getState()) \
         or PE.isInStateOpen(triggeringItem.getState()):
-        if not ZoneManager.onContactOpen(events, event.itemName):
+        if not ZoneManager.onContactOpen(events, triggeringItem):
             PE.logDebug('Contact open event for {} is not processed.'.format(
                         event.itemName))
     else:
-        if not ZoneManager.onContactClosed(events, event.itemName):
+        if not ZoneManager.onContactClosed(events, triggeringItem):
             PE.logDebug('Contact closed event for {} is not processed.'.format(
                         event.itemName))
 
 @rule("Dispatch timer expired event")
 @when("Member of gWallSwitchTimer changed to OFF")
 def onTimerExpired(event):
-    if not ZoneManager.onTimerExpired(events, event.itemName):
+    if not ZoneManager.onTimerExpired(events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('Timer event for {} is not processed.'.format(
                     event.itemName))
 
 @rule("Dispatch network device connected event")
 @when("Member of gNetworkPresence changed to ON")
 def onNetworkDeviceConnected(event):
-    if not ZoneManager.onNetworkDeviceConnected(events, event.itemName):
+    if not ZoneManager.onNetworkDeviceConnected(events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('Network device connected event for {} is not processed.'.format(
                     event.itemName))
 
 initializeZoneManager()
 addContextVariables()
+

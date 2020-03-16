@@ -1,3 +1,4 @@
+from aaa_modules.layout_model.event_info import EventInfo
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.motion_sensor import MotionSensor
@@ -364,9 +365,9 @@ class Zone:
             if l.isOn():
                 l.turnOff(events)
 
-    def onTimerExpired(self, events, itemName):
+    def onTimerExpired(self, events, item):
         '''
-        Determines if the timer itemName is associated with a switch in this
+        Determines if the timer item is associated with a switch in this
         zone; if yes, turns off the switch and returns True. Otherwise returns
         False.
         '''
@@ -379,15 +380,15 @@ class Zone:
         if len(plugs) == 0: # no active smart plug
             switches = self.getDevicesByType(Switch)
             for switch in switches:
-                if switch.getTimerItem().getName() == itemName:
+                if switch.getTimerItem().getName() == item.getName():
                     switch.turnOff(events)
                     isProcessed = True
             
         return isProcessed
 
-    def onSwitchTurnedOn(self, events, itemName, immutableZoneManager):
+    def onSwitchTurnedOn(self, events, item, immutableZoneManager):
         '''
-        If itemName belongs to this zone, dispatches the event to the associated
+        If item belongs to this zone, dispatches the event to the associated
         Switch object, execute the associated actions, and returns True.
         Otherwise return False.
 
@@ -400,9 +401,12 @@ class Zone:
         isProcessed = False
         actions = self.getActions(ZoneEvent.SWITCH_TURNED_ON)
 
+        eventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_ON, item, self,
+                immutableZoneManager, events)
+
         switches = self.getDevicesByType(Switch)
         for switch in switches:
-            if switch.onSwitchTurnedOn(events, itemName):
+            if switch.onSwitchTurnedOn(events, item.getName()):
                 for a in actions:
                     a.onAction(events, self, immutableZoneManager)
 
@@ -410,9 +414,9 @@ class Zone:
         
         return isProcessed
 
-    def onSwitchTurnedOff(self, events, itemName):
+    def onSwitchTurnedOff(self, events, item, immutableZoneManager):
         '''
-        If itemName belongs to this zone, dispatches the event to the associated
+        If item belongs to this zone, dispatches the event to the associated
         Switch object, execute the associated actions, and returns True.
         Otherwise return False.
 
@@ -420,27 +424,33 @@ class Zone:
 
         :rtype: boolean
         '''
+        eventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_OFF, item, self,
+                immutableZoneManager, events)
+
         isProcessed = False
         actions = self.getActions(ZoneEvent.SWITCH_TURNED_OFF)
 
         switches = self.getDevicesByType(Switch)
         for switch in switches:
-            if switch.onSwitchTurnedOff(events, itemName):
+            if switch.onSwitchTurnedOff(events, item.getName()):
                 for a in actions:
-                    a.onAction(events, self, None)
+                    a.onAction(events, self, immutableZoneManager)
 
                 isProcessed = True
         
         return isProcessed
 
-    def onContactOpen(self, events, itemName, immutableZoneManager):
+    def onContactOpen(self, events, item, immutableZoneManager):
         '''
         :param lambda immutableZoneManager: a function that returns a Zone \
              object given a zone id string
         :rtype: boolean
         '''
-        if not self.containsOpenHabItem(itemName, Contact):
+        if not self.containsOpenHabItem(item.getName(), Contact):
             return False 
+
+        eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, item, self,
+                immutableZoneManager, events)
 
         processed = False
         for a in self.getActions(ZoneEvent.CONTACT_OPEN):
@@ -450,12 +460,15 @@ class Zone:
         return processed
 
 
-    def onContactClosed(self, events, itemName, immutableZoneManager):
+    def onContactClosed(self, events, item, immutableZoneManager):
         '''
         :rtype: boolean
         '''
-        if not self.containsOpenHabItem(itemName, Contact):
+        if not self.containsOpenHabItem(item.getName(), Contact):
             return False 
+
+        eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, item, self,
+                immutableZoneManager, events)
 
         processed = False
         for a in self.getActions(ZoneEvent.CONTACT_CLOSED):
@@ -465,7 +478,7 @@ class Zone:
         return processed
 
 
-    def onMotionSensorTurnedOn(self, events, itemName, immutableZoneManager):
+    def onMotionSensorTurnedOn(self, events, item, immutableZoneManager):
         '''
         If the motion sensor belongs to this zone, turns on the associated
         switch, execute the associated actions, and returns True. Otherwise
@@ -475,8 +488,11 @@ class Zone:
             returns a Zone object given a zone id string
         :rtype: boolean
         '''
-        if not self.containsOpenHabItem(itemName, MotionSensor):
+        if not self.containsOpenHabItem(item.getName(), MotionSensor):
             return False 
+
+        eventInfo = EventInfo(ZoneEvent.MOTION, item, self,
+                immutableZoneManager, events)
 
         processed = False
         for a in self.getActions(ZoneEvent.MOTION):
