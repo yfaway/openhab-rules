@@ -37,7 +37,9 @@ class ChromeCastAudioSink(Device):
         self.prefix = prefix
         self.streamUrl = None
         self.lastTtsMessage = None
+
         self._testMode = False
+        self._testLastCommand = None
 
         self._lastCommandTimestamp = time.time()
         self._lastCommand = None
@@ -65,6 +67,8 @@ class ChromeCastAudioSink(Device):
         scope.events.sendCommand(self.getVolumeName(), str(volume))
         if not self._testMode:
             Voice.say(message, None, self.getSinkName())
+        else:
+            self._testLastCommand = 'playMessage'
 
         self.lastTtsMessage = message
 
@@ -104,6 +108,10 @@ class ChromeCastAudioSink(Device):
         self._lastCommandTimestamp = time.time()
         self._lastCommand = localFile
 
+        if self._testMode:
+            self._testLastCommand = 'playSoundFile'
+            return True
+
         wasActive = self.isActive()
         previousVolume = scope.items[self.getVolumeName()].intValue()
 
@@ -133,6 +141,10 @@ class ChromeCastAudioSink(Device):
         if None == url:
             raise ValueError('url must be specified.')
 
+        if self._testMode:
+            self._testLastCommand = 'playStream'
+            return True
+
         if None != volume:
             scope.events.sendCommand(self.getVolumeName(), str(volume))
 
@@ -148,12 +160,21 @@ class ChromeCastAudioSink(Device):
         '''
         Pauses the chrome cast player.
         '''
+        if self._testMode:
+            self._testLastCommand = 'pause'
+            return
+
         scope.events.sendCommand(self.getPlayerName(), "PAUSE")
 
     def resume(self):
         '''
         Resumes playing.
         '''
+
+        if self._testMode:
+            self._testLastCommand = 'resume'
+            return
+
         if PE.isInStateOn(scope.items[self.getIdleItemName()]):
             Audio.playStream(self.getSinkName(), self.getStreamUrl())
         else:
@@ -231,6 +252,12 @@ class ChromeCastAudioSink(Device):
         '''
         return self.sinkName
 
+    def _setTestMode(self):
+        self._testMode = True
+        self._testLastCommand = None
+
+    def _getLastTestCommand(self):
+        return self._testLastCommand
 
 #s = ChromeCastAudioSink('FF_GreatRoom_ChromeCast', "chromecast:audio:greatRoom")
 #s.playMessage('the sink name for voice and audio play. The sink \

@@ -7,9 +7,12 @@ from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+
+from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
 #from aaa_modules.layout_model import zone
 #reload(zone)
 from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
+from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 
 from aaa_modules.layout_model.devices.plug import Plug
 from aaa_modules.layout_model.astro_sensor import AstroSensor
@@ -344,5 +347,35 @@ class ZoneTest(DeviceTest):
 
         self.assertTrue(len(info) > 0)
 
+    def testGetNeighborZones_noZoneManager_throwsException(self):
+        zone1 = Zone('ff')
+        with self.assertRaises(ValueError) as cm:
+            zone1.getNeighborZones(None)
+
+        self.assertEqual('zoneManager must not be None', cm.exception.args[0])
+
+    def testGetNeighborZones_noNeighborTypesSpecified_returnsCorrectList(self):
+        zone1 = Zone('foyer')
+        zone2 = Zone('porch')
+        zone3 = Zone('office')
+
+        zone1 = zone1.addNeighbor(Neighbor(zone2.getId(), NeighborType.OPEN_SPACE))
+        zone1 = zone1.addNeighbor(Neighbor(zone3.getId(), NeighborType.OPEN_SPACE_MASTER))
+        zm = MockedZoneManager([zone1, zone2, zone3])
+
+        self.assertEqual(2, len(zone1.getNeighborZones(zm)))
+
+    def testGetNeighborZones_neighborTypeSpecified_returnsCorrectList(self):
+        zone1 = Zone('foyer')
+        zone2 = Zone('porch')
+        zone3 = Zone('office')
+
+        zone1 = zone1.addNeighbor(Neighbor(zone2.getId(), NeighborType.OPEN_SPACE))
+        zone1 = zone1.addNeighbor(Neighbor(zone3.getId(), NeighborType.OPEN_SPACE_MASTER))
+        zm = MockedZoneManager([zone1, zone2, zone3])
+
+        zones = zone1.getNeighborZones(zm, [NeighborType.OPEN_SPACE_MASTER])
+        self.assertEqual(1, len(zones))
+        self.assertEqual(zone3, zones[0])
 
 PE.runUnitTest(ZoneTest)

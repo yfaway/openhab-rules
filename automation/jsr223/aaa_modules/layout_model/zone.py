@@ -260,6 +260,25 @@ class Zone:
         '''
         return list(self.neighbors)
 
+    def getNeighborZones(self, zoneManager, neighborTypes = []):
+        '''
+        :param list(NeighborType) neighborTypes: optional
+        :return: a list of neighboring zones for the provided neighbor type (optional).
+        :rtype: list(Zone)
+        '''
+        if None == zoneManager:
+            raise ValueError('zoneManager must not be None')
+
+        if None == neighborTypes or len(neighborTypes) == 0:
+            zones = [zoneManager.getZoneById(n.getZoneId()) \
+                        for n in self.neighbors]
+        else:
+            zones = [zoneManager.getZoneById(n.getZoneId()) \
+                        for n in self.neighbors \
+                        if any(n.getType() == t for t in neighborTypes)]
+
+        return zones
+
     def containsOpenHabItem(self, itemName, sensorType = None):
         '''
         Returns True if this zone contains the given itemName; returns False 

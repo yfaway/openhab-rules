@@ -20,13 +20,16 @@ Group:Switch:OR(ON,OFF) gSecondFloorLightSwitch "Active First Floor Lights [%d]"
 Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
 String Zone_Porch 
-  { level="FF", external="true", openSpaceNeighbors="FF_Foyer, FF_Office" }
+  { level="FF", external="true", openSpaceNeighbors="1_Foyer, 1_Office" }
 
 String Zone_Garage 
   { level="FF", external="true" }
 
 String Zone_Patio 
-  { level="FF", external="true", openSpaceNeighbors="FF_Kitchen" }
+  { level="FF", external="true", openSpaceNeighbors="1_Kitchen" }
+
+String Zone_MasterWashroomShower
+  { level="SF", external="true", openSpaceNeighbors="2_MasterWashroom" }
 
 String FF_Porch_Camera "Porch Camera" (gCamera)
 

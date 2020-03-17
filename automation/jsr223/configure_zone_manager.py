@@ -8,10 +8,12 @@ from aaa_modules.security_manager import SecurityManager as SM
 from aaa_modules.zone_parser import ZoneParser
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
-from aaa_modules.layout_model.switch import Switch
+from aaa_modules.layout_model.switch import Fan, Switch
 
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
+from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 
+from aaa_modules.layout_model.actions.play_music_during_shower import PlayMusicDuringShower
 from aaa_modules.layout_model.actions.alert_on_entrance_activity import AlertOnEntraceActivity
 from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExternalDoorLeftOpen
 from aaa_modules.layout_model.actions.arm_after_front_door_closed import ArmAfterFrontDoorClosed
@@ -29,6 +31,7 @@ def initializeZoneManager():
     alertOnEntranceActivity = AlertOnEntraceActivity()
     alertOnExternalDoorLeftOpen = AlertOnExternalDoorLeftOpen()
     armAfterFrontDoorClosed = ArmAfterFrontDoorClosed(15 * 60) # arm after 15'
+    playMusicDuringShower = PlayMusicDuringShower("http://hestia2.cdnstream.com:80/1277_192")
 
     # add virtual devices and actions
     for z in zones:
@@ -53,6 +56,12 @@ def initializeZoneManager():
             z = z.addAction(ZoneEvent.CONTACT_CLOSED, alertOnExternalDoorLeftOpen)
 
             z = z.addAction(ZoneEvent.CONTACT_CLOSED, armAfterFrontDoorClosed)
+
+        # add the play music action if zone has a fan switch.
+        fans = z.getDevicesByType(Fan)
+        if len(fans) > 0:
+            z = z.addAction(ZoneEvent.SWITCH_TURNED_ON, playMusicDuringShower)
+            z = z.addAction(ZoneEvent.SWITCH_TURNED_OFF, playMusicDuringShower)
 
         ZoneManager.addZone(z)
 
@@ -131,6 +140,6 @@ def onNetworkDeviceConnected(event):
         PE.logDebug('Network device connected event for {} is not processed.'.format(
                     event.itemName))
 
+
 initializeZoneManager()
 addContextVariables()
-

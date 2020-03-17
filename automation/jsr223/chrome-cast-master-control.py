@@ -106,32 +106,6 @@ def pauseMusic(event):
         cast_manager.pause(selectedCasts)
         log.info("[Cast] Paused selected stream.")
 
-@rule("Play music when a bathroom fan is turned on")
-@when("Member of gFanSwitch changed to ON")
-def playMusicWhenBathroomFanTurnOn(event):
-    index = event.itemName.rfind("_")
-    castPrefix = event.itemName[0:index] + "_ChromeCast"
-
-    events.sendCommand(_SOURCE_ITEM_NAME, castPrefix)
-    events.sendCommand(_STREAM_ITEM_NAME, "CD101.9 NY Smooth Jazz")
-    casts = cast_manager.findCasts(StringType(castPrefix))
-
-    if len(casts) > 0:
-        activity = zm.getDevicesByType(ActivityTimes)[0]
-
-        if not activity.isSleepTime():
-            volume = 25 if activity.isQuietTime() else 35
-            cast_manager.playStream("CD101.9 NY Smooth Jazz", casts, volume)
-
-@rule("Stop music when a bathroom fan is turned off")
-@when("Member of gFanSwitch changed to OFF")
-@when("Member of gSecondFloorLightSwitch changed to OFF")
-def stopMusicWhenBathroomFanTurnOff(event):
-    index = event.itemName.rfind("_")
-    castPrefix = event.itemName[0:index] + "_ChromeCast"
-    casts = cast_manager.findCasts(StringType(castPrefix))
-    cast_manager.pause(casts)
-
 # Returns True if the item name matches the selected chrome cast (source);
 # False otherwise
 # @param itemName string
