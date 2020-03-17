@@ -30,7 +30,10 @@ class AlertOnExternalDoorLeftOpen(Action):
         self.timers = {}
         self.maxElapsedTimeInSeconds = maxElapsedTimeInSeconds
 
-    def onAction(self, events, zone, zoneManager):
+    def onAction(self, eventInfo):
+        zone = eventInfo.getZone()
+        zoneManager = eventInfo.getZoneManager()
+
         if not zone.isExternal():
             return False
 

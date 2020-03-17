@@ -7,7 +7,8 @@ from org.eclipse.smarthome.core.library.items import SwitchItem
 from aaa_modules.alert_manager import AlertManager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-from aaa_modules.layout_model.zone import Zone, Level
+from aaa_modules.layout_model.event_info import EventInfo
+from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.immutable_zone_manager import ImmutableZoneManager
 from aaa_modules.layout_model.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.motion_sensor import MotionSensor
@@ -68,8 +69,9 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
         self.alarmPartition.disarm(events)
         time.sleep(0.5)
 
-        value = ArmAfterFrontDoorClosed(1).onAction(
-                scope.events, self.zone1, self.mockZoneManager)
+        eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],
+                self.zone1, self.mockZoneManager, scope.events)
+        value = ArmAfterFrontDoorClosed(1).onAction(eventInfo)
         self.assertTrue(value)
 
         time.sleep(1.5)
@@ -80,8 +82,9 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
         self.alarmPartition.disarm(events)
         time.sleep(0.5)
 
-        value = ArmAfterFrontDoorClosed(1).onAction(
-                scope.events, self.zone1, self.mockZoneManager)
+        eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],
+                self.zone1, self.mockZoneManager, scope.events)
+        value = ArmAfterFrontDoorClosed(1).onAction(eventInfo)
         self.assertTrue(value)
 
         time.sleep(0.8)

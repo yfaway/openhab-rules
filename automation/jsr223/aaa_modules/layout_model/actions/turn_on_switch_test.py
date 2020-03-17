@@ -10,7 +10,8 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 #reload(turn_on_switch)
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 
-from aaa_modules.layout_model.zone import Zone, Level
+from aaa_modules.layout_model.event_info import EventInfo
+from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.astro_sensor import AstroSensor
 from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
@@ -203,14 +204,18 @@ class TurnOnSwitchTest(DeviceTest):
         self.lightItem1.setState(scope.OnOffType.ON)
         self.lightItem3.setState(scope.OnOffType.ON)
 
-        returnVal = TurnOnSwitch().onAction(events, self.zone2, self.createMockZoneManager())
+        eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
+                self.zone2, self.createMockZoneManager(), events)
+        returnVal = TurnOnSwitch().onAction(eventInfo)
         self.assertFalse(returnVal)
         time.sleep(0.1)
         self.assertFalse(self.zone2.isLightOn())
         self.assertTrue(self.zone3.isLightOn())
 
     def turnOn(self):
-        return TurnOnSwitch().onAction(events, self.zone1, self.createMockZoneManager())
+        eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
+                self.zone1, self.createMockZoneManager(), events)
+        return TurnOnSwitch().onAction(eventInfo)
 
     # Helper method to set up the relationship between the provided zone and zone1.
     def setUpNeighborRelationship(self, zone, type, neighborLightOn):

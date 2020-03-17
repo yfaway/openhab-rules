@@ -39,7 +39,11 @@ class TurnOnSwitch(Action):
     again.
     '''
 
-    def onAction(self, events, zone, zoneManager):
+    def onAction(self, eventInfo):
+        events = eventInfo.getEventDispatcher()
+        zone = eventInfo.getZone()
+        zoneManager = eventInfo.getZoneManager()
+
         isProcessed = False
         canTurnOffAdjacentZones = True
         lightOnTime = zone.isLightOnTime()

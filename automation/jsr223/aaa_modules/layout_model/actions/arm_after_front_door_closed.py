@@ -32,7 +32,11 @@ class ArmAfterFrontDoorClosed(Action):
         self.timer = None
         self.maxElapsedTimeInSeconds = maxElapsedTimeInSeconds
 
-    def onAction(self, events, zone, zoneManager):
+    def onAction(self, eventInfo):
+        events = eventInfo.getEventDispatcher()
+        zone = eventInfo.getZone()
+        zoneManager = eventInfo.getZoneManager()
+
         if not zone.isExternal():
             return False
 

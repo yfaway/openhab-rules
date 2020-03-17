@@ -13,7 +13,7 @@ class EventInfo(object):
         :param Item item: the OpenHab Item
         :param Zone zone: the zone where the event was triggered
         :param ImmutableZoneManager zoneManager:
-        :param Event events: the OpenHab events object to dispatch actions
+        :param scope.events events: the OpenHab events object to dispatch actions
         """
 
         if None == eventType:

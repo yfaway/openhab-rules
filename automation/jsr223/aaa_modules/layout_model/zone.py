@@ -408,7 +408,7 @@ class Zone:
         for switch in switches:
             if switch.onSwitchTurnedOn(events, item.getName()):
                 for a in actions:
-                    a.onAction(events, self, immutableZoneManager)
+                    a.onAction(eventInfo)
 
                 isProcessed = True
         
@@ -434,7 +434,7 @@ class Zone:
         for switch in switches:
             if switch.onSwitchTurnedOff(events, item.getName()):
                 for a in actions:
-                    a.onAction(events, self, immutableZoneManager)
+                    a.onAction(eventInfo)
 
                 isProcessed = True
         
@@ -454,7 +454,7 @@ class Zone:
 
         processed = False
         for a in self.getActions(ZoneEvent.CONTACT_OPEN):
-            if a.onAction(events, self, immutableZoneManager):
+            if a.onAction(eventInfo):
                 processed = True
 
         return processed
@@ -472,7 +472,7 @@ class Zone:
 
         processed = False
         for a in self.getActions(ZoneEvent.CONTACT_CLOSED):
-            if a.onAction(events, self, immutableZoneManager):
+            if a.onAction(eventInfo):
                 processed = True
 
         return processed
@@ -496,7 +496,7 @@ class Zone:
 
         processed = False
         for a in self.getActions(ZoneEvent.MOTION):
-            if a.onAction(events, self, immutableZoneManager):
+            if a.onAction(eventInfo):
                 processed = True
 
         return processed

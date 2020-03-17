@@ -6,7 +6,8 @@ from org.eclipse.smarthome.core.library.items import SwitchItem
 from aaa_modules.alert_manager import AlertManager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-from aaa_modules.layout_model.zone import Zone, Level
+from aaa_modules.layout_model.event_info import EventInfo
+from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.layout_model.device_test import DeviceTest
 
@@ -39,20 +40,24 @@ class AlertOnExternalDoorLeftOpenTest(DeviceTest):
         return ITEMS
 
     def testOnAction_notAnExternalZone_returnsFalse(self):
-        value = AlertOnExternalDoorLeftOpen().onAction(
-                events, Zone('innerZone'), None)
+        eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0], Zone('innerZone'),
+                None, events)
+        value = AlertOnExternalDoorLeftOpen().onAction(eventInfo)
         self.assertFalse(value)
 
     def testOnAction_externalZoneWithNoDoor_returnsFalseAndTimerStarted(self):
-        value = AlertOnExternalDoorLeftOpen().onAction(
-                events, Zone.createExternalZone('aZone'), None)
+        eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
+                Zone.createExternalZone('aZone'), None, events)
+        value = AlertOnExternalDoorLeftOpen().onAction(eventInfo)
         self.assertFalse(value)
 
     def testOnAction_aDoorIsOpen_returnsTrue(self):
         ITEMS[0].setState(scope.OnOffType.ON)
 
+        eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
+                self.zone1, None, events)
         action = AlertOnExternalDoorLeftOpen(1)
-        value = action.onAction(events, self.zone1, None)
+        value = action.onAction(eventInfo)
 
         self.assertTrue(value)
         self.assertTrue(action.hasRunningTimer())
@@ -63,15 +68,18 @@ class AlertOnExternalDoorLeftOpenTest(DeviceTest):
     def testOnAction_aDoorWasOpenButClosedSoonAfter_returnsTrueAndTimerCancelled(self):
         ITEMS[0].setState(scope.OnOffType.ON)
 
+        eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
+                self.zone1, None, events)
+
         action = AlertOnExternalDoorLeftOpen()
-        value = action.onAction(events, self.zone1, None)
+        value = action.onAction(eventInfo)
 
         self.assertTrue(value)
         self.assertTrue(action.hasRunningTimer())
 
         # simulate door closed
         ITEMS[0].setState(scope.OnOffType.OFF)
-        value = action.onAction(events, self.zone1, None)
+        value = action.onAction(eventInfo)
         self.assertTrue(value)
         self.assertFalse(action.hasRunningTimer())
 

@@ -21,7 +21,10 @@ class AlertOnEntraceActivity(Action):
     event.
     '''
 
-    def onAction(self, events, zone, zoneManager):
+    def onAction(self, eventInfo):
+        zone = eventInfo.getZone()
+        zoneManager = eventInfo.getZoneManager()
+
         currentEpoch = time.time()
 
         doorOpenPeriodInSeconds = 10
