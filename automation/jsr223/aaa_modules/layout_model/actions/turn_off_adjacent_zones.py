@@ -1,4 +1,5 @@
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
+from aaa_modules.layout_model.switch import Light
 from aaa_modules.layout_model.actions.action import Action
 
 class TurnOffAdjacentZones(Action):
@@ -13,14 +14,20 @@ class TurnOffAdjacentZones(Action):
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
 
-        if None != zoneManager:
-            adjacentZones = [zoneManager.getZoneById(n.getZoneId()) \
-                for n in zone.getNeighbors() \
-                if (NeighborType.OPEN_SPACE == n.getType() or \
-                        NeighborType.OPEN_SPACE_SLAVE == n.getType()) ]
+        if None == zoneManager:
+            raise ValueError('zoneManager must be specified')
 
-            for z in adjacentZones:
-                if z.isLightOn():
-                    z.turnOffLights(events)
+        lights = zone.getDevicesByType(Light)
+        if len(lights) == 0:
+            return False
+
+        adjacentZones = [zoneManager.getZoneById(n.getZoneId()) \
+            for n in zone.getNeighbors() \
+            if (NeighborType.OPEN_SPACE == n.getType() or \
+                    NeighborType.OPEN_SPACE_SLAVE == n.getType()) ]
+
+        for z in adjacentZones:
+            if z.isLightOn():
+                z.turnOffLights(events)
         
         return True
