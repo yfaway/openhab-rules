@@ -29,7 +29,7 @@ String Zone_Patio
   { level="FF", external="true", openSpaceNeighbors="1_Kitchen" }
 
 String Zone_MasterWashroomShower
-  { level="SF", external="true", openSpaceNeighbors="2_MasterWashroom" }
+  { level="SF", openSpaceNeighbors="2_MasterWashroom" }
 
 String FF_Porch_Camera "Porch Camera" (gCamera)
 

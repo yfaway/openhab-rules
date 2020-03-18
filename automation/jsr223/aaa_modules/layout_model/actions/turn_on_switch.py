@@ -126,6 +126,6 @@ class TurnOnSwitch(Action):
             if DEBUG:
                 PE.logInfo("{}: turning off adjancent zone's light".format(
                         switch.getItemName()))
-            TurnOffAdjacentZones().onAction(events, zone, zoneManager)
+            TurnOffAdjacentZones().onAction(eventInfo)
         
         return isProcessed

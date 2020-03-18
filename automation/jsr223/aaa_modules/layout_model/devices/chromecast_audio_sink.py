@@ -149,7 +149,7 @@ class ChromeCastAudioSink(Device):
             scope.events.sendCommand(self.getVolumeName(), str(volume))
 
         if url == self.getStreamUrl():
-            resume()
+            self.resume()
         else:
             Audio.playStream(self.getSinkName(), url)
             self.streamUrl = url
