@@ -3,6 +3,7 @@ import time
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
+from org.eclipse.smarthome.core.library.types import DecimalType
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
@@ -154,7 +155,7 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertFalse(self.zone2.isLightOn())
 
         self.assertTrue(self.turnOn())
-        time.sleep(0.1)
+        time.sleep(0.2)
         self.assertTrue(self.zone1.isLightOn())
         self.assertFalse(self.zone2.isLightOn())
 
@@ -204,7 +205,7 @@ class TurnOnSwitchTest(DeviceTest):
         self.lightItem3.setState(scope.OnOffType.ON)
 
         eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
-                self.zone2, self.createMockedZoneManager(), events)
+                self.zone2, self.createMockedZoneManager(), scope.events)
         returnVal = TurnOnSwitch().onAction(eventInfo)
         self.assertFalse(returnVal)
         time.sleep(0.1)
@@ -213,7 +214,7 @@ class TurnOnSwitchTest(DeviceTest):
 
     def turnOn(self):
         eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
-                self.zone1, self.createMockedZoneManager(), events)
+                self.zone1, self.createMockedZoneManager(), scope.events)
         return TurnOnSwitch().onAction(eventInfo)
 
     # Helper method to set up the relationship between the provided zone and zone1.

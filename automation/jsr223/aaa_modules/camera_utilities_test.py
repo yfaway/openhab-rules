@@ -6,6 +6,7 @@ from aaa_modules import camera_utilities
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 # Unit tests for camera_utilities.py.
+@unittest.skip("Skipping; not using the ipcamera binding at this time.")
 class CameraUtilitiesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

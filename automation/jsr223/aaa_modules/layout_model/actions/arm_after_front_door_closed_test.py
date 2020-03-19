@@ -66,7 +66,7 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
 
     def testOnAction_doorClosedWithNoPresenceEvent_armAndReturnsTrue(self):
         ITEMS[0].setState(scope.OnOffType.OFF) # close door
-        self.alarmPartition.disarm(events)
+        self.alarmPartition.disarm(scope.events)
         time.sleep(0.5)
 
         eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],
@@ -79,7 +79,7 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
 
     def testOnAction_doorClosedWithPresenceEvent_notArmedAndReturnsTrue(self):
         ITEMS[0].setState(scope.OnOffType.OFF) # close door
-        self.alarmPartition.disarm(events)
+        self.alarmPartition.disarm(scope.events)
         time.sleep(0.5)
 
         eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],

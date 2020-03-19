@@ -4,6 +4,7 @@ import time
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
+from org.eclipse.smarthome.core.library.types import PercentType
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 

@@ -1,5 +1,6 @@
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import NumberItem
+from org.eclipse.smarthome.core.library.types import DecimalType
 
 from aaa_modules.layout_model.device_test import DeviceTest
 

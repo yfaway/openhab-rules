@@ -32,13 +32,13 @@ class PlayMusicDuringShowerTest(DeviceTest):
 
     def testOnAction_wrongEventType_returnsFalse(self):
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0], Zone('innerZone'),
-                None, events)
+                None, scope.events)
         value = self.action.onAction(eventInfo)
         self.assertFalse(value)
 
     def testOnAction_noAudioSink_returnsFalse(self):
         eventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_ON, ITEMS[0], Zone('innerZone'),
-                MockedZoneManager([]), events)
+                MockedZoneManager([]), scope.events)
         value = self.action.onAction(eventInfo)
         self.assertFalse(value)
 
@@ -46,7 +46,7 @@ class PlayMusicDuringShowerTest(DeviceTest):
         zone1 = Zone('shower').addDevice(self.sink)
 
         eventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_ON, ITEMS[0], zone1,
-                None, events)
+                None, scope.events)
         value = self.action.onAction(eventInfo)
         self.assertTrue(value)
         self.assertEqual('playStream', self.sink._getLastTestCommand())
@@ -58,7 +58,7 @@ class PlayMusicDuringShowerTest(DeviceTest):
         zone1 = zone1.addNeighbor(Neighbor(zone2.getId(), NeighborType.OPEN_SPACE))
 
         eventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_ON, ITEMS[0], zone1,
-                MockedZoneManager([zone1, zone2]), events)
+                MockedZoneManager([zone1, zone2]), scope.events)
         value = self.action.onAction(eventInfo)
         self.assertTrue(value)
         self.assertEqual('playStream', self.sink._getLastTestCommand())
@@ -67,7 +67,7 @@ class PlayMusicDuringShowerTest(DeviceTest):
         zone1 = Zone('shower').addDevice(self.sink)
 
         eventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_OFF, ITEMS[0], zone1,
-                None, events)
+                None, scope.events)
         value = self.action.onAction(eventInfo)
         self.assertTrue(value)
         self.assertEqual('pause', self.sink._getLastTestCommand())

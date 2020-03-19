@@ -1,52 +1,59 @@
-# Run all unit tests.
+# Run all the unit tests.
+# If there is any test failure, send an admin alert.
+# The test output is always logged.
 
+import time
 import unittest
 
-from aaa_modules.alert_test import AlertTest
-from aaa_modules.alert_manager_test import AlertManagerTest
-from aaa_modules.chromecast_test import ChromeCastTest
-from aaa_modules.cast_manager_test import CastManagerTest
-from aaa_modules.camera_utilities_test import CameraUtilitiesTest
+from core.rules import rule
+from core.triggers import when
+
+from aaa_modules.alert import Alert
+from aaa_modules.alert_manager import AlertManager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-from aaa_modules.time_utilities_test import TimeUtilitiesTest
 
-TEST_NAMES = [
-    AlertTest,
-    AlertManagerTest,
-    ChromeCastTest,
-    CastManagerTest,
-    CameraUtilitiesTest,
-    TimeUtilitiesTest,
-]
+TEST_DISCOVERY_FOLDER = '/etc/openhab2/automation/jsr223/'
+TEST_FILE_PATTERN = '*test.py'
 
-def getTestSuites():
-    suites = []
-    loader = unittest.TestLoader()
-
-    for name in TEST_NAMES:
-        suite = loader.loadTestsFromTestCase(name)
-        suites.append(suite)
-
-    return suites
-
+@rule("Run unit tests daily at midnight.")
+@when("Time cron 0 0 0 1/1 * ? *")
 def runTests():
     def _formatErrors(errors):
         return "[{}]".format(",\n    ".join('{{"name":"{}", "stack":"{}"}}'.format(
                         test.id(), stack.replace('"', r'\"')) for test, stack in errors))
 
-    suites = unittest.TestSuite(getTestSuites())
+    loader = unittest.TestLoader()
+    suites = unittest.TestSuite(
+            loader.discover(TEST_DISCOVERY_FOLDER, TEST_FILE_PATTERN))
 
     runner = unittest.TextTestRunner(resultclass=unittest.TestResult)
-    result = runner.run(suites)
 
-    PE.logInfo("Run {} tests; {} errors, {} failures, {} skipped".format(
-                result.testsRun, len(result.errors), len(result.failures),
-                len(result.skipped)))
+    startTime = time.time()
+    result = runner.run(suites)
+    endTime = time.time()
+
+    summary = "Run {} tests in {:.1f} seconds; {} errors, {} failures, {} skipped.".format(
+            result.testsRun, (endTime - startTime), len(result.errors), len(result.failures),
+            len(result.skipped))
+
+    output = summary
 
     if len(result.errors) > 0:
-        PE.logInfo(_formatErrors(result.errors))
+        output += "\r\n" + _formatErrors(result.errors)
 
     if len(result.failures) > 0:
-        PE.logInfo(_formatErrors(result.failures))
+        output += "\r\n" + _formatErrors(result.failures)
+
+    if len(result.errors) > 0 or len(result.failures) > 0:
+        # Display summary again at the end for clarity.
+        output += "\r\n\r\n" + summary
+
+        subject = "[HA] {} failed unit tests".format(
+                len(result.errors) + len(result.failures))
+        alert = Alert.createInfoAlert(subject, output)
+        if not AlertManager.processAdminAlert(alert):
+            PE.logInfo('Failed to send unit test result.')
+
+    PE.logInfo(output) # always log the test result even if there is no error.
 
 #runTests()

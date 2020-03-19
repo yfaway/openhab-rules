@@ -1,5 +1,6 @@
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import StringItem
+from org.eclipse.smarthome.core.library.types import StringType
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device_test import DeviceTest

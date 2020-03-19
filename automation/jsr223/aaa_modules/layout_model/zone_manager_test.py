@@ -3,6 +3,7 @@ from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
+from org.eclipse.smarthome.core.library.types import DecimalType
 
 #from aaa_modules.layout_model import zone_manager
 #reload(zone_manager)

@@ -41,13 +41,13 @@ class AlertOnExternalDoorLeftOpenTest(DeviceTest):
 
     def testOnAction_notAnExternalZone_returnsFalse(self):
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0], Zone('innerZone'),
-                None, events)
+                None, scope.events)
         value = AlertOnExternalDoorLeftOpen().onAction(eventInfo)
         self.assertFalse(value)
 
     def testOnAction_externalZoneWithNoDoor_returnsFalseAndTimerStarted(self):
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
-                Zone.createExternalZone('aZone'), None, events)
+                Zone.createExternalZone('aZone'), None, scope.events)
         value = AlertOnExternalDoorLeftOpen().onAction(eventInfo)
         self.assertFalse(value)
 
@@ -55,7 +55,7 @@ class AlertOnExternalDoorLeftOpenTest(DeviceTest):
         ITEMS[0].setState(scope.OnOffType.ON)
 
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
-                self.zone1, None, events)
+                self.zone1, None, scope.events)
         action = AlertOnExternalDoorLeftOpen(1)
         value = action.onAction(eventInfo)
 
@@ -69,7 +69,7 @@ class AlertOnExternalDoorLeftOpenTest(DeviceTest):
         ITEMS[0].setState(scope.OnOffType.ON)
 
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
-                self.zone1, None, events)
+                self.zone1, None, scope.events)
 
         action = AlertOnExternalDoorLeftOpen()
         value = action.onAction(eventInfo)
