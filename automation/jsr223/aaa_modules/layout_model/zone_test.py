@@ -271,7 +271,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItem(), None)
+                self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertFalse(isProcessed)
 
     def testOnMotionSensorTurnedOn_illuminanceAboveThreshold_returnsFalse(self):
@@ -283,7 +283,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItem(), None)
+                self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertFalse(isProcessed)
         self.assertFalse(self.light.isOn())
 
@@ -296,7 +296,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItem(), None)
+                self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertTrue(isProcessed)
 
         time.sleep(0.1)
@@ -322,7 +322,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItem(), None)
+                self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertTrue(isProcessed)
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
@@ -335,7 +335,7 @@ class ZoneTest(DeviceTest):
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(scope.events,
-                self.motionSensor.getItem(), None)
+                self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertTrue(isProcessed)
         time.sleep(0.1)
         self.assertTrue(self.light.isOn())
@@ -377,5 +377,6 @@ class ZoneTest(DeviceTest):
         zones = zone1.getNeighborZones(zm, [NeighborType.OPEN_SPACE_MASTER])
         self.assertEqual(1, len(zones))
         self.assertEqual(zone3, zones[0])
+
 
 PE.runUnitTest(ZoneTest)

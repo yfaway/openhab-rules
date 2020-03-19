@@ -11,6 +11,7 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 
 from aaa_modules.layout_model.event_info import EventInfo
+from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
 from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.astro_sensor import AstroSensor
@@ -55,8 +56,6 @@ class TurnOnSwitchTest(DeviceTest):
         self.zone1 = Zone('great room', [self.light1, self.illuminanceSensor, self.motionSensor1])
         self.zone2 = Zone('kitchen', [self.light2, self.illuminanceSensor, self.motionSensor2])
         self.zone3 = Zone('foyer', [self.light3, self.illuminanceSensor])
-
-
 
     def getItems(self, resetState = False):
         if resetState:
@@ -205,7 +204,7 @@ class TurnOnSwitchTest(DeviceTest):
         self.lightItem3.setState(scope.OnOffType.ON)
 
         eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
-                self.zone2, self.createMockZoneManager(), events)
+                self.zone2, self.createMockedZoneManager(), events)
         returnVal = TurnOnSwitch().onAction(eventInfo)
         self.assertFalse(returnVal)
         time.sleep(0.1)
@@ -214,7 +213,7 @@ class TurnOnSwitchTest(DeviceTest):
 
     def turnOn(self):
         eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
-                self.zone1, self.createMockZoneManager(), events)
+                self.zone1, self.createMockedZoneManager(), events)
         return TurnOnSwitch().onAction(eventInfo)
 
     # Helper method to set up the relationship between the provided zone and zone1.
@@ -226,19 +225,7 @@ class TurnOnSwitchTest(DeviceTest):
         if neighborLightOn:
             self.lightItem2.setState(scope.OnOffType.ON)
 
-    def createMockZoneManager(self):
-        class MockZoneManager:
-            def __init__(self, zones):
-                self.zones = zones
-
-            def getZoneById(self, id):
-                for z in self.zones:
-                    if z.getId() == id:
-                        return z
-
-                return None
-
-        return MockZoneManager([self.zone1, self.zone2, self.zone3])
-
+    def createMockedZoneManager(self):
+        return MockedZoneManager([self.zone1, self.zone2, self.zone3])
 
 PE.runUnitTest(TurnOnSwitchTest)
