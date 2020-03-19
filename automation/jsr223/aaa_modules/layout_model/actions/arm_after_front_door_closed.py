@@ -59,8 +59,6 @@ class ArmAfterFrontDoorClosed(Action):
                 if None != self.timer:
                     self.timer.cancel()
 
-                elapsedTime = self.maxElapsedTimeInSeconds
-
                 def armAndSendAlert():
                     # Don't know why list comprehension version like below 
                     # doesn't work, Jython just hang on this statement:

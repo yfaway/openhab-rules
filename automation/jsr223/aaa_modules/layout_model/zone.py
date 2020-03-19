@@ -336,11 +336,12 @@ class Zone:
 
         presenceSensors = self.getDevicesByType(MotionSensor) + \
             self.getDevicesByType(NetworkPresence)
+
         if any(s.wasRecentlyActivated(secondsFromLastEvent) for s in presenceSensors):
             occupied = True
         else:
-            switches = self.getDevicesByType(Switch)
-            if any(s.isOn() for s in switches):
+            lights = self.getDevicesByType(Light)
+            if any(s.isOn() for s in lights):
                 occupied = True
 
         return occupied

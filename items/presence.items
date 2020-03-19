@@ -45,12 +45,6 @@ Switch FF_Virtual_NetworkPresenceOwner2Phone "Owner2's Phone" <network>
 Switch FF_Virtual_NetworkPresenceOwner3Phone "Owner3's Phone" <network> 
   (gPresence, gOwner2Presence, gNetworkPresence) 
   { channel="network:pingdevice:192_168_0_206:online" }
-Switch FF_Virtual_NetworkPresenceOwner3Tablet "Owner3's Tablet" <network> 
-  (gPresence, gOwner2Presence, gNetworkPresence) 
-  { channel="network:pingdevice:192_168_0_205:online" }
-Switch FF_Virtual_NetworkPresenceOwner4Phone "Owner4's Phone" <network> 
-  (gPresence, gOwner2Presence, gNetworkPresence) 
-  { channel="network:pingdevice:192_168_0_204:online" }
 
 Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" 
   (gPresence) {expire="5m,command=OFF"}

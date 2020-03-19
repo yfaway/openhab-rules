@@ -52,7 +52,7 @@ class Dimmer(Light):
 
         @override
         '''
-        return self.getItem().state > scope.DecimalType(0)
+        return self.getItem().state.intValue() > 0
 
     def __unicode__(self):
         '''
