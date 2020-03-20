@@ -1,6 +1,3 @@
-import time
-
-from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import SwitchItem, NumberItem
 from org.eclipse.smarthome.core.library.types import DecimalType
 from org.eclipse.smarthome.core.library.types import OnOffType
@@ -32,8 +29,7 @@ class PlugTest(DeviceTest):
         self.assertFalse(self.plug.isOn())
 
     def testTurnOn_withScopeEvents_returnsTrue(self):
-        self.plug.turnOn(scope.events)
-        time.sleep(0.1)
+        self.plug.turnOn(self.getMockedEventDispatcher())
 
         self.assertTrue(self.plug.isOn())
         self.assertEqual(100, self.plug.getWattage())
@@ -42,8 +38,7 @@ class PlugTest(DeviceTest):
         ITEMS[0].setState(OnOffType.ON)
         self.assertTrue(self.plug.isOn())
 
-        self.plug.turnOff(scope.events)
-        time.sleep(0.1)
+        self.plug.turnOff(self.getMockedEventDispatcher())
         self.assertFalse(self.plug.isOn())
 
 PE.runUnitTest(PlugTest)

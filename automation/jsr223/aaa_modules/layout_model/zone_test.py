@@ -1,5 +1,3 @@
-import time
-
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import DimmerItem
 from org.eclipse.smarthome.core.library.items import NumberItem
@@ -151,8 +149,7 @@ class ZoneTest(DeviceTest):
 
     def testIsOccupied_switchIsOn_returnsTrue(self):
         zone = Zone('ff', [self.light, self.motionSensor])
-        self.light.turnOn(scope.events)
-        time.sleep(0.1)
+        self.light.turnOn(self.getMockedEventDispatcher())
 
         self.assertTrue(zone.isOccupied())
 
@@ -211,14 +208,12 @@ class ZoneTest(DeviceTest):
 
         self.lightItem.setState(scope.OnOffType.ON)
         self.timerItem.setState(scope.OnOffType.ON)
-        time.sleep(0.1)
 
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onTimerExpired(scope.events, self.timerItem)
+        isProcessed = zone.onTimerExpired(self.getMockedEventDispatcher(), self.timerItem)
         self.assertTrue(isProcessed)
 
-        time.sleep(0.1)
         self.assertEqual(scope.OnOffType.OFF, self.lightItem.getState())
 
     def testOnTimerExpired_validTimerItemButPlugHasWattage_returnsFalse(self):
@@ -228,21 +223,19 @@ class ZoneTest(DeviceTest):
 
         self.plugItem.setState(scope.OnOffType.ON)
         self.plugPowerItem.setState(DecimalType(100))
-        time.sleep(0.1)
 
         plug = Plug(self.plugItem, self.plugPowerItem)
         zone = Zone('ff', [self.light, plug])
 
-        isProcessed = zone.onTimerExpired(scope.events, self.timerItem)
+        isProcessed = zone.onTimerExpired(self.getMockedEventDispatcher(), self.timerItem)
         self.assertFalse(isProcessed)
 
-        time.sleep(0.1)
         self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
 
     def testOnTimerExpired_invalidTimerItem_returnsFalse(self):
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onTimerExpired(scope.events, PE.createStringItem('dummy name'))
+        isProcessed = zone.onTimerExpired(self.getMockedEventDispatcher(), PE.createStringItem('dummy name'))
         self.assertFalse(isProcessed)
 
     def testOnSwitchedTurnedOn_validItemName_returnsTrue(self):
@@ -250,10 +243,9 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onSwitchTurnedOn(scope.events, self.lightItem, None)
+        isProcessed = zone.onSwitchTurnedOn(self.getMockedEventDispatcher(), self.lightItem, None)
         self.assertTrue(isProcessed)
 
-        time.sleep(0.1)
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
 
     def testOnSwitchedTurnedOff_validItemName_returnsTrue(self):
@@ -261,10 +253,9 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onSwitchTurnedOff(scope.events, self.lightItem, None)
+        isProcessed = zone.onSwitchTurnedOff(self.getMockedEventDispatcher(), self.lightItem, None)
         self.assertTrue(isProcessed)
 
-        time.sleep(0.1)
         self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
     def testOnMotionSensorTurnedOn_validItemNameNoIlluminanceSensorNoAstroSensor_returnsFalse(self):
@@ -273,7 +264,7 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.motionSensor])
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertFalse(isProcessed)
 
@@ -285,7 +276,7 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor])
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertFalse(isProcessed)
         self.assertFalse(self.light.isOn())
@@ -298,11 +289,10 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor])
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertTrue(isProcessed)
 
-        time.sleep(0.1)
         self.assertTrue(self.light.isOn())
 
     def testOnMotionSensorTurnedOn_notLightOnTime_returnsFalse(self):
@@ -311,7 +301,7 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.astroSensor])
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), None)
         self.assertFalse(isProcessed)
 
@@ -324,10 +314,9 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor, self.astroSensor])
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertTrue(isProcessed)
-        time.sleep(0.1)
         self.assertTrue(self.light.isOn())
 
     def testOnMotionSensorTurnedOn_lightOnTime_turnsOnLight(self):
@@ -337,10 +326,9 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
         zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(scope.events,
+        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
         self.assertTrue(isProcessed)
-        time.sleep(0.1)
         self.assertTrue(self.light.isOn())
 
     def testStr_noParam_returnsNonEmptyString(self):

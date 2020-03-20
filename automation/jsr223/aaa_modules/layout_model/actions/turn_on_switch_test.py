@@ -1,5 +1,3 @@
-import time
-
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
@@ -83,8 +81,7 @@ class TurnOnSwitchTest(DeviceTest):
     def testOnAction_renewTimerIfLightIsAlreadyOnEvenIfIlluminanceIsAboveThreshold_returnsTrue(self):
         self.illuminanceSensorItem.setState(
                 DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX + 1))
-        self.light1.turnOn(scope.events)
-        time.sleep(0.1)
+        self.light1.turnOn(self.getMockedEventDispatcher())
 
         self.assertTrue(self.turnOn())
 
@@ -99,7 +96,7 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertFalse(self.turnOn())
 
     def testOnAction_switchWasJustTurnedOff_returnsFalse(self):
-        self.light1.onSwitchTurnedOff(scope.events, self.light1.getItemName())
+        self.light1.onSwitchTurnedOff(self.getMockedEventDispatcher(), self.light1.getItemName())
 
         self.illuminanceSensorItem.setState(
                 DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
@@ -125,7 +122,7 @@ class TurnOnSwitchTest(DeviceTest):
         self.motionSensor1.getChannel = lambda : 'a channel'
         self.motionSensor2.getChannel = lambda : 'a channel'
 
-        self.light2.onSwitchTurnedOff(scope.events, self.light2.getItemName())
+        self.light2.onSwitchTurnedOff(self.getMockedEventDispatcher(), self.light2.getItemName())
 
         self.illuminanceSensorItem.setState(
                 DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
@@ -147,7 +144,6 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertTrue(self.zone2.isLightOn())
 
         self.assertTrue(self.turnOn())
-        time.sleep(0.1)
         self.assertFalse(self.zone2.isLightOn())
 
     def testOnAction_openSpaceNeighborIsOff_returnsTrue(self):
@@ -155,7 +151,6 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertFalse(self.zone2.isLightOn())
 
         self.assertTrue(self.turnOn())
-        time.sleep(0.2)
         self.assertTrue(self.zone1.isLightOn())
         self.assertFalse(self.zone2.isLightOn())
 
@@ -164,7 +159,6 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertTrue(self.zone2.isLightOn())
 
         self.assertTrue(self.turnOn())
-        time.sleep(0.1)
         self.assertFalse(self.zone2.isLightOn())
 
     def testOnAction_openSpaceSlaveNeighborIsOff_returnsTrue(self):
@@ -172,7 +166,6 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertFalse(self.zone2.isLightOn())
 
         self.assertTrue(self.turnOn())
-        time.sleep(0.3)
         self.assertTrue(self.zone1.isLightOn())
         self.assertFalse(self.zone2.isLightOn())
 
@@ -181,7 +174,6 @@ class TurnOnSwitchTest(DeviceTest):
         self.lightItem1.setState(scope.OnOffType.ON)
 
         self.assertTrue(self.turnOn())
-        time.sleep(0.1)
         self.assertTrue(self.zone2.isLightOn())
 
     def testOnAction_masterIsOn_returnsTrueAndNotTurningOffOpenSpaceNeighbor(self):
@@ -205,16 +197,15 @@ class TurnOnSwitchTest(DeviceTest):
         self.lightItem3.setState(scope.OnOffType.ON)
 
         eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
-                self.zone2, self.createMockedZoneManager(), scope.events)
+                self.zone2, self.createMockedZoneManager(), self.getMockedEventDispatcher())
         returnVal = TurnOnSwitch().onAction(eventInfo)
         self.assertFalse(returnVal)
-        time.sleep(0.1)
         self.assertFalse(self.zone2.isLightOn())
         self.assertTrue(self.zone3.isLightOn())
 
     def turnOn(self):
         eventInfo = EventInfo(ZoneEvent.MOTION, ITEMS[0],
-                self.zone1, self.createMockedZoneManager(), scope.events)
+                self.zone1, self.createMockedZoneManager(), self.getMockedEventDispatcher())
         return TurnOnSwitch().onAction(eventInfo)
 
     # Helper method to set up the relationship between the provided zone and zone1.

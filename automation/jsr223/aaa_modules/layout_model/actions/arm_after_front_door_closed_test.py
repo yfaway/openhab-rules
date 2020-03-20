@@ -66,32 +66,32 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
 
     def testOnAction_doorClosedWithNoPresenceEvent_armAndReturnsTrue(self):
         ITEMS[0].setState(scope.OnOffType.OFF) # close door
-        self.alarmPartition.disarm(scope.events)
-        time.sleep(0.5)
+        self.alarmPartition.disarm(self.getMockedEventDispatcher())
 
+        # not sure why test fails if self.getMockedEventDispatcher() is used here
         eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],
                 self.zone1, self.mockZoneManager, scope.events)
-        value = ArmAfterFrontDoorClosed(1).onAction(eventInfo)
+
+        value = ArmAfterFrontDoorClosed(0.1).onAction(eventInfo)
         self.assertTrue(value)
 
-        time.sleep(1.5)
+        time.sleep(0.3)
         self.assertTrue(self.alarmPartition.isArmedAway())
 
     def testOnAction_doorClosedWithPresenceEvent_notArmedAndReturnsTrue(self):
         ITEMS[0].setState(scope.OnOffType.OFF) # close door
-        self.alarmPartition.disarm(scope.events)
-        time.sleep(0.5)
+        self.alarmPartition.disarm(self.getMockedEventDispatcher())
 
         eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],
-                self.zone1, self.mockZoneManager, scope.events)
-        value = ArmAfterFrontDoorClosed(1).onAction(eventInfo)
+                self.zone1, self.mockZoneManager, self.getMockedEventDispatcher())
+        value = ArmAfterFrontDoorClosed(0.1).onAction(eventInfo)
         self.assertTrue(value)
 
-        time.sleep(0.8)
+        time.sleep(0.1)
         # simulate a motion event
         self.motionSensor._updateLastActivatedTimestamp()
 
-        time.sleep(0.7)
+        time.sleep(0.1)
         self.assertFalse(self.alarmPartition.isArmedAway())
 
 PE.runUnitTest(ArmAfterFrontDoorClosedTest)

@@ -7,6 +7,7 @@ from org.eclipse.smarthome.core.library.items import SwitchItem
 from org.eclipse.smarthome.core.library.types import PercentType
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+from aaa_modules.layout_model.device_test import MockedEventDispatcher
 
 #from aaa_modules.layout_model import dimmer
 #reload(dimmer)
@@ -48,8 +49,7 @@ class DimmerTest(unittest.TestCase):
         timeRanges = "{}-{}".format(hourOfDay + 2, hourOfDay + 2)
         self.dimmer = Dimmer(self.dimmerItem, self.timerItem, dimLevel, timeRanges)
 
-        self.dimmer.turnOn(scope.events)
-        time.sleep(0.1)
+        self.dimmer.turnOn(MockedEventDispatcher())
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(100, self.dimmerItem.getState().intValue())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
@@ -63,8 +63,7 @@ class DimmerTest(unittest.TestCase):
         timeRanges = "{}-{}".format(hourOfDay, nextHour)
         self.dimmer = Dimmer(self.dimmerItem, self.timerItem, dimLevel, timeRanges)
 
-        self.dimmer.turnOn(scope.events)
-        time.sleep(0.1)
+        self.dimmer.turnOn(MockedEventDispatcher())
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(dimLevel, self.dimmerItem.getState().intValue())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
@@ -73,8 +72,7 @@ class DimmerTest(unittest.TestCase):
         self.dimmerItem.setState(PercentType(100))
         self.timerItem.setState(scope.OnOffType.OFF)
 
-        self.dimmer.turnOn(scope.events)
-        time.sleep(0.1)
+        self.dimmer.turnOn(MockedEventDispatcher())
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
 
@@ -82,8 +80,7 @@ class DimmerTest(unittest.TestCase):
         self.dimmerItem.setState(PercentType(0))
         self.timerItem.setState(scope.OnOffType.ON)
 
-        self.dimmer.turnOff(scope.events)
-        time.sleep(0.1)
+        self.dimmer.turnOff(MockedEventDispatcher())
         self.assertFalse(self.dimmer.isOn())
 
 PE.runUnitTest(DimmerTest)

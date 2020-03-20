@@ -1,5 +1,3 @@
-import time
-
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
@@ -62,7 +60,6 @@ class TurnOffAdjacentZonesTest(DeviceTest):
         self.lightItem2.setState(scope.OnOffType.ON)
 
         self.assertTrue(self.turnOff(self.washroom))
-        time.sleep(0.1)
         self.assertFalse(self.lobby.isLightOn())
 
     def testOnAction_fanZone_returnsFalse(self):
@@ -74,13 +71,13 @@ class TurnOffAdjacentZonesTest(DeviceTest):
         self.lightItem2.setState(scope.OnOffType.ON)
 
         self.assertTrue(self.turnOff(self.washroom))
-        time.sleep(0.2)
         self.assertFalse(self.lobby.isLightOn())
         self.assertEqual(scope.OnOffType.ON, self.fanItem.getState())
 
     def turnOff(self, zone):
         zm = MockedZoneManager([self.washroom, self.shower, self.lobby])
-        eventInfo = EventInfo(ZoneEvent.UNDEFINED, ITEMS[0], zone, zm, scope.events)
+        eventInfo = EventInfo(ZoneEvent.UNDEFINED, ITEMS[0], zone, zm, 
+                self.getMockedEventDispatcher())
 
         return TurnOffAdjacentZones().onAction(eventInfo)
 

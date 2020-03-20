@@ -41,13 +41,13 @@ class AlertOnExternalDoorLeftOpenTest(DeviceTest):
 
     def testOnAction_notAnExternalZone_returnsFalse(self):
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0], Zone('innerZone'),
-                None, scope.events)
+                None, self.getMockedEventDispatcher())
         value = AlertOnExternalDoorLeftOpen().onAction(eventInfo)
         self.assertFalse(value)
 
     def testOnAction_externalZoneWithNoDoor_returnsFalseAndTimerStarted(self):
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
-                Zone.createExternalZone('aZone'), None, scope.events)
+                Zone.createExternalZone('aZone'), None, self.getMockedEventDispatcher())
         value = AlertOnExternalDoorLeftOpen().onAction(eventInfo)
         self.assertFalse(value)
 
@@ -55,21 +55,21 @@ class AlertOnExternalDoorLeftOpenTest(DeviceTest):
         ITEMS[0].setState(scope.OnOffType.ON)
 
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
-                self.zone1, None, scope.events)
-        action = AlertOnExternalDoorLeftOpen(1)
+                self.zone1, None, self.getMockedEventDispatcher())
+        action = AlertOnExternalDoorLeftOpen(0.1)
         value = action.onAction(eventInfo)
 
         self.assertTrue(value)
         self.assertTrue(action.hasRunningTimer())
 
-        time.sleep(2)
+        time.sleep(0.3) # wait for the production code timer
         self.assertTrue("door" in AlertManager._lastEmailedSubject)
 
     def testOnAction_aDoorWasOpenButClosedSoonAfter_returnsTrueAndTimerCancelled(self):
         ITEMS[0].setState(scope.OnOffType.ON)
 
         eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, ITEMS[0],
-                self.zone1, None, scope.events)
+                self.zone1, None, self.getMockedEventDispatcher())
 
         action = AlertOnExternalDoorLeftOpen()
         value = action.onAction(eventInfo)

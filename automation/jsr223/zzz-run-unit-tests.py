@@ -17,7 +17,7 @@ TEST_FILE_PATTERN = '*test.py'
 
 @rule("Run unit tests daily at midnight.")
 @when("Time cron 0 0 0 1/1 * ? *")
-def runTests():
+def runTests(event):
     def _formatErrors(errors):
         return "[{}]".format(",\n    ".join('{{"name":"{}", "stack":"{}"}}'.format(
                         test.id(), stack.replace('"', r'\"')) for test, stack in errors))
@@ -56,4 +56,4 @@ def runTests():
 
     PE.logInfo(output) # always log the test result even if there is no error.
 
-#runTests()
+#runTests(None)

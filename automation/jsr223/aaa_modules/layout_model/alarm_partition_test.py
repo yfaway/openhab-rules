@@ -1,5 +1,3 @@
-import time
-
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import SwitchItem, NumberItem
 from org.eclipse.smarthome.core.library.types import DecimalType
@@ -36,23 +34,20 @@ class AlarmPartitionTest(DeviceTest):
         self.assertTrue(self.alarmPartition.isInAlarm())
 
     def testArmAway_noParam_setCorrectValue(self):
-        self.alarmPartition.armAway(scope.events)
+        self.alarmPartition.armAway(self.getMockedEventDispatcher())
 
-        time.sleep(0.1)
         self.assertEqual(AlarmPartition.STATE_ARM_AWAY,
                 self.alarmPartition.getArmMode())
 
     def testArmStay_noParam_setCorrectValue(self):
-        self.alarmPartition.armStay(scope.events)
+        self.alarmPartition.armStay(self.getMockedEventDispatcher())
 
-        time.sleep(0.1)
         self.assertEqual(AlarmPartition.STATE_ARM_STAY,
                 self.alarmPartition.getArmMode())
 
     def testDisarm_noParam_setCorrectValue(self):
-        self.alarmPartition.disarm(scope.events)
+        self.alarmPartition.disarm(self.getMockedEventDispatcher())
 
-        time.sleep(0.1)
         self.assertEqual(AlarmPartition.STATE_UNARMED,
                 self.alarmPartition.getArmMode())
 

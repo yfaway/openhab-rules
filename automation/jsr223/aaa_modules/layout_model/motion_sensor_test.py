@@ -1,13 +1,14 @@
 import unittest
-import time
 
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+
 #from aaa_modules.layout_model import motion_sensor
 #reload(motion_sensor)
 from aaa_modules.layout_model.motion_sensor import MotionSensor
-from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+from aaa_modules.layout_model.device_test import MockedEventDispatcher
 
 MOTION_SENSOR_SWITCH_NAME = 'MotionSensorName'
 
@@ -24,28 +25,26 @@ class MotionSensorTest(unittest.TestCase):
 
         self.motionSensor = MotionSensor(self.motionSensorItem)
 
+        self.events = MockedEventDispatcher()
+
     def tearDown(self):
         scope.itemRegistry.remove(self.motionSensorItem.getName())
 
     def testIsOn_various_returnsExpected(self):
-        scope.events.sendCommand(self.motionSensorItem.getName(), "ON")
-        time.sleep(0.1)
+        self.events.sendCommand(self.motionSensorItem.getName(), "ON")
         self.assertTrue(self.motionSensor.isOn())
 
-        scope.events.sendCommand(self.motionSensorItem.getName(), "OFF")
-        time.sleep(0.1)
+        self.events.sendCommand(self.motionSensorItem.getName(), "OFF")
         self.assertFalse(self.motionSensor.isOn())
 
     def testIsOccupied_various_returnsExpected(self):
         itemName = self.motionSensorItem.getName()
 
-        scope.events.sendCommand(itemName, "ON")
-        time.sleep(0.1)
-        self.motionSensor.onMotionSensorTurnedOn(scope.events, itemName)
+        self.events.sendCommand(itemName, "ON")
+        self.motionSensor.onMotionSensorTurnedOn(self.events, itemName)
         self.assertTrue(self.motionSensor.isOccupied())
 
-        scope.events.sendCommand(self.motionSensorItem.getName(), "OFF")
-        time.sleep(0.1)
+        self.events.sendCommand(self.motionSensorItem.getName(), "OFF")
         self.assertTrue(self.motionSensor.isOccupied())
 
 PE.runUnitTest(MotionSensorTest)
