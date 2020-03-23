@@ -21,18 +21,18 @@ from aaa_modules.layout_model.actions.arm_after_front_door_closed import ArmAfte
 
 ITEMS = [SwitchItem('Door1'), SwitchItem('Door2'),
     SwitchItem('AlarmStatus'), NumberItem('_AlarmMode'),
-    SwitchItem('MotionSensor')]
+    SwitchItem('ExternalMotionSensor'), SwitchItem('InternalMotionSensor')]
 
 class MockZoneManager:
-    def __init__(self, alarmPartition, zone):
+    def __init__(self, alarmPartition, zones):
         self.alarmPartition = alarmPartition
-        self.zone = zone
+        self.zones = list(zones)
 
     def getDevicesByType(self, cls):
         return [self.alarmPartition]
 
     def getZones(self):
-        return [self.zone]
+        return self.zones
 
 # Unit tests for arm_after_front_door_closed.py.
 class ArmAfterFrontDoorClosedTest(DeviceTest):
@@ -40,14 +40,17 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
         super(ArmAfterFrontDoorClosedTest, self).setUp()
 
         self.alarmPartition = AlarmPartition(ITEMS[2], ITEMS[3])
-        self.motionSensor = MotionSensor(ITEMS[4])
+        self.externalMotionSensor = MotionSensor(ITEMS[4])
+        self.internalMotionSensor = MotionSensor(ITEMS[5])
 
         self.zone1 = Zone.createExternalZone('porch') \
             .addDevice(Door(ITEMS[0])) \
-            .addDevice(self.alarmPartition) \
-            .addDevice(self.motionSensor)
+            .addDevice(self.externalMotionSensor)
 
-        self.mockZoneManager= MockZoneManager(self.alarmPartition, self.zone1)
+        self.zone2 = Zone('foyer', [self.internalMotionSensor, self.alarmPartition])
+
+        self.mockZoneManager= MockZoneManager(self.alarmPartition,
+                [self.zone1, self.zone2])
 
         AlertManager._setTestMode(True)
         AlertManager.reset()
@@ -64,18 +67,33 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
 
         return ITEMS
 
+    def testOnAction_motionTriggeredInAnExternalZone_ignoreMotionEventAndContinueToArm(self):
+        ITEMS[0].setState(scope.OnOffType.OFF) # close door
+        self.alarmPartition.disarm(self.getMockedEventDispatcher())
+
+        eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],
+                self.zone1, self.mockZoneManager, self.getMockedEventDispatcher())
+        value = ArmAfterFrontDoorClosed(0.1).onAction(eventInfo)
+        self.assertTrue(value)
+
+        time.sleep(0.1)
+        # simulate a motion event
+        self.externalMotionSensor._updateLastActivatedTimestamp()
+
+        time.sleep(0.2)
+        self.assertTrue(self.alarmPartition.isArmedAway())
+
     def testOnAction_doorClosedWithNoPresenceEvent_armAndReturnsTrue(self):
         ITEMS[0].setState(scope.OnOffType.OFF) # close door
         self.alarmPartition.disarm(self.getMockedEventDispatcher())
 
-        # not sure why test fails if self.getMockedEventDispatcher() is used here
         eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, ITEMS[0],
-                self.zone1, self.mockZoneManager, scope.events)
+                self.zone1, self.mockZoneManager, self.getMockedEventDispatcher())
 
         value = ArmAfterFrontDoorClosed(0.1).onAction(eventInfo)
         self.assertTrue(value)
 
-        time.sleep(0.3)
+        time.sleep(0.2)
         self.assertTrue(self.alarmPartition.isArmedAway())
 
     def testOnAction_doorClosedWithPresenceEvent_notArmedAndReturnsTrue(self):
@@ -89,7 +107,7 @@ class ArmAfterFrontDoorClosedTest(DeviceTest):
 
         time.sleep(0.1)
         # simulate a motion event
-        self.motionSensor._updateLastActivatedTimestamp()
+        self.internalMotionSensor._updateLastActivatedTimestamp()
 
         time.sleep(0.1)
         self.assertFalse(self.alarmPartition.isArmedAway())

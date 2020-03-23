@@ -16,7 +16,7 @@ TEST_DISCOVERY_FOLDER = '/etc/openhab2/automation/jsr223/'
 TEST_FILE_PATTERN = '*test.py'
 
 @rule("Run unit tests daily at midnight.")
-@when("Time cron 0 0 0 1/1 * ? *")
+@when("Time cron 0 0 23 1/1 * ? *")
 def runTests(event):
     def _formatErrors(errors):
         return "[{}]".format(",\n    ".join('{{"name":"{}", "stack":"{}"}}'.format(

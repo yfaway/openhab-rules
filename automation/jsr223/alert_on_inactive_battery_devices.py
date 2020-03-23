@@ -11,7 +11,7 @@ THRESHOLD_IN_SECONDS = 3 * 24 * 3600 # 3 days
 @rule("Check for battery device inactivity at specific interval")
 @when("Time cron 0 0 20 1/3 * ? *")
 def checkInactivity(event):
-    inactiveDevices = getInactiveBatteryDevices(THRESHOLD_IN_SECONDS)
+    inactiveDevices = getInactiveBatteryDevices(zm, THRESHOLD_IN_SECONDS)
 
     if len(inactiveDevices) > 0:
         subject = "{} inactive battery devices".format(len(inactiveDevices))
@@ -25,12 +25,12 @@ def checkInactivity(event):
     else:
         PE.logInfo("No inactive battery devices detected.")
 
-def getInactiveBatteryDevices(thresholdInSeconds):
+def getInactiveBatteryDevices(zoneManager, thresholdInSeconds):
     '''
     :rtype: list(str) the list of inactive devices
     '''
     inactiveDeviceName = []
-    for z in zm.getZones():
+    for z in zoneManager.getZones():
         batteryDevices = [d for d in z.getDevices() if d.isBatteryPowered()]
 
         for d in batteryDevices:

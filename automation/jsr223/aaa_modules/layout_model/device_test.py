@@ -30,7 +30,7 @@ class DeviceTest(unittest.TestCase):
             scope.itemRegistry.remove(item.getName())
 
     def getMockedEventDispatcher(self):
-        return MockedEventDispatcher()
+        return MockedEventDispatcher(scope.itemRegistry)
 
 
 class MockedEventDispatcher:
@@ -39,10 +39,16 @@ class MockedEventDispatcher:
     instead of going through the event bus. This reduces the wait time, and 
     more importantly, makes sendCommand synchronous (no need to inject
     time.sleep() to wait for the command to finish).
+
+    The itemRegistry needs to be passed in, as it is not retrievable from
+    'scope' if the current thread is not the main thread.
     """
 
+    def __init__(self, itemRegistry):
+        self.itemRegistry = itemRegistry
+
     def sendCommand(self, itemName, command):
-        item = scope.itemRegistry.getItem(itemName)
+        item = self.itemRegistry.getItem(itemName)
 
         if command == "ON":
             item.setState(OnOffType.ON)

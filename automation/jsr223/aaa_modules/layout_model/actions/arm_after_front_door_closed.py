@@ -66,7 +66,7 @@ class ArmAfterFrontDoorClosed(Action):
                     # Below is a work around.
                     occupied = False
                     for z in zoneManager.getZones():
-                        if z.isOccupied(self.maxElapsedTimeInSeconds):
+                        if z.isOccupied(self.maxElapsedTimeInSeconds) and not z.isExternal():
                             occupied = True
                             break
 
