@@ -36,14 +36,14 @@ class LightTest(unittest.TestCase):
         scope.itemRegistry.remove(self.timerItem.getName())
 
     def testTurnOn_lightWasOff_returnsExpected(self):
-        self.light.turnOn(MockedEventDispatcher())
+        self.light.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
 
     def testTurnOn_lightWasAlreadyOn_timerIsRenewed(self):
         self.lightItem.setState(scope.OnOffType.ON)
         self.timerItem.setState(scope.OnOffType.OFF)
 
-        self.light.turnOn(MockedEventDispatcher())
+        self.light.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
 
@@ -52,20 +52,20 @@ class LightTest(unittest.TestCase):
         self.timerItem.setState(scope.OnOffType.OFF)
 
         isProcessed = self.light.onSwitchTurnedOn(
-                MockedEventDispatcher(), self.lightItem.getName())
+                MockedEventDispatcher(scope.itemRegistry), self.lightItem.getName())
         self.assertTrue(isProcessed)
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
 
     def testOnSwitchTurnedOn_invalidItemName_returnsFalse(self):
         isProcessed = self.light.onSwitchTurnedOn(
-                MockedEventDispatcher(), "wrong name")
+                MockedEventDispatcher(scope.itemRegistry), "wrong name")
         self.assertFalse(isProcessed)
 
     def testTurnOff_bothLightAndTimerOn_timerIsRenewed(self):
         self.lightItem.setState(scope.OnOffType.ON)
         self.timerItem.setState(scope.OnOffType.ON)
 
-        self.light.turnOff(MockedEventDispatcher())
+        self.light.turnOff(MockedEventDispatcher(scope.itemRegistry))
         self.assertEqual(scope.OnOffType.OFF, self.lightItem.getState())
 
     def testOnSwitchTurnedOff_validParams_timerIsTurnedOn(self):
@@ -73,13 +73,13 @@ class LightTest(unittest.TestCase):
         self.timerItem.setState(scope.OnOffType.ON)
 
         isProcessed = self.light.onSwitchTurnedOff(
-                MockedEventDispatcher(), self.lightItem.getName())
+                MockedEventDispatcher(scope.itemRegistry), self.lightItem.getName())
         self.assertTrue(isProcessed)
         self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
     def testOnSwitchTurnedOff_invalidItemName_returnsFalse(self):
         isProcessed = self.light.onSwitchTurnedOff(
-                MockedEventDispatcher(), "wrong name")
+                MockedEventDispatcher(scope.itemRegistry), "wrong name")
         self.assertFalse(isProcessed)
 
     def testIsLowIlluminance_noThresholdSet_returnsFalse(self):

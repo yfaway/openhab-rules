@@ -49,7 +49,7 @@ class DimmerTest(unittest.TestCase):
         timeRanges = "{}-{}".format(hourOfDay + 2, hourOfDay + 2)
         self.dimmer = Dimmer(self.dimmerItem, self.timerItem, dimLevel, timeRanges)
 
-        self.dimmer.turnOn(MockedEventDispatcher())
+        self.dimmer.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(100, self.dimmerItem.getState().intValue())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
@@ -63,7 +63,7 @@ class DimmerTest(unittest.TestCase):
         timeRanges = "{}-{}".format(hourOfDay, nextHour)
         self.dimmer = Dimmer(self.dimmerItem, self.timerItem, dimLevel, timeRanges)
 
-        self.dimmer.turnOn(MockedEventDispatcher())
+        self.dimmer.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(dimLevel, self.dimmerItem.getState().intValue())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
@@ -72,7 +72,7 @@ class DimmerTest(unittest.TestCase):
         self.dimmerItem.setState(PercentType(100))
         self.timerItem.setState(scope.OnOffType.OFF)
 
-        self.dimmer.turnOn(MockedEventDispatcher())
+        self.dimmer.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
 
@@ -80,7 +80,7 @@ class DimmerTest(unittest.TestCase):
         self.dimmerItem.setState(PercentType(0))
         self.timerItem.setState(scope.OnOffType.ON)
 
-        self.dimmer.turnOff(MockedEventDispatcher())
+        self.dimmer.turnOff(MockedEventDispatcher(scope.itemRegistry))
         self.assertFalse(self.dimmer.isOn())
 
 PE.runUnitTest(DimmerTest)

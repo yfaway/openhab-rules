@@ -25,7 +25,7 @@ class MotionSensorTest(unittest.TestCase):
 
         self.motionSensor = MotionSensor(self.motionSensorItem)
 
-        self.events = MockedEventDispatcher()
+        self.events = MockedEventDispatcher(scope.itemRegistry)
 
     def tearDown(self):
         scope.itemRegistry.remove(self.motionSensorItem.getName())
