@@ -169,6 +169,14 @@ class Zone:
         params = self._createCtorParamDictionary('devices', newDevices)
         return Zone(**params)
 
+    def hasDevice(self, device):
+        '''
+        Determine if the zone contains the specified device.
+
+        :rtype: Boolean
+        '''
+        return device in self.devices
+
     def getDevices(self):
         '''
         Returns a copy of the list of devices.

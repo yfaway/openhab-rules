@@ -13,10 +13,11 @@ from aaa_modules.layout_model.switch import Fan, Switch
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 
-from aaa_modules.layout_model.actions.play_music_during_shower import PlayMusicDuringShower
 from aaa_modules.layout_model.actions.alert_on_entrance_activity import AlertOnEntraceActivity
 from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExternalDoorLeftOpen
 from aaa_modules.layout_model.actions.arm_after_front_door_closed import ArmAfterFrontDoorClosed
+from aaa_modules.layout_model.actions.play_music_during_shower import PlayMusicDuringShower
+from aaa_modules.layout_model.actions.simulate_daytime_presence import SimulateDaytimePresence
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 
@@ -32,6 +33,7 @@ def initializeZoneManager():
     alertOnExternalDoorLeftOpen = AlertOnExternalDoorLeftOpen()
     armAfterFrontDoorClosed = ArmAfterFrontDoorClosed(15 * 60) # arm after 15'
     playMusicDuringShower = PlayMusicDuringShower("http://hestia2.cdnstream.com:80/1277_192")
+    simulateDayTimePresence = SimulateDaytimePresence("http://hestia2.cdnstream.com:80/1277_192")
 
     # add virtual devices and actions
     for z in zones:
@@ -51,6 +53,7 @@ def initializeZoneManager():
 
         if z.isExternal():
             z = z.addAction(ZoneEvent.MOTION, alertOnEntranceActivity)
+            z = z.addAction(ZoneEvent.MOTION, simulateDayTimePresence)
 
             z = z.addAction(ZoneEvent.CONTACT_OPEN, alertOnExternalDoorLeftOpen)
             z = z.addAction(ZoneEvent.CONTACT_CLOSED, alertOnExternalDoorLeftOpen)
