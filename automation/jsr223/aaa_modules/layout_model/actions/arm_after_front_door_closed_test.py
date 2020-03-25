@@ -10,9 +10,9 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.event_info import EventInfo
 from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.immutable_zone_manager import ImmutableZoneManager
-from aaa_modules.layout_model.alarm_partition import AlarmPartition
-from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.device_test import DeviceTest
+from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
+from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.contact import Door
 
 #from aaa_modules.layout_model.actions import arm_after_front_door_closed

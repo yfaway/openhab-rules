@@ -1,6 +1,6 @@
+from aaa_modules.layout_model.action import Action
 from aaa_modules.layout_model.neighbor import NeighborType
 from aaa_modules.layout_model.zone import ZoneEvent
-from aaa_modules.layout_model.actions.action import Action
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE

@@ -8,7 +8,7 @@ from aaa_modules.layout_model.event_info import EventInfo
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
 from aaa_modules.layout_model.zone import Zone, ZoneEvent
-from aaa_modules.layout_model.switch import Fan
+from aaa_modules.layout_model.devices.switch import Fan
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 #from aaa_modules.layout_model.actions import play_music_during_shower
 #reload(play_music_during_shower)

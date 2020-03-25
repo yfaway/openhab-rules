@@ -15,13 +15,12 @@ from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
 from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 
+from aaa_modules.layout_model.devices.astro_sensor import AstroSensor
+from aaa_modules.layout_model.devices.dimmer import Dimmer
+from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
+from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.plug import Plug
-from aaa_modules.layout_model.astro_sensor import AstroSensor
-from aaa_modules.layout_model.dimmer import Dimmer
-from aaa_modules.layout_model.switch import Fan
-from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
-from aaa_modules.layout_model.switch import Light
-from aaa_modules.layout_model.motion_sensor import MotionSensor
+from aaa_modules.layout_model.devices.switch import Fan, Light
 
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones

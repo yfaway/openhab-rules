@@ -2,8 +2,8 @@
 Contain utility methods and constants dealing with the house's security sytem.
 '''
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-from aaa_modules.layout_model.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.zone_manager import ZoneManager
+from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 
 ITEM_NAME_PARTITION_ARM_MODE = "PARTITION1_ARM_MODE"
 ''' The item name for the partition arm mode.  '''

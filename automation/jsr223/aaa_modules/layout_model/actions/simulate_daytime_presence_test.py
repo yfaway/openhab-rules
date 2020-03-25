@@ -10,7 +10,7 @@ from aaa_modules.layout_model.device_test import DeviceTest
 from aaa_modules.layout_model.event_info import EventInfo
 from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
 from aaa_modules.layout_model.zone import Zone, ZoneEvent, Level
-from aaa_modules.layout_model.alarm_partition import AlarmPartition
+from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 #from aaa_modules.layout_model.actions import simulate_daytime_presence

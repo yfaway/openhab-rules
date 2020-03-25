@@ -9,9 +9,9 @@ from org.eclipse.smarthome.core.library.types import PercentType
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device_test import MockedEventDispatcher
 
-#from aaa_modules.layout_model import dimmer
+#from aaa_modules.layout_model.devices import dimmer
 #reload(dimmer)
-from aaa_modules.layout_model.dimmer import Dimmer
+from aaa_modules.layout_model.devices.dimmer import Dimmer
 
 DIMMER_NAME = 'TestDimmerName'
 TIMER_NAME = 'TestTimerName'

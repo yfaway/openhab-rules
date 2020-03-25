@@ -11,7 +11,7 @@ from aaa_modules.layout_model.event_info import EventInfo
 from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
 from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
-from aaa_modules.layout_model.switch import Fan, Light
+from aaa_modules.layout_model.devices.switch import Fan, Light
 
 from aaa_modules.layout_model.device_test import DeviceTest
 

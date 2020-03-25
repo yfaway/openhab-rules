@@ -8,8 +8,8 @@ from aaa_modules.security_manager import SecurityManager as SM
 from aaa_modules.zone_parser import ZoneParser
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
-from aaa_modules.layout_model.switch import Fan, Switch
 
+from aaa_modules.layout_model.devices.switch import Fan, Switch
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 

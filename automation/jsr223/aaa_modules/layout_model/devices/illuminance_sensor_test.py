@@ -4,9 +4,9 @@ from org.eclipse.smarthome.core.library.types import DecimalType
 
 from aaa_modules.layout_model.device_test import DeviceTest
 
-#from aaa_modules.layout_model import illuminance_sensor
+#from aaa_modules.layout_model.devices import illuminance_sensor
 #reload(illuminance_sensor)
-from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
+from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 ITEMS = [NumberItem('IlluminanceSensorName')]

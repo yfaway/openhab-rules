@@ -6,9 +6,9 @@ from org.eclipse.smarthome.core.library.items import SwitchItem
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device_test import MockedEventDispatcher
 
-#from aaa_modules.layout_model import switch
+#from aaa_modules.layout_model.devices import switch
 #reload(switch)
-from aaa_modules.layout_model.switch import Light
+from aaa_modules.layout_model.devices.switch import Light
 
 LIGHT_SWITCH_NAME = 'TestLightName'
 TIMER_NAME = 'TestTimerName'

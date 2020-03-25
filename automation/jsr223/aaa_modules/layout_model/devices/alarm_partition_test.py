@@ -4,9 +4,9 @@ from org.eclipse.smarthome.core.library.types import DecimalType
 
 from aaa_modules.layout_model.device_test import DeviceTest
 
-#from aaa_modules.layout_model import alarm_partition
+#from aaa_modules.layout_model.devices import alarm_partition
 #reload(alarm_partition)
-from aaa_modules.layout_model.alarm_partition import AlarmPartition
+from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 ITEMS = [SwitchItem('_AlarmStatus'), NumberItem('_AlarmMode')]

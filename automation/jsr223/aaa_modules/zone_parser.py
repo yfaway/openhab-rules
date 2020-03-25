@@ -9,18 +9,17 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.zone import Zone, Level
 
+from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
+from aaa_modules.layout_model.devices.astro_sensor import AstroSensor
 from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 from aaa_modules.layout_model.devices.contact import Door
+from aaa_modules.layout_model.devices.dimmer import Dimmer
+from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
+from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
-
-from aaa_modules.layout_model.alarm_partition import AlarmPartition
-from aaa_modules.layout_model.astro_sensor import AstroSensor
-from aaa_modules.layout_model.dimmer import Dimmer
-from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
-from aaa_modules.layout_model.motion_sensor import MotionSensor
-from aaa_modules.layout_model.switch import Fan, Light
+from aaa_modules.layout_model.devices.switch import Fan, Light
 
 META_DIMMING_SETTING = 'dimmable'
 

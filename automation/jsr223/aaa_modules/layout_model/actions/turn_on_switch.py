@@ -1,11 +1,11 @@
 import time
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+from aaa_modules.layout_model.action import Action
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
-from aaa_modules.layout_model.switch import Light, Switch
-from aaa_modules.layout_model.motion_sensor import MotionSensor
-from aaa_modules.layout_model.actions.action import Action
+from aaa_modules.layout_model.devices.switch import Light, Switch
+from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 

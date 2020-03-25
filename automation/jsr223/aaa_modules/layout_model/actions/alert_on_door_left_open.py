@@ -3,7 +3,7 @@ from threading import Timer
 from aaa_modules.alert import Alert
 from aaa_modules.alert_manager import AlertManager
 from aaa_modules.layout_model.zone import ZoneEvent
-from aaa_modules.layout_model.actions.action import Action
+from aaa_modules.layout_model.action import Action
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 

@@ -5,9 +5,9 @@ from org.eclipse.smarthome.core.library.types import StringType
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device_test import DeviceTest
 
-#from aaa_modules.layout_model import astro_sensor
+#from aaa_modules.layout_model.devices import astro_sensor
 #reload(astro_sensor)
-from aaa_modules.layout_model.astro_sensor import AstroSensor
+from aaa_modules.layout_model.devices.astro_sensor import AstroSensor
 
 ITEMS = [StringItem('AstroSensorName')]
 

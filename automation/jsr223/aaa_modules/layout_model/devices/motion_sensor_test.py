@@ -5,9 +5,9 @@ from org.eclipse.smarthome.core.library.items import SwitchItem
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-#from aaa_modules.layout_model import motion_sensor
+#from aaa_modules.layout_model.devices import motion_sensor
 #reload(motion_sensor)
-from aaa_modules.layout_model.motion_sensor import MotionSensor
+from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.device_test import MockedEventDispatcher
 
 MOTION_SENSOR_SWITCH_NAME = 'MotionSensorName'

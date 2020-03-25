@@ -1,9 +1,10 @@
 from aaa_modules.layout_model.event_info import EventInfo
-from aaa_modules.layout_model.astro_sensor import AstroSensor
-from aaa_modules.layout_model.illuminance_sensor import IlluminanceSensor
-from aaa_modules.layout_model.motion_sensor import MotionSensor
 from aaa_modules.layout_model.device import Device
-from aaa_modules.layout_model.switch import Light, Switch
+
+from aaa_modules.layout_model.devices.astro_sensor import AstroSensor
+from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
+from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
+from aaa_modules.layout_model.devices.switch import Light, Switch
 from aaa_modules.layout_model.devices.contact import Contact
 from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug

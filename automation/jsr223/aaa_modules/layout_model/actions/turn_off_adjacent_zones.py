@@ -1,7 +1,7 @@
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
-from aaa_modules.layout_model.switch import Light
-from aaa_modules.layout_model.actions.action import Action
+from aaa_modules.layout_model.devices.switch import Light
+from aaa_modules.layout_model.action import Action
 
 class TurnOffAdjacentZones(Action):
     '''
