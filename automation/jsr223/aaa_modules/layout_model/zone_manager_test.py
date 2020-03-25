@@ -135,7 +135,7 @@ class ZoneManagerTest(DeviceTest):
         self.illuminanceSensorItem.setState(DecimalType(ILLUMINANCE_THRESHOLD_IN_LUX - 1))
 
         zone = Zone('ff', [self.light, self.motionSensor, self.illuminanceSensor])
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
+        zone = zone.addAction(TurnOnSwitch())
         ZoneManager.addZone(zone)
 
         self.assertTrue(ZoneManager.onMotionSensorTurnedOn(

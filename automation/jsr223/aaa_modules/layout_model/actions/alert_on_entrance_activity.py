@@ -2,6 +2,7 @@ import time
 from aaa_modules.alert import *
 from aaa_modules.alert_manager import *
 from aaa_modules.camera_utilities import retrieveSnapshotsFromFileSystem
+from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.actions.action import Action
 from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.layout_model.devices.contact import Door
@@ -20,6 +21,13 @@ class AlertOnEntraceActivity(Action):
     the occupant walking out of the house, and thus shouldn't triggered the
     event.
     '''
+
+    def getTriggeringEvents(self):
+        '''
+        :return: list of triggering events this action process.
+        :rtype: list(ZoneEvent)
+        '''
+        return [ZoneEvent.MOTION]
 
     def onAction(self, eventInfo):
         zone = eventInfo.getZone()

@@ -1,6 +1,7 @@
 import time
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
+from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.switch import Light, Switch
 from aaa_modules.layout_model.motion_sensor import MotionSensor
@@ -38,6 +39,13 @@ class TurnOnSwitch(Action):
     spot is covered by a motion sensor, which immediately turns on the light
     again.
     '''
+
+    def getTriggeringEvents(self):
+        '''
+        :return: list of triggering events this action process.
+        :rtype: list(ZoneEvent)
+        '''
+        return [ZoneEvent.MOTION]
 
     def onAction(self, eventInfo):
         events = eventInfo.getEventDispatcher()

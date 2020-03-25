@@ -133,15 +133,16 @@ class ZoneTest(DeviceTest):
         self.assertEqual(0, len(zone.getDevicesByType(Dimmer)))
 
     def testAddAction_oneValidAction_actionAdded(self):
-        zone = Zone('ff').addAction(ZoneEvent.MOTION, TurnOnSwitch)
+        zone = Zone('ff').addAction(TurnOnSwitch())
         self.assertEqual(1, len(zone.getActions(ZoneEvent.MOTION)))
 
         self.assertEqual(0, len(zone.getActions(ZoneEvent.SWITCH_TURNED_ON)))
 
     def testAddAction_twoValidAction_actionAdded(self):
-        zone = Zone('ff').addAction(ZoneEvent.MOTION, TurnOnSwitch)
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOffAdjacentZones)
-        self.assertEqual(2, len(zone.getActions(ZoneEvent.MOTION)))
+        zone = Zone('ff').addAction(TurnOnSwitch())
+        zone = zone.addAction(TurnOffAdjacentZones())
+        self.assertEqual(1, len(zone.getActions(ZoneEvent.MOTION)))
+        self.assertEqual(1, len(zone.getActions(ZoneEvent.SWITCH_TURNED_ON)))
 
     def testIsOccupied_everythingOff_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor])
@@ -262,7 +263,7 @@ class ZoneTest(DeviceTest):
         self.assertFalse(self.light.isOn())
 
         zone = Zone('ff', [self.light, self.motionSensor])
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
+        zone = zone.addAction(TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
@@ -274,7 +275,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
                 self.illuminanceSensor])
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
+        zone = zone.addAction(TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
@@ -287,7 +288,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
                 self.illuminanceSensor])
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
+        zone = zone.addAction(TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
@@ -299,7 +300,7 @@ class ZoneTest(DeviceTest):
         self.astroSensorItem.setState(StringType('MORNING'))
 
         zone = Zone('ff', [self.light, self.astroSensor])
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
+        zone = zone.addAction(TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), None)
@@ -312,7 +313,7 @@ class ZoneTest(DeviceTest):
 
         zone = Zone('ff', [self.lightWithIlluminance, self.motionSensor,
                 self.illuminanceSensor, self.astroSensor])
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
+        zone = zone.addAction(TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))
@@ -324,7 +325,7 @@ class ZoneTest(DeviceTest):
 
         self.astroSensorItem.setState(StringType(AstroSensor.LIGHT_ON_TIMES[0]))
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
-        zone = zone.addAction(ZoneEvent.MOTION, TurnOnSwitch())
+        zone = zone.addAction(TurnOnSwitch())
 
         isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
                 self.motionSensor.getItem(), MockedZoneManager([zone]))

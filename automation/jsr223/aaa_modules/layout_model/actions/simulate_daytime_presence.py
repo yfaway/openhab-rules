@@ -35,12 +35,19 @@ class SimulateDaytimePresence(Action):
         self.playDurationInSeconds = playDurationInSeconds
         self.timer = None
 
+    def getTriggeringEvents(self):
+        '''
+        :return: list of triggering events this action process.
+        :rtype: list(ZoneEvent)
+        '''
+        return [ZoneEvent.MOTION]
+
     def onAction(self, eventInfo):
+        if not super(SimulateDaytimePresence, self).onAction(eventInfo):
+            return False
+
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
-
-        if ZoneEvent.MOTION != eventInfo.getEventType():
-            return False
 
         if not zone.isExternal():
             return False

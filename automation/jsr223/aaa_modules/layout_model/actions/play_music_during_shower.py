@@ -27,13 +27,19 @@ class PlayMusicDuringShower(Action):
 
         self.musicUrl = musicUrl
 
+    def getTriggeringEvents(self):
+        '''
+        :return: list of triggering events this action process.
+        :rtype: list(ZoneEvent)
+        '''
+        return [ZoneEvent.SWITCH_TURNED_ON, ZoneEvent.SWITCH_TURNED_OFF]
+
     def onAction(self, eventInfo):
+        if not super(PlayMusicDuringShower, self).onAction(eventInfo):
+            return False
+
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
-
-        if ZoneEvent.SWITCH_TURNED_ON != eventInfo.getEventType() \
-               and ZoneEvent.SWITCH_TURNED_OFF != eventInfo.getEventType():
-            return False
 
         # Get an audio sink from the current zone or a neighbor zone
         sinks = zone.getDevicesByType(ChromeCastAudioSink)

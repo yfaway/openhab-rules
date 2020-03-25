@@ -27,13 +27,16 @@ def initializeZoneManager():
     ZoneManager.removeAllZones()
 
     # actions
-    turnOnSwitchAction = TurnOnSwitch()
-    turnOffAdjacentZonesAction = TurnOffAdjacentZones()
-    alertOnEntranceActivity = AlertOnEntraceActivity()
-    alertOnExternalDoorLeftOpen = AlertOnExternalDoorLeftOpen()
-    armAfterFrontDoorClosed = ArmAfterFrontDoorClosed(15 * 60) # arm after 15'
-    playMusicDuringShower = PlayMusicDuringShower("http://hestia2.cdnstream.com:80/1277_192")
-    simulateDayTimePresence = SimulateDaytimePresence("http://hestia2.cdnstream.com:80/1277_192")
+    externalZoneActions = [
+        AlertOnEntraceActivity(),
+        SimulateDaytimePresence("http://hestia2.cdnstream.com:80/1277_192"),
+        AlertOnExternalDoorLeftOpen(),
+        ArmAfterFrontDoorClosed(15 * 60), # arm after 15'
+    ]
+
+    fanActions = [PlayMusicDuringShower("http://hestia2.cdnstream.com:80/1277_192")]
+
+    switchActions = [TurnOnSwitch(), TurnOffAdjacentZones()]
 
     # add virtual devices and actions
     for z in zones:
@@ -48,23 +51,18 @@ def initializeZoneManager():
             z = z.addDevice(ActivityTimes(timeMap))
 
         if len(z.getDevicesByType(Switch)) > 0:
-            z = z.addAction(ZoneEvent.MOTION, turnOnSwitchAction)
-            z = z.addAction(ZoneEvent.SWITCH_TURNED_ON, turnOffAdjacentZonesAction)
+            for a in switchActions:
+                z = z.addAction(a)
 
         if z.isExternal():
-            z = z.addAction(ZoneEvent.MOTION, alertOnEntranceActivity)
-            z = z.addAction(ZoneEvent.MOTION, simulateDayTimePresence)
-
-            z = z.addAction(ZoneEvent.CONTACT_OPEN, alertOnExternalDoorLeftOpen)
-            z = z.addAction(ZoneEvent.CONTACT_CLOSED, alertOnExternalDoorLeftOpen)
-
-            z = z.addAction(ZoneEvent.CONTACT_CLOSED, armAfterFrontDoorClosed)
+            for a in externalZoneActions:
+                z = z.addAction(a)
 
         # add the play music action if zone has a fan switch.
         fans = z.getDevicesByType(Fan)
         if len(fans) > 0:
-            z = z.addAction(ZoneEvent.SWITCH_TURNED_ON, playMusicDuringShower)
-            z = z.addAction(ZoneEvent.SWITCH_TURNED_OFF, playMusicDuringShower)
+            for a in fanActions:
+                z = z.addAction(a)
 
         ZoneManager.addZone(z)
 

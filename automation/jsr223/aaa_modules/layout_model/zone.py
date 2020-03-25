@@ -213,21 +213,25 @@ class Zone:
         params = self._createCtorParamDictionary('neighbors', newNeighbors)
         return Zone(**params)
 
-    def addAction(self, zoneEvent, action):
+    def addAction(self, action):
         '''
         Creates a new zone that is an exact copy of this one, but has the
         additional action mapping.
 
-        :param ZoneEvent zoneEvent:
         :param Action action:
         :return: A NEW object.
         :rtype: Zone 
         '''
+        if len(action.getTriggeringEvents()) == 0:
+            raise ValueError('Action must define at least one triggering event')
+
         newActions = dict(self.actions)
-        if newActions.has_key(zoneEvent):
-            newActions[zoneEvent].append(action)
-        else:
-            newActions[zoneEvent] = [action]
+
+        for zoneEvent in action.getTriggeringEvents():
+            if newActions.has_key(zoneEvent):
+                newActions[zoneEvent].append(action)
+            else:
+                newActions[zoneEvent] = [action]
 
         params = self._createCtorParamDictionary('actions', newActions)
         return Zone(**params)

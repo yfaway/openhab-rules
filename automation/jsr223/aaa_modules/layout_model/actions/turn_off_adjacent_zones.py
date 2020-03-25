@@ -1,3 +1,4 @@
+from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.switch import Light
 from aaa_modules.layout_model.actions.action import Action
@@ -8,6 +9,13 @@ class TurnOffAdjacentZones(Action):
     current zone's liht is on and if the adjacent zones are of the OPEN_SPACE
     and OPEN_SPACE_SLAVE type.
     '''
+
+    def getTriggeringEvents(self):
+        '''
+        :return: list of triggering events this action process.
+        :rtype: list(ZoneEvent)
+        '''
+        return [ZoneEvent.SWITCH_TURNED_ON]
 
     def onAction(self, eventInfo):
         events = eventInfo.getEventDispatcher()
