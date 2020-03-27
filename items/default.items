@@ -82,8 +82,8 @@ Contact FF_Windows_Status (gZoneStatus)
 /**
  * Garage door
  */
-Contact FF_Garage_Door       "Garage Door [%s]" <contact> 
-    {channel="chamberlainmyq:MyQDoorOpener:a54c2feb:CG08600DF614:doorclose"}
+Switch FF_Garage_Door        "Garage Door [%s]" 
+    {channel="chamberlainmyq:MyQDoorOpener:a54c2feb:CG08600DF614:doorstate"}
 String GarageDoorString      "Garage Door [%s]"
     {channel="chamberlainmyq:MyQDoorOpener:a54c2feb:CG08600DF614:doorstatus"}
 Switch GarageDoorSwitch      "Garage Door Open"
