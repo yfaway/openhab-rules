@@ -23,12 +23,16 @@ class Level:
 class ZoneEvent:
     ''' An enum of triggering zone events. '''
 
-    UNDEFINED = -1        #: Undefined
-    MOTION = 1            #: A motion triggered event
-    SWITCH_TURNED_ON = 2  #: A switch turned-on event
-    SWITCH_TURNED_OFF = 3 #: A switch turned-on event
-    CONTACT_OPEN = 4      #: A contact (doors/windows) is open
-    CONTACT_CLOSED = 5    #: A contact (doors/windows) is close
+    UNDEFINED = -1                   # Undefined
+    MOTION = 1                       # A motion triggered event
+    SWITCH_TURNED_ON = 2             # A switch turned-on event
+    SWITCH_TURNED_OFF = 3            # A switch turned-on event
+    CONTACT_OPEN = 4                 # A contact (doors/windows) is open
+    CONTACT_CLOSED = 5               # A contact (doors/windows) is close
+    PARTITION_ARMED_AWAY = 6         # Changed to armed away
+    PARTITION_ARMED_STAY = 7         # Changed to armed stay
+    PARTITION_DISARMED_FROM_AWAY = 8 # Changed from armed away to disarm
+    PARTITION_DISARMED_FROM_STAY = 9 # Changed from armed stay to disarm
 
 class Zone:
     """
@@ -482,16 +486,8 @@ class Zone:
         if not self.containsOpenHabItem(item.getName(), Contact):
             return False 
 
-        eventInfo = EventInfo(ZoneEvent.CONTACT_OPEN, item, self,
-                immutableZoneManager, events)
-
-        processed = False
-        for a in self.getActions(ZoneEvent.CONTACT_OPEN):
-            if a.onAction(eventInfo):
-                processed = True
-
-        return processed
-
+        return self._invokeActions(ZoneEvent.CONTACT_OPEN, events, item,
+                immutableZoneManager)
 
     def onContactClosed(self, events, item, immutableZoneManager):
         '''
@@ -500,16 +496,22 @@ class Zone:
         if not self.containsOpenHabItem(item.getName(), Contact):
             return False 
 
-        eventInfo = EventInfo(ZoneEvent.CONTACT_CLOSED, item, self,
-                immutableZoneManager, events)
+        return self._invokeActions(ZoneEvent.CONTACT_CLOSED, events, item,
+                immutableZoneManager)
 
-        processed = False
-        for a in self.getActions(ZoneEvent.CONTACT_CLOSED):
-            if a.onAction(eventInfo):
-                processed = True
+    def onAlarmPartitionArmedAway(self, events, item, immutableZoneManager):
+        '''
+        :rtype: boolean
+        '''
+        return self._invokeActions(ZoneEvent.PARTITION_ARMED_AWAY, events,
+                item, immutableZoneManager)
 
-        return processed
-
+    def onAlarmPartitionDisarmedFromAway(self, events, item, immutableZoneManager):
+        '''
+        :rtype: boolean
+        '''
+        return self._invokeActions(ZoneEvent.PARTITION_DISARMED_FROM_AWAY, events,
+                item, immutableZoneManager)
 
     def onMotionSensorTurnedOn(self, events, item, immutableZoneManager):
         '''
@@ -524,11 +526,21 @@ class Zone:
         if not self.containsOpenHabItem(item.getName(), MotionSensor):
             return False 
 
-        eventInfo = EventInfo(ZoneEvent.MOTION, item, self,
-                immutableZoneManager, events)
+        return self._invokeActions(ZoneEvent.MOTION, events, item,
+                immutableZoneManager)
+
+    def _invokeActions(self, zoneEventType, eventDispatcher, item,
+            immutableZoneManager):
+        '''
+        Helper method to invoke actions associated with the event.
+        :return: True if event is processed. 
+        :rtype: boolean
+        '''
+        eventInfo = EventInfo(zoneEventType, item, self,
+                immutableZoneManager, eventDispatcher)
 
         processed = False
-        for a in self.getActions(ZoneEvent.MOTION):
+        for a in self.getActions(zoneEventType):
             if a.onAction(eventInfo):
                 processed = True
 

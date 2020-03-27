@@ -13,7 +13,6 @@ from org.joda.time import DateTime
 
 from aaa_modules import cast_manager
 from aaa_modules.chromecast import *
-from aaa_modules import security_manager
 
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 
@@ -96,15 +95,10 @@ def playMusic(event):
 
 @rule("Pause the music")
 @when("Item VT_Master_PlayMusic changed to OFF")
-@when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
 def pauseMusic(event):
-    if security_manager.ITEM_NAME_PARTITION_ARM_MODE == event.itemName:
-        cast_manager.pause()
-        log.info("[Cast] Paused all music.")
-    else:
-        selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
-        cast_manager.pause(selectedCasts)
-        log.info("[Cast] Paused selected stream.")
+    selectedCasts = cast_manager.findCasts(items[_SOURCE_ITEM_NAME])
+    cast_manager.pause(selectedCasts)
+    log.info("[Cast] Paused selected stream.")
 
 # Returns True if the item name matches the selected chrome cast (source);
 # False otherwise

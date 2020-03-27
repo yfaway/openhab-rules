@@ -174,6 +174,34 @@ class ZoneManager:
         return True
 
     @staticmethod
+    def onAlarmPartitionArmedAway(events, item):
+        """
+        Dispatches the armed-away event to each zone.
+
+        :return: True if at least one zone processed the event; False otherwise
+        :rtype: bool
+        """
+        returnValues = [
+            z.onAlarmPartitionArmedAway(
+                    events, item, ZoneManager._createImmutableInstance())
+            for z in ZoneManager.zones.values()]
+        return any(returnValues)
+
+    @staticmethod
+    def onAlarmPartitionDisarmedFromAway(events, item):
+        """
+        Dispatches the disarmed-from-armed-away event to each zone.
+
+        :return: True if at least one zone processed the event; False otherwise
+        :rtype: bool
+        """
+        returnValues = [
+            z.onAlarmPartitionDisarmedFromAway(
+                    events, item, ZoneManager._createImmutableInstance())
+            for z in ZoneManager.zones.values()]
+        return any(returnValues)
+
+    @staticmethod
     def _updateDeviceLastActivatedTime(itemName):
         """
         Determine if the itemName is associated with a managed device. If yes,

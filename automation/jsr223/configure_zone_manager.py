@@ -3,15 +3,17 @@ from core.rules import rule
 from core.triggers import when
 
 from aaa_modules import switch_manager
+from aaa_modules import security_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.security_manager import SecurityManager as SM
 from aaa_modules.zone_parser import ZoneParser
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
 
-from aaa_modules.layout_model.devices.switch import Fan, Switch
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
+from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
+from aaa_modules.layout_model.devices.switch import Fan, Switch
 
 from aaa_modules.layout_model.actions.alert_on_entrance_activity import AlertOnEntraceActivity
 from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExternalDoorLeftOpen
@@ -20,6 +22,8 @@ from aaa_modules.layout_model.actions.play_music_during_shower import PlayMusicD
 from aaa_modules.layout_model.actions.simulate_daytime_presence import SimulateDaytimePresence
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
+from aaa_modules.layout_model.actions.turn_off_devices_on_alarm_mode_change import TurnOffDevicesOnAlarmModeChange
+
 
 def initializeZoneManager():
     zones = ZoneParser.parse(items, itemRegistry)
@@ -57,6 +61,9 @@ def initializeZoneManager():
         if z.isExternal():
             for a in externalZoneActions:
                 z = z.addAction(a)
+
+        if len(z.getDevicesByType(AlarmPartition)) > 0:
+            z = z.addAction(TurnOffDevicesOnAlarmModeChange())
 
         # add the play music action if zone has a fan switch.
         fans = z.getDevicesByType(Fan)
@@ -141,6 +148,21 @@ def onNetworkDeviceConnected(event):
         PE.logDebug('Network device connected event for {} is not processed.'.format(
                     event.itemName))
 
+@rule("Turn off all devices when armed away")
+@when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
+def onAlarmPartitionArmedAway(event):
+    if not ZoneManager.onAlarmPartitionArmedAway(
+            events, itemRegistry.getItem(event.itemName)):
+        PE.logDebug('AlarmPartitionArmedAway event for {} is not processed.'.format(
+                    event.itemName))
+
+@rule("Turn off all devices when disarmed from armed-away")
+@when(security_manager.WHEN_CHANGED_FROM_ARM_AWAY_TO_UNARMED)
+def onAlarmPartitionDisarmedFromAway(event):
+    if not ZoneManager.onAlarmPartitionDisarmedFromAway(
+            events, itemRegistry.getItem(event.itemName)):
+        PE.logDebug('AlarmPartitionDisarmedFromArmedAway event for {} is not processed.'.format(
+                    event.itemName))
 
 initializeZoneManager()
 addContextVariables()

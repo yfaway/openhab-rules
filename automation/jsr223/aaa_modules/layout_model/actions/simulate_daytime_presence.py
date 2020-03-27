@@ -16,7 +16,7 @@ class SimulateDaytimePresence(Action):
     @todo: use local URL to avoid reliance on the Internet connection.
     '''
 
-    def __init__(self, musicUrl, musicVolume = 80, playDurationInSeconds = None):
+    def __init__(self, musicUrl, musicVolume = 90, playDurationInSeconds = None):
         '''
         Ctor
 
