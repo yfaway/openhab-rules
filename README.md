@@ -1,7 +1,36 @@
+# openhab-rules
+Thank you for visiting. This repository contains the smart home rules used in my house. They have been constantly tweaked since I started with OpenHab in 2018. While it is specific to my house, a lot of the concepts and APIs are re-usable in your own projects, so please read on.
+
+# What does it mean to be smart?
+Everyone is into Smart Home nowaday. However, contrary to what ordinary consumer might think (or led to think), a truely smart home should not require user's explicit instructions such as voice command through Google Assistant or Amazon Alexa.
+
+A truely smart home system would be able to do things for you automatically based on various environmental factors. Its purpose is to simplify your life.  Let's look at an example on how you can check today's weather forecast.
+
+* Level 3 (in the old day): you would open the browser, go to your favorite weather provider, and look up your city.
+* Level 2: ask your smart home hub such as Google Home "OK Google, what is the weather like today".
+* Level 1: as you step into the kitchen first thing in the morning, your smart home system uses Text-to-speech to read out the current weather, today's forecast, and whatever else you want to read out (e.g. calendar events).
+
+In most cases, you would want the Level 1 notification above. There are times, however, you would want to query the system for information out of band. In that case the interaction mode can be through voice, applications, or physical devices. Nevertheless, the ultimate goal is still full automation.
+
+# Why is it so difficult to build a truely smart home system?
+Coming up with an automation concept isn't that difficult. The lazier you are, the better ideas you can come up with. It is about taking a fresh look at every aspect of our lives, and ask questions such as "What are some of the everyday routines that I'd like to automate?", or "Given the availability of these devices, what more can I do to simplify my life?"
+
+The difficulty lies in integration. There are so many different devices and hubs with different communication protocol created by different vendors.  Getting them to work together is difficult. It also doesn't help that there is no easy way for the ordinary consumers to create rules. This problem is kind of similar to trying to automatically generate programs from UML models.  Today, sophisticated rules are in the domain of highly technical users (mainly software developers or super users).
+
+In the future, as more standardization happens (recently Google, Apple, Zigbee and others formed an alliance to create a single connectivity standard), and as software system becomes more sophisticated, it is possible for the consumer to create rules like this "OK Google, create this rule 'tell me today's weather forecast when I step into the washroom for the first time in the morning, then play some classical music'". It is not all free lunch however, as the user has to supply *contexts* to the system (e.g. what is 'morning' for you).  The user also has to know what rules to create. The assistant helps, but the user has to be the *programmer*.
+
+In the short term, sophisticated rules have to developed or coded.
+
+# Key enabler
+- Alert
+- Presence
+
+# Things to avoid
+* Cloud
+* Security
+
 > **_NOTE:_** The reuseable APIs is being documented at https://yfaway.github.io/. Eventually all the doc will go there as well.
 
-# openhab-rules
-A set of rules for my house.
 
 # Prerequisites
 The rules work with the following devices/sensors, bindings, actions, and transformations. They make heavy use of OpenHab's groups concept and as such are quite general. You don't need to have all the sensors below to make use of the rules. If are new to OpenHab, or interested in practical integrations, these rules can be the starting point.
