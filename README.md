@@ -1,5 +1,45 @@
-# openhab-rules
 Thank you for visiting. This repository contains the smart home rules used in my house. They have been constantly tweaked since I started with OpenHab in 2018. While it is specific to my house, a lot of the concepts and APIs are re-usable in your own projects, so please read on.
+
+<!-- vim-markdown-toc GFM -->
+
+* [What does it mean to be smart?](#what-does-it-mean-to-be-smart)
+* [Why is it so difficult to build a truely smart home system?](#why-is-it-so-difficult-to-build-a-truely-smart-home-system)
+* [High level aspects of smart home system](#high-level-aspects-of-smart-home-system)
+* [Concrete home automation rules](#concrete-home-automation-rules)
+    * [Switches (lights / fans)](#switches-lights--fans)
+        * [When to turn on light?](#when-to-turn-on-light)
+        * [Dimmer is just a special light](#dimmer-is-just-a-special-light)
+        * [Advanced light interaction](#advanced-light-interaction)
+        * [Shared motion sensor](#shared-motion-sensor)
+        * [Interaction with other devices](#interaction-with-other-devices)
+    * [Security system](#security-system)
+* [Key enabler](#key-enabler)
+* [Things to avoid](#things-to-avoid)
+* [Hardware](#hardware)
+* [Current Functionalities](#current-functionalities)
+    * [Alerts (email & TTS audio)](#alerts-email--tts-audio)
+    * [Ecobee Thermostat](#ecobee-thermostat)
+    * [Display (Basic UI)](#display-basic-ui)
+    * [Indoor Temperature/Humidity](#indoor-temperaturehumidity)
+    * [Light/Fan Control](#lightfan-control)
+    * [Music / Voice Alerts](#music--voice-alerts)
+    * [Presence](#presence)
+    * [Route](#route)
+    * [Smart Plugs](#smart-plugs)
+    * [Security System](#security-system-1)
+    * [Weather](#weather)
+* [Todos - Functionalities](#todos---functionalities)
+    * [Text Alerts](#text-alerts)
+    * [Control](#control)
+    * [Light/Fan/Plug Control](#lightfanplug-control)
+    * [Chrome cast](#chrome-cast)
+    * [Presence](#presence-1)
+    * [Route](#route-1)
+    * [Security](#security)
+    * [Voice Alerts](#voice-alerts)
+* [Todos - Design](#todos---design)
+
+<!-- vim-markdown-toc -->
 
 # What does it mean to be smart?
 Everyone is into Smart Home nowaday. However, contrary to what ordinary consumer might think (or led to think), a truely smart home should not require user's explicit instructions such as voice command through Google Assistant or Amazon Alexa.
@@ -10,16 +50,65 @@ A truely smart home system would be able to do things for you automatically base
 * Level 2: ask your smart home hub such as Google Home "OK Google, what is the weather like today".
 * Level 1: as you step into the kitchen first thing in the morning, your smart home system uses Text-to-speech to read out the current weather, today's forecast, and whatever else you want to read out (e.g. calendar events).
 
-In most cases, you would want the Level 1 notification above. There are times, however, you would want to query the system for information out of band. In that case the interaction mode can be through voice, applications, or physical devices. Nevertheless, the ultimate goal is still full automation.
+In most cases, you would want the Level 1 notification above. There are times, however, you would want to query the system for information out of band. In those cases the interaction mode can be through voice, applications, or physical devices. Nevertheless, the ultimate goal is still full automation.
 
 # Why is it so difficult to build a truely smart home system?
-Coming up with an automation concept isn't that difficult. The lazier you are, the better ideas you can come up with. It is about taking a fresh look at every aspect of our lives, and ask questions such as "What are some of the everyday routines that I'd like to automate?", or "Given the availability of these devices, what more can I do to simplify my life?"
+Coming up with an automation concept isn't that difficult. The lazier you are, the better ideas you can come up with. It is about taking a fresh look at every aspect of our lives, and ask questions such as "What are some of the everyday routines that I'd like to automate?", or "Given the availability of these new devices, what more can I do to simplify my life?"
 
-The difficulty lies in integration. There are so many different devices and hubs with different communication protocol created by different vendors.  Getting them to work together is difficult. It also doesn't help that there is no easy way for the ordinary consumers to create rules. This problem is kind of similar to trying to automatically generate programs from UML models.  Today, sophisticated rules are in the domain of highly technical users (mainly software developers or super users).
+The difficulty lies in integration. There are so many different devices and hubs with different communication protocols created by different vendors.  Getting them to work together is difficult. It also doesn't help that there is no easy way for the ordinary consumers to create home automation rules. This problem somewhat similar to trying to automatically generate computer programs from high level UML models back in the 80s and 90s.  Today, sophisticated rules are still in the domain of highly technical users (mainly software developers or super users).
 
-In the future, as more standardization happens (recently Google, Apple, Zigbee and others formed an alliance to create a single connectivity standard), and as software system becomes more sophisticated, it is possible for the consumer to create rules like this "OK Google, create this rule 'tell me today's weather forecast when I step into the washroom for the first time in the morning, then play some classical music'". It is not all free lunch however, as the user has to supply *contexts* to the system (e.g. what is 'morning' for you).  The user also has to know what rules to create. The assistant helps, but the user has to be the *programmer*.
+In the future, as more standardization happens (recently Google, Apple, Zigbee and others formed an alliance to create a single connectivity standard), and as software system becomes more sophisticated, it will be possible for the consumer to create rules like this "OK Google, create this rule 'tell me today's weather forecast when I step into the washroom for the first time in the morning, then play some classical music'". It is not all free lunch however, as the user has to supply *contexts* to the system (e.g. what is 'morning' for you).  The user also has to know what rules to create. The assistant helps, but the user has to be the *programmer*. Privacy is also a concern, but that is a different aspect.
 
-In the short term, sophisticated rules have to developed or coded.
+In the short terms, sophisticated rules have to developed or coded.
+
+# High level aspects of smart home system
+Based on my personal experience, home automation can be classified into three main areas:
+
+1. **Take actions**: the rules are triggered by some events, and they perform some actions.
+2. **Notify**: an event occurred, and the system needs to notify it to the users.
+3. **Query/control**: not rules per say, but this is the exposed interface that let the user query/control the system. Typically, this is a web application.
+
+As discussed above, it is more desirable to have rules performing actions automaticaly.
+
+# Concrete home automation rules
+
+## Switches (lights / fans)
+Controlling lights is the most common scenario people think of. There are low tech solutions that integrate with a motion sensor. These are relatively cheap and self-operated. However, you can't control them programmatically.
+
+For a fully flexible solution, we would need at minimum one motion sensor and one smart switch in each controllable zone. The basic rule is to turn on the switch when the motion sensor is triggered. Each switch needs to be associated with a timer so that it can be automatically turned off. The timer is started when the switch is turned on, and is renewed if the motion sensor is triggered again.
+
+There are however more nuiances with light control in general. The sections below list some of those aspects. The rules [Turn on Switch](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/actions/turn_on_switch.py) and [Turn off Adjacent Zones](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/actions/turn_off_adjacent_zones.py) take care of these.
+
+### When to turn on light?
+Naturally light must be turned on when it is dark. One way to do that is based on the sun set time. The [Astro binding](https://www.openhab.org/addons/bindings/astro/) provides this capability. 
+
+But what if there is a lot of cloud today and the zone is just dark. An illumination sensor can be incorporated to measure the illumination level. The rule can define an illumination threshold after which the light is turned on no matter whether it is day/night.
+
+If the light is in a bedroom, it shouldn't be turned on at bed time. This suggests a virtual device that tell the rule when is the bed time for this particular zone. Or more generally, what are the time ranges for no-light.
+
+### Dimmer is just a special light
+A dimmer is just an instance of a light. It knows how to turn on and off. It also has special property to restrict the brightness level between 0% and 100%. This makes it suitable in area such as lobby or washrooms. The rule can adjust the brightness level based on the zone activity. However, in terms of complexity management, it should be the same rule controlling both regular light and dimmer.
+
+### Advanced light interaction
+We all have seen sci-fi movies in the past where as the main actor moves between zones, the current zone's light is turned on, and the previous zone's light is turned off. This can be done quite easily today. The trick is to define relationships between zones.
+
+Given two zones A and B, the following relationships can be defined:
+1. A and B are not connected, and thus is considered closed space. There is no interaction in this case.
+2. A is an open space neighbor of B. This is the typical scenario and automatic light transitioning can be done. For example: Foyer, Lobby and Kitchen are linearly connected. As the user opens the front door, Foyer light is turned on. As they walk into the Lobby, the Lobby light is turned on and the Foyer light is turned off. Similar thing with the Kitchen light.
+3. A is an open space master of B. Similar with 2) above, but with further rule: as A is considered to be the main zone, if its light is already on, then B's light won't be turned on even if its motion sensor is triggered.
+4. A is an open space slave of B. This is just a reverse of 3).
+
+### Shared motion sensor
+In open space houses, a motion sensor might cover mulitple zones. Which zone's light should be turned on when the motion sensor is triggerred? A special flag might be used here to indicate which zone takes precedent.
+
+### Interaction with other devices
+The switches can be both the originator (triggering other actions) or the receiver (to turn itself on/off) from other actions.
+
+Here are some examples:
+* When the washroom fan is turned on (indicating that someone is taking a shower), play some music and also turn on the furnace fan.
+* When the smoke alarm beeps, turn on all lights.
+
+## Security system
 
 # Key enabler
 - Alert
@@ -32,7 +121,7 @@ In the short term, sophisticated rules have to developed or coded.
 > **_NOTE:_** The reuseable APIs is being documented at https://yfaway.github.io/. Eventually all the doc will go there as well.
 
 
-# Prerequisites
+# Hardware
 The rules work with the following devices/sensors, bindings, actions, and transformations. They make heavy use of OpenHab's groups concept and as such are quite general. You don't need to have all the sensors below to make use of the rules. If are new to OpenHab, or interested in practical integrations, these rules can be the starting point.
 
 **Devices/Sensors**
