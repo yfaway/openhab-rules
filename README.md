@@ -5,29 +5,42 @@ Thank you for visiting. This repository contains the smart home rules used in my
 * [What does it mean to be smart?](#what-does-it-mean-to-be-smart)
 * [Why is it so difficult to build a truely smart home system?](#why-is-it-so-difficult-to-build-a-truely-smart-home-system)
 * [High level aspects of smart home system](#high-level-aspects-of-smart-home-system)
-* [Concrete home automation rules](#concrete-home-automation-rules)
+* [Sample home automation rules](#sample-home-automation-rules)
     * [Switches (lights / fans)](#switches-lights--fans)
         * [When to turn on light?](#when-to-turn-on-light)
         * [Dimmer is just a special light](#dimmer-is-just-a-special-light)
         * [Advanced light interaction](#advanced-light-interaction)
         * [Shared motion sensor](#shared-motion-sensor)
+        * [Simulate presence during vacation time](#simulate-presence-during-vacation-time)
         * [Interaction with other devices](#interaction-with-other-devices)
     * [Security system](#security-system)
+        * [Alerts](#alerts)
+        * [Automatic security actions](#automatic-security-actions)
+            * [Arm-stay in the night](#arm-stay-in-the-night)
+            * [Arm-away while in vacation mode](#arm-away-while-in-vacation-mode)
+            * [Disarm in the morning](#disarm-in-the-morning)
+            * [Disarm when the garage door is open](#disarm-when-the-garage-door-is-open)
+        * [Day time thief prevention](#day-time-thief-prevention)
+        * [Scare the thief even more when the security system is in alarm mode](#scare-the-thief-even-more-when-the-security-system-is-in-alarm-mode)
+        * [Use the arm-away event to trigger the system-wide away mode](#use-the-arm-away-event-to-trigger-the-system-wide-away-mode)
+    * [Environment](#environment)
+        * [Finer control over the furnace and air conditioner](#finer-control-over-the-furnace-and-air-conditioner)
+        * [Controling the humidifier to reduce condensation.](#controling-the-humidifier-to-reduce-condensation)
+        * [Alert on tornado warning, high wind or other severe conditions](#alert-on-tornado-warning-high-wind-or-other-severe-conditions)
+        * [Alert on abnormal conditions inside the house](#alert-on-abnormal-conditions-inside-the-house)
+        * [Read out the current weather and short term forecast](#read-out-the-current-weather-and-short-term-forecast)
+    * [Entertainment](#entertainment)
 * [Key enabler](#key-enabler)
 * [Things to avoid](#things-to-avoid)
 * [Hardware](#hardware)
 * [Current Functionalities](#current-functionalities)
     * [Alerts (email & TTS audio)](#alerts-email--tts-audio)
-    * [Ecobee Thermostat](#ecobee-thermostat)
     * [Display (Basic UI)](#display-basic-ui)
-    * [Indoor Temperature/Humidity](#indoor-temperaturehumidity)
     * [Light/Fan Control](#lightfan-control)
     * [Music / Voice Alerts](#music--voice-alerts)
     * [Presence](#presence)
     * [Route](#route)
     * [Smart Plugs](#smart-plugs)
-    * [Security System](#security-system-1)
-    * [Weather](#weather)
 * [Todos - Functionalities](#todos---functionalities)
     * [Text Alerts](#text-alerts)
     * [Control](#control)
@@ -62,15 +75,15 @@ In the future, as more standardization happens (recently Google, Apple, Zigbee a
 In the short terms, sophisticated rules have to developed or coded.
 
 # High level aspects of smart home system
-Based on my personal experience, home automation can be classified into three main areas:
+Home automation can be classified into three main areas:
 
 1. **Take actions**: the rules are triggered by some events, and they perform some actions.
 2. **Notify**: an event occurred, and the system needs to notify it to the users.
-3. **Query/control**: not rules per say, but this is the exposed interface that let the user query/control the system. Typically, this is a web application.
+3. **Query/control**: not rules per say, but this is the exposed interface that let the user query/control the system. Typically, it is through a web application.
 
 As discussed above, it is more desirable to have rules performing actions automaticaly.
 
-# Concrete home automation rules
+# Sample home automation rules
 
 ## Switches (lights / fans)
 Controlling lights is the most common scenario people think of. There are low tech solutions that integrate with a motion sensor. These are relatively cheap and self-operated. However, you can't control them programmatically.
@@ -101,6 +114,16 @@ Given two zones A and B, the following relationships can be defined:
 ### Shared motion sensor
 In open space houses, a motion sensor might cover mulitple zones. Which zone's light should be turned on when the motion sensor is triggerred? A special flag might be used here to indicate which zone takes precedent.
 
+### Simulate presence during vacation time
+When on extended vacations, the smart switches in the house can be programmed to simulate owner presence (thief prevention). The rule to do this is quite simple.
+1. Triggered at sunset time.
+2. Loop until bed time or when the house is unarmed or when stopped from the control panel.
+3. Randomize a light-on period in minutes.
+4. Pick one of the light to turn on, and turn it on for the randomizsed period above.
+5. Sleep for that duration and loop again with another light and another lght-on period.
+
+This Xtend [light vacation](https://github.com/yfaway/openhab-rules/blob/master/rules/lights-vacation-mode.rules) does just that. Eventually it will be converted to Python using the layout mdel APIs.
+
 ### Interaction with other devices
 The switches can be both the originator (triggering other actions) or the receiver (to turn itself on/off) from other actions.
 
@@ -109,6 +132,111 @@ Here are some examples:
 * When the smoke alarm beeps, turn on all lights.
 
 ## Security system
+### Alerts
+The following alerts can be programmed:
+* Send alert when garage door remains open after a period of time.
+* Send alert when the security system is in alarm.
+* Send alert when the security system can't be armed programatically (e.g. a door is open).
+* Send alert when a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
+* Send alert when the owners are on vacation and a zone is tripped or the system arm mode changes. This is also useful for tracking purpose.
+* Send alert if a window is open (might indicate intrusion from the basement windows).
+
+Reference: 
+* [security-alert-when-in-alarm](https://github.com/yfaway/openhab-rules/blob/master/rules/security-alert-when-in-alarm.rules),
+* [security-alert-when-in-vacation](https://github.com/yfaway/openhab-rules/blob/master/rules/security-alert-when-in-vacation.rules),
+* [security-alerts-general](https://github.com/yfaway/openhab-rules/blob/master/rules/security-alerts-general.rules),
+* [Alert On Door Left Open](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/actions/alert_on_door_left_open.py) action.
+
+### Automatic security actions
+Reference: [Security Actions](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/actions/simulate_daytime_presence.py) rules.
+
+#### Arm-stay in the night
+A simple rule can help to ensure that the house is always armed in the 'stay' mode in the evening, while taking into account the possible walk-ins to the garage.
+
+This can be done by using a series of time-triggered event 15 minutes apart, starting from say 8PM to 2AM. Each 15 minute, the rule checks if the system is armed, if not, it arms in the stay mode.
+
+As the owners go in/out to/from the garage, they don't need to remember to arm it again. This is now automatic.
+
+#### Arm-away while in vacation mode
+If you are on vacation, you want the house to be in arm-away mode. But what if you have plants in the house, and have to ask friends to come by to water them. A way to ensure that the system continues to be armed after they leave is to detect a presence-off event (no one is inside the house), arm the system sometimes after that.
+
+#### Disarm in the morning
+Two options:
+1. Hard-code the time to disarm the system in the morning.
+2. Put a motion sensor in the foyer or common area. As the motion sensor is triggerred in the wake-up time period, disarm the system.
+
+#### Disarm when the garage door is open
+If the garage door is open, and the system detects that it is one of the user going home, automatically disarm the alarm system. The following devices would be needed:
+* Smart garage door opener.
+* Presence devices (cell phone or WiFi/bluetooth dongles).
+* Security system.
+
+Relying on the cellphone is this case will be hit or miss. Cellphones are optimized to conserve the battery, so unless the owners start using the phone, the system won't be able to determine presence based on network devices. A dedicated WiFi/bluetooth dongle would be more reliable.
+
+### Day time thief prevention
+In certain areas, there are blazing house break-in in the day time when the owners are away at work.  One way to prevent that is to fake owner presence by playing loud music as someone approach the house. The following devices would be needed:
+* A way to indicate that the user is away. The arm-away mode of an security system is a perfect way to do this.
+* An exterior motion sensor.
+* An audio device on the first floor.
+
+When the motion sensor is triggered, if the system is in arm-away mode, play some loud music on the audio device. Turn off the music after some minutes.
+
+See [Simulate Daytime Presence](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/actions/simulate_daytime_presence.py) action.
+
+### Scare the thief even more when the security system is in alarm mode
+See [GH-19](https://github.com/yfaway/openhab-rules/issues/19) issue.
+
+Here's the basic idea:
+* Triggered when security system is in alarm.
+* If this is light-on time, turn on all smart light.
+* Play loud text-to-speed messages on the main floor audio sink.
+    * First message: "Communicating with the alarm monitoring company."
+    * Subsequence messages in a loop: "Police has been dispatched" ...
+* Stop the rule when the system is disarmed.
+
+### Use the arm-away event to trigger the system-wide away mode
+Presence detection is a complex area. There are so many devices that can indicate the presence of the occupants in a house such as motion sensors, light-on status, network devices, and bluetooth devices. They work well but are not always accurate.
+
+The security system's arm-away event however provide an absolute certainty that there is no one at home. This allows rule to do multitude of things such as:
+* Turn off all lights;
+* Turn off all audio devices;
+* Turn off all smart plugs;
+* Change the furnace/AC to 'away' mode.
+
+That saves time and money.
+
+## Environment
+Environment refers to the outdoor weather as well as indoor temperature and humidity.
+
+### Finer control over the furnace and air conditioner
+Every smart thermostat allows the user to set different time periods such as 'home', 'away', or 'sleep'. These are fixed for each day of the week. With the help of other devices/sensors we can make these periods a lot more precise.
+
+For example, when the security system is armed away, this indicates there won't be any user at home. The thermostat can then be switched over to 'away' mode immediately. And as the system is disarmed, it switches back to 'home' mode.
+
+### Controling the humidifier to reduce condensation.
+In many areas in Canada, it is very dry in the winter. Many houses are equipped with a whole-house humidifer unit, which is typically hook up with the furnace. As the furnace runs, the humidifier emits water vapour.  That is all good except when the outdoor weather is very cold, in which case the high humidity level inside the house will cause condensation on the windows.
+
+Thus the humidifier has to be constantly adjust based on the temperature outside. If you can hook up the humidifier to the thermostat, a rule can be created to adjust the humid level based on the outdoor temperature. The rule can be ran couple times per day.
+
+### Alert on tornado warning, high wind or other severe conditions
+Some weather services provide emergency warnings such as incoming tornado. A rule can be set up to provide audible notice (through the Google Chromecast for example) to the occupants.
+
+If the house has big tall tree nearby and if the forecast indicates high wind gust, another rule can be created to provide alert and allow moving the occupant to another area.
+
+### Alert on abnormal conditions inside the house
+Temperature and humid sensors are relatively cheap. Beside the main thermostat, additional sensors can be placed throughout the house. Another rule can be created here to provide alert if the temperature or humid level is outside the normal ranges.
+
+### Read out the current weather and short term forecast
+Why do we need to explicitly ask for the weather info to determine what we shall wear for the day. If you have the following services/devices, you and provide that info automatically.
+* Motion sensor
+* Text-to-speed service
+* Weather service
+* Audio sink such as Chromecast
+* Spefication for wake-up time.
+
+A motion sensor can be placed in the washroom on common area. As it is triggered for the first time by the motion sensor, it determines if this is wake-up time. If yes, query weather service, formulate the text, and read it out on the audio sink.
+
+## Entertainment
 
 # Key enabler
 - Alert
@@ -170,10 +298,6 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 * Generic alert API in Python. By default all alerts go to email addresses. If the alert's level is warning or criticial, it also go to the audio sinks (speakers) through the text to speech (TTS) service.
 * A separate python rule listens to changes in a string item to support legacy alerts from xtend rules.
 
-## Ecobee Thermostat
-* Change the thermostat to 'away' mode (climate ref) when the system is armed away. 'Away' mode should have lower heat setting and higher cool setting. Proactively change to away mode rather than relying on the static setting in the thermostat should save more energy.
-* In the winter turn on the far when owner is at home. This helps to circulate the air to the second floor.
-
 ## Display (Basic UI)
 * Garage door status.
 * Security system status.
@@ -183,10 +307,6 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 * Motion sensors states
 * Music stream control: play a stream over 1 or multiple chrome casts; pause, play and control volume.
 * Camera snapshot viewer.
-
-## Indoor Temperature/Humidity
-* Send alert when indoor temperature or humidity value is outside the allowed ranges.
-* Send alert when the kitchen temperature sensor is a certain degree above the thermostat settings. This might indicate an oven remains on.
 
 ## Light/Fan Control
 * Global switch on HabUI to turn on/off individual or all controlled lights/fans.
@@ -222,25 +342,6 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 * Turn on/off plugs based on the security arm status, vacation mode, and hours of days.
 * Turn on/off associated light when a power wattage crosses a threshold. E.g. turn on the office light when the PC is turned on.
 
-## Security System
-* Automatically arm-stay in the night if someone is home.
-* Automatically arm-away after garage door is closed, and no presence detected after certain time. This is the usecase of the user left the house but forgot to arm-away.
-* Automatically unarm in the morning before going to work.
-* Automatically unarm if an owner open the garage door from the outside.
-* Automatically unarm if garage door is open from Hab UI.
-* Automatically arm away an hour after last presence event, if in vacation mode.
-* Send alert when garage door remains open after a period of time.
-* Send alert when the security system is in alarm.
-* Send alert when the security system can't be armed programatically (e.g. a door is open).
-* Send alert when a zone is tripped and all the following conditions are met: 1. system is not armed, 2. an owner is not home, and 3. within a specific period. 
-* Send alert when the owner is on vacation and a zone is tripped or the system arm mode changes (use the Ecobee vacation mode).
-* Send alert if a window is open (might indicate intrusion from the basement windows).
-
-## Weather
-* Send alert early in the morning if it is going rain today.
-* Send alert if wind speed or wind gust speed crosses a threshold.
-* Send alert if Environment Canada has a weather alert for the city.
-
 # Todos - Functionalities
 ## Text Alerts
 * Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and no one is home.
@@ -274,9 +375,7 @@ These add-ons are used to play audio files, stream, or text to speech (TTS). Eit
 
 ## Voice Alerts
 * Pronounce name of the person heading back home.
-* Voice alert if some one is at the front door or garage.
 * Voice/text alert when washer/dryer finishs if owner is at home (required energy monitor).
 
 # Todos - Design
 * Move ZWave things to config file.
-* Redesign the alert message structure to support audio alert as well as priority (info/warning/severe). Even if audio output is not specified, any event that is above INFO level should still generate an audio alert if the owner is presence.
