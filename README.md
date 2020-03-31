@@ -1,4 +1,6 @@
-Thank you for visiting. This repository contains the smart home rules used in my house. They have been constantly tweaked since I started with OpenHab in 2018. While it is specific to my house, a lot of the concepts and APIs are re-usable in your own projects, so please read on.
+Thank you for visiting. This repository contains the smart home rules used in my house. They have been constantly tweaked since I started with [OpenHab](https://github.com/openhab) in 2018. While it is specific to my house, a lot of the [concepts]((#sample-home-automation-rules) and [APIs](#layout-model-api---an-alternative-approach-to-access-devicessensors) might be re-usable in your own projects.
+
+The majority of the APIs and rules are in Python. There are a few older rules in Xtend; they will eventually be migrated over to Python. This projects relies on the excellent [openHAB Scripters project](https://github.com/openhab-scripters/openhab-helper-libraries).
 
 <!-- vim-markdown-toc GFM -->
 
@@ -45,6 +47,7 @@ Thank you for visiting. This repository contains the smart home rules used in my
     * [Zone](#zone)
     * [Devices](#devices)
     * [Actions](#actions)
+    * [Rules vs Actions](#rules-vs-actions)
 * [Hardware](#hardware)
 * [Current Functionalities](#current-functionalities)
     * [Alerts (email & TTS audio)](#alerts-email--tts-audio)
@@ -292,21 +295,38 @@ tbd
 > **_NOTE:_** The reuseable APIs is being documented at https://yfaway.github.io/. Eventually all the doc will go there as well.
 
 # Layout Model API - an alternative approach to access devices/sensors
-In OpenHab, items are defined in a flat manner in .items file under /etc/openhab2/items folder. They are usually linked to a channel exposed by the underlying hardware. Vitual items do not link to any channel.
-This flat structure has an impact on how rules (whether in Xtend or Python) are organized. When the rules need to interact with mulitple devices of the same type, they can utilize the group concept. Examples of this is to turn off all lights. What is more tricky is when rules need to interact with different devices within the same area. The typical solution to this is to group unrelated items that belong to the same zone either by using naming pattern, or by dedicated groups. For example, the light switch and motion sensor in the Foyer area can be named like this: "FF_Foyer_Light", and "FF_Foyer_MotionSensor". When a sensor is triggered, the zone can be derived from the triggering item name, and other devices/sensors can be retrieved using that naming convention.
+In OpenHab, items are defined in a flat manner in .items file under /etc/openhab2/items folder. They are usually linked to a channel exposed by the underlying hardware (vitual items do not link to any).
 
-This project provides another approach through the [Layout Model API](https://github.com/yfaway/openhab-rules/tree/master/automation/jsr223/aaa_modules/layout_model). The idea is similar to the difference between database relational model versus ORM. Each house (a ZoneManager) contains multiple rooms (Zones), and each room contains multiple devices. Each zone is associated with actions. The usual OpenHab events are routed in this manner: OpenHab events --> ZoneManager --> Zones --> Actions. It provides a level of abstraction on top of the items. Actions can operate on abstract devices and not concerned about the naming of the items.
+This flat structure has an impact on how rules (whether in Xtend or Python) are organized. When the rules need to interact with mulitple devices of the same type, they can utilize the group concept. Examples of this is to turn off all lights. What is more tricky is when rules need to interact with different devices within the same area. The typical solution is to group unrelated items that belong to the same zone either by using naming pattern, or by dedicated groups. For example, the light switch and motion sensor in the Foyer area can be named like this: "FF_Foyer_Light", and "FF_Foyer_MotionSensor". When a sensor is triggered, the zone can be derived from the name of the triggering item, and other devices/sensors can be retrieved using that naming convention.
+
+This project provides another approach through the [Layout Model API](https://github.com/yfaway/openhab-rules/tree/master/automation/jsr223/aaa_modules/layout_model). The idea is to provide a layer above the devices/sensors (this is somewhat similar to the difference between database relational model versus ORM). Each house (a ZoneManager) contains multiple rooms (Zones), and each room contains multiple devices. Each zone is associated with actions. The usual OpenHab events are routed in this manner: *OpenHab events --> ZoneManager --> Zones --> Actions*. It provides a level of abstraction on top of the items. The actions can operate on the abstract devices and do not concern about the naming of the items. Rather than write Python rules, you would write actions. Actions can be unit-tested.
 
 ## ZoneManager
-There are two instances of ZoneManager. The mutable one is constructed once when OpenHab startup to create the zones. In this project, the [ZoneParser](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/zone_parser.py) class parses from the existing .items files to construct a ZoneManager instance.
+There are two kinds of ZoneManager. The [mutable one](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone_manager.py) is constructed once when OpenHab startup to create the zones. In this project, the [ZoneParser](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/zone_parser.py) class parses from the existing .items files to construct a ZoneManager instance. The [configure_zone_manager.py](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/configure_zone_manager.py) script uses the ZoneParser to populate the ZoneManager, add actions to the zones, and then puts an instance of ImmutableZoneManager on the script context.
 
-Then there is the [ImmutableZoneManager](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/immutable_zone_manager.py) that are parsed around to zones, and actions. It provides access to zones and devices without allowing modification to its states.
+Instances of the [ImmutableZoneManager](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/immutable_zone_manager.py) class are parsed around to zones, and actions. It provides access to zones and devices without allowing modification to its states.
 
 ## Zone
+Each immutable [zone](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone.py) maps Each zone instance is to a room or an area within the house. The Zone class provides API to do the following:
+* Manage neighbors,
+* Manage devices,
+* Manage actions,
+* Dispatch events.
+
+Each of the addXxx or deleteXxx method returns a new instance of Zone. Note that Zone is immutable but the devices/sensors contained within it may not.
 
 ## Devices
+The devices are classes inherited from [Device](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/device.py) that are either virtual or backed by OpenHab items. They provide APIs to change their states.
 
 ## Actions
+In the Layout Model APIs, in many cases, actions are used instead of regular Python rules. The actions inherited from [Action](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/action.py). They are registerd with each zone through Zone::AddAction.
+
+When an action is triggered, it has access to the event, the triggered item, the zone, and the zone manager. I.e. it has access to all the devices within the zone and within the whole house without needing to know of the devices' naming convention.
+
+## Rules vs Actions
+If a rule is trigged by a typical devices, create an action and register it with the zone.
+
+On the other hand, if a rule is trigged by a cron time, it is simpler to use a regular Python rule. The script still has access to the ImmutableZoneManager through the script context *zm*.
 
 # Hardware
 The rules work with the following devices/sensors, bindings, actions, and transformations. They make heavy use of OpenHab's groups concept and as such are quite general. You don't need to have all the sensors below to make use of the rules. If are new to OpenHab, or interested in practical integrations, these rules can be the starting point.
