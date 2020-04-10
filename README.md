@@ -1,4 +1,4 @@
-Thank you for visiting. This repository contains the smart home rules used in my house. They have been constantly tweaked since I started with [OpenHab](https://github.com/openhab) in 2018. While it is specific to my house, a lot of the [concepts](#sample-home-automation-rules) and [APIs](#layout-model-api---an-alternative-approach-to-access-devicessensors) might be re-usable in your own projects.
+This repository contains the smart home rules used in my house. They have been constantly tweaked since I started with [OpenHab](https://github.com/openhab) in 2018. While it is specific to my house, a lot of the [concepts](#sample-home-automation-rules) and [APIs](#layout-model-api---an-alternative-approach-to-access-devicessensors) might be re-usable in your own projects.
 
 The majority of the APIs and rules are in Python. There are a few older rules in Xtend; they will eventually be migrated over to Python. This projects relies on the excellent [openHAB Scripters project](https://github.com/openhab-scripters/openhab-helper-libraries).
 
@@ -62,20 +62,12 @@ The majority of the APIs and rules are in Python. There are a few older rules in
     * [6.7 Security System](#67-security-system)
     * [6.8 Switches](#68-switches)
     * [6.9 Thermostats](#69-thermostats)
-        * [6.10 Temperature sensors](#610-temperature-sensors)
-    * [6.11 Zigbee stick](#611-zigbee-stick)
-        * [6.12 Zigbee2mqtt](#612-zigbee2mqtt)
-    * [6.13 ZWave stick](#613-zwave-stick)
+        * [6.9.1 Temperature sensors](#691-temperature-sensors)
+    * [6.10 Zigbee stick](#610-zigbee-stick)
+    * [6.11 Zigbee2mqtt](#611-zigbee2mqtt)
+    * [6.12 ZWave stick](#612-zwave-stick)
     * [6.14 Others](#614-others)
 * [7. Things to avoid](#7-things-to-avoid)
-* [Todos - Functionalities](#todos---functionalities)
-    * [Text Alerts](#text-alerts)
-    * [Control](#control)
-    * [Chrome cast](#chrome-cast)
-    * [Presence](#presence)
-    * [Route](#route)
-    * [Security](#security)
-    * [Voice Alerts](#voice-alerts)
 
 <!-- vim-markdown-toc -->
 
@@ -320,13 +312,38 @@ Wireless connection (WiFi, Zigbee or ZWave) can be flaky. The device could be of
 tbd
 
 # 5. Layout Model API - an alternative approach to access devices/sensors
-In OpenHab, items are defined in a flat manner in .items file under /etc/openhab2/items folder. They are usually linked to a channel exposed by the underlying hardware (vitual items do not link to any).
+In OpenHab, items are defined in a flat manner in .items files under /etc/openhab2/items folder. They are usually linked to a channel exposed by the underlying hardware (vitual items do not link to any).
 
-This flat structure has an impact on how rules (whether in Xtend or Python) are organized. When the rules need to interact with mulitple devices of the same type, they can utilize the group concept. Examples of this is to turn off all lights. What is more tricky is when rules need to interact with different devices within the same area. The typical solution is to group unrelated items that belong to the same zone either by using naming pattern, or by dedicated groups. For example, the light switch and motion sensor in the Foyer area can be named like this: "FF_Foyer_Light", and "FF_Foyer_MotionSensor". When a sensor is triggered, the zone can be derived from the name of the triggering item, and other devices/sensors can be retrieved using that naming convention.
+This flat structure has an impact on how rules (whether in Xtend or Python) are organized. When the rules need to interact with mulitple devices of the same type, they can utilize the [group concept](https://www.openhab.org/docs/configuration/items.html#groups). An example of good usage of group is to turn off all lights. By linking all smart lights to a group switch, turning off all the lights can be done by changing the state of the group switch to OFF.
+
+What is more tricky is when rules need to interact with different devices within the same area. The typical solution is to group unrelated items that belong to the same zone either by using naming pattern, or by dedicated groups. For example, the light switch and motion sensor in the Foyer area can be named like this: "FF_Foyer_Light", and "FF_Foyer_MotionSensor". When a sensor is triggered, the zone can be derived from the name of the triggering item, and other devices/sensors can be retrieved using that naming convention.
 
 This project provides another approach through the [Layout Model API](https://github.com/yfaway/openhab-rules/tree/master/automation/jsr223/aaa_modules/layout_model). The idea is to provide a layer above the devices/sensors (this is somewhat similar to the difference between database relational model versus ORM). Each house (a ZoneManager) contains multiple rooms (Zones), and each room contains multiple devices. Each zone is associated with a set of actions. The usual OpenHab events are routed in this manner: `OpenHab events --> ZoneManager --> Zones --> Actions`. It provides a level of abstraction on top of the raw items. The actions can operate on the abstract devices and do not concern about the naming of the items. Rather than write Python rules, you would write actions. Actions can be unit-tested with various levels of mocking.
 
 > **_NOTE:_** This API is documented at https://yfaway.github.io/. It is not up to date however.
+
+Sample action to turn off lights in neighboring zones:
+`
+    def onAction(self, eventInfo):
+        events = eventInfo.getEventDispatcher()
+        zone = eventInfo.getZone()
+        zoneManager = eventInfo.getZoneManager()
+
+        if None == zoneManager:
+            raise ValueError('zoneManager must be specified')
+
+        lights = zone.getDevicesByType(Light)
+        if len(lights) == 0:
+            return False
+
+        adjacentZones = zone.getNeighborZones(zoneManager,
+                [NeighborType.OPEN_SPACE, NeighborType.OPEN_SPACE_SLAVE])
+        for z in adjacentZones:
+            if z.isLightOn():
+                z.turnOffLights(events)
+        
+        return True
+`
 
 ## 5.1 ZoneManager
 There are two kinds of ZoneManager. The [mutable one](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone_manager.py) is constructed once when OpenHab starts up in order to create the zones. In this specific project, the [ZoneParser](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/zone_parser.py) class parses from the existing .items files to construct a ZoneManager instance. The [configure_zone_manager.py](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/configure_zone_manager.py) script uses the ZoneParser to populate the ZoneManager, add actions to the zones, and then puts an instance of ImmutableZoneManager on the script context. Other mechanisms can be used to populate the ZoneManager.
@@ -334,7 +351,7 @@ There are two kinds of ZoneManager. The [mutable one](https://github.com/yfaway/
 Instances of the [ImmutableZoneManager](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/immutable_zone_manager.py) class are parsed around to the zones, and the actions. It provides access to zones and devices without allowing modification to its states.
 
 ## 5.2 Zone
-Each immutable [zone](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone.py) instance maps to a room or an area within the house. The Zone class provides APIs to:
+Each immutable [Zone](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone.py) instance maps to a room or an area within the house. The Zone class provides APIs to:
 * Manage neighbor zones,
 * Manage devices/sensors,
 * Manage actions,
@@ -345,13 +362,29 @@ Any method with side-effect semantic returns a new instance of Zone. Note that Z
 ## 5.3 Devices
 The devices classes inherit from [Device](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/device.py). They are either virtual or backed by one or more OpenHab items. They provide APIs to change their states.
 
+The following devices are available at this point:
+* ActivityTime: a virtual device to capture the time ranges for different activities in the house such as wake-up time, quiet time, dinner time, sleep time, and so on.
+* AlarmPartition: a DSC Alarm backed device to allow arming/disarming the house.
+* AstroSensor: provides sunrise and sunset time.
+* Camera: provide APIs to query for motion and for image snapshots. The current impl relies on a network share containing images produced by camera managed by the MotionEyesOS (run on a PI).
+* ChromecastAudioSink: an audio sink backed by Chromecast.
+* Contact: for doors, windows, and similar devices.
+* Dimmer: a Light-derived class.
+* IlluminanceSensor: query the brightness level.
+* MotionSensor
+* NetworkPresence: detects presence by doing network IP scan.
+* Plug: smart plug, currently backed by the TP Link plugs.
+* Switch: contains specific classes for Fan and Light.
+
+Additional devices or specific implementation can be added through the inheritance mechanism.
+
 ## 5.4 Actions
 In the Layout Model APIs, in most cases, actions are used instead of regular Python rules. They derive from the [Action](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/action.py) class and are registerd with each zone through `Zone::addAction()`.
 
 When an action is triggered, it has access to the event, the triggered item, the zone, and the zone manager. I.e. it has access to all the devices within the zone and within the whole house without needing to know of the devices' naming convention.
 
 ## 5.5 Rules vs actions
-If a rule is trigged by a typical devices, create an action and register it with the zone.
+If a rule is trigged by a device, create an action and register it with the zone.
 
 On the other hand, if a rule is trigged by a cron time, it is simpler to use a regular Python rule. The script still has access to the `ImmutableZoneManager` through the script context `zm`.
 
@@ -359,42 +392,48 @@ On the other hand, if a rule is trigged by a cron time, it is simpler to use a r
 This section lists the essential technologies and devices to enable the rules above.
 
 ## 6.1 OpenHab controller
-This is the heart of the system. Any machine can run OpenHab. What many people use is vanilla OpenHab on the Raspberry PI 3. If you don't need to run another other software on the PI, you can also use the OpenHabian distribution. For people new to OpenHab, OpenHabian is likely the best option.
+This is the heart of the system. Any machine can run OpenHab. What many people use is vanilla OpenHab on the Raspberry PI 3. If you don't need to run another other software on the PI, you can also use the [OpenHabian](https://www.openhab.org/docs/installation/openhabian.html) distribution. For people new to OpenHab, OpenHabian is the best option as it pre-installs a lot of the neeed home automation software.
 
 ## 6.2 Alert
-There are multitude of ways to notify events. The traditional approach is email using the [Mail]() binding, but there are also social networking messages.
+There are multitude of ways to send notification for events. The traditional approach is emailing using the [Mail](https://www.openhab.org/addons/bindings/mail/) binding, but there are also social networking messages.
 
 For local notification, when the users are home, voice or light colour changes or similar mechanism can be used. The most common one is using an audio sink (the Google Home/mini, Chromecast, or Chromecast Audio work well via the [Chromecast](https://www.openhab.org/addons/bindings/chromecast/) binding).
 
 ### 6.2.1 The Alert API
-The [Alert]() and [AlertManager]() classes provide a simple API to send alerts. There is a decoupling between the alert message and the execution of the alert itself. The rules and actions only need to classify the criticality of the alert. The AlertManager will determine the appropriate actions.
+The [Alert](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/alert.py) and [AlertManager](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/alert_manager.py) classes provide a simple API to send alerts. There is a decoupling between the alert message and the execution of the alert itself. The rules and actions only need to classify the criticality of the alert. The AlertManager will determine the appropriate actions.
 
-For example, normal alert is sent to the email address of every users in the household. In addition, if the uses are home and it is not sleep time, the alert is also played in the audio sink. The implementation of the AlertManager will make use of various devices/sensors in the house.
+For example, normal alert is sent to the email address of every users in the household. In addition, if the users are home and it is not sleep time, the alert is also played on the audio sink via TTS. The implementation of the AlertManager will make use of various devices/sensors in the house.
 
 ### 6.2.2 Text-to-Speed engine
 Either Google Cloud TTS or VocieRSS would work. The "Marry TTS" is very slow on the Raspberry PI. Once downloaded, in the Paper UI, go to Configuration -> System -> Voice (at the very end of the page) to configure the default engine.
 
 ## 6.3 Garage opener
-Chamberlain 3/4 HPS Belt Drive Garage Door Opener Built-in Wifi (LW6000WFC) via the [Chamberlain MyQ](https://docs.openhab.org/addons/bindings/myq1/readme.html) binding.
+Any Chamberlain garage door opener can be controlled via the [Chamberlain MyQ](https://docs.openhab.org/addons/bindings/myq1/readme.html) binding. Note that Chamberlain is pretty bad with break APIs; so expect churns.
+
+For non-WiFi-connected garage door opener, there are other approaches to detect when the door is open/closed.
 
 ## 6.4 MQTT
-[MQTT](https://www.openhab.org/addons/bindings/mqtt1/)
+A light weight protocol that transports messages between device. On Linux, the most common implementation is [Mosquito](https://mosquitto.org/). MQTT is integratd with OpenHav via the [MQTT](https://www.openhab.org/addons/bindings/mqtt1/) binding.
 
 ## 6.5 Presence
-Presence is a very important aspect in home automation. Depending on the requirement, it could be course grain (is someone home?), or fine grain (is someone in this particular zone?). Below are some ways to achieve this:
+Presence is a very important aspect in home automation. Depending on the requirement, it could be course grain (is someone home?), or fine grain (is someone in this particular zone?). Below are several ways to achieve this:
 * **Network devices**: laptop, PC, cell phones. The [Network](https://docs.openhab.org/addons/bindings/network/readme.html) binding is used to scan for device presence on the network. The idea is that if the device is in the network, the user is home. Note that cell phones are now optimized to reduce battery consumption, so when not in used, they might be off the network as well.
 * **Motion sensor**: These are relatively cheap device, especially Zigbee devices. They provide fine location info. This project uses the Xiaomi Aqara Motion Sensor (Zigbee).
 * **Security system**: The DSC Security System with EnvisaLink inteface is used in this project. It provides course grain location info.
 * **Light**: If a light is on, it is likely that the zone is occupied. Not reliable and only work in night time.
 
+Others: Bluetooth / WiFi dongles.
+
+The Zone API provides this method: `Zone::isOccupied(self, secondsFromLastEvent = 5 * 60)`.
+
 ## 6.6 Plugs
-TP-Link HS100 WiFi Plug via  [TPLinkSmartHome](https://www.openhab.org/addons/bindings/tplinksmarthome/#supported-things) binding.
+TP-Link HS100 WiFi Plug via [TPLinkSmartHome](https://www.openhab.org/addons/bindings/tplinksmarthome/) binding.
 
 ## 6.7 Security System
-DSC Security System with EnvisaLink.
+DSC Security System with the [EnvisaLink](http://www.eyezon.com/index.php) module via the [DSC Alarm](https://www.openhab.org/addons/bindings/dscalarm/) binding.
 
 ## 6.8 Switches
-Many consumer uses smart light bulbs. It is convenient and quick to install, but is not the best approach. Changing to a smart switch is more permanent solution. Nowaday, the smart switches can communicate via WiFi, Zigbee, or ZWave. Ensure that the one you buy are compliant with the electrical code in your region. In addition, be aware that WiFi devices might suffer from inteferences in the 2.4 Ghz band. Finally, if the switch drives a motor such as a washroom exhaust fan, make sure that it can handle the inductive load.
+Many consumer uses smart light bulbs. It is convenient and quick to install, but is not the best approach. Changing to a smart switch is the more permanent solution. Nowadays, the smart switches can communicate via WiFi, Zigbee, or ZWave. Ensure that the one you buy are compliant with the electrical code in your region. In addition, be aware that WiFi devices might suffer from inteferences in the 2.4 Ghz band. Finally, if the switch drives a motor such as a washroom exhaust fan, make sure that it can handle the inductive load.
 
 This project uses the two ZWave switches Inovelli NZW30 and Leviton DZ15S through the [ZWave](https://www.openhab.org/addons/bindings/zwave/#supported-things) binding. The latter can control fans as well.
 
@@ -403,56 +442,25 @@ Another approach is to make an existing switch smart by using devices such as So
 ## 6.9 Thermostats
 The two commons one are the Nest Eco and the EcoBee. The Ecobee3 is used in this project through the [Ecobee](https://docs.openhab.org/addons/bindings/ecobee1/readme.html) binding.
 
-### 6.10 Temperature sensors
+### 6.9.1 Temperature sensors
 Xaoimi Aqara Temperature Sensor (Zigbee).
 
-## 6.11 Zigbee stick
-A single Zigbee USB stick is needed in order to support Zigbee devices. The [Zigbee]() binding recommends the Ember controller.
+## 6.10 Zigbee stick
+A single Zigbee USB stick is needed in order to support Zigbee devices. The [Zigbee](https://www.openhab.org/addons/bindings/zigbee/) binding recommends the Ember controller.
 
 This project uses the Texas Instrument CC2531 USB stick. It is no longer supported, and it doesn't work very well with the Zigbee binding. However, it works well when used in conjunction with zigbee2mqtt. Note that the range of the CC2531 isn't very far, so additional CC2531 routers should be incorporated into the network.
 
-### 6.12 Zigbee2mqtt
-The zigbee2mqtt software provides an alternative approach to communicating with Zigbee devices.It maps Zigbee device events to mqtt events, which can then be routed to OpenHab. Zigbee2mqtt supports many devices, including the non-standard compliant Xiaomi Aqara (which doesn't work well with the Zigbee binding). 
+## 6.11 Zigbee2mqtt
+The [zigbee2mqtt](https://www.zigbee2mqtt.io/) software provides an alternative approach to communicating with Zigbee devices.It maps Zigbee device events to mqtt events, which can then be routed to OpenHab. Zigbee2mqtt supports many devices, including the non-standard compliant Xiaomi Aqara (which doesn't work well with the Zigbee binding). 
 
-## 6.13 ZWave stick
-The Aeotec Z-Wave USB ZStick Gen 5 is the recommended stick for the ZWave binding. It acts as a coordinator for all ZWave devices.
+## 6.12 ZWave stick
+The Aeotec Z-Wave USB ZStick Gen 5 is the recommended stick for the [ZWave](https://www.openhab.org/addons/bindings/zwave/) binding. It acts as a coordinator for all ZWave devices.
 
 ## 6.14 Others
 * [Astro](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
 
 # 7. Things to avoid
-* Avoid the cloud
+* Avoid the cloud: dependency on the cloud means that you are at the mercy of the service provider. If their server goes down or if they discontinue the product, your device becomes a brick. Always go with devices associated with open specs such as ZWave or Zigbee devices, or go with devices that have custom firmware that can bypass the cloud.
+* Security: if you do have to go with devices that are connected to the Internet, either put them in a separate WiFi network disjoint from the main network, or configure the router to disable Internet access for those devices.
 * Reduce complexity
-* Security
-
-# Todos - Functionalities
-## Text Alerts
-* Energy monitors such as Brultech GreenEye Monitor, Smappee, emonPi, or HEM Gen5 (zwave). Can be used to send alert if there is higher than baseline energy usage and no one is home.
-* Water leakage.
-* Smart plugs turned on while in vacation mode.
-* Sensor battery is low.
-
-## Control
-* Turn on/off main water valve.
-* Turn off water valve and alert when water leakage detected.
-* Control blinds.
-* Turn on/off vacation mode from sitemap --> set vacation mode on Ecobee as well.
-
-## Chrome cast
-* Associate music life cycle with presence.
-* Automatically transfer music as owner moves around; i.e. follow me mode.
-* Add timer to stop music after 5', 10, 15, 30, 1h.
-
-## Presence
-* Ecobee motion sensor.
-
-## Route
-* Show time different between revised route and normal route.
-
-## Security
-* Audio alert when someone is at the front door, if an owner is at home.
-* Send a camera snapshot when motion is detected and system is in vacation mode.
-
-## Voice Alerts
-* Pronounce name of the person heading back home.
-* Voice/text alert when washer/dryer finishs if owner is at home (required energy monitor).
+* Non-compliant devices: when it comes to hardwire devices such as wall switches or plugs, ensure that the devices are compliant with the regional electrical code. Otherwise if it causes fire, the insurance company won't cover the damage.

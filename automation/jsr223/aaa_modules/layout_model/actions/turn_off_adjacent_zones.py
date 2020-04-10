@@ -29,11 +29,8 @@ class TurnOffAdjacentZones(Action):
         if len(lights) == 0:
             return False
 
-        adjacentZones = [zoneManager.getZoneById(n.getZoneId()) \
-            for n in zone.getNeighbors() \
-            if (NeighborType.OPEN_SPACE == n.getType() or \
-                    NeighborType.OPEN_SPACE_SLAVE == n.getType()) ]
-
+        adjacentZones = zone.getNeighborZones(zoneManager,
+                [NeighborType.OPEN_SPACE, NeighborType.OPEN_SPACE_SLAVE])
         for z in adjacentZones:
             if z.isLightOn():
                 z.turnOffLights(events)
