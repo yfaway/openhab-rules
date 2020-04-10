@@ -66,7 +66,7 @@ The majority of the APIs and rules are in Python. There are a few older rules in
     * [6.10 Zigbee stick](#610-zigbee-stick)
     * [6.11 Zigbee2mqtt](#611-zigbee2mqtt)
     * [6.12 ZWave stick](#612-zwave-stick)
-    * [6.14 Others](#614-others)
+    * [6.13 Others](#613-others)
 * [7. Things to avoid](#7-things-to-avoid)
 
 <!-- vim-markdown-toc -->
@@ -323,7 +323,7 @@ This project provides another approach through the [Layout Model API](https://gi
 > **_NOTE:_** This API is documented at https://yfaway.github.io/. It is not up to date however.
 
 Sample action to turn off lights in neighboring zones:
-`
+```
     def onAction(self, eventInfo):
         events = eventInfo.getEventDispatcher()
         zone = eventInfo.getZone()
@@ -343,38 +343,38 @@ Sample action to turn off lights in neighboring zones:
                 z.turnOffLights(events)
         
         return True
-`
+```
 
 ## 5.1 ZoneManager
-There are two kinds of ZoneManager. The [mutable one](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone_manager.py) is constructed once when OpenHab starts up in order to create the zones. In this specific project, the [ZoneParser](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/zone_parser.py) class parses from the existing .items files to construct a ZoneManager instance. The [configure_zone_manager.py](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/configure_zone_manager.py) script uses the ZoneParser to populate the ZoneManager, add actions to the zones, and then puts an instance of ImmutableZoneManager on the script context. Other mechanisms can be used to populate the ZoneManager.
+There are two kinds of `ZoneManager`. The [mutable one](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone_manager.py) is constructed once when OpenHab starts up in order to create the zones. In this specific project, the [ZoneParser](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/zone_parser.py) class parses from the existing .items files to construct a ZoneManager instance. The [configure_zone_manager.py](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/configure_zone_manager.py) script uses the `ZoneParser` to populate the `ZoneManager`, add actions to the zones, and then puts an instance of ImmutableZoneManager on the script context. Other mechanisms can be used to populate the `ZoneManager`.
 
 Instances of the [ImmutableZoneManager](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/immutable_zone_manager.py) class are parsed around to the zones, and the actions. It provides access to zones and devices without allowing modification to its states.
 
 ## 5.2 Zone
-Each immutable [Zone](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone.py) instance maps to a room or an area within the house. The Zone class provides APIs to:
+Each immutable [Zone](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/zone.py) instance maps to a room or an area within the house. The `Zone` class provides APIs to:
 * Manage neighbor zones,
 * Manage devices/sensors,
-* Manage actions,
+* Manage actions, and
 * Dispatch events.
 
-Any method with side-effect semantic returns a new instance of Zone. Note that Zone is immutable but the devices/sensors contained within may not.
+Any method with side-effect semantic returns a new instance of `Zone`. Note that `Zone` is immutable but the devices/sensors contained within may not.
 
 ## 5.3 Devices
 The devices classes inherit from [Device](https://github.com/yfaway/openhab-rules/blob/master/automation/jsr223/aaa_modules/layout_model/device.py). They are either virtual or backed by one or more OpenHab items. They provide APIs to change their states.
 
 The following devices are available at this point:
-* ActivityTime: a virtual device to capture the time ranges for different activities in the house such as wake-up time, quiet time, dinner time, sleep time, and so on.
-* AlarmPartition: a DSC Alarm backed device to allow arming/disarming the house.
-* AstroSensor: provides sunrise and sunset time.
-* Camera: provide APIs to query for motion and for image snapshots. The current impl relies on a network share containing images produced by camera managed by the MotionEyesOS (run on a PI).
-* ChromecastAudioSink: an audio sink backed by Chromecast.
-* Contact: for doors, windows, and similar devices.
-* Dimmer: a Light-derived class.
-* IlluminanceSensor: query the brightness level.
-* MotionSensor
-* NetworkPresence: detects presence by doing network IP scan.
-* Plug: smart plug, currently backed by the TP Link plugs.
-* Switch: contains specific classes for Fan and Light.
+* `ActivityTime`: a virtual device to capture the time ranges for different activities in the house such as wake-up time, quiet time, dinner time, sleep time, and so on.
+* `AlarmPartition`: a DSC Alarm backed device to allow arming/disarming the house.
+* `AstroSensor`: provides sunrise and sunset time.
+* `Camera`: provide APIs to query for motion and for image snapshots. The current impl relies on a network share containing images produced by a camera that is managed by the MotionEyesOS (run on a PI).
+* `ChromecastAudioSink`: an audio sink backed by Chromecast.
+* `Contact`: for doors, windows, and similar devices.
+* `Dimmer`: a Light-derived class.
+* `IlluminanceSensor`: query the brightness level.
+* `MotionSensor`
+* `NetworkPresence`: detects presence by doing network IP scan.
+* `Plug`: smart plug, currently backed by the TP Link plugs.
+* `Switch`: contains specific classes for Fan and Light.
 
 Additional devices or specific implementation can be added through the inheritance mechanism.
 
@@ -456,7 +456,7 @@ The [zigbee2mqtt](https://www.zigbee2mqtt.io/) software provides an alternative 
 ## 6.12 ZWave stick
 The Aeotec Z-Wave USB ZStick Gen 5 is the recommended stick for the [ZWave](https://www.openhab.org/addons/bindings/zwave/) binding. It acts as a coordinator for all ZWave devices.
 
-## 6.14 Others
+## 6.13 Others
 * [Astro](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
 
 # 7. Things to avoid
