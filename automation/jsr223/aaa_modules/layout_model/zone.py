@@ -341,27 +341,36 @@ class Zone:
 
     def isOccupied(self, secondsFromLastEvent = 5 * 60):
         '''
-        Returns True if
+        Returns an array of two items. The first item is True if
           - at least one switch turned on, or
           - a motion event was triggered within the provided # of seconds, or
           - a network device was active in the local network within the
             provided # of seconds.
+        If the first item is True, the item is a Device that indicates
+        occupancy. Otherwise it is None.
 
-        :rtype: bool
+        :rtype: list(bool, Device)
         '''
         occupied = False
+        device = None
 
         presenceSensors = self.getDevicesByType(MotionSensor) + \
             self.getDevicesByType(NetworkPresence)
 
-        if any(s.wasRecentlyActivated(secondsFromLastEvent) for s in presenceSensors):
-            occupied = True
-        else:
-            lights = self.getDevicesByType(Light)
-            if any(s.isOn() for s in lights):
+        for sensor in presenceSensors:
+            if sensor.wasRecentlyActivated(secondsFromLastEvent):
                 occupied = True
+                device = sensor
+                break
 
-        return occupied
+        if not occupied:
+            for light in self.getDevicesByType(Light):
+                if light.isOn():
+                    occupied = True
+                    device = light
+                    break
+
+        return (occupied, device)
 
     def isLightOn(self):
         '''

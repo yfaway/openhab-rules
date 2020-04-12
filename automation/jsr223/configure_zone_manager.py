@@ -35,7 +35,7 @@ def initializeZoneManager():
         AlertOnEntraceActivity(),
         SimulateDaytimePresence("http://hestia2.cdnstream.com:80/1277_192"),
         AlertOnExternalDoorLeftOpen(),
-        ArmAfterFrontDoorClosed(15 * 60), # arm after 15'
+        ArmAfterFrontDoorClosed(12 * 60), # arm after 12'
     ]
 
     fanActions = [PlayMusicDuringShower("http://hestia2.cdnstream.com:80/1277_192")]

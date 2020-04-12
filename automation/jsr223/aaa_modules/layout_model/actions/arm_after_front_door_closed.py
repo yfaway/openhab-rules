@@ -73,13 +73,24 @@ class ArmAfterFrontDoorClosed(Action):
                     # if not any(z.isOccupied(elapsedTime) for z in zoneManager.getZones()):
                     # Below is a work around.
                     occupied = False
+                    activeDevice = None
+
                     for z in zoneManager.getZones():
-                        if z.isOccupied(self.maxElapsedTimeInSeconds) and not z.isExternal():
-                            occupied = True
+                        if z.isExternal():
+                            continue
+
+                        # motion sensor switches off after around 3', need to
+                        # that into account.
+                        motionDelayInSec = 3 * 60
+                        delayTimeInSec = self.maxElapsedTimeInSeconds + motionDelayInSec
+
+                        (occupied, activeDevice) = z.isOccupied( delayTimeInSec)
+                        if occupied:
                             break
 
                     if occupied:
-                        PE.logInfo('Auto-arm cancelled (activities detected).')
+                        PE.logInfo('Auto-arm cancelled (activities detected @ {}).'.format(
+                                    activeDevice))
                     else:
                         securityPartitions[0].armAway(events)
 
