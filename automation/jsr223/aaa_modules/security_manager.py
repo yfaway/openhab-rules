@@ -2,7 +2,6 @@
 Contain utility methods and constants dealing with the house's security sytem.
 '''
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 
 ITEM_NAME_PARTITION_ARM_MODE = "PARTITION1_ARM_MODE"
@@ -48,11 +47,11 @@ class SecurityManager:
     '''
 
     @staticmethod
-    def isArmedAway():
+    def isArmedAway(zoneManager):
         '''
         :return: True if at least one zone is armed-away
         '''
-        securityPartitions = ZoneManager.getDevicesByType(AlarmPartition)
+        securityPartitions = zoneManager.getDevicesByType(AlarmPartition)
         if len(securityPartitions) > 0:
             if AlarmPartition.STATE_ARM_AWAY == securityPartitions[0].getArmMode():
                 return True
@@ -60,11 +59,11 @@ class SecurityManager:
         return False
 
     @staticmethod
-    def isArmedStay():
+    def isArmedStay(zoneManager):
         '''
         :return: True if at least one zone is armed-stay
         '''
-        securityPartitions = ZoneManager.getDevicesByType(AlarmPartition)
+        securityPartitions = zoneManager.getDevicesByType(AlarmPartition)
         if len(securityPartitions) > 0:
             if AlarmPartition.STATE_ARM_STAY == securityPartitions[0].getArmMode():
                 return True

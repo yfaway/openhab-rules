@@ -22,7 +22,7 @@ BELL_DURATION_IN_SECS = 15
 def playMindfullnessBell(event):
 
     # not triggered if house is armed away
-    if SM.isArmedAway():
+    if SM.isArmedAway(zm):
         return
 
     volume = 40

@@ -67,7 +67,7 @@ class AlertOnEntraceActivity(Action):
             msg = 'Activity detected at the {} area.'.format(
                     zone.getName(), len(attachmentUrls))
 
-            if SM.isArmedAway() or hour <= 6:
+            if SM.isArmedAway(zm) or hour <= 6:
                 alert = Alert.createWarningAlert(msg, None, attachmentUrls)
             else:
                 alert = Alert.createAudioWarningAlert(msg)

@@ -24,11 +24,22 @@ from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdjacentZones
 from aaa_modules.layout_model.actions.turn_off_devices_on_alarm_mode_change import TurnOffDevicesOnAlarmModeChange
 
+'''
+Initialize an instance of ZoneManager, populate the zones, add the actions,
+and put the following variables on the script context: 'zm'.
+'''
+
+_mutableZoneManager = None
 
 def initializeZoneManager():
+    '''
+    Creates a new instance of ZoneManager and populate the zones.
+
+    :rtype: ZoneManager
+    '''
     zones = ZoneParser.parse(items, itemRegistry)
 
-    ZoneManager.removeAllZones()
+    zm = ZoneManager()
 
     # actions
     externalZoneActions = [
@@ -71,25 +82,29 @@ def initializeZoneManager():
             for a in fanActions:
                 z = z.addAction(a)
 
-        ZoneManager.addZone(z)
+        zm.addZone(z)
 
     PE.logInfo("Configured ZoneManager with {} zones.".format(len(zones)))
 
-    zones = ZoneManager.getZones()
+    zones = zm.getZones()
     output = "{} zones".format(len(zones))
     for z in zones:
         output += '\n' + str(z)
     PE.logInfo(output)
 
-def addContextVariables():
+    return zm
+
+def addContextVariables(zoneManager):
     '''
     Make the variable zm available to all scripts.
     '''
     if "zm" not in locals():
         import core
-        core.JythonExtensionProvider.addValue("zm",
-                ZoneManager._createImmutableInstance())
-        core.JythonExtensionProvider.addPreset("layout_preset", ["zm"], True)
+        core.JythonExtensionProvider.addValue("zm", 
+                zoneManager._createImmutableInstance())
+
+        core.JythonExtensionProvider.addPreset(
+                "layout_preset", ["zm"], True)
 
 @rule("Turn on light when motion sensor triggered")
 @when("Member of gWallSwitchMotionSensor changed to ON")
@@ -97,9 +112,9 @@ def onMotionSensor(event):
     # Ensure that if this is a Group event (Group:Switch), the timestamp for
     # the triggering item is also updated.
     if "getMemberName" in dir(event):
-        ZoneManager._updateDeviceLastActivatedTime(event.getMemberName())
+        _mutableZoneManager._updateDeviceLastActivatedTime(event.getMemberName())
 
-    if not ZoneManager.onMotionSensorTurnedOn(
+    if not _mutableZoneManager.onMotionSensorTurnedOn(
             events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('Motion event for {} is not processed.'.format(
                     event.itemName))
@@ -110,11 +125,11 @@ def onSwitchIsChanged(event):
     triggeringItem = itemRegistry.getItem(event.itemName)
 
     if switch_manager.isSwitchOn(triggeringItem):
-        if not ZoneManager.onSwitchTurnedOn(events, triggeringItem):
+        if not _mutableZoneManager.onSwitchTurnedOn(events, triggeringItem):
             PE.logDebug('Switch on event for {} is not processed.'.format(
                         event.itemName))
     else:
-        if not ZoneManager.onSwitchTurnedOff(events, triggeringItem):
+        if not _mutableZoneManager.onSwitchTurnedOff(events, triggeringItem):
             PE.logDebug('Switch off event for {} is not processed.'.format(
                         event.itemName))
 
@@ -126,32 +141,32 @@ def onDoorOrWindowsChanged(event):
 
     if PE.isInStateOn(triggeringItem.getState()) \
         or PE.isInStateOpen(triggeringItem.getState()):
-        if not ZoneManager.onContactOpen(events, triggeringItem):
+        if not _mutableZoneManager.onContactOpen(events, triggeringItem):
             PE.logDebug('Contact open event for {} is not processed.'.format(
                         event.itemName))
     else:
-        if not ZoneManager.onContactClosed(events, triggeringItem):
+        if not _mutableZoneManager.onContactClosed(events, triggeringItem):
             PE.logDebug('Contact closed event for {} is not processed.'.format(
                         event.itemName))
 
 @rule("Dispatch timer expired event")
 @when("Member of gWallSwitchTimer changed to OFF")
 def onTimerExpired(event):
-    if not ZoneManager.onTimerExpired(events, itemRegistry.getItem(event.itemName)):
+    if not _mutableZoneManager.onTimerExpired(events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('Timer event for {} is not processed.'.format(
                     event.itemName))
 
 @rule("Dispatch network device connected event")
 @when("Member of gNetworkPresence changed to ON")
 def onNetworkDeviceConnected(event):
-    if not ZoneManager.onNetworkDeviceConnected(events, itemRegistry.getItem(event.itemName)):
+    if not _mutableZoneManager.onNetworkDeviceConnected(events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('Network device connected event for {} is not processed.'.format(
                     event.itemName))
 
 @rule("Turn off all devices when armed away")
 @when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
 def onAlarmPartitionArmedAway(event):
-    if not ZoneManager.onAlarmPartitionArmedAway(
+    if not _mutableZoneManager.onAlarmPartitionArmedAway(
             events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('AlarmPartitionArmedAway event for {} is not processed.'.format(
                     event.itemName))
@@ -159,10 +174,10 @@ def onAlarmPartitionArmedAway(event):
 @rule("Turn off all devices when disarmed from armed-away")
 @when(security_manager.WHEN_CHANGED_FROM_ARM_AWAY_TO_UNARMED)
 def onAlarmPartitionDisarmedFromAway(event):
-    if not ZoneManager.onAlarmPartitionDisarmedFromAway(
+    if not _mutableZoneManager.onAlarmPartitionDisarmedFromAway(
             events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('AlarmPartitionDisarmedFromArmedAway event for {} is not processed.'.format(
                     event.itemName))
 
-initializeZoneManager()
-addContextVariables()
+_mutableZoneManager = initializeZoneManager()
+addContextVariables(_mutableZoneManager)
