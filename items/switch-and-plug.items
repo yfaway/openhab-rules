@@ -121,7 +121,7 @@ Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   { channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
 
 Switch SF_MainWashroomShower_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node18:switch_binary" }
+  { channel="zwave:device:9e4ce05e:node19:switch_binary" }
 Switch SF_MainWashroomShower_FanSwitch_Timer (gWallSwitchTimer) 
   { expire="15m,command=OFF"}
 Switch SF_MainWashroomShower_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
