@@ -14,7 +14,7 @@ import java.util.HashMap
  * The power threshold in a smart plug to indicate that an application is
  * stil running.
  */
-val ACTIVE_APPLIANCE_WATTAGE_THRESHOLD = 50
+val ACTIVE_APPLIANCE_WATTAGE_THRESHOLD = 30
 
 /**
  * Map from item name to wattage.
