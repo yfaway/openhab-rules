@@ -187,6 +187,20 @@ class ZoneManager:
             for z in self.zones.values()]
         return any(returnValues)
 
+    def onHumidityChanged(self, events, item):
+        """
+        Dispatches the humidity changed event to each zone.
+
+        :return: True if at least one zone processed the event; False otherwise
+        :rtype: bool
+        """
+        self._updateDeviceLastActivatedTime(item.getName())
+
+        returnValues = [
+            z.onHumidityChanged(events, item, self._createImmutableInstance())
+            for z in self.zones.values()]
+        return any(returnValues)
+
     def _updateDeviceLastActivatedTime(self, itemName):
         """
         Determine if the itemName is associated with a managed device. If yes,

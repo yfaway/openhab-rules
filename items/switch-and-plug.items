@@ -19,6 +19,9 @@ Group:Switch:OR(ON,OFF) gSecondFloorLightSwitch "Active First Floor Lights [%d]"
 // Used to send an ON/OFF command to all controlled fans
 Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
+String Zone_Outdoor 
+  { level="VT", external="true" }
+
 String Zone_Porch 
   { level="FF", external="true", openSpaceNeighbors="1_Foyer, 1_Office" }
 

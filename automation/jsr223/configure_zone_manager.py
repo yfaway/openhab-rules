@@ -6,6 +6,8 @@ from aaa_modules import switch_manager
 from aaa_modules import security_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.security_manager import SecurityManager as SM
+from aaa_modules import zone_parser
+reload(zone_parser)
 from aaa_modules.zone_parser import ZoneParser
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
@@ -13,10 +15,12 @@ from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
+from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.devices.switch import Fan, Switch
 
 from aaa_modules.layout_model.actions.alert_on_entrance_activity import AlertOnEntraceActivity
 from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExternalDoorLeftOpen
+from aaa_modules.layout_model.actions.alert_on_humidity_out_of_range import AlertOnHumidityOutOfRange
 from aaa_modules.layout_model.actions.arm_after_front_door_closed import ArmAfterFrontDoorClosed
 from aaa_modules.layout_model.actions.play_music_during_shower import PlayMusicDuringShower
 from aaa_modules.layout_model.actions.simulate_daytime_presence import SimulateDaytimePresence
@@ -75,6 +79,9 @@ def initializeZoneManager():
 
         if len(z.getDevicesByType(AlarmPartition)) > 0:
             z = z.addAction(TurnOffDevicesOnAlarmModeChange())
+
+        if len(z.getDevicesByType(HumiditySensor)) > 0 and not z.isExternal():
+            z = z.addAction(AlertOnHumidityOutOfRange())
 
         # add the play music action if zone has a fan switch.
         fans = z.getDevicesByType(Fan)
@@ -177,6 +184,14 @@ def onAlarmPartitionDisarmedFromAway(event):
     if not _mutableZoneManager.onAlarmPartitionDisarmedFromAway(
             events, itemRegistry.getItem(event.itemName)):
         PE.logDebug('AlarmPartitionDisarmedFromArmedAway event for {} is not processed.'.format(
+                    event.itemName))
+
+@rule("Dispatch humidity changed event")
+@when("Item FF_GreatRoom_Thermostat_ActualHumidity changed")
+def onHumidityChanged(event):
+    triggeringItem = itemRegistry.getItem(event.itemName)
+    if not _mutableZoneManager.onHumidityChanged(events, triggeringItem):
+        PE.logDebug('Humidity changed event for {} is not processed.'.format(
                     event.itemName))
 
 _mutableZoneManager = initializeZoneManager()

@@ -15,6 +15,7 @@ from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.layout_model.devices.dimmer import Dimmer
+from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.network_presence import NetworkPresence
@@ -113,6 +114,8 @@ class ZoneParser:
                     deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addChromeCasts(
                     deviceName, openHabItem, zone, itemRegistry)
+            zone = ZoneParser._addHumiditySensors(
+                    deviceName, openHabItem, zone, itemRegistry)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneId] = zone
@@ -178,6 +181,14 @@ class ZoneParser:
 
             cast = ChromeCastAudioSink(itemName, sinkNameMeta.value)
             zone = zone.addDevice(cast)
+
+        return zone
+
+    @staticmethod
+    def _addHumiditySensors(deviceName, openHabItem, zone, itemRegistry):
+        if 'Humidity' in deviceName:
+            device = HumiditySensor(openHabItem)
+            zone = zone.addDevice(device)
 
         return zone
 

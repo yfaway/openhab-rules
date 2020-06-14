@@ -6,6 +6,7 @@ from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSenso
 from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.switch import Light, Switch
 from aaa_modules.layout_model.devices.contact import Contact
+from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
 
@@ -33,6 +34,8 @@ class ZoneEvent:
     PARTITION_ARMED_STAY = 7         # Changed to armed stay
     PARTITION_DISARMED_FROM_AWAY = 8 # Changed from armed away to disarm
     PARTITION_DISARMED_FROM_STAY = 9 # Changed from armed stay to disarm
+    HUMIDITY_CHANGED = 10            # The humidity percentage changed
+    TEMPERATURE_CHANGED = 11         # The temperature changed
 
 class Zone:
     """
@@ -536,6 +539,16 @@ class Zone:
             return False 
 
         return self._invokeActions(ZoneEvent.MOTION, events, item,
+                immutableZoneManager)
+
+    def onHumidityChanged(self, events, item, immutableZoneManager):
+        '''
+        :rtype: boolean
+        '''
+        if not self.containsOpenHabItem(item.getName(), HumiditySensor):
+            return False 
+
+        return self._invokeActions(ZoneEvent.HUMIDITY_CHANGED, events, item,
                 immutableZoneManager)
 
     def _invokeActions(self, zoneEventType, eventDispatcher, item,
