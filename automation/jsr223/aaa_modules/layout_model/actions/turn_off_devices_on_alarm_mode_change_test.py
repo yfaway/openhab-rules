@@ -9,14 +9,12 @@ from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device_test import DeviceTest
 from aaa_modules.layout_model.event_info import EventInfo
 from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
-from aaa_modules.layout_model import zone
-reload(zone)
 from aaa_modules.layout_model.zone import Zone, ZoneEvent, Level
 from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.devices.switch import Light
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
-from aaa_modules.layout_model.actions import turn_off_devices_on_alarm_mode_change
-reload(turn_off_devices_on_alarm_mode_change)
+#from aaa_modules.layout_model.actions import turn_off_devices_on_alarm_mode_change
+#reload(turn_off_devices_on_alarm_mode_change)
 from aaa_modules.layout_model.actions.turn_off_devices_on_alarm_mode_change import TurnOffDevicesOnAlarmModeChange
 
 ITEMS = [SwitchItem('_testMotion'),

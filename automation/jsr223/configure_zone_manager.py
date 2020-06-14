@@ -6,8 +6,6 @@ from aaa_modules import switch_manager
 from aaa_modules import security_manager
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.security_manager import SecurityManager as SM
-from aaa_modules import zone_parser
-reload(zone_parser)
 from aaa_modules.zone_parser import ZoneParser
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.zone_manager import ZoneManager
@@ -121,10 +119,7 @@ def onMotionSensor(event):
     if "getMemberName" in dir(event):
         _mutableZoneManager._updateDeviceLastActivatedTime(event.getMemberName())
 
-    if not _mutableZoneManager.onMotionSensorTurnedOn(
-            events, itemRegistry.getItem(event.itemName)):
-        PE.logDebug('Motion event for {} is not processed.'.format(
-                    event.itemName))
+    dispatchEvent(ZoneEvent.MOTION, event)
 
 @rule("Dispatch switch changed event")
 @when("Member of gWallSwitch changed")
@@ -148,13 +143,10 @@ def onDoorOrWindowsChanged(event):
 
     if PE.isInStateOn(triggeringItem.getState()) \
         or PE.isInStateOpen(triggeringItem.getState()):
-        if not _mutableZoneManager.onContactOpen(events, triggeringItem):
-            PE.logDebug('Contact open event for {} is not processed.'.format(
-                        event.itemName))
+
+        dispatchEvent(ZoneEvent.CONTACT_OPEN, event)
     else:
-        if not _mutableZoneManager.onContactClosed(events, triggeringItem):
-            PE.logDebug('Contact closed event for {} is not processed.'.format(
-                        event.itemName))
+        dispatchEvent(ZoneEvent.CONTACT_CLOSED, event)
 
 @rule("Dispatch timer expired event")
 @when("Member of gWallSwitchTimer changed to OFF")
@@ -170,28 +162,30 @@ def onNetworkDeviceConnected(event):
         PE.logDebug('Network device connected event for {} is not processed.'.format(
                     event.itemName))
 
-@rule("Turn off all devices when armed away")
+@rule("Dispatch arm-away event.")
 @when(security_manager.WHEN_CHANGED_TO_ARMED_AWAY)
 def onAlarmPartitionArmedAway(event):
-    if not _mutableZoneManager.onAlarmPartitionArmedAway(
-            events, itemRegistry.getItem(event.itemName)):
-        PE.logDebug('AlarmPartitionArmedAway event for {} is not processed.'.format(
-                    event.itemName))
+    dispatchEvent(ZoneEvent.PARTITION_ARMED_AWAY, event, False)
 
-@rule("Turn off all devices when disarmed from armed-away")
+@rule("Dispatch disarm event.")
 @when(security_manager.WHEN_CHANGED_FROM_ARM_AWAY_TO_UNARMED)
 def onAlarmPartitionDisarmedFromAway(event):
-    if not _mutableZoneManager.onAlarmPartitionDisarmedFromAway(
-            events, itemRegistry.getItem(event.itemName)):
-        PE.logDebug('AlarmPartitionDisarmedFromArmedAway event for {} is not processed.'.format(
-                    event.itemName))
+    dispatchEvent(ZoneEvent.PARTITION_DISARMED_FROM_AWAY, event, False)
 
 @rule("Dispatch humidity changed event")
 @when("Item FF_GreatRoom_Thermostat_ActualHumidity changed")
 def onHumidityChanged(event):
+    dispatchEvent(ZoneEvent.HUMIDITY_CHANGED, event)
+
+def dispatchEvent(zoneEvent, event, enforceItemInZone = True):
+    '''
+    Dispatches an event to the ZoneManager. If the event is not processed,
+    create a debug log.
+    '''
     triggeringItem = itemRegistry.getItem(event.itemName)
-    if not _mutableZoneManager.onHumidityChanged(events, triggeringItem):
-        PE.logDebug('Humidity changed event for {} is not processed.'.format(
+
+    if not _mutableZoneManager.dispatchEvent(zoneEvent, events, triggeringItem, enforceItemInZone):
+        PE.logDebug('Event {} for item {} is not processed.'.format(zoneEvent,
                     event.itemName))
 
 _mutableZoneManager = initializeZoneManager()

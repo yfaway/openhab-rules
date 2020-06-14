@@ -5,8 +5,6 @@ from aaa_modules.layout_model.devices.astro_sensor import AstroSensor
 from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.switch import Light, Switch
-from aaa_modules.layout_model.devices.contact import Contact
-from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
 
@@ -489,67 +487,22 @@ class Zone:
         
         return isProcessed
 
-    def onContactOpen(self, events, item, immutableZoneManager):
+    def dispatchEvent(self, zoneEvent, openHabEvents, item,
+            immutableZoneManager, enforceItemInZone):
         '''
-        :param lambda immutableZoneManager: a function that returns a Zone \
-             object given a zone id string
+        :param ZoneEvent zoneEvent:
+        :param scope.events openHabEvents:
+        :param ImmutableZoneManager immutableZoneManager:
+        :param bool enforceItemInZone: if set to true, the actions won't be
+            triggered if the zone doesn't contain the item.
         :rtype: boolean
         '''
-        if not self.containsOpenHabItem(item.getName(), Contact):
+        if enforceItemInZone and not self.containsOpenHabItem(item.getName()):
             return False 
 
-        return self._invokeActions(ZoneEvent.CONTACT_OPEN, events, item,
+        return self._invokeActions(zoneEvent, openHabEvents, item,
                 immutableZoneManager)
 
-    def onContactClosed(self, events, item, immutableZoneManager):
-        '''
-        :rtype: boolean
-        '''
-        if not self.containsOpenHabItem(item.getName(), Contact):
-            return False 
-
-        return self._invokeActions(ZoneEvent.CONTACT_CLOSED, events, item,
-                immutableZoneManager)
-
-    def onAlarmPartitionArmedAway(self, events, item, immutableZoneManager):
-        '''
-        :rtype: boolean
-        '''
-        return self._invokeActions(ZoneEvent.PARTITION_ARMED_AWAY, events,
-                item, immutableZoneManager)
-
-    def onAlarmPartitionDisarmedFromAway(self, events, item, immutableZoneManager):
-        '''
-        :rtype: boolean
-        '''
-        return self._invokeActions(ZoneEvent.PARTITION_DISARMED_FROM_AWAY, events,
-                item, immutableZoneManager)
-
-    def onMotionSensorTurnedOn(self, events, item, immutableZoneManager):
-        '''
-        If the motion sensor belongs to this zone, turns on the associated
-        switch, execute the associated actions, and returns True. Otherwise
-        return False.
-
-        :param ImmutableZoneManager immutableZoneManager: a function that \
-            returns a Zone object given a zone id string
-        :rtype: boolean
-        '''
-        if not self.containsOpenHabItem(item.getName(), MotionSensor):
-            return False 
-
-        return self._invokeActions(ZoneEvent.MOTION, events, item,
-                immutableZoneManager)
-
-    def onHumidityChanged(self, events, item, immutableZoneManager):
-        '''
-        :rtype: boolean
-        '''
-        if not self.containsOpenHabItem(item.getName(), HumiditySensor):
-            return False 
-
-        return self._invokeActions(ZoneEvent.HUMIDITY_CHANGED, events, item,
-                immutableZoneManager)
 
     def _invokeActions(self, zoneEventType, eventDispatcher, item,
             immutableZoneManager):

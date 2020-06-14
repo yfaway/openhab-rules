@@ -2,6 +2,7 @@ import time
 
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import NumberItem
+from org.eclipse.smarthome.core.library.types import DecimalType
 
 from aaa_modules import cast_manager
 from aaa_modules.alert_manager import AlertManager
@@ -12,8 +13,8 @@ from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.device_test import DeviceTest
 
-from aaa_modules.layout_model.actions import alert_on_humidity_out_of_range
-reload(alert_on_humidity_out_of_range)
+#from aaa_modules.layout_model.actions import alert_on_humidity_out_of_range
+#reload(alert_on_humidity_out_of_range)
 from aaa_modules.layout_model.actions.alert_on_humidity_out_of_range import AlertOnHumidityOutOfRange
 
 ITEMS = [NumberItem('humidity_sensor')]

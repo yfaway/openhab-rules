@@ -119,14 +119,14 @@ class ZoneManagerTest(DeviceTest):
         self.assertEqual(0, len(self.zm.getDevicesByType(AstroSensor)))
 
     def testOnMotionSensorTurnedOn_noZone_returnsFalse(self):
-        self.assertFalse(self.zm.onMotionSensorTurnedOn(
+        self.assertFalse(self.zm.dispatchEvent(ZoneEvent.MOTION, 
                     scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnMotionSensorTurnedOn_withNonApplicableZone_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor])
         self.zm.addZone(zone)
 
-        self.assertFalse(self.zm.onMotionSensorTurnedOn(
+        self.assertFalse(self.zm.dispatchEvent(ZoneEvent.MOTION, 
                     scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
 
     def testOnMotionSensorTurnedOn_withApplicableZone_returnsTrue(self):
@@ -137,7 +137,7 @@ class ZoneManagerTest(DeviceTest):
         zone = zone.addAction(TurnOnSwitch())
         self.zm.addZone(zone)
 
-        self.assertTrue(self.zm.onMotionSensorTurnedOn(
+        self.assertTrue(self.zm.dispatchEvent(ZoneEvent.MOTION, 
                     scope.events, self.motionSensor.getItem()))
 
     def testOnTimerExpired_noZone_returnsFalse(self):

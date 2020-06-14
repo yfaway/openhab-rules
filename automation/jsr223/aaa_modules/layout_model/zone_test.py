@@ -270,8 +270,8 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.motionSensor])
         zone = zone.addAction(TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
-                self.motionSensor.getItem(), MockedZoneManager([zone]))
+        isProcessed = zone.dispatchEvent(ZoneEvent.MOTION, self.getMockedEventDispatcher(),
+                self.motionSensor.getItem(), MockedZoneManager([zone]), True)
         self.assertFalse(isProcessed)
 
     def testOnMotionSensorTurnedOn_illuminanceAboveThreshold_returnsFalse(self):
@@ -282,8 +282,8 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor])
         zone = zone.addAction(TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
-                self.motionSensor.getItem(), MockedZoneManager([zone]))
+        isProcessed = zone.dispatchEvent(ZoneEvent.MOTION, self.getMockedEventDispatcher(),
+                self.motionSensor.getItem(), MockedZoneManager([zone]), True)
         self.assertFalse(isProcessed)
         self.assertFalse(self.light.isOn())
 
@@ -295,8 +295,8 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor])
         zone = zone.addAction(TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
-                self.motionSensor.getItem(), MockedZoneManager([zone]))
+        isProcessed = zone.dispatchEvent(ZoneEvent.MOTION, self.getMockedEventDispatcher(),
+                self.motionSensor.getItem(), MockedZoneManager([zone]), True)
         self.assertTrue(isProcessed)
 
         self.assertTrue(self.light.isOn())
@@ -307,8 +307,8 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.astroSensor])
         zone = zone.addAction(TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
-                self.motionSensor.getItem(), None)
+        isProcessed = zone.dispatchEvent(ZoneEvent.MOTION, self.getMockedEventDispatcher(),
+                self.motionSensor.getItem(), None, True)
         self.assertFalse(isProcessed)
 
     def testOnMotionSensorTurnedOn_notLightOnTimeButIlluminanceBelowThreshold_turnsOnLight(self):
@@ -320,8 +320,8 @@ class ZoneTest(DeviceTest):
                 self.illuminanceSensor, self.astroSensor])
         zone = zone.addAction(TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
-                self.motionSensor.getItem(), MockedZoneManager([zone]))
+        isProcessed = zone.dispatchEvent(ZoneEvent.MOTION, self.getMockedEventDispatcher(),
+                self.motionSensor.getItem(), MockedZoneManager([zone]), True)
         self.assertTrue(isProcessed)
         self.assertTrue(self.light.isOn())
 
@@ -332,8 +332,8 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
         zone = zone.addAction(TurnOnSwitch())
 
-        isProcessed = zone.onMotionSensorTurnedOn(self.getMockedEventDispatcher(),
-                self.motionSensor.getItem(), MockedZoneManager([zone]))
+        isProcessed = zone.dispatchEvent(ZoneEvent.MOTION, self.getMockedEventDispatcher(),
+                self.motionSensor.getItem(), MockedZoneManager([zone]), True)
         self.assertTrue(isProcessed)
         self.assertTrue(self.light.isOn())
 

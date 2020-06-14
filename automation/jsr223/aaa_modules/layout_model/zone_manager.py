@@ -70,21 +70,6 @@ class ZoneManager:
 
         return devices
 
-    def onMotionSensorTurnedOn(self, events, item):
-        """
-        Dispatches the motion sensor turned on event to each zone.
-
-        :return: True if at least one zone processed the event; False otherwise
-        :rtype: bool
-        """
-        self._updateDeviceLastActivatedTime(item.getName())
-
-        returnValues = [
-            z.onMotionSensorTurnedOn(
-                    events, item, self._createImmutableInstance()) 
-            for z in self.zones.values()]
-        return any(returnValues)
-
     def onTimerExpired(self, events, item):
         """
         Dispatches the timer expiry event to each zone.
@@ -124,32 +109,6 @@ class ZoneManager:
             for z in self.zones.values()]
         return any(returnValues)
 
-    def onContactOpen(self, events, item):
-        """
-        Dispatches the contact (door/windows) open event to each zone.
-
-        :return: True if at least one zone processed the event; False otherwise
-        :rtype: bool
-        """
-        self._updateDeviceLastActivatedTime(item.getName())
-
-        returnValues = [
-            z.onContactOpen(events, item, self._createImmutableInstance())
-            for z in self.zones.values()]
-        return any(returnValues)
-
-    def onContactClosed(self, events, item):
-        """
-        Dispatches the contact closed event to each zone.
-
-        :return: True if at least one zone processed the event; False otherwise
-        :rtype: bool
-        """
-        returnValues = [
-            z.onContactClosed(events, item, self._createImmutableInstance())
-            for z in self.zones.values()]
-        return any(returnValues)
-
     def onNetworkDeviceConnected(self, events, item):
         """
         Dispatches the network device connected (to local network) to each zone.
@@ -161,43 +120,20 @@ class ZoneManager:
 
         return True
 
-    def onAlarmPartitionArmedAway(self, events, item):
+    def dispatchEvent(self, zoneEvent, openHabEvents, item, enforceItemInZone = True):
         """
-        Dispatches the armed-away event to each zone.
+        Dispatches the event to the zones.
 
-        :return: True if at least one zone processed the event; False otherwise
-        :rtype: bool
-        """
-        returnValues = [
-            z.onAlarmPartitionArmedAway(
-                    events, item, self._createImmutableInstance())
-            for z in self.zones.values()]
-        return any(returnValues)
-
-    def onAlarmPartitionDisarmedFromAway(self, events, item):
-        """
-        Dispatches the disarmed-from-armed-away event to each zone.
-
-        :return: True if at least one zone processed the event; False otherwise
-        :rtype: bool
-        """
-        returnValues = [
-            z.onAlarmPartitionDisarmedFromAway(
-                    events, item, self._createImmutableInstance())
-            for z in self.zones.values()]
-        return any(returnValues)
-
-    def onHumidityChanged(self, events, item):
-        """
-        Dispatches the humidity changed event to each zone.
-
-        :return: True if at least one zone processed the event; False otherwise
-        :rtype: bool
+        :param ZoneEvent zoneEvent:
+        :param scope.events openHabEvents:
+        :param bool enforceItemInZone: if set to true, the actions won't be
+            triggered if the zone doesn't contain the item.
         """
         self._updateDeviceLastActivatedTime(item.getName())
 
+        zm = self._createImmutableInstance()
         returnValues = [
-            z.onHumidityChanged(events, item, self._createImmutableInstance())
+            z.dispatchEvent(zoneEvent, openHabEvents, item, zm, enforceItemInZone)
             for z in self.zones.values()]
         return any(returnValues)
 
