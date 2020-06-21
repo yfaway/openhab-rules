@@ -22,6 +22,7 @@ ITEMS = [NumberItem('humidity_sensor')]
 # Unit tests for alert_on_humidity_out_of_range.py.
 class AlertOnHumidityOutOfRangeTest(DeviceTest):
     def setUp(self):
+        self.action = AlertOnHumidityOutOfRange(35, 50, 3)
         self.zone1 = Zone('great room').addDevice(HumiditySensor(ITEMS[0]))
 
         AlertManager._setTestMode(True)
@@ -48,54 +49,79 @@ class AlertOnHumidityOutOfRangeTest(DeviceTest):
         value = AlertOnHumidityOutOfRange().onAction(eventInfo)
         self.assertFalse(value)
 
-    def testOnAction_humidityBelowThreshold_TrueAndSendAlert(self):
-        ITEMS[0].setState(DecimalType(20))
+    def testOnAction_humidityJustBelowMinThresholdButAboveNoticeThreshold_sendsNoAlert(self):
+        ITEMS[0].setState(DecimalType(34))
+        self.sendEventAndAssertNoAlert()
 
-        eventInfo = EventInfo(ZoneEvent.HUMIDITY_CHANGED, ITEMS[0], self.zone1,
-                None, self.getMockedEventDispatcher())
-        value = AlertOnHumidityOutOfRange().onAction(eventInfo)
-        self.assertTrue(value)
+    def testOnAction_lowHumidityAtFirstThreshold_TrueAndSendAlert(self):
+        ITEMS[0].setState(DecimalType(32))
+        self.sendEventAndAssertAlertContainMessage('below the threshold')
 
-        self.assertTrue("below the threshold" in AlertManager._lastEmailedSubject)
+    def testOnAction_lowHumidityButNotYetAtSecondThreshold_doNotSendAlert(self):
+        ITEMS[0].setState(DecimalType(32))
+        self.sendEventAndAssertAlertContainMessage('below the threshold')
 
-    def testOnAction_humidityAboveThreshold_returnsTrueAndSendAlert(self):
-        ITEMS[0].setState(DecimalType(60))
+        ITEMS[0].setState(DecimalType(33))
+        self.sendEventAndAssertNoAlert()
 
-        eventInfo = EventInfo(ZoneEvent.HUMIDITY_CHANGED, ITEMS[0], self.zone1,
-                None, self.getMockedEventDispatcher())
-        value = AlertOnHumidityOutOfRange().onAction(eventInfo)
-        self.assertTrue(value)
+    def testOnAction_lowHumidityAtSecondThreshold_sendAlert(self):
+        ITEMS[0].setState(DecimalType(32))
+        self.sendEventAndAssertAlertContainMessage('below the threshold')
 
-        self.assertTrue("above the threshold" in AlertManager._lastEmailedSubject)
+        ITEMS[0].setState(DecimalType(29))
+        self.sendEventAndAssertAlertContainMessage('below the threshold')
+
+    def testOnAction_humidityJustAboveMinThresholdButAboveNoticeThreshold_sendsNoAlert(self):
+        ITEMS[0].setState(DecimalType(51))
+        self.sendEventAndAssertNoAlert()
+
+    def testOnAction_highHumidityAtFirstThreshold_TrueAndSendAlert(self):
+        ITEMS[0].setState(DecimalType(53))
+        self.sendEventAndAssertAlertContainMessage('above the threshold')
+
+    def testOnAction_highHumidityButNotYetAtSecondThreshold_doNotSendAlert(self):
+        ITEMS[0].setState(DecimalType(53))
+        self.sendEventAndAssertAlertContainMessage('above the threshold')
+
+        ITEMS[0].setState(DecimalType(54))
+        self.sendEventAndAssertNoAlert()
+
+    def testOnAction_highHumidityAtSecondThreshold_sendAlert(self):
+        ITEMS[0].setState(DecimalType(54))
+        self.sendEventAndAssertAlertContainMessage('above the threshold')
+
+        ITEMS[0].setState(DecimalType(56))
+        self.sendEventAndAssertAlertContainMessage('above the threshold')
 
     def testOnAction_humidityWithinThreshold_returnsTrueAndSendsNoAlert(self):
         ITEMS[0].setState(DecimalType(40))
-
-        eventInfo = EventInfo(ZoneEvent.HUMIDITY_CHANGED, ITEMS[0], self.zone1,
-                None, self.getMockedEventDispatcher())
-        value = AlertOnHumidityOutOfRange().onAction(eventInfo)
-        self.assertTrue(value)
-
-        self.assertEqual(None, AlertManager._lastEmailedSubject)
+        self.sendEventAndAssertNoAlert()
 
     def testOnAction_humidityBackToNormal_returnsTrueAndSendsInfoAlert(self):
-        ITEMS[0].setState(DecimalType(20))
-
-        action = AlertOnHumidityOutOfRange()
-        eventInfo = EventInfo(ZoneEvent.HUMIDITY_CHANGED, ITEMS[0], self.zone1,
-                None, self.getMockedEventDispatcher())
-
         # initially below threshold
-        value = action.onAction(eventInfo)
-        self.assertTrue(value)
-        self.assertTrue('below the threshold' in AlertManager._lastEmailedSubject)
+        ITEMS[0].setState(DecimalType(20))
+        self.sendEventAndAssertAlertContainMessage('below the threshold')
 
         # now back to normal
         ITEMS[0].setState(DecimalType(40))
+        self.sendEventAndAssertAlertContainMessage('back to the normal range')
+
+    def sendEventAndAssertNoAlert(self):
+        AlertManager.reset()
+
         eventInfo = EventInfo(ZoneEvent.HUMIDITY_CHANGED, ITEMS[0], self.zone1,
                 None, self.getMockedEventDispatcher())
-        value = action.onAction(eventInfo)
+        value = self.action.onAction(eventInfo)
         self.assertTrue(value)
-        self.assertTrue('back to the normal range' in AlertManager._lastEmailedSubject)
+        self.assertEqual(None, AlertManager._lastEmailedSubject)
+
+    def sendEventAndAssertAlertContainMessage(self, message):
+        AlertManager.reset()
+
+        eventInfo = EventInfo(ZoneEvent.HUMIDITY_CHANGED, ITEMS[0], self.zone1,
+                None, self.getMockedEventDispatcher())
+        value = self.action.onAction(eventInfo)
+        self.assertTrue(value)
+        self.assertTrue(message in AlertManager._lastEmailedSubject)
 
 PE.runUnitTest(AlertOnHumidityOutOfRangeTest)
