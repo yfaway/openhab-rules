@@ -1,13 +1,12 @@
-from threading import Timer
-
 from aaa_modules.alert import Alert
 from aaa_modules.alert_manager import AlertManager
 from aaa_modules.layout_model.zone import ZoneEvent
-from aaa_modules.layout_model.action import Action
+from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-class AlertOnHumidityOutOfRange(Action):
+@action(events = [ZoneEvent.HUMIDITY_CHANGED], devices = [HumiditySensor])
+class AlertOnHumidityOutOfRange:
 
     '''
     Send an warning alert if the humidity is outside the range.
@@ -52,25 +51,11 @@ class AlertOnHumidityOutOfRange(Action):
 
         self.resetStates();
 
-    def getTriggeringEvents(self):
-        '''
-        :return: list of triggering events this action process.
-        :rtype: list(ZoneEvent)
-        '''
-        return [ZoneEvent.HUMIDITY_CHANGED]
-
     def onAction(self, eventInfo):
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
 
-        if zone.isExternal():
-            return False
-
-        humiditySensors = zone.getDevicesByType(HumiditySensor)
-        if len(humiditySensors) == 0:
-            return False
-
-        percentage = humiditySensors[0].getHumidity()
+        percentage = self.getFirstDevice(eventInfo).getHumidity()
 
         msg = ''
         if percentage <= self.nextMinNotificationThreshold:

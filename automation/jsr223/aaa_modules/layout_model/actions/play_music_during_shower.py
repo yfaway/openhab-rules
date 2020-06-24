@@ -1,11 +1,12 @@
-from aaa_modules.layout_model.action import Action
+from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.neighbor import NeighborType
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-class PlayMusicDuringShower(Action):
+@action(events = [ZoneEvent.SWITCH_TURNED_ON, ZoneEvent.SWITCH_TURNED_OFF])
+class PlayMusicDuringShower:
 
     '''
     Play the provided URL stream when the washroom fan is turned on. Pause
@@ -27,17 +28,7 @@ class PlayMusicDuringShower(Action):
 
         self.musicUrl = musicUrl
 
-    def getTriggeringEvents(self):
-        '''
-        :return: list of triggering events this action process.
-        :rtype: list(ZoneEvent)
-        '''
-        return [ZoneEvent.SWITCH_TURNED_ON, ZoneEvent.SWITCH_TURNED_OFF]
-
     def onAction(self, eventInfo):
-        if not super(PlayMusicDuringShower, self).onAction(eventInfo):
-            return False
-
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
 

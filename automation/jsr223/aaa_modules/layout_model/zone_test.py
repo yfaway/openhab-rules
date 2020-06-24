@@ -375,5 +375,4 @@ class ZoneTest(DeviceTest):
         self.assertEqual(1, len(zones))
         self.assertEqual(zone3, zones[0])
 
-
 PE.runUnitTest(ZoneTest)

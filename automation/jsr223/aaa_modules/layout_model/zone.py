@@ -260,6 +260,13 @@ class Zone:
         ''' :rtype: str '''
         return self.name
 
+    def isInternal(self):
+        """
+        :return: True if the this is an internal zone
+        :rtype: bool
+        """
+        return not self.isExternal()
+
     def isExternal(self):
         """
         :return: True if the this is an external zone
