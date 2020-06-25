@@ -1,7 +1,8 @@
 import time
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-from aaa_modules.layout_model.action import Action
+from aaa_modules.layout_model.action import action
+from aaa_modules.layout_model.event_info import EventInfo
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.devices.switch import Light, Switch
@@ -11,7 +12,8 @@ from aaa_modules.layout_model.actions.turn_off_adjacent_zones import TurnOffAdja
 
 DEBUG = False
 
-class TurnOnSwitch(Action):
+@action(events = [ZoneEvent.MOTION], internal = True, external = True)
+class TurnOnSwitch:
     '''
     Turns on a switch (fan, dimmer or regular light), after being triggered by
     a motion event.
@@ -39,13 +41,8 @@ class TurnOnSwitch(Action):
     spot is covered by a motion sensor, which immediately turns on the light
     again.
     '''
-
-    def getTriggeringEvents(self):
-        '''
-        :return: list of triggering events this action process.
-        :rtype: list(ZoneEvent)
-        '''
-        return [ZoneEvent.MOTION]
+    def __init__(self):
+        pass
 
     def onAction(self, eventInfo):
         events = eventInfo.getEventDispatcher()
@@ -134,6 +131,9 @@ class TurnOnSwitch(Action):
             if DEBUG:
                 PE.logInfo("{}: turning off adjancent zone's light".format(
                         switch.getItemName()))
-            TurnOffAdjacentZones().onAction(eventInfo)
+            offEventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_ON,
+                    eventInfo.getItem(), eventInfo.getZone(),
+                    eventInfo.getZoneManager(), eventInfo.getEventDispatcher())
+            TurnOffAdjacentZones().onAction(offEventInfo)
         
         return isProcessed

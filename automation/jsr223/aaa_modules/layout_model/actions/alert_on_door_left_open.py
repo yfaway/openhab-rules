@@ -3,11 +3,13 @@ from threading import Timer
 from aaa_modules.alert import Alert
 from aaa_modules.alert_manager import AlertManager
 from aaa_modules.layout_model.zone import ZoneEvent
-from aaa_modules.layout_model.action import Action
+from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-class AlertOnExternalDoorLeftOpen(Action):
+@action(events = [ZoneEvent.CONTACT_OPEN, ZoneEvent.CONTACT_CLOSED], 
+        devices = [Door], internal = False, external = True)
+class AlertOnExternalDoorLeftOpen:
 
     '''
     Send an warning alert if a door on an external zone has been left open for
@@ -31,23 +33,9 @@ class AlertOnExternalDoorLeftOpen(Action):
         self.timers = {}
         self.maxElapsedTimeInSeconds = maxElapsedTimeInSeconds
 
-    def getTriggeringEvents(self):
-        '''
-        :return: list of triggering events this action process.
-        :rtype: list(ZoneEvent)
-        '''
-        return [ZoneEvent.CONTACT_OPEN, ZoneEvent.CONTACT_CLOSED]
-
     def onAction(self, eventInfo):
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
-
-        if not zone.isExternal():
-            return False
-
-        doors = zone.getDevicesByType(Door)
-        if len(doors) == 0:
-            return False
 
         def sendAlert():
             msg = 'The {} door has been opened for {} minutes.'.format(
@@ -56,7 +44,7 @@ class AlertOnExternalDoorLeftOpen(Action):
             alert = Alert.createWarningAlert(msg)
             AlertManager.processAlert(alert, zoneManager)
 
-        for door in doors:
+        for door in zone.getDevicesByType(Door):
             timer = self.timers[door] if door in self.timers else None
 
             if door.isOpen():

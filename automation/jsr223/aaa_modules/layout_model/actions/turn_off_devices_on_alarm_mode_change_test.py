@@ -47,15 +47,15 @@ class TurnOffDevicesOnAlarmModeChangeTest(DeviceTest):
         (zone, zm, eventInfo) = self.createTestData(ZoneEvent.PARTITION_ARMED_AWAY)
         self.assertTrue(zone.isLightOn())
 
-        self.invokeActionAndassertDevicesTurnedOff(zone, eventInfo)
+        self.invokeActionAndAssertDevicesTurnedOff(zone, eventInfo)
 
     def testOnAction_disarmEvent_turnOffDevicesAndReturnsTrue(self):
         (zone, zm, eventInfo) = self.createTestData(ZoneEvent.PARTITION_DISARMED_FROM_AWAY)
         self.assertTrue(zone.isLightOn())
 
-        self.invokeActionAndassertDevicesTurnedOff(zone, eventInfo)
+        self.invokeActionAndAssertDevicesTurnedOff(zone, eventInfo)
 
-    def invokeActionAndassertDevicesTurnedOff(self, zone, eventInfo):
+    def invokeActionAndAssertDevicesTurnedOff(self, zone, eventInfo):
         value = self.action.onAction(eventInfo)
         self.assertTrue(value)
 

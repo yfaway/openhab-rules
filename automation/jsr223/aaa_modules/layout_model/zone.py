@@ -228,12 +228,12 @@ class Zone:
         :return: A NEW object.
         :rtype: Zone 
         '''
-        if len(action.getTriggeringEvents()) == 0:
+        if len(action.getRequiredEvents()) == 0:
             raise ValueError('Action must define at least one triggering event')
 
         newActions = dict(self.actions)
 
-        for zoneEvent in action.getTriggeringEvents():
+        for zoneEvent in action.getRequiredEvents():
             if newActions.has_key(zoneEvent):
                 newActions[zoneEvent].append(action)
             else:

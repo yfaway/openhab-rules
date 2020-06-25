@@ -2,13 +2,14 @@ import random
 from threading import Timer
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-from aaa_modules.layout_model.action import Action
+from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.zone import Level, ZoneEvent
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 
-class SimulateDaytimePresence(Action):
+@action(events = [ZoneEvent.MOTION], internal = False, external = True)
+class SimulateDaytimePresence:
 
     '''
     Play the provided URL stream when an external motion sensor is triggered
@@ -35,22 +36,9 @@ class SimulateDaytimePresence(Action):
         self.playDurationInSeconds = playDurationInSeconds
         self.timer = None
 
-    def getTriggeringEvents(self):
-        '''
-        :return: list of triggering events this action process.
-        :rtype: list(ZoneEvent)
-        '''
-        return [ZoneEvent.MOTION]
-
     def onAction(self, eventInfo):
-        if not super(SimulateDaytimePresence, self).onAction(eventInfo):
-            return False
-
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
-
-        if not zone.isExternal():
-            return False
 
         securityPartitions = zoneManager.getDevicesByType(AlarmPartition)
         if len(securityPartitions) == 0:

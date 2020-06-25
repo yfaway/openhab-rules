@@ -76,7 +76,7 @@ class TurnOffAdjacentZonesTest(DeviceTest):
 
     def turnOff(self, zone):
         zm = MockedZoneManager([self.washroom, self.shower, self.lobby])
-        eventInfo = EventInfo(ZoneEvent.UNDEFINED, ITEMS[0], zone, zm, 
+        eventInfo = EventInfo(ZoneEvent.SWITCH_TURNED_ON, ITEMS[0], zone, zm, 
                 self.getMockedEventDispatcher())
 
         return TurnOffAdjacentZones().onAction(eventInfo)

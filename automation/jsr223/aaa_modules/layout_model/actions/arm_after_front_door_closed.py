@@ -3,12 +3,13 @@ from threading import Timer
 from aaa_modules.alert import Alert
 from aaa_modules.alert_manager import AlertManager
 from aaa_modules.layout_model.zone import ZoneEvent
-from aaa_modules.layout_model.action import Action
+from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-class ArmAfterFrontDoorClosed(Action):
+@action(events = [ZoneEvent.CONTACT_CLOSED], devices = [Door], internal = False, external = True)
+class ArmAfterFrontDoorClosed:
 
     '''
     Automatically arm the house if a front door was closed and there was no
@@ -33,26 +34,12 @@ class ArmAfterFrontDoorClosed(Action):
         self.timer = None
         self.maxElapsedTimeInSeconds = maxElapsedTimeInSeconds
 
-    def getTriggeringEvents(self):
-        '''
-        :return: list of triggering events this action process.
-        :rtype: list(ZoneEvent)
-        '''
-        return [ZoneEvent.CONTACT_CLOSED]
-
     def onAction(self, eventInfo):
         events = eventInfo.getEventDispatcher()
         zone = eventInfo.getZone()
         zoneManager = eventInfo.getZoneManager()
 
-        if not zone.isExternal():
-            return False
-
         if zone.getName() == "Patio": # todo: add Zone::isBack()
-            return False
-
-        doors = zone.getDevicesByType(Door)
-        if len(doors) == 0:
             return False
 
         securityPartitions = zoneManager.getDevicesByType(AlarmPartition)
@@ -62,7 +49,7 @@ class ArmAfterFrontDoorClosed(Action):
         if not securityPartitions[0].isUnarmed():
             return False
 
-        for door in doors:
+        for door in zone.getDevicesByType(Door):
             if door.isClosed():
                 if None != self.timer:
                     self.timer.cancel()

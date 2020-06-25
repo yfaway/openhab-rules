@@ -95,21 +95,16 @@ def validate(function):
         if len(obj.getRequiredEvents()) > 0 \
             and not any(e == eventInfo.getEventType() for e in obj.getRequiredEvents()):
 
-            PE.logInfo("wrong event")
             return False
         elif len(obj.getRequiredDevices()) > 0 \
             and not any(len(zone.getDevicesByType(cls)) > 0 for cls in obj.getRequiredDevices()):
 
-            PE.logInfo("no matching device")
             return False
         elif zone.isInternal() and not obj.isApplicableToInternalZone():
-            PE.logInfo("not for internal")
             return False
         elif zone.isExternal() and not obj.isApplicableToExternalZone():
-            PE.logInfo("not for external")
             return False
         else:
-            PE.logInfo("OK")
             return function(*args, **kwargs)
 
     return wrapper

@@ -3,13 +3,14 @@ from aaa_modules.alert import *
 from aaa_modules.alert_manager import *
 from aaa_modules.camera_utilities import retrieveSnapshotsFromFileSystem
 from aaa_modules.layout_model.zone import ZoneEvent
-from aaa_modules.layout_model.action import Action
+from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.security_manager  import SecurityManager as SM
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-class AlertOnEntraceActivity(Action):
+@action(events = [ZoneEvent.MOTION], internal = False, external = True)
+class AlertOnEntraceActivity:
     '''
     The alert is triggered from a PIR motion sensor. The motion sensor
     sometimes generate false positive event. This is remedied by determing if
@@ -21,13 +22,8 @@ class AlertOnEntraceActivity(Action):
     the occupant walking out of the house, and thus shouldn't triggered the
     event.
     '''
-
-    def getTriggeringEvents(self):
-        '''
-        :return: list of triggering events this action process.
-        :rtype: list(ZoneEvent)
-        '''
-        return [ZoneEvent.MOTION]
+    def __init__(self):
+        pass
 
     def onAction(self, eventInfo):
         zone = eventInfo.getZone()

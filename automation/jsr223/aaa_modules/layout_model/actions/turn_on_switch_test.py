@@ -2,9 +2,7 @@ from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import NumberItem
 from org.eclipse.smarthome.core.library.items import SwitchItem
 from org.eclipse.smarthome.core.library.types import DecimalType
-
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
-
 #from aaa_modules.layout_model.actions import turn_on_switch
 #reload(turn_on_switch)
 from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
