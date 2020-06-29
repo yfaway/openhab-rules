@@ -8,7 +8,7 @@ sitemap default label="HV Home"
   Selection item=PARTITION1_ARM_MODE icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
   Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
 
-  Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
+  //Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
 
   Text item=gTemperature icon="temperature"
   Text item=gHumidity icon="humidity"
@@ -20,6 +20,102 @@ sitemap default label="HV Home"
   Switch item=gLightSwitch icon="light"
   Switch item=gFanSwitch icon="fan"
 
+/** BEGIN AUTO-GENERATED SITEMAP **/
+Text label="Porch" icon="groundfloor" {
+  Frame label="Porch" {
+    Text item=FF_Porch_Door icon="door"
+    Switch item=FF_Porch_MotionSensor
+  }
+}
+Text label="Outdoor" icon="terrace" {
+  Frame label="Outdoor" {
+    Text item=VT_Outdoor_RelativeHumidity icon="humidity"
+  }
+}
+Text label="MasterWashroomShower" icon="firstfloor" {
+  Frame label="MasterWashroomShower" {
+    Switch item=SF_MasterWashroomShower_FanSwitch icon="fan"
+    Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor
+  }
+}
+Text label="Garage" icon="garage" {
+  Frame label="Garage" {
+    Text item=FF_Garage_Door icon="door"
+  }
+}
+Text label="Kitchen" icon="kitchen" {
+  Frame label="Kitchen" {
+    Text item=FF_Kitchen_Humidity icon="humidity"
+    Switch item=FF_Kitchen_LightSwitch icon="light"
+    Text item=FF_Kitchen_LightSwitch_Illuminance
+    Switch item=FF_Kitchen_LightSwitch_MotionSensor
+    Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor
+  }
+}
+Text label="Weather" icon="house" {
+  Frame label="Weather" {
+    Text item=VT_Weather_Humidity icon="humidity"
+  }
+}
+Text label="MainWashroomShower" icon="firstfloor" {
+  Frame label="MainWashroomShower" {
+    Switch item=SF_MainWashroomShower_FanSwitch icon="fan"
+    Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor
+  }
+}
+Text label="Office" icon="office" {
+  Frame label="Office" {
+    Switch item=FF_Office_LightSwitch icon="light"
+    Switch item=FF_Office_Plug icon="poweroutlet"
+    Switch item=FF_Office_LightSwitch_MotionSensor
+  }
+}
+Text label="Foyer" icon="groundfloor" {
+  Frame label="Foyer" {
+    Text item=FF_Foyer_Door icon="door"
+    Switch item=FF_Foyer_LightSwitch icon="light"
+    Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor
+    Switch item=FF_Foyer_LightSwitch_MotionSensor
+  }
+}
+Text label="GreatRoom" icon="groundfloor" {
+  Frame label="GreatRoom" {
+    Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+    Switch item=FF_GreatRoom_LightSwitch icon="light"
+    Switch item=FF_GreatRoom_Plug icon="poweroutlet"
+    Switch item=FF_GreatRoom_LightSwitch_MotionSensor
+  }
+}
+Text label="Patio" icon="groundfloor" {
+  Frame label="Patio" {
+    Text item=FF_Patio_Door icon="door"
+  }
+}
+Text label="MasterWashroom" icon="firstfloor" {
+  Frame label="MasterWashroom" {
+    Switch item=SF_MasterWashroom_LightSwitch icon="light"
+    Text item=SF_MasterWashroom_LightSwitch_Illuminance
+    Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor
+    Switch item=SF_MasterWashroom_FanSwitch_MotionSensor
+  }
+}
+Text label="MainWashroom" icon="firstfloor" {
+  Frame label="MainWashroom" {
+    Switch item=SF_MainWashroom_LightSwitch icon="light"
+    Switch item=SF_MainWashroom_FanSwitch_MotionSensor
+  }
+}
+Text label="Lobby" icon="firstfloor" {
+  Frame label="Lobby" {
+    Switch item=SF_Lobby_LightSwitch icon="light"
+    Switch item=SF_Lobby_LightSwitch_MotionSensor
+  }
+}
+
+/** END OF AUTO-GENERATED SITEMAP **/
+
+
+/*
   Text label="Lights, Fans, and Plugs" icon="poweroutlet" {
     Frame label="Lights, Fans, and Plugs" {
       Switch item=FF_Foyer_LightSwitch icon="light"
@@ -69,6 +165,7 @@ sitemap default label="HV Home"
       }
     }
   }
+*/
 
   Text label="Weather" icon="temperature" {
     Frame label="Weather" {
@@ -170,26 +267,6 @@ sitemap default label="HV Home"
       Text item=FF_GarageDoor_Status
       Text item=FF_PatioDoor_Status
       Text item=FF_Windows_Status
-    }
-  }
-
-  Text label="Motion Sensors" icon="motion" {
-    Frame label="Motion Sensors" {
-      Switch item=FF_Porch_MotionSensor
-
-      Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor
-      Switch item=FF_Office_LightSwitch_MotionSensor
-
-      Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor
-      Text item=FF_Kitchen_LightSwitch_Illuminance
-
-      Switch item=SF_Lobby_LightSwitch_MotionSensor
-
-      Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor
-      Text item=SF_MasterWashroom_LightSwitch_Illuminance
-
-      Switch item=SF_MasterWashroom_FanSwitch_MotionSensor
-      Switch item=SF_MainWashroom_FanSwitch_MotionSensor 
     }
   }
 }
