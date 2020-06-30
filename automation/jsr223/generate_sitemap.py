@@ -20,21 +20,10 @@ def generate(zm):
     for z in zm.getZones():
         itemCount = 0
 
-	zoneIcon = 'house'
-        if z.getName() == 'Kitchen':
-            zoneIcon = 'kitchen'
-        elif z.getName() == 'Garage':
-            zoneIcon = 'garage'
-        elif z.getName() == 'Office':
-            zoneIcon = 'office'
-        elif z.getName() == 'Outdoor':
-            zoneIcon = 'terrace'
-	elif z.getLevel() == 1:
-            zoneIcon = 'groundfloor'
-        elif z.getLevel() == 2:
-            zoneIcon = 'firstfloor'
-        elif z.getLevel() == 3:
-            zoneIcon = 'attic'
+        if z.getDisplayIcon() == None:
+            zoneIcon = ''
+        else:
+            zoneIcon = z.getDisplayIcon()
 
         str = 'Text label="{}" icon="{}" {{\n'.format(z.getName(), zoneIcon)
         str += '  Frame label="{}" {{\n'.format(z.getName())

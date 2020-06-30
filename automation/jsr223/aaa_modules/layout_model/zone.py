@@ -86,7 +86,8 @@ class Zone:
     '''
 
     def __init__(self, name, devices = [], level = Level.UNDEFINED,
-            neighbors = [], actions = {}, external = False):
+            neighbors = [], actions = {}, external = False,
+            displayIcon = None, displayOrder = 9999):
         """
         Creates a new zone.
 
@@ -97,6 +98,10 @@ class Zone:
         :param dict(ZoneEvent -> list(Action)) actions: the optional \
             dictionary from :class:`.ZoneEvent` to :class:`.Action`
         :param bool external: indicates if the zone is external
+        :param int displayIcon: the icon associated with the zone, useful
+            for displaying in sitemap.
+        :param int displayOrder: the order with respective to the other zones,
+            useful for arranging in sitemap.
         """
 
         self.name = name
@@ -105,6 +110,8 @@ class Zone:
         self.neighbors = list(neighbors)
         self.actions = dict(actions) # shallow copy
         self.external = external
+        self.displayIcon = displayIcon
+        self.displayOrder = displayOrder
 
     @staticmethod
     def createExternalZone(name, level = Level.FIRST_FLOOR):
@@ -277,6 +284,14 @@ class Zone:
     def getLevel(self):
         ''' :rtype: zone.Level'''
         return self.level
+
+    def getDisplayIcon(self):
+        ''' :rtype: str or None if not available'''
+        return self.displayIcon
+
+    def getDisplayOrder(self):
+        ''' :rtype: int'''
+        return self.displayOrder
 
     def getNeighbors(self):
         '''
@@ -532,10 +547,12 @@ class Zone:
             return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        str = u"Zone: {}, floor {}, {}, {} devices".format(
+        str = u"Zone: {}, floor: {}, {}, displayIcon: {}, displayOrder: {}, {} devices".format(
                 self.name,
                 self.level,
                 ('external' if self.isExternal() else 'internal'),
+                self.displayIcon,
+                self.displayOrder,
                 len(self.devices))
         for d in self.devices:
             str += u"\n  {}".format(unicode(d))
@@ -570,7 +587,10 @@ class Zone:
             'level': self.level,
             'neighbors': self.neighbors,
             'actions': self.actions,
-            'external': self.external }
+            'external': self.external,
+	    'displayIcon': self.displayIcon,
+            'displayOrder': self.displayOrder,
+	}
         params[keyToReplace] = newValue
 
         return params

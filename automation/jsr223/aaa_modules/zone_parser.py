@@ -298,7 +298,7 @@ class ZoneParser:
                     types.remove(NeighborType.OPEN_SPACE)
 
         zone = Zone(zone.getName(), zone.getDevices(), zone.getLevel(), [],
-                {}, zone.isExternal())
+                {}, zone.isExternal(), zone.getDisplayIcon(), zone.getDisplayOrder())
         for zoneId in zoneIdToType.keys():
             for type in zoneIdToType[zoneId]:
                 zone = zone.addNeighbor(Neighbor(zoneId, type))
@@ -348,10 +348,21 @@ class ZoneParser:
         level = ZoneParser._getZoneLevel(levelMeta.value)
 
         externalMeta = MetadataRegistry.get(MetadataKey('external', itemName)) 
-        if None != externalMeta and "true" == externalMeta.value.lower():
-            zone = Zone.createExternalZone(zoneName, level)
+        external = None != externalMeta and "true" == externalMeta.value.lower()
+
+        displayIconMeta = MetadataRegistry.get(MetadataKey('displayIcon', itemName)) 
+        if None != displayIconMeta:
+            displayIcon = displayIconMeta.value
         else:
-            zone = Zone(zoneName, [], level)
+            displayIcon = None
+
+        displayOrderMeta = MetadataRegistry.get(MetadataKey('displayOrder', itemName)) 
+        if None != displayOrderMeta:
+            displayOrder = int(displayOrderMeta.value)
+        else:
+            displayOrder = 9999
+
+        zone = Zone(zoneName, [], level, [], {}, external, displayIcon, displayOrder)
 
         neighbors = []
 

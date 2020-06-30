@@ -42,7 +42,10 @@ class ZoneManager:
 
         :rtype: list(Zone)
         ''' 
-        return [z for z in self.zones.values()]
+        list = [z for z in self.zones.values()]
+        list.sort(key = lambda z: z.getDisplayOrder())
+
+        return list
 
     def getZoneById(self, zoneId):
         """
