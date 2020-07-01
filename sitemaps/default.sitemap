@@ -19,6 +19,7 @@ sitemap default label="HV Home"
 /** BEGIN AUTO-GENERATED SITEMAP **/
 	Text label="GreatRoom" icon="player" {
 		Frame label="GreatRoom" {
+      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
 			Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
 			Switch item=FF_GreatRoom_Plug icon="poweroutlet"
@@ -67,6 +68,7 @@ sitemap default label="HV Home"
 	}
 	Text label="Outdoor" icon="garden" {
 		Frame label="Outdoor" {
+      Text item=VT_Outdoor_Temperature icon="temperature"
 			Text item=VT_Outdoor_RelativeHumidity icon="humidity"
 		}
 	}
@@ -88,6 +90,12 @@ sitemap default label="HV Home"
 			Switch item=SF_Lobby_LightSwitch_MotionSensor
 		}
 	}  
+	Text label="MasterBedroom" icon="bedroom" {
+		Frame label="MasterBedroom" {
+      Text item=SF_MasterBedroom_Temperature icon="temperature"
+			Text item=SF_MasterBedroom_Humidity icon="humidity"
+		}
+	}
 	Text label="MasterWashroom" icon="bath" {
 		Frame label="MasterWashroom" {
 			Switch item=SF_MasterWashroom_LightSwitch icon="light"

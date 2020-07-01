@@ -23,4 +23,12 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
       Type switch : SecondFloorMotionSensor "Second Floor Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
     }
+
+    Thing mqtt:topic:temperatureAndHumidity {
+    Channels:
+      Type number : MasterBedroomTemperature "Master Bedroom Temperature"
+        [stateTopic="esp/master-bedroom/temperature"]
+      Type number : MasterBedroomHumidity "Master Bedroom Humidity"
+        [stateTopic="esp/master-bedroom/humidity"]
+    }
 }

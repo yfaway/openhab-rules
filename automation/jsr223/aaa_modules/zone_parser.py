@@ -21,6 +21,7 @@ from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
 from aaa_modules.layout_model.devices.switch import Fan, Light
+from aaa_modules.layout_model.devices.temperature_sensor import TemperatureSensor
 
 META_DIMMING_SETTING = 'dimmable'
 
@@ -116,6 +117,8 @@ class ZoneParser:
                     deviceName, openHabItem, zone, itemRegistry)
             zone = ZoneParser._addHumiditySensors(
                     deviceName, openHabItem, zone, itemRegistry)
+            zone = ZoneParser._addTemperatureSensors(
+                    deviceName, openHabItem, zone, itemRegistry)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneId] = zone
@@ -188,6 +191,14 @@ class ZoneParser:
     def _addHumiditySensors(deviceName, openHabItem, zone, itemRegistry):
         if 'Humidity' in deviceName:
             device = HumiditySensor(openHabItem)
+            zone = zone.addDevice(device)
+
+        return zone
+
+    @staticmethod
+    def _addTemperatureSensors(deviceName, openHabItem, zone, itemRegistry):
+        if 'Temperature' in deviceName:
+            device = TemperatureSensor(openHabItem)
             zone = zone.addDevice(device)
 
         return zone

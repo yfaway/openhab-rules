@@ -8,6 +8,7 @@ from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.devices.plug import Plug
 from aaa_modules.layout_model.devices.switch import Fan, Light
+from aaa_modules.layout_model.devices.temperature_sensor import TemperatureSensor
 
 def generate(zm):
     '''
@@ -30,6 +31,7 @@ def generate(zm):
 
         # retain key order
         mappings = OrderedDict([
+            (TemperatureSensor, 'Text item={} icon="temperature"'),
             (HumiditySensor, 'Text item={} icon="humidity"'),
             (Door, 'Text item={} icon="door"'),
             (Light, 'Switch item={} icon="light"'),

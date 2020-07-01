@@ -1,0 +1,7 @@
+
+
+Number SF_MasterBedroom_Temperature "Master Bedroom Temperature [%d]"
+  { channel="mqtt:topic:temperatureAndHumidity:MasterBedroomTemperature"}
+Number SF_MasterBedroom_Humidity "Master Bedroom Humidity [%d]"
+  { channel="mqtt:topic:temperatureAndHumidity:MasterBedroomHumidity"}
+
