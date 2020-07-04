@@ -1,0 +1,4 @@
+Number SF_Bedroom3_Temperature "Bedroom3 Temperature [%d]"
+  { channel="mqtt:topic:temperatureAndHumidity:Bedroom3Temperature"}
+Number SF_Bedroom3_Humidity "Bedroom3 Humidity [%d]"
+  { channel="mqtt:topic:temperatureAndHumidity:Bedroom3Humidity"}

@@ -110,6 +110,19 @@ sitemap default label="HV Home"
 			Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor
 		}
 	}
+	Text label="Bedroom2" icon="bedroom" {
+		Frame label="Bedroom2" {
+			Text item=SF_Bedroom2_Temperature icon="temperature"
+			Text item=SF_Bedroom2_Humidity icon="humidity"
+		}
+	}
+	Text label="Bedroom3" icon="bedroom" {
+		Frame label="Bedroom3" {
+			Text item=SF_Bedroom3_Temperature icon="temperature"
+			Text item=SF_Bedroom3_Humidity icon="humidity"
+		}
+}
+
 /** END OF AUTO-GENERATED SITEMAP **/
 
   Text item=VT_Outdoor_WeatherCondition

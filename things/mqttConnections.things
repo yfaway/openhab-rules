@@ -30,5 +30,15 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
         [stateTopic="esp/master-bedroom/temperature"]
       Type number : MasterBedroomHumidity "Master Bedroom Humidity"
         [stateTopic="esp/master-bedroom/humidity"]
+
+      Type number : Bedroom2Temperature "Bedroom2 Temperature"
+        [stateTopic="esp/bedroom2/temperature"]
+      Type number : Bedroom2Humidity "Bedroom2 Humidity"
+        [stateTopic="esp/bedroom2/humidity"]
+
+      Type number : Bedroom3Temperature "Bedroom3 Temperature"
+        [stateTopic="esp/bedroom3/temperature"]
+      Type number : Bedroom3Humidity "Bedroom3 Humidity"
+        [stateTopic="esp/bedroom3/humidity"]
     }
 }
