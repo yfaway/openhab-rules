@@ -57,26 +57,26 @@ class AlertOnHumidityOutOfRange:
 
         percentage = self.getFirstDevice(eventInfo).getHumidity()
 
-        msg = ''
+        alertMessage = ''
         if percentage <= self.nextMinNotificationThreshold:
-            msg = 'The {} humidity {}% is below the threshold of {}%.'.format(
+            alertMessage = 'The {} humidity {}% is below the threshold of {}%.'.format(
                     zone.getName(), percentage, self.minHumidity)
             self.nextMinNotificationThreshold -= self.notificationStepValue
         elif percentage >= self.nextMaxNotificationThreshold:
-            msg = 'The {} humidity {}% is above the threshold of {}%.'.format(
+            alertMessage = 'The {} humidity {}% is above the threshold of {}%.'.format(
                     zone.getName(), percentage, self.maxHumidity)
             self.nextMaxNotificationThreshold += self.notificationStepValue
         elif percentage >= self.minHumidity and percentage <= self.maxHumidity:
             if self.sentAlert: # send an info alert that humidity is back to normal
                 self.resetStates()
 
-                msg = 'The {} humidity {}% is back to the normal range ({}% - {}%).'.format(
+                backToNormalMsg = 'The {} humidity {}% is back to the normal range ({}% - {}%).'.format(
                         zone.getName(), percentage, self.minHumidity, self.maxHumidity)
-                alert = Alert.createInfoAlert(msg)
+                alert = Alert.createInfoAlert(backToNormalMsg)
                 AlertManager.processAlert(alert, zoneManager)
 
-        if msg != '':
-            alert = Alert.createWarningAlert(msg, None, [], "HUMIDITY_CHANGED", 60)
+        if alertMessage != '':
+            alert = Alert.createWarningAlert(alertMessage, None, [], "HUMIDITY_CHANGED", 60)
             AlertManager.processAlert(alert, zoneManager)
             self.sentAlert = True
 
