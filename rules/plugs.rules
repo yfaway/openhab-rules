@@ -14,7 +14,7 @@ import java.util.HashMap
  * The power threshold in a smart plug to indicate that an application is
  * stil running.
  */
-val ACTIVE_APPLIANCE_WATTAGE_THRESHOLD = 30
+val ACTIVE_APPLIANCE_WATTAGE_THRESHOLD = 40
 
 /**
  * Map from item name to wattage.
@@ -62,10 +62,10 @@ then
   ]
 end
 
-rule "Turn on plugs when security system is disarmed."
+rule "Turn on plugs when security system is disarmed or at 9 AM."
 when
   Item PARTITION1_ARM_MODE changed from 1 to 0 or
-  Time cron "0 10 7 1/1 * ? *"
+  Time cron "0 0 9 1/1 * ? *"
 then
   if ( ON == VT_In_Vacation.state ) {
     return
