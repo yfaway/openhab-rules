@@ -18,7 +18,7 @@ from aaa_modules.zone_parser import ZoneParser
 class ZoneParserTest(unittest.TestCase):
 
     def testParse_scopeHasItems_returnsNonEmptyZoneList(self):
-        zones = ZoneParser.parse(scope.items, scope.itemRegistry)
+        zones = ZoneParser().parse(scope.items, scope.itemRegistry)
         self.assertTrue(len(zones) > 0)
 
         for z in zones:

@@ -58,8 +58,7 @@ class ZoneParser:
     See :class:`.ZoneManager` and :class:`.Zone`.
     '''
 
-    @staticmethod
-    def parse(items, itemRegistry):
+    def parse(self, items, itemRegistry):
         '''
         :param scope.items items:
         :param scope.itemRegistry itemRegistry:
@@ -77,7 +76,7 @@ class ZoneParser:
                 continue
 
             zoneName = match.group(1)
-            (zone, localNeighbors) = ZoneParser._createZone(itemName, zoneName)
+            (zone, localNeighbors) = self._createZone(itemName, zoneName)
 
             zoneMap[zone.getId()] = zone
             for n in localNeighbors:
@@ -93,31 +92,31 @@ class ZoneParser:
             location = match.group(2)
             deviceName = match.group(3)
             
-            zoneId = ZoneParser._getZoneIdFromItemName(itemName)
+            zoneId = self._getZoneIdFromItemName(itemName)
             if zoneId in zoneMap:
                 zone = zoneMap[zoneId]
             else:
-                zone = Zone(location, [], ZoneParser._getZoneLevel(levelString))
+                zone = Zone(location, [], self._getZoneLevel(levelString))
 
             openHabItem = itemRegistry.getItem(itemName)
 
-            zone = ZoneParser._addCamera(
+            zone = self._addCamera(
                     deviceName, openHabItem, zone, itemRegistry)
-            zone = ZoneParser._addDoor(
+            zone = self._addDoor(
                     deviceName, openHabItem, zone, itemRegistry)
-            zone = ZoneParser._addNetworkPresence(
+            zone = self._addNetworkPresence(
                     deviceName, openHabItem, zone, itemRegistry)
-            zone = ZoneParser._addSwitches(
+            zone = self._addSwitches(
                     deviceName, openHabItem, zone, itemRegistry, neighbors)
-            zone = ZoneParser._addPlugs(
+            zone = self._addPlugs(
                     deviceName, openHabItem, zone, itemRegistry)
-            zone = ZoneParser._addAlarmPartition(
+            zone = self._addAlarmPartition(
                     deviceName, openHabItem, zone, itemRegistry)
-            zone = ZoneParser._addChromeCasts(
+            zone = self._addChromeCasts(
                     deviceName, openHabItem, zone, itemRegistry)
-            zone = ZoneParser._addHumiditySensors(
+            zone = self._addHumiditySensors(
                     deviceName, openHabItem, zone, itemRegistry)
-            zone = ZoneParser._addTemperatureSensors(
+            zone = self._addTemperatureSensors(
                     deviceName, openHabItem, zone, itemRegistry)
 
             if len(zone.getDevices()) > 0:
@@ -137,45 +136,40 @@ class ZoneParser:
             zone = zone.addNeighbor(Neighbor(neighborInfo[1], neighborInfo[2]))
             zoneMap[neighborInfo[0]] = zone
 
-        return [ZoneParser._normalizeNeighbors(z) for z in zoneMap.values()]
+        return [self._normalizeNeighbors(z) for z in zoneMap.values()]
 
-    @staticmethod
-    def _addCamera(deviceName, openHabItem, zone, itemRegistry):
+    def _addCamera(self, deviceName, openHabItem, zone, itemRegistry):
         if 'Camera' == deviceName:
             camera = Camera(openHabItem, zone.getName())
-            zone = zone.addDevice(camera)
+            zone = self._addDeviceToZone(camera, zone)
 
         return zone
 
-    @staticmethod
-    def _addDoor(deviceName, openHabItem, zone, itemRegistry):
+    def _addDoor(self, deviceName, openHabItem, zone, itemRegistry):
         if 'Door' == deviceName:
             door = Door(openHabItem)
-            zone = zone.addDevice(door)
+            zone = self._addDeviceToZone(door, zone)
 
         return zone
 
-    @staticmethod
-    def _addNetworkPresence(deviceName, openHabItem, zone, itemRegistry):
+    def _addNetworkPresence(self, deviceName, openHabItem, zone, itemRegistry):
         if 'NetworkPresence' in deviceName:
             presence = NetworkPresence(openHabItem)
-            zone = zone.addDevice(presence)
+            zone = self._addDeviceToZone(presence, zone)
 
         return zone
 
-    @staticmethod
-    def _addAlarmPartition(deviceName, openHabItem, zone, itemRegistry):
+    def _addAlarmPartition(self, deviceName, openHabItem, zone, itemRegistry):
         if 'AlarmPartition' == deviceName:
             itemName = openHabItem.getName()
             alarmModeItem = itemRegistry.getItem(itemName + '_ArmMode')
 
             alarm = AlarmPartition(openHabItem, alarmModeItem)
-            zone = zone.addDevice(alarm)
+            zone = self._addDeviceToZone(alarm, zone)
 
         return zone
 
-    @staticmethod
-    def _addChromeCasts(deviceName, openHabItem, zone, itemRegistry):
+    def _addChromeCasts(self, deviceName, openHabItem, zone, itemRegistry):
         if 'ChromeCast' == deviceName:
             itemName = openHabItem.getName()
 
@@ -187,24 +181,21 @@ class ZoneParser:
 
         return zone
 
-    @staticmethod
-    def _addHumiditySensors(deviceName, openHabItem, zone, itemRegistry):
+    def _addHumiditySensors(self, deviceName, openHabItem, zone, itemRegistry):
         if 'Humidity' in deviceName:
             device = HumiditySensor(openHabItem)
-            zone = zone.addDevice(device)
+            zone = self._addDeviceToZone(device, zone)
 
         return zone
 
-    @staticmethod
-    def _addTemperatureSensors(deviceName, openHabItem, zone, itemRegistry):
+    def _addTemperatureSensors(self, deviceName, openHabItem, zone, itemRegistry):
         if 'Temperature' in deviceName:
             device = TemperatureSensor(openHabItem)
-            zone = zone.addDevice(device)
+            zone = self._addDeviceToZone(device, zone)
 
         return zone
 
-    @staticmethod
-    def _addPlugs(deviceName, openHabItem, zone, itemRegistry):
+    def _addPlugs(self, deviceName, openHabItem, zone, itemRegistry):
         if 'Plug' == deviceName:
             itemName = openHabItem.getName()
             
@@ -215,12 +206,11 @@ class ZoneParser:
                 powerItem = None
 
             plug = Plug(openHabItem, powerItem)
-            zone = zone.addDevice(plug)
+            zone = self._addDeviceToZone(plug, zone)
 
         return zone
 
-    @staticmethod
-    def _addSwitches(deviceName, openHabItem, zone, itemRegistry, neighbors):
+    def _addSwitches(self, deviceName, openHabItem, zone, itemRegistry, neighbors):
         itemName = openHabItem.getName()
         zoneId = zone.getId()
 
@@ -229,7 +219,7 @@ class ZoneParser:
             turnOffMeta = MetadataRegistry.get(
                     MetadataKey(META_TURN_OFF_OTHER_LIGHT, itemName)) 
             if None != turnOffMeta:
-                neighborZoneId = ZoneParser._getZoneIdFromItemName(
+                neighborZoneId = self._getZoneIdFromItemName(
                         turnOffMeta.value)
 
                 neighbor = [zoneId, neighborZoneId, NeighborType.OPEN_SPACE]
@@ -240,7 +230,7 @@ class ZoneParser:
                     MetadataKey(META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON,
                         itemName)) 
             if None != masterSlaveMeta:
-                masterZoneId = ZoneParser._getZoneIdFromItemName(masterSlaveMeta.value)
+                masterZoneId = self._getZoneIdFromItemName(masterSlaveMeta.value)
 
                 neighborForward = [masterZoneId, zoneId, NeighborType.OPEN_SPACE_SLAVE]
                 neighbors.append(neighborForward)
@@ -276,15 +266,14 @@ class ZoneParser:
             zone = zone.addDevice(fan)
         elif 'LightSwitch_Illuminance' == deviceName:
             illuminanceSensor = IlluminanceSensor(openHabItem)
-            zone = zone.addDevice(illuminanceSensor)
+            zone = self._addDeviceToZone(illuminanceSensor, zone)
         elif deviceName.endswith('MotionSensor'):
             motionSensor = MotionSensor(openHabItem)
-            zone = zone.addDevice(motionSensor)
+            zone = self._addDeviceToZone(motionSensor, zone)
 
         return zone
 
-    @staticmethod
-    def _normalizeNeighbors(zone):
+    def _normalizeNeighbors(self, zone):
         '''
         If a zone has the same neighbor with more than one OPEN_SPACE type,
         remove the generic one NeighborType.OPEN_SPACE
@@ -316,8 +305,7 @@ class ZoneParser:
 
         return zone
 
-    @staticmethod
-    def _getZoneIdFromItemName(itemName):
+    def _getZoneIdFromItemName(self, itemName):
         '''
         :rtype: str
         '''
@@ -328,10 +316,9 @@ class ZoneParser:
         levelString = match.group(1)
         location = match.group(2)
 
-        return str(ZoneParser._getZoneLevel(levelString)) + '_' + location
+        return str(self._getZoneLevel(levelString)) + '_' + location
                 
-    @staticmethod
-    def _getZoneLevel(levelString):
+    def _getZoneLevel(self, levelString):
         '''
         :rtype: Level 
         '''
@@ -346,8 +333,7 @@ class ZoneParser:
         else:
             return Level.BASEMENT
 
-    @staticmethod
-    def _createZone(itemName, zoneName):
+    def _createZone(self, itemName, zoneName):
         '''
         :return: the zone associated with the itemName
         :rtype: Zone
@@ -356,7 +342,7 @@ class ZoneParser:
         if None == levelMeta:
             raise ValueError('The zone level must be specified as BM, FF, SF, or TF')
 
-        level = ZoneParser._getZoneLevel(levelMeta.value)
+        level = self._getZoneLevel(levelMeta.value)
 
         externalMeta = MetadataRegistry.get(MetadataKey('external', itemName)) 
         external = None != externalMeta and "true" == externalMeta.value.lower()
@@ -386,9 +372,31 @@ class ZoneParser:
             
         return [zone, neighbors]
 
-zones = ZoneParser.parse(scope.items, scope.itemRegistry)
+    def _addDeviceToZone(self, device, zone):
+        '''
+        Helper method to retrieve additional device through the meta, and then
+        add the device to the given zone.
+
+        :return: a new zone containing the device.
+        '''
+        wifiMeta = MetadataRegistry.get(MetadataKey('wifi', device.getItemName()))
+        if None != wifiMeta and "true" == wifiMeta.value.lower():
+            device = device.setUseWifi(True)
+
+        batteryPoweredMeta = MetadataRegistry.get(MetadataKey('batteryPowered',
+                    device.getItemName()))
+        if None != batteryPoweredMeta and "true" == batteryPoweredMeta.value.lower():
+            device = device.setBatteryPowered(True)
+
+        autoReportMeta = MetadataRegistry.get(MetadataKey('autoReport',
+                    device.getItemName()))
+        if None != autoReportMeta and "true" == autoReportMeta.value.lower():
+            device = device.setAutoReport(True)
+
+        return zone.addDevice(device)
+
+zones = ZoneParser().parse(scope.items, scope.itemRegistry)
 output = "{} zones".format(len(zones))
 for z in zones:
     output += '\n' + str(z)
-
 #PE.logInfo(output)

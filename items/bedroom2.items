@@ -1,4 +1,6 @@
-Number SF_Bedroom2_Temperature "Bedroom2 Temperature [%d]"
-  { channel="mqtt:topic:temperatureAndHumidity:Bedroom2Temperature"}
-Number SF_Bedroom2_Humidity "Bedroom2 Humidity [%d]"
-  { channel="mqtt:topic:temperatureAndHumidity:Bedroom2Humidity"}
+Number SF_Bedroom2_Temperature "Bedroom2 Temperature [%.1f °C]"
+  { channel="mqtt:topic:temperatureAndHumidity:Bedroom2Temperature",
+    wifi="true", autoReport="true" }
+Number SF_Bedroom2_Humidity "Bedroom2 Humidity [%d %%]"
+  { channel="mqtt:topic:temperatureAndHumidity:Bedroom2Humidity",
+    wifi="true", autoReport="true" }

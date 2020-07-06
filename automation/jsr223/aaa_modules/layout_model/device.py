@@ -1,3 +1,4 @@
+from copy import copy
 import time
 
 from core import osgi
@@ -13,11 +14,16 @@ class Device(object):
     The base class that all other sensors and switches derive from.
     '''
 
-    def __init__(self, openhabItem, batteryPowered = False):
+    def __init__(self, openhabItem, batteryPowered = False, wifi = False,
+            autoReport = False):
         '''
         Ctor
 
         :param org.eclipse.smarthome.core.items.Item openhabItem:
+        :param bool batteryPowered: indicates if the device is powered by battery.
+        :param bool wifi: indicates if the device communicates by WiFi.
+        :param bool autoReport: indicates if the device periodically reports
+                its value.
         :raise ValueError: if any parameter is invalid
         '''
         if None == openhabItem:
@@ -25,6 +31,8 @@ class Device(object):
 
         self.item = openhabItem
         self.batteryPowered = batteryPowered
+        self.wifi = wifi
+        self.autoReport = autoReport
         self.lastActivatedTimestamp = None
 
     def getItem(self):
@@ -57,6 +65,16 @@ class Device(object):
         else:
             return None
 
+    def setBatteryPowered(self, boolValue):
+        '''
+        :return: A NEW object with the batteryPowered attribute set to the
+                specified value
+        '''
+        newObj = copy(self)
+        newObj.batteryPowered = boolValue
+
+        return newObj
+
     def isBatteryPowered(self):
         '''
         Returns True if the device is powered by a batter; False otherwise.
@@ -65,6 +83,40 @@ class Device(object):
         '''
 
         return self.batteryPowered
+
+    def setUseWifi(self, boolValue):
+        '''
+        :return: A NEW object with the wifi attribute set to the specified value
+        '''
+        newObj = copy(self)
+        newObj.wifi = boolValue
+
+        return newObj
+
+    def useWifi(self):
+        '''
+        Returns True if the device communicates using WiFi.
+
+        :rtype: Boolean
+        '''
+        return self.wifi
+
+    def setAutoReport(self, boolValue):
+        '''
+        :return: A NEW object with the autoReport attribute set to the specified value.
+        '''
+        newObj = copy(self)
+        newObj.autoReport = boolValue
+
+        return newObj
+
+    def isAutoReport(self):
+        '''
+        Returns True if the device periodically sends its value.
+
+        :rtype: Boolean
+        '''
+        return self.autoReport
 
     def getLastActivatedTimestamp(self):
         '''
@@ -100,4 +152,17 @@ class Device(object):
 
     def __unicode__(self):
         str = u"{}: {}".format(self.__class__.__name__, self.item.getName())
+
+        if self.isBatteryPowered():
+            str += ", battery powered"
+
+        if self.useWifi():
+            str += ", wifi"
+
+        if self.isAutoReport():
+            str += ", auto report"
+
+        if None != self.lastActivatedTimestamp:
+            str += ", last activated: {}".format(self.lastActivatedTimestamp)
+
         return str

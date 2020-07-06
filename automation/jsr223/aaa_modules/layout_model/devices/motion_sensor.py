@@ -14,7 +14,6 @@ class MotionSensor(Device):
         :raise ValueError: if any parameter is invalid
         '''
         Device.__init__(self, switchItem, batteryPowered)
-        self.lastOnTimestamp = -1
 
     def isOn(self):
         '''
@@ -32,8 +31,11 @@ class MotionSensor(Device):
         if self.isOn():
             return True
 
-        elapsedTime = time.time() - self.lastOnTimestamp
-        return elapsedTime < (minutesFromLastMotionEvent * 60)
+        if None == self.getLastActivatedTimestamp():
+            return False
+        else:
+            elapsedTime = time.time() - self.getLastActivatedTimestamp()
+            return elapsedTime < (minutesFromLastMotionEvent * 60)
 
     def onMotionSensorTurnedOn(self, events, itemName):
         '''
@@ -43,13 +45,6 @@ class MotionSensor(Device):
         '''
         matched = self.getItemName() == itemName 
 
-        self.lastOnTimestamp = time.time()
+        self._updateLastActivatedTimestamp()
 
         return matched
-
-    def __unicode__(self):
-        '''
-        @override
-        '''
-        return u"{}, lastOnTimestamp: {}".format(
-                super(MotionSensor, self).__unicode__(), self.lastOnTimestamp)
