@@ -73,11 +73,11 @@ class AlertOnHumidityOutOfRange:
                 backToNormalMsg = 'The {} humidity {}% is back to the normal range ({}% - {}%).'.format(
                         zone.getName(), percentage, self.minHumidity, self.maxHumidity)
                 alert = Alert.createInfoAlert(backToNormalMsg)
-                AlertManager.processAlert(alert, zoneManager)
+                AlertManager.processAdminAlert(alert)
 
         if alertMessage != '':
             alert = Alert.createWarningAlert(alertMessage, None, [], "HUMIDITY_CHANGED", 60)
-            AlertManager.processAlert(alert, zoneManager)
+            AlertManager.processAdminAlert(alert)
             self.sentAlert = True
 
         return True
