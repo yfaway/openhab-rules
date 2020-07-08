@@ -1,7 +1,9 @@
 Number SF_MasterBedroom_Temperature "Master Bedroom Temperature [%.1f °C]"
+  (gTemperature)
   { channel="mqtt:topic:temperatureAndHumidity:MasterBedroomTemperature",
     wifi="true", autoReport="true" }
 Number SF_MasterBedroom_Humidity "Master Bedroom Humidity [%d %%]"
+  (gHumidity) 
   { channel="mqtt:topic:temperatureAndHumidity:MasterBedroomHumidity",
     wifi="true", autoReport="true" }
 

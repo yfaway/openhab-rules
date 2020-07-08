@@ -1,6 +1,8 @@
 Number SF_Bedroom3_Temperature "Bedroom3 Temperature [%.1f °C]"
+  (gTemperature)
   { channel="mqtt:topic:temperatureAndHumidity:Bedroom3Temperature",
     wifi="true", autoReport="true" }
 Number SF_Bedroom3_Humidity "Bedroom3 Humidity [%d %%]"
+  (gHumidity) 
   { channel="mqtt:topic:temperatureAndHumidity:Bedroom3Humidity",
     wifi="true", autoReport="true" }

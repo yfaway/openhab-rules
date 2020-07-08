@@ -10,8 +10,8 @@ sitemap default label="HV Home"
 
   //Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
 
-  Text item=gTemperature icon="temperature"
-  Text item=gHumidity icon="humidity"
+  Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
+  Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 
   Text item=VT_Outdoor_Temperature icon="temperature"
   Text item=VT_Outdoor_RelativeHumidity icon="humidity"

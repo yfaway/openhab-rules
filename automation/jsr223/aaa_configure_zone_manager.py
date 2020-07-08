@@ -173,9 +173,14 @@ def onAlarmPartitionDisarmedFromAway(event):
     dispatchEvent(ZoneEvent.PARTITION_DISARMED_FROM_AWAY, event, False)
 
 @rule("Dispatch humidity changed event")
-@when("Item FF_GreatRoom_Thermostat_ActualHumidity changed")
+@when("Member of gHumidity changed")
 def onHumidityChanged(event):
     dispatchEvent(ZoneEvent.HUMIDITY_CHANGED, event)
+
+@rule("Dispatch temperature changed event")
+@when("Member of gTemperature changed")
+def onHumidityChanged(event):
+    dispatchEvent(ZoneEvent.TEMPERATURE_CHANGED, event)
 
 def dispatchEvent(zoneEvent, event, enforceItemInZone = True):
     '''

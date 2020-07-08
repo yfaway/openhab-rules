@@ -1,8 +1,8 @@
 /**
  * Temperature and humidity.
  */
-Group:Number:AVG gTemperature "Avg House Temperature [%.1f °C]"
-Group:Number:AVG gHumidity "Avg House Humidity [%d %%]"
+Group:Number gTemperature
+Group:Number gHumidity
 
 Number FF_Kitchen_Temperature "Kitchen Temperature[%.1f °C]"
   (gTemperature) 
