@@ -1,10 +1,11 @@
-from aaa_modules.layout_model.zone import ZoneEvent
+from aaa_modules.layout_model.zone import Level, ZoneEvent
 from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.actions.range_violation_alert import RangeViolationAlert
 from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
-@action(events = [ZoneEvent.HUMIDITY_CHANGED], devices = [HumiditySensor])
+@action(events = [ZoneEvent.HUMIDITY_CHANGED], devices = [HumiditySensor],
+        levels = [Level.FIRST_FLOOR], internal = True)
 class AlertOnHumidityOutOfRange:
 
     '''

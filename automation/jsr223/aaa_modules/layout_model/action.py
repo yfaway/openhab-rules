@@ -37,6 +37,13 @@ class Action(object):
         '''
         return self.external
 
+    def getApplicableLevels(self):
+        '''
+        :return: list of applicable zone levels
+        :rtype: list(int) 
+        '''
+        return self.levels
+
     def getFirstDevice(self, eventInfo):
         '''
         Returns the first applicable device that might have generated the
@@ -57,7 +64,8 @@ class Action(object):
         '''
         return True
 
-def action(devices = [], events = [], internal = True, external = False): 
+def action(devices = [], events = [], internal = True, external = False,
+        levels = []): 
     '''
     A decorator that accepts an action class and do the followings:
       - Create a subclass that extends the decorated class and Action.
@@ -70,6 +78,8 @@ def action(devices = [], events = [], internal = True, external = False):
         will response to.
     :param boolean internal: if set, this action is only applicable for internal zone
     :param boolean external: if set, this action is only applicable for external zone
+    :param list(int) levels: the zone levels that this action is applicable to.
+        the empty list default value indicates applicale to all zone levels.
     '''
     def actionDecorator(clazz):
         def init(self, *args, **kwargs):
@@ -79,6 +89,7 @@ def action(devices = [], events = [], internal = True, external = False):
             self.devices = devices
             self.internal = internal
             self.external = external
+            self.levels = levels
 
         subclass = type(clazz.__name__, (clazz, Action), dict(__init__ = init))
         subclass.onAction = validate(clazz.onAction)
@@ -87,6 +98,13 @@ def action(devices = [], events = [], internal = True, external = False):
     return actionDecorator
 
 def validate(function):
+    '''
+    Returns a function that validates the followings:
+      - The generated event matched the action's applicable events.
+      - The zone contains the expected device.
+      - The zone's internal or external attributes matches the action's specification.
+      - The zone's level matches the action's specification.
+    '''
     def wrapper(*args, **kwargs):
         obj = args[0]
         eventInfo = args[1]
@@ -103,6 +121,10 @@ def validate(function):
         elif zone.isInternal() and not obj.isApplicableToInternalZone():
             return False
         elif zone.isExternal() and not obj.isApplicableToExternalZone():
+            return False
+        elif len(obj.getApplicableLevels()) > 0 \
+            and not any(zone.getLevel() == l for l in obj.getApplicableLevels()):
+
             return False
         else:
             return function(*args, **kwargs)
