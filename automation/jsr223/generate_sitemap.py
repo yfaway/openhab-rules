@@ -3,6 +3,7 @@ from collections import OrderedDict
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 from aaa_modules.layout_model.devices.contact import Contact, Door, Window	
+from aaa_modules.layout_model.devices.gas_sensor import Co2GasSensor, NaturalGasSensor, SmokeSensor
 from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
@@ -39,6 +40,9 @@ def generate(zm):
             (Plug, 'Switch item={} icon="poweroutlet"'),
             (IlluminanceSensor, 'Text item={}'),
             (MotionSensor, 'Switch item={}'), 
+            (Co2GasSensor, 'Text item={} icon="carbondioxide"'),
+            (NaturalGasSensor, 'Text item={} icon="gas"'),
+            (SmokeSensor, 'Text item={} icon="fire"'),
         ])
 
         for cls in mappings.keys():

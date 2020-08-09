@@ -23,7 +23,7 @@ ITEMS = [NumberItem('humidity_sensor')]
 class AlertOnHumidityOutOfRangeTest(DeviceTest):
     def setUp(self):
         self.action = AlertOnHumidityOutOfRange(35, 50, 3)
-        self.zone1 = Zone('great room').addDevice(HumiditySensor(ITEMS[0]))
+        self.zone1 = Zone('great room', [], Level.FIRST_FLOOR).addDevice(HumiditySensor(ITEMS[0]))
 
         AlertManager._setTestMode(True)
         AlertManager.reset()

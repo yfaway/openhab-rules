@@ -41,4 +41,17 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
       Type number : Bedroom3Humidity "Bedroom3 Humidity"
         [stateTopic="esp/bedroom3/humidity"]
     }
+
+    Thing mqtt:topic:utilityRoom {
+    Channels:
+      Type number : temperature "Basement Temperature"
+        [stateTopic="esp/utility/temperature/value"]
+      Type number : humidity "Basement Humidity"
+        [stateTopic="esp/utility/humidity/value"]
+
+      Type number : naturalGasValue "Basement Natural Gas"
+        [stateTopic="esp/utility/naturalGas/value"]
+      Type switch : naturalGasState "Basement Natural Gas State"
+        [stateTopic="esp/utility/naturalGas/state", on="1", off="0"]
+    }
 }

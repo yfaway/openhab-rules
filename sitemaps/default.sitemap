@@ -121,7 +121,15 @@ sitemap default label="HV Home"
 			Text item=SF_Bedroom3_Temperature icon="temperature"
 			Text item=SF_Bedroom3_Humidity icon="humidity"
 		}
-}
+  }
+
+	Text label="Utility" icon="groundfloor" {
+		Frame label="Utility" {
+			Text item=BM_Utility_Temperature icon="temperature"
+			Text item=BM_Utility_Humidity icon="humidity"
+			Text item=BM_Utility_NaturalGas icon="gas"
+		}
+	}
 
 /** END OF AUTO-GENERATED SITEMAP **/
 

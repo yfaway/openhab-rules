@@ -15,6 +15,7 @@ from aaa_modules.layout_model.devices.camera import Camera
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
 from aaa_modules.layout_model.devices.contact import Door
 from aaa_modules.layout_model.devices.dimmer import Dimmer
+from aaa_modules.layout_model.devices.gas_sensor import Co2GasSensor, NaturalGasSensor, SmokeSensor
 from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
 from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
@@ -118,6 +119,12 @@ class ZoneParser:
                     deviceName, openHabItem, zone, itemRegistry)
             zone = self._addTemperatureSensors(
                     deviceName, openHabItem, zone, itemRegistry)
+            zone = self._addCo2Sensors(
+                    deviceName, openHabItem, zone, itemRegistry)
+            zone = self._addNaturalGasSensors(
+                    deviceName, openHabItem, zone, itemRegistry)
+            zone = self._addSmokeSensors(
+                    deviceName, openHabItem, zone, itemRegistry)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneId] = zone
@@ -191,6 +198,33 @@ class ZoneParser:
     def _addTemperatureSensors(self, deviceName, openHabItem, zone, itemRegistry):
         if 'Temperature' in deviceName:
             device = TemperatureSensor(openHabItem)
+            zone = self._addDeviceToZone(device, zone)
+
+        return zone
+
+    def _addCo2Sensors(self, deviceName, openHabItem, zone, itemRegistry):
+        if 'Co2' == deviceName:
+            stateItem = itemRegistry.getItem(openHabItem.getName() + 'State')
+
+            device = Co2GasSensor(openHabItem, stateItem)
+            zone = self._addDeviceToZone(device, zone)
+
+        return zone
+
+    def _addNaturalGasSensors(self, deviceName, openHabItem, zone, itemRegistry):
+        if 'NaturalGas' == deviceName:
+            stateItem = itemRegistry.getItem(openHabItem.getName() + 'State')
+
+            device = NaturalGasSensor(openHabItem, stateItem)
+            zone = self._addDeviceToZone(device, zone)
+
+        return zone
+
+    def _addSmokeSensors(self, deviceName, openHabItem, zone, itemRegistry):
+        if 'Smoke' == deviceName:
+            stateItem = itemRegistry.getItem(openHabItem.getName() + 'State')
+
+            device = SmokeSensor(openHabItem, stateItem)
             zone = self._addDeviceToZone(device, zone)
 
         return zone

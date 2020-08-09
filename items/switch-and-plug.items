@@ -58,6 +58,8 @@ String Zone_MasterWashroomShower
 String Zone_Bedroom2 { level="SF", displayIcon="bedroom", displayOrder="36" }
 String Zone_Bedroom3 { level="SF", displayIcon="bedroom", displayOrder="37" }
 
+String Zone_Utility { level="BM", displayIcon="groundfloor", displayOrder="40" }
+
 String FF_Porch_Camera "Porch Camera" (gCamera)
 
 Switch FF_Porch_MotionSensor "Porch Motion Sensor"
