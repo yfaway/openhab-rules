@@ -14,6 +14,7 @@ from aaa_modules.layout_model.mocked_zone_manager import MockedZoneManager
 #reload(zone)
 from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
+from aaa_modules.layout_model.event_info import EventInfo
 
 from aaa_modules.layout_model.devices.astro_sensor import AstroSensor
 from aaa_modules.layout_model.devices.dimmer import Dimmer
@@ -126,10 +127,24 @@ class ZoneTest(DeviceTest):
         zone = zone.removeDevice(self.light)
         self.assertEqual(0, len(zone.getDevices()))
 
-    def testGetDevicesByType_validType_deviceRemoved(self):
+    def testGetDevicesByType_validType_returnsExpectedDevices(self):
         zone = Zone('ff', [self.light])
         self.assertEqual(1, len(zone.getDevicesByType(Light)))
         self.assertEqual(0, len(zone.getDevicesByType(Dimmer)))
+
+    def testGetDeviceByEvent_validEvent_returnsExpectedDevice(self):
+        zone = Zone('ff', [self.light])
+
+        eventInfo = EventInfo(ZoneEvent.MOTION, self.lightItem, zone,
+                MockedZoneManager([zone]), events)
+        self.assertEqual(self.light, zone.getDeviceByEvent(eventInfo))
+
+    def testGetDeviceByEvent_invalidEvent_returnsNone(self):
+        zone = Zone('ff', [self.light])
+
+        eventInfo = EventInfo(ZoneEvent.MOTION, self.motionSensorItem, zone,
+                MockedZoneManager([zone]), events)
+        self.assertEqual(None, zone.getDeviceByEvent(eventInfo))
 
     def testAddAction_oneValidAction_actionAdded(self):
         zone = Zone('ff').addAction(TurnOnSwitch())

@@ -35,6 +35,13 @@ class Device(object):
         self.autoReport = autoReport
         self.lastActivatedTimestamp = None
 
+    def containsItem(self, item):
+        '''
+        Returns true if this device contains the specified item.
+        Subclass needs to override if it contains more than one item.
+        '''
+        return self.item == item
+
     def getItem(self):
         '''
         Returns the backed OpenHab item.

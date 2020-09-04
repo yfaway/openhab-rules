@@ -209,6 +209,20 @@ class Zone:
             raise ValueError('cls must not be None')
         return [d for d in self.devices if isinstance(d, cls)]
 
+    def getDeviceByEvent(self, eventInfo):
+        '''
+        Returns the device that generates the provided event.
+
+        :param EventInfo eventInfo:
+        :rtype: Device
+        '''
+
+        if None == eventInfo:
+            raise ValueError('eventInfo must not be None')
+
+        return next((d for d in self.devices 
+                    if d.containsItem(eventInfo.getItem())), None)
+
     def addNeighbor(self, neighbor):
         '''
         Creates a new zone that is an exact copy of this one, but has the

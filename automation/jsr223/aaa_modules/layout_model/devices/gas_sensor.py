@@ -38,6 +38,9 @@ class GasSensor(Device):
         '''
         return PE.isInStateOn(self.stateItem.getState())
 
+    def containsItem(item):
+        return Device.containsItem(item) or self.stateItem == item
+
 class Co2GasSensor(GasSensor):
     ''' Represents a CO2 sensor.  '''
     def __init__(self, valueItem, stateItem):
