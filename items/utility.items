@@ -12,5 +12,6 @@ Number BM_Utility_NaturalGas "Natural Gas Value [%d]"
     wifi="true", autoReport="true" }
 
 Switch BM_Utility_NaturalGasState "Natural Gas Detected [%s]"
+  (gGasSensorState)
   { channel="mqtt:topic:utilityRoom:naturalGasState",
     wifi="true", autoReport="true" }

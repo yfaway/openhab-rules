@@ -34,6 +34,7 @@ class ZoneEvent:
     PARTITION_DISARMED_FROM_STAY = 9 # Changed from armed stay to disarm
     HUMIDITY_CHANGED = 10            # The humidity percentage changed
     TEMPERATURE_CHANGED = 11         # The temperature changed
+    GAS_TRIGGER_STATE_CHANGED = 12   # The gas sensor triggering boolean changed 
 
 class Zone:
     """
@@ -333,12 +334,12 @@ class Zone:
 
         return zones
 
-    def containsOpenHabItem(self, itemName, sensorType = None):
+    def containsOpenHabItem(self, item, sensorType = None):
         '''
         Returns True if this zone contains the given itemName; returns False 
         otherwise.
 
-        :param str itemName:
+        :param Item item:
         :param Device sensorType: an optional sub-class of Device. If specified,\
             will search for itemName for those device types only. Otherwise,\
             search for all devices/sensors.
@@ -346,7 +347,7 @@ class Zone:
         '''
         sensors = self.getDevices() if None == sensorType \
             else self.getDevicesByType(sensorType)
-        return any(s.getItemName() == itemName for s in sensors)
+        return any(s.containsItem(item) for s in sensors)
 
     def getIlluminanceLevel(self):
         '''
@@ -533,7 +534,7 @@ class Zone:
             triggered if the zone doesn't contain the item.
         :rtype: boolean
         '''
-        if enforceItemInZone and not self.containsOpenHabItem(item.getName()):
+        if enforceItemInZone and not self.containsOpenHabItem(item):
             return False 
 
         return self._invokeActions(zoneEvent, openHabEvents, item,

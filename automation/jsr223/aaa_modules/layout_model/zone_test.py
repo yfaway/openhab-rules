@@ -100,21 +100,20 @@ class ZoneTest(DeviceTest):
 
     def testContainsOpenHabItem_negativeValue_returnsFalse(self):
         zone = Zone('name', [self.light], Level.SECOND_FLOOR)
-        self.assertFalse(zone.containsOpenHabItem('blahblah'))
+        self.assertFalse(zone.containsOpenHabItem(self.fanItem))
 
     def testContainsOpenHabItem_validNameButWrongType_returnsFalse(self):
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
         self.assertFalse(zone.containsOpenHabItem(
-                    self.light.getItemName(), MotionSensor))
+                    self.lightItem, MotionSensor))
 
     def testContainsOpenHabItem_validNameWithNoTypeSpecified_returnsTrue(self):
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
-        self.assertTrue(zone.containsOpenHabItem(self.light.getItemName()))
+        self.assertTrue(zone.containsOpenHabItem(self.lightItem))
 
     def testContainsOpenHabItem_validNameWithTypeSpecified_returnsTrue(self):
         zone = Zone('ff', [self.light, self.motionSensor, self.astroSensor])
-        self.assertTrue(zone.containsOpenHabItem(
-                    self.light.getItemName(), Light))
+        self.assertTrue(zone.containsOpenHabItem(self.lightItem, Light))
 
     def testAddDevice_validDevice_deviceAdded(self):
         zone = Zone('ff').addDevice(self.light)
@@ -136,14 +135,14 @@ class ZoneTest(DeviceTest):
         zone = Zone('ff', [self.light])
 
         eventInfo = EventInfo(ZoneEvent.MOTION, self.lightItem, zone,
-                MockedZoneManager([zone]), events)
+                MockedZoneManager([zone]), self.getMockedEventDispatcher())
         self.assertEqual(self.light, zone.getDeviceByEvent(eventInfo))
 
     def testGetDeviceByEvent_invalidEvent_returnsNone(self):
         zone = Zone('ff', [self.light])
 
         eventInfo = EventInfo(ZoneEvent.MOTION, self.motionSensorItem, zone,
-                MockedZoneManager([zone]), events)
+                MockedZoneManager([zone]), self.getMockedEventDispatcher())
         self.assertEqual(None, zone.getDeviceByEvent(eventInfo))
 
     def testAddAction_oneValidAction_actionAdded(self):

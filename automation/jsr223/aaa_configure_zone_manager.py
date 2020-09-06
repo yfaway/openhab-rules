@@ -13,11 +13,13 @@ from aaa_modules.layout_model.zone_manager import ZoneManager
 from aaa_modules.layout_model.devices.activity_times import ActivityTimes
 from aaa_modules.layout_model.devices.alarm_partition import AlarmPartition
 from aaa_modules.layout_model.devices.chromecast_audio_sink import ChromeCastAudioSink
+from aaa_modules.layout_model.devices.gas_sensor import GasSensor
 from aaa_modules.layout_model.devices.humidity_sensor import HumiditySensor
 from aaa_modules.layout_model.devices.switch import Fan, Switch
 
 from aaa_modules.layout_model.actions.alert_on_entrance_activity import AlertOnEntraceActivity
 from aaa_modules.layout_model.actions.alert_on_door_left_open import AlertOnExternalDoorLeftOpen
+from aaa_modules.layout_model.actions.alert_on_high_gas_level import AlertOnHighGasLevel
 from aaa_modules.layout_model.actions.alert_on_humidity_out_of_range import AlertOnHumidityOutOfRange
 from aaa_modules.layout_model.actions.arm_after_front_door_closed import ArmAfterFrontDoorClosed
 from aaa_modules.layout_model.actions.play_music_during_shower import PlayMusicDuringShower
@@ -80,6 +82,9 @@ def initializeZoneManager():
 
         if len(z.getDevicesByType(HumiditySensor)) > 0 and not z.isExternal():
             z = z.addAction(AlertOnHumidityOutOfRange())
+
+        if len(z.getDevicesByType(GasSensor)) > 0:
+            z = z.addAction(AlertOnHighGasLevel())
 
         # add the play music action if zone has a fan switch.
         fans = z.getDevicesByType(Fan)
@@ -176,6 +181,11 @@ def onAlarmPartitionDisarmedFromAway(event):
 @when("Member of gHumidity changed")
 def onHumidityChanged(event):
     dispatchEvent(ZoneEvent.HUMIDITY_CHANGED, event)
+
+@rule("Dispatch gas sensor state change event.")
+@when("Member of gGasSensorState changed")
+def onGasSensorStateChanged(event):
+    dispatchEvent(ZoneEvent.GAS_TRIGGER_STATE_CHANGED, event)
 
 @rule("Dispatch temperature changed event")
 @when("Member of gTemperature changed")
