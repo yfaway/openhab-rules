@@ -1,8 +1,17 @@
 Number SF_Bedroom3_Temperature "Bedroom3 Temperature [%.1f °C]"
   (gTemperature)
-  { channel="mqtt:topic:temperatureAndHumidity:Bedroom3Temperature",
+  { channel="mqtt:topic:bedroom3:temperature",
     wifi="true", autoReport="true" }
 Number SF_Bedroom3_Humidity "Bedroom3 Humidity [%d %%]"
   (gHumidity) 
-  { channel="mqtt:topic:temperatureAndHumidity:Bedroom3Humidity",
+  { channel="mqtt:topic:bedroom3:humidity",
+    wifi="true", autoReport="true" }
+
+Number SF_Bedroom3_Smoke "Smoke Value [%d]"
+  { channel="mqtt:topic:bedroom3:smokeValue",
+    wifi="true", autoReport="true" }
+
+Switch SF_Bedroom3_SmokeState "Smoke Detected [%s]"
+  (gGasSensorState)
+  { channel="mqtt:topic:bedroom3:smokeState",
     wifi="true", autoReport="true" }

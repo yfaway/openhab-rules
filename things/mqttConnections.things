@@ -30,16 +30,32 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
         [stateTopic="esp/master-bedroom/temperature"]
       Type number : MasterBedroomHumidity "Master Bedroom Humidity"
         [stateTopic="esp/master-bedroom/humidity"]
+    }
 
-      Type number : Bedroom2Temperature "Bedroom2 Temperature"
-        [stateTopic="esp/bedroom2/temperature"]
-      Type number : Bedroom2Humidity "Bedroom2 Humidity"
-        [stateTopic="esp/bedroom2/humidity"]
+    Thing mqtt:topic:bedroom2 {
+    Channels:
+      Type number : temperature "Bedroom2 Temperature"
+        [stateTopic="esp/bedroom2/temperature/value"]
+      Type number : humidity "Bedroom2 Humidity"
+        [stateTopic="esp/bedroom2/humidity/value"]
 
-      Type number : Bedroom3Temperature "Bedroom3 Temperature"
-        [stateTopic="esp/bedroom3/temperature"]
-      Type number : Bedroom3Humidity "Bedroom3 Humidity"
-        [stateTopic="esp/bedroom3/humidity"]
+      Type number : smokeValue "Bedroom2 Smoke"
+        [stateTopic="esp/bedroom2/smoke/value"]
+      Type switch : smokeState "Bedroom2 Smoke State"
+        [stateTopic="esp/bedroom2/smoke/state", on="1", off="0"]
+    }
+
+    Thing mqtt:topic:bedroom3 {
+    Channels:
+      Type number : temperature "Bedroom3 Temperature"
+        [stateTopic="esp/bedroom3/temperature/value"]
+      Type number : humidity "Bedroom3 Humidity"
+        [stateTopic="esp/bedroom3/humidity/value"]
+
+      Type number : smokeValue "Bedroom3 Smoke"
+        [stateTopic="esp/bedroom3/smoke/value"]
+      Type switch : smokeState "Bedroom3 Smoke State"
+        [stateTopic="esp/bedroom3/smoke/state", on="1", off="0"]
     }
 
     Thing mqtt:topic:utilityRoom {
