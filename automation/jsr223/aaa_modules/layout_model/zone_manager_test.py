@@ -23,7 +23,6 @@ from aaa_modules.layout_model.actions.turn_on_switch import TurnOnSwitch
 ILLUMINANCE_THRESHOLD_IN_LUX = 8
 
 ITEMS = [SwitchItem('TestLightName'),
-      SwitchItem('TestTimerName'),
       SwitchItem('TestMotionSensorName'),
       NumberItem('IlluminanceSensorName'),
       StringItem('AstroSensorName'),
@@ -39,17 +38,17 @@ class ZoneManagerTest(DeviceTest):
     def setUp(self):
         super(ZoneManagerTest, self).setUp()
 
-        [self.lightItem, self.timerItem, self.motionSensorItem,
+        [self.lightItem, self.motionSensorItem,
          self.illuminanceSensorItem, self.astroSensorItem, self.dimmerItem,
          self.fanItem] = self.getItems()
 
         self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
-        self.light = Light(self.lightItem, self.timerItem, 
+        self.light = Light(self.lightItem, 2,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
         self.motionSensor = MotionSensor(self.motionSensorItem)
         self.astroSensor = AstroSensor(self.astroSensorItem)
-        self.dimmer = Dimmer(self.dimmerItem, self.timerItem, 100, "0-23:59")
-        self.fan = Fan(self.fanItem, self.timerItem)
+        self.dimmer = Dimmer(self.dimmerItem, 2, 100, "0-23:59")
+        self.fan = Fan(self.fanItem, 2)
 
         self.zm = ZoneManager()
 
@@ -150,12 +149,6 @@ class ZoneManagerTest(DeviceTest):
 
         self.assertFalse(self.zm.onTimerExpired(
                     scope.events, PE.createStringItem(INVALID_ITEM_NAME)))
-
-    def testOnTimerExpired_withApplicableZone_returnsTrue(self):
-        zone = Zone('ff', [self.light, self.motionSensor])
-        self.zm.addZone(zone)
-
-        self.assertTrue(self.zm.onTimerExpired(scope.events, self.timerItem))
 
     def testOnSwitchTurnedOn_noZone_returnsFalse(self):
         self.assertFalse(self.zm.onSwitchTurnedOn(

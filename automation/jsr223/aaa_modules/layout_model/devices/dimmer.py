@@ -9,7 +9,7 @@ class Dimmer(Light):
     Represents a light dimmer with the dimm level value ranges from 1 to 100.
     '''
 
-    def __init__(self, switchItem, timerItem, dimLevel = 5, timeRanges = None,
+    def __init__(self, switchItem, durationInMinutes, dimLevel = 5, timeRanges = None,
             illuminanceLevel = None,
             disableTrigeringFromMotionSensor = False):
         '''
@@ -17,7 +17,7 @@ class Dimmer(Light):
 
         :raise ValueError: if any parameter is invalid
         '''
-        Light.__init__(self, switchItem, timerItem, illuminanceLevel,
+        Light.__init__(self, switchItem, durationInMinutes, illuminanceLevel,
                 disableTrigeringFromMotionSensor)
 
         if dimLevel < 0 or dimLevel > 100:

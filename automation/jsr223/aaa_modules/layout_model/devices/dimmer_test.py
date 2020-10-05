@@ -26,17 +26,12 @@ class DimmerTest(unittest.TestCase):
         self.dimmerItem = DimmerItem(DIMMER_NAME)
         scope.itemRegistry.add(self.dimmerItem)
 
-        self.timerItem = SwitchItem(TIMER_NAME)
-        scope.itemRegistry.add(self.timerItem)
-
         self.dimmerItem.setState(scope.OnOffType.OFF)
-        self.timerItem.setState(scope.OnOffType.OFF)
 
-        self.dimmer = Dimmer(self.dimmerItem, self.timerItem, 100, "0-23:59")
+        self.dimmer = Dimmer(self.dimmerItem, 10, 100, "0-23:59")
 
     def tearDown(self):
         scope.itemRegistry.remove(self.dimmerItem.getName())
-        scope.itemRegistry.remove(self.timerItem.getName())
 
     def testTurnOn_lightWasOffOutsideDimTimeRange_returnsExpected(self):
         timeStruct = time.localtime()
@@ -47,12 +42,12 @@ class DimmerTest(unittest.TestCase):
 
         dimLevel = 5
         timeRanges = "{}-{}".format(hourOfDay + 2, hourOfDay + 2)
-        self.dimmer = Dimmer(self.dimmerItem, self.timerItem, dimLevel, timeRanges)
+        self.dimmer = Dimmer(self.dimmerItem, 10, dimLevel, timeRanges)
 
         self.dimmer.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(100, self.dimmerItem.getState().intValue())
-        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+        self.assertTrue(self.dimmer._isTimerActive())
 
     def testTurnOn_lightWasOffWithinDimTimeRange_returnsExpected(self):
         timeStruct = time.localtime()
@@ -61,24 +56,22 @@ class DimmerTest(unittest.TestCase):
         dimLevel = 5
         nextHour = 0 if hourOfDay == 23 else hourOfDay + 1 # 24-hour wrapping
         timeRanges = "{}-{}".format(hourOfDay, nextHour)
-        self.dimmer = Dimmer(self.dimmerItem, self.timerItem, dimLevel, timeRanges)
+        self.dimmer = Dimmer(self.dimmerItem, 10, dimLevel, timeRanges)
 
         self.dimmer.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertTrue(self.dimmer.isOn())
         self.assertEqual(dimLevel, self.dimmerItem.getState().intValue())
-        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+        self.assertTrue(self.dimmer._isTimerActive())
 
     def testTurnOn_lightWasAlreadyOn_timerIsRenewed(self):
         self.dimmerItem.setState(PercentType(100))
-        self.timerItem.setState(scope.OnOffType.OFF)
 
         self.dimmer.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertTrue(self.dimmer.isOn())
-        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+        self.assertTrue(self.dimmer._isTimerActive())
 
     def testTurnOff_bothLightAndTimerOn_timerIsRenewed(self):
         self.dimmerItem.setState(PercentType(0))
-        self.timerItem.setState(scope.OnOffType.ON)
 
         self.dimmer.turnOff(MockedEventDispatcher(scope.itemRegistry))
         self.assertFalse(self.dimmer.isOn())

@@ -33,8 +33,8 @@ class AlertOnHighGasLevel:
 
         if gasSensor.isTriggered():
             self.notifiedForGasType[gasType] = True
-            alertMessage = 'The {} {} is above normal level.'.format(
-                    zone.getName(), gasType)
+            alertMessage = 'The {} {} at {} is above normal level.'.format(
+                    zone.getName(), gasType, gasSensor.getValue())
             alert = Alert.createCriticalAlert(alertMessage, None, [], 
                     gasType, self.intervalBetweenAlertsInMinutes)
             AlertManager.processAlert(alert)

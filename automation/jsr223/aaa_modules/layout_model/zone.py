@@ -464,9 +464,7 @@ class Zone:
         if len(plugs) == 0: # no active smart plug
             switches = self.getDevicesByType(Switch)
             for switch in switches:
-                if switch.getTimerItem().getName() == item.getName():
-                    switch.turnOff(events)
-                    isProcessed = True
+                pass
             
         return isProcessed
 

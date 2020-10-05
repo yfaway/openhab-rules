@@ -1,23 +1,24 @@
 import time
+from threading import Timer
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device import Device
 
 class Switch(Device):
     '''
-    Represents a light or fan switch. Each switch is associated with a timer
-    item. When the switch is turned on, the timer is turned on as well. As the
-    timer expires, the switch is turned off (if it is not off already). If the
+    Represents a light or fan switch. Each switch contains an internal timer.
+    When the switch is turned on, the timer is started. As the timer expires,
+    the switch is turned off (if it is not off already). If the
     switch is turned off not by the timer, the timer is cancelled.
     '''
 
-    def __init__(self, switchItem, timerItem,
+    def __init__(self, switchItem, durationInMinutes, 
             disableTrigeringFromMotionSensor = False):
         '''
         Ctor
 
         :param org.eclipse.smarthome.core.library.items.SwitchItem switchItem:
-        :param org.eclipse.smarthome.core.library.items.SwitchItem timerItem:
+        :param int durationInMinutes: how long the switch will be kept on
         :param bool disableTrigeringFromMotionSensor: a flag to indicate whether \
             the switch should be turned on when motion sensor is triggered.\
             There is no logic associate with this value in this class; it is \
@@ -26,12 +27,34 @@ class Switch(Device):
         '''
         Device.__init__(self, switchItem)
 
-        if None == timerItem:
-            raise ValueError('timerItem must not be None')
-
-        self.timerItem = timerItem
         self.disableTrigeringFromMotionSensor = disableTrigeringFromMotionSensor
         self.lastOffTimestampInSeconds = -1
+
+        self.durationInMinutes = durationInMinutes
+        self.timer = None
+
+    def _startTimer(self, events):
+        '''
+        Creates and returns the timer to turn off the switch.
+        '''
+        def turnOffSwitch():
+            events.sendCommand(self.getItemName(), "OFF")
+
+        self._cancelTimer() # cancel the previous timer, if any.
+
+        self.timer = Timer(self.durationInMinutes * 60, turnOffSwitch)
+        self.timer.start()
+
+    def _cancelTimer(self):
+        '''
+        Cancel the turn-off-switch timer.
+        '''
+        if None != self.timer and self.timer.isAlive():
+            self.timer.cancel()
+            self.timer = None
+
+    def _isTimerActive(self):
+        return None != self.timer and self.timer.isAlive()
 
     def turnOn(self, events):
         '''
@@ -39,7 +62,7 @@ class Switch(Device):
         timer item is also turned on.
         '''
         if self.isOn(): # already on, renew timer
-            events.sendCommand(self.timerItem.getName(), "ON")
+            self._startTimer(events)
         else: 
             events.sendCommand(self.getItemName(), "ON")
 
@@ -49,6 +72,8 @@ class Switch(Device):
         '''
         if self.isOn():
             events.sendCommand(self.getItemName(), "OFF")
+
+        self._cancelTimer()
 
     def isOn(self):
         '''
@@ -63,7 +88,7 @@ class Switch(Device):
         manually by the user.
         The following actions are done:
         - the on timestamp is set;
-        - the timer item is set to ON.
+        - the timer is started or renewed.
 
         :param scope.events events 
         :param string itemName: the name of the item triggering the event
@@ -81,7 +106,7 @@ class Switch(Device):
         turned off through this class' turnOff method, or through the event bus,
         or manually by the user.
         The following actions are done:
-        - the timer item is set to OFF.
+        - the timer is cancelled.
 
         :param scope.events events: 
         :param string itemName: the name of the item triggering the event
@@ -90,8 +115,7 @@ class Switch(Device):
         isProcessed = (self.getItemName() == itemName)
         if isProcessed:
             self.lastOffTimestampInSeconds = time.time()
-            if not PE.isInStateOff(self.timerItem.getState()):
-                events.sendCommand(self.timerItem.getName(), "OFF")
+            self._cancelTimer()
 
         return isProcessed
 
@@ -103,10 +127,6 @@ class Switch(Device):
         the epoch seconds
         '''
         return self.lastOffTimestampInSeconds
-
-    def getTimerItem(self):
-        ''' :rtype: str the underlying item name '''
-        return self.timerItem
 
     def canBeTriggeredByMotionSensor(self):
         '''
@@ -123,8 +143,8 @@ class Switch(Device):
     # Misc common things to do when a switch is turned on.
     def _handleCommonOnAction(self, events):
         self.lastLightOnSecondSinceEpoch = time.time()
-        # start or renew timer
-        events.sendCommand(self.timerItem.getName(), "ON")
+        
+        self._startTimer(events) # start or renew timer
 
     def isLowIlluminance(self, currentIlluminance):
         ''' Always return False.  '''
@@ -132,20 +152,20 @@ class Switch(Device):
 
     def __unicode__(self):
         ''' @override '''
-        return u"{}, {}".format(
-                super(Switch, self).__unicode__(), self.timerItem.getName())
+        return u"{}".format(
+                super(Switch, self).__unicode__())
 
 
 class Light(Switch):
     ''' Represents a regular light.  '''
 
-    def __init__(self, switchItem, timerItem, illuminanceLevel = None,
+    def __init__(self, switchItem, durationInMinutes, illuminanceLevel = None,
             disableTrigeringFromMotionSensor = False):
         '''
         :param int illuminanceLevel: the illuminance level in LUX unit. The \
             light should only be turned on if the light level is below this unit.
         '''
-        Switch.__init__(self, switchItem, timerItem,
+        Switch.__init__(self, switchItem, durationInMinutes, 
                 disableTrigeringFromMotionSensor)
         self._illuminanceLevel = illuminanceLevel
 
@@ -181,5 +201,5 @@ class Light(Switch):
 
 class Fan(Switch):
     ''' Represents a fan switch.  '''
-    def __init__(self, switchItem, timerItem):
-        Switch.__init__(self, switchItem, timerItem)
+    def __init__(self, switchItem, durationInMinutes):
+        Switch.__init__(self, switchItem, durationInMinutes)

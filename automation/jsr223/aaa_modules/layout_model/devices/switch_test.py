@@ -23,17 +23,12 @@ class LightTest(unittest.TestCase):
         self.lightItem = SwitchItem(LIGHT_SWITCH_NAME)
         scope.itemRegistry.add(self.lightItem)
 
-        self.timerItem = SwitchItem(TIMER_NAME)
-        scope.itemRegistry.add(self.timerItem)
-
         self.lightItem.setState(scope.OnOffType.OFF)
-        self.timerItem.setState(scope.OnOffType.OFF)
 
-        self.light = Light(self.lightItem, self.timerItem)
+        self.light = Light(self.lightItem, 10)
 
     def tearDown(self):
         scope.itemRegistry.remove(self.lightItem.getName())
-        scope.itemRegistry.remove(self.timerItem.getName())
 
     def testTurnOn_lightWasOff_returnsExpected(self):
         self.light.turnOn(MockedEventDispatcher(scope.itemRegistry))
@@ -41,20 +36,19 @@ class LightTest(unittest.TestCase):
 
     def testTurnOn_lightWasAlreadyOn_timerIsRenewed(self):
         self.lightItem.setState(scope.OnOffType.ON)
-        self.timerItem.setState(scope.OnOffType.OFF)
+        self.assertFalse(self.light._isTimerActive())
 
         self.light.turnOn(MockedEventDispatcher(scope.itemRegistry))
         self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
-        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+        self.assertTrue(self.light._isTimerActive())
 
     def testOnSwitchTurnedOn_validParams_timerIsTurnedOn(self):
         self.lightItem.setState(scope.OnOffType.ON)
-        self.timerItem.setState(scope.OnOffType.OFF)
 
         isProcessed = self.light.onSwitchTurnedOn(
                 MockedEventDispatcher(scope.itemRegistry), self.lightItem.getName())
         self.assertTrue(isProcessed)
-        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
+        self.assertTrue(self.light._isTimerActive())
 
     def testOnSwitchTurnedOn_invalidItemName_returnsFalse(self):
         isProcessed = self.light.onSwitchTurnedOn(
@@ -63,19 +57,20 @@ class LightTest(unittest.TestCase):
 
     def testTurnOff_bothLightAndTimerOn_timerIsRenewed(self):
         self.lightItem.setState(scope.OnOffType.ON)
-        self.timerItem.setState(scope.OnOffType.ON)
+        self.light._startTimer(MockedEventDispatcher(scope.itemRegistry))
+        self.assertTrue(self.light._isTimerActive())
 
         self.light.turnOff(MockedEventDispatcher(scope.itemRegistry))
-        self.assertEqual(scope.OnOffType.OFF, self.lightItem.getState())
+        self.assertFalse(self.light._isTimerActive())
 
     def testOnSwitchTurnedOff_validParams_timerIsTurnedOn(self):
-        self.lightItem.setState(scope.OnOffType.OFF)
-        self.timerItem.setState(scope.OnOffType.ON)
+        self.lightItem.setState(scope.OnOffType.ON)
+        self.light._startTimer(MockedEventDispatcher(scope.itemRegistry))
 
         isProcessed = self.light.onSwitchTurnedOff(
                 MockedEventDispatcher(scope.itemRegistry), self.lightItem.getName())
         self.assertTrue(isProcessed)
-        self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
+        self.assertFalse(self.light._isTimerActive())
 
     def testOnSwitchTurnedOff_invalidItemName_returnsFalse(self):
         isProcessed = self.light.onSwitchTurnedOff(
@@ -86,15 +81,15 @@ class LightTest(unittest.TestCase):
         self.assertFalse(self.light.isLowIlluminance(10))
 
     def testIsLowIlluminance_currentIlluminanceNotAvailable_returnsFalse(self):
-        self.light = Light(self.lightItem, self.timerItem, 50)
+        self.light = Light(self.lightItem, 10, 50)
         self.assertFalse(self.light.isLowIlluminance(-1))
 
     def testIsLowIlluminance_currentIlluminanceAboveThreshold_returnsFalse(self):
-        self.light = Light(self.lightItem, self.timerItem, 50)
+        self.light = Light(self.lightItem, 10, 50)
         self.assertFalse(self.light.isLowIlluminance(60))
 
     def testIsLowIlluminance_currentIlluminanceBelowThreshold_returnsTrue(self):
-        self.light = Light(self.lightItem, self.timerItem, 50)
+        self.light = Light(self.lightItem, 10, 50)
         self.assertTrue(self.light.isLowIlluminance(10))
 
 PE.runUnitTest(LightTest)

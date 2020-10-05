@@ -153,13 +153,6 @@ def onDoorOrWindowsChanged(event):
     else:
         dispatchEvent(ZoneEvent.CONTACT_CLOSED, event)
 
-@rule("Dispatch timer expired event")
-@when("Member of gWallSwitchTimer changed to OFF")
-def onTimerExpired(event):
-    if not _mutableZoneManager.onTimerExpired(events, itemRegistry.getItem(event.itemName)):
-        PE.logDebug('Timer event for {} is not processed.'.format(
-                    event.itemName))
-
 @rule("Dispatch network device connected event")
 @when("Member of gNetworkPresence changed to ON")
 def onNetworkDeviceConnected(event):

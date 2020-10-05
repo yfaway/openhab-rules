@@ -31,7 +31,6 @@ from aaa_modules.layout_model.device_test import DeviceTest
 ILLUMINANCE_THRESHOLD_IN_LUX = 10
 MOTION_SENSOR_SWITCH_NAME = 'TestMotionSensorName'
 ITEMS = [SwitchItem('TestLightName'),
-      SwitchItem('TestTimerName'),
       SwitchItem(MOTION_SENSOR_SWITCH_NAME),
       NumberItem('IlluminanceSensorName'),
       StringItem('AstroSensorName'),
@@ -47,18 +46,18 @@ class ZoneTest(DeviceTest):
     def setUp(self):
         super(ZoneTest, self).setUp()
 
-        [self.lightItem, self.timerItem, self.motionSensorItem,
+        [self.lightItem, self.motionSensorItem,
          self.illuminanceSensorItem, self.astroSensorItem, self.dimmerItem,
          self.fanItem, self.plugItem, self.plugPowerItem] = self.getItems()
 
         self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
-        self.light = Light(self.lightItem, self.timerItem)
-        self.lightWithIlluminance = Light(self.lightItem, self.timerItem,
+        self.light = Light(self.lightItem, 2)
+        self.lightWithIlluminance = Light(self.lightItem, 2,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
         self.motionSensor = MotionSensor(self.motionSensorItem)
         self.astroSensor = AstroSensor(self.astroSensorItem)
-        self.dimmer = Dimmer(self.dimmerItem, self.timerItem, 100, "0-23:59")
-        self.fan = Fan(self.lightItem, self.timerItem)
+        self.dimmer = Dimmer(self.dimmerItem, 2, 100, "0-23:59")
+        self.fan = Fan(self.lightItem, 2)
 
     def getItems(self, resetState = False):
         if resetState:
@@ -224,59 +223,25 @@ class ZoneTest(DeviceTest):
         self.lightWithIlluminance.getChannel = lambda : 'a channel'
         self.assertTrue(zone1.shareSensorWith(zone2, Light))
 
-    def testOnTimerExpired_validTimerItem_returnsTrue(self):
-
-        self.lightItem.setState(scope.OnOffType.ON)
-        self.timerItem.setState(scope.OnOffType.ON)
-
-        zone = Zone('ff', [self.light])
-
-        isProcessed = zone.onTimerExpired(self.getMockedEventDispatcher(), self.timerItem)
-        self.assertTrue(isProcessed)
-
-        self.assertEqual(scope.OnOffType.OFF, self.lightItem.getState())
-
-    def testOnTimerExpired_validTimerItemButPlugHasWattage_returnsFalse(self):
-
-        self.lightItem.setState(scope.OnOffType.ON)
-        self.timerItem.setState(scope.OnOffType.ON)
-
-        self.plugItem.setState(scope.OnOffType.ON)
-        self.plugPowerItem.setState(DecimalType(100))
-
-        plug = Plug(self.plugItem, self.plugPowerItem)
-        zone = Zone('ff', [self.light, plug])
-
-        isProcessed = zone.onTimerExpired(self.getMockedEventDispatcher(), self.timerItem)
-        self.assertFalse(isProcessed)
-
-        self.assertEqual(scope.OnOffType.ON, self.lightItem.getState())
-
     def testOnTimerExpired_invalidTimerItem_returnsFalse(self):
         zone = Zone('ff', [self.light])
 
-        isProcessed = zone.onTimerExpired(self.getMockedEventDispatcher(), PE.createStringItem('dummy name'))
+        isProcessed = zone.onTimerExpired(
+                self.getMockedEventDispatcher(), PE.createStringItem('dummy name'))
         self.assertFalse(isProcessed)
 
     def testOnSwitchedTurnedOn_validItemName_returnsTrue(self):
-        self.timerItem.setState(scope.OnOffType.OFF)
-
         zone = Zone('ff', [self.light])
 
         isProcessed = zone.onSwitchTurnedOn(self.getMockedEventDispatcher(), self.lightItem, None)
         self.assertTrue(isProcessed)
 
-        self.assertEqual(scope.OnOffType.ON, self.timerItem.getState())
-
     def testOnSwitchedTurnedOff_validItemName_returnsTrue(self):
-        self.timerItem.setState(scope.OnOffType.ON)
 
         zone = Zone('ff', [self.light])
 
         isProcessed = zone.onSwitchTurnedOff(self.getMockedEventDispatcher(), self.lightItem, None)
         self.assertTrue(isProcessed)
-
-        self.assertEqual(scope.OnOffType.OFF, self.timerItem.getState())
 
     def testOnMotionSensorTurnedOn_validItemNameNoIlluminanceSensorNoAstroSensor_returnsFalse(self):
         self.assertFalse(self.light.isOn())

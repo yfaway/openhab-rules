@@ -272,10 +272,16 @@ class ZoneParser:
                 neighborReverse = [zoneId, masterZoneId, NeighborType.OPEN_SPACE_MASTER]
                 neighbors.append(neighborReverse)
 
-            timerItem = itemRegistry.getItem(itemName + '_Timer')
-
             disableMotionSensorTriggering = openHabItem.hasTag(
                     TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR)
+
+            durationMeta = MetadataRegistry.get(
+                    MetadataKey('durationInMinutes', itemName)) 
+            if None != durationMeta:
+                durationInMinutes = int(durationMeta.value)
+            else:
+                raise ValueError(
+                        'Missing durationInMinutes value for {}'.format(itemName))
 
             # dimmer setting
             meta = MetadataRegistry.get(
@@ -285,18 +291,25 @@ class ZoneParser:
                 level = config['level'].intValue()
                 timeRanges = config['timeRanges']
 
-                switch = Dimmer(openHabItem, timerItem, level, timeRanges,
+                switch = Dimmer(openHabItem, durationInMinutes, level, timeRanges,
                         ILLUMINANCE_THRESHOLD_IN_LUX,
                         disableMotionSensorTriggering)
             else:
-                switch = Light(openHabItem, timerItem,
+                switch = Light(openHabItem, durationInMinutes, 
                         ILLUMINANCE_THRESHOLD_IN_LUX,
                         disableMotionSensorTriggering)
 
             zone = zone.addDevice(switch)
         elif 'FanSwitch' == deviceName:
-            fan = Fan(openHabItem,
-                    itemRegistry.getItem(itemName + '_Timer'))
+            durationMeta = MetadataRegistry.get(
+                    MetadataKey('durationInMinutes', itemName)) 
+            if None != durationMeta:
+                durationInMinutes = int(durationMeta.value)
+            else:
+                raise ValueError(
+                        'Missing durationInMinutes value for {}'.format(itemName))
+
+            fan = Fan(openHabItem, durationInMinutes)
             zone = zone.addDevice(fan)
         elif 'LightSwitch_Illuminance' == deviceName:
             illuminanceSensor = IlluminanceSensor(openHabItem)

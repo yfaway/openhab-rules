@@ -20,14 +20,11 @@ from aaa_modules.layout_model.device_test import DeviceTest
 
 ILLUMINANCE_THRESHOLD_IN_LUX = 10
 ITEMS = [SwitchItem('TestLightName1'),
-      SwitchItem('TestTimerName1'),
       SwitchItem('TestLightName2'),
-      SwitchItem('TestTimerName2'),
       NumberItem('IlluminanceSensorName'),
       SwitchItem('TestMotionSensor1'),
       SwitchItem('TestMotionSensor2'),
       SwitchItem('TestLightName3'),
-      SwitchItem('TestTimerName3'),
     ]
 
 # Unit tests for zone_manager.py.
@@ -36,16 +33,16 @@ class TurnOnSwitchTest(DeviceTest):
     def setUp(self):
         super(TurnOnSwitchTest, self).setUp()
 
-        [self.lightItem1, self.timerItem1, self.lightItem2, self.timerItem2,
+        [self.lightItem1, self.lightItem2, 
             self.illuminanceSensorItem, self.motionSensorItem1,
-            self.motionSensorItem2, self.lightItem3, self.timerItem3] = self.getItems()
+            self.motionSensorItem2, self.lightItem3] = self.getItems()
 
         self.illuminanceSensor = IlluminanceSensor(self.illuminanceSensorItem)
-        self.light1 = Light(self.lightItem1, self.timerItem1,
+        self.light1 = Light(self.lightItem1, 30,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
-        self.light2 = Light(self.lightItem2, self.timerItem2,
+        self.light2 = Light(self.lightItem2, 30,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
-        self.light3 = Light(self.lightItem3, self.timerItem3,
+        self.light3 = Light(self.lightItem3, 30,
                 ILLUMINANCE_THRESHOLD_IN_LUX)
         self.motionSensor1 = MotionSensor(self.motionSensorItem1)
         self.motionSensor2 = MotionSensor(self.motionSensorItem2)
@@ -84,7 +81,7 @@ class TurnOnSwitchTest(DeviceTest):
         self.assertTrue(self.turnOn())
 
     def testOnAction_switchDisablesTriggeringByMotionSensor_returnsFalse(self):
-        self.light1 = Light(self.lightItem1, self.timerItem1,
+        self.light1 = Light(self.lightItem1, 30,
                 ILLUMINANCE_THRESHOLD_IN_LUX, True)
         self.zone1 = Zone('foyer', [self.light1, self.illuminanceSensor])
 
