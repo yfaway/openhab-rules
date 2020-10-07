@@ -59,7 +59,7 @@ class ZoneParser:
     See :class:`.ZoneManager` and :class:`.Zone`.
     '''
 
-    def parse(self, items, itemRegistry):
+    def parse(self, items, itemRegistry, zoneManager):
         '''
         :param scope.items items:
         :param scope.itemRegistry itemRegistry:
@@ -101,30 +101,26 @@ class ZoneParser:
 
             openHabItem = itemRegistry.getItem(itemName)
 
-            zone = self._addCamera(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addDoor(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addNetworkPresence(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addSwitches(
-                    deviceName, openHabItem, zone, itemRegistry, neighbors)
-            zone = self._addPlugs(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addAlarmPartition(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addChromeCasts(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addHumiditySensors(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addTemperatureSensors(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addCo2Sensors(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addNaturalGasSensors(
-                    deviceName, openHabItem, zone, itemRegistry)
-            zone = self._addSmokeSensors(
-                    deviceName, openHabItem, zone, itemRegistry)
+            device = self._createCamera(deviceName, openHabItem, zone) \
+                or self._createDoor(deviceName, openHabItem) \
+                or self._createNetworkPresence(deviceName, openHabItem) \
+                or self._createSwitches(
+                        deviceName, openHabItem, zone, itemRegistry, neighbors) \
+                or self._createPlugs(deviceName, openHabItem, itemRegistry) \
+                or self._createAlarmPartition(
+                    deviceName, openHabItem, itemRegistry) \
+                or self._createChromeCasts(deviceName, openHabItem) \
+                or self._createHumiditySensors(deviceName, openHabItem) \
+                or self._createTemperatureSensors(deviceName, openHabItem) \
+                or self._createCo2Sensors(deviceName, openHabItem, itemRegistry) \
+                or self._createNaturalGasSensors(
+                        deviceName, openHabItem, itemRegistry) \
+                or self._createSmokeSensors(
+                        deviceName, openHabItem, itemRegistry)
+
+            if None != device:
+                device = device.setZoneManager(zoneManager)
+                zone = self._addDeviceToZone(device, zone)
 
             if len(zone.getDevices()) > 0:
                 zoneMap[zoneId] = zone
@@ -132,6 +128,7 @@ class ZoneParser:
             # end looping items
 
         astroSensor = AstroSensor(itemRegistry.getItem(TIME_OF_DAY_ITEM_NAME))
+        astroSensor = astroSensor.setZoneManager(zoneManager)
         for z in zoneMap.values():
             if len(z.getDevicesByType(Light)) > 0 or \
                     len(z.getDevicesByType(Dimmer)) > 0:
@@ -145,91 +142,78 @@ class ZoneParser:
 
         return [self._normalizeNeighbors(z) for z in zoneMap.values()]
 
-    def _addCamera(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createCamera(self, deviceName, openHabItem, zone):
         if 'Camera' == deviceName:
-            camera = Camera(openHabItem, zone.getName())
-            zone = self._addDeviceToZone(camera, zone)
+            return Camera(openHabItem, zone.getName())
 
-        return zone
+        return None
 
-    def _addDoor(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createDoor(self, deviceName, openHabItem):
         if 'Door' == deviceName:
-            door = Door(openHabItem)
-            zone = self._addDeviceToZone(door, zone)
+            return Door(openHabItem)
 
-        return zone
+        return None
 
-    def _addNetworkPresence(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createNetworkPresence(self, deviceName, openHabItem):
         if 'NetworkPresence' in deviceName:
-            presence = NetworkPresence(openHabItem)
-            zone = self._addDeviceToZone(presence, zone)
+            return NetworkPresence(openHabItem)
 
-        return zone
+        return None
 
-    def _addAlarmPartition(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createAlarmPartition(self, deviceName, openHabItem, itemRegistry):
         if 'AlarmPartition' == deviceName:
             itemName = openHabItem.getName()
             alarmModeItem = itemRegistry.getItem(itemName + '_ArmMode')
 
-            alarm = AlarmPartition(openHabItem, alarmModeItem)
-            zone = self._addDeviceToZone(alarm, zone)
+            return AlarmPartition(openHabItem, alarmModeItem)
 
-        return zone
+        return None
 
-    def _addChromeCasts(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createChromeCasts(self, deviceName, openHabItem):
         if 'ChromeCast' == deviceName:
             itemName = openHabItem.getName()
 
             sinkNameMeta = MetadataRegistry.get(
                     MetadataKey("sinkName", itemName)) 
 
-            cast = ChromeCastAudioSink(itemName, sinkNameMeta.value)
-            zone = zone.addDevice(cast)
+            return ChromeCastAudioSink(itemName, sinkNameMeta.value)
 
-        return zone
+        return None
 
-    def _addHumiditySensors(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createHumiditySensors(self, deviceName, openHabItem):
         if 'Humidity' in deviceName:
-            device = HumiditySensor(openHabItem)
-            zone = self._addDeviceToZone(device, zone)
+            return HumiditySensor(openHabItem)
 
-        return zone
+        return None
 
-    def _addTemperatureSensors(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createTemperatureSensors(self, deviceName, openHabItem):
         if 'Temperature' in deviceName:
-            device = TemperatureSensor(openHabItem)
-            zone = self._addDeviceToZone(device, zone)
+            return TemperatureSensor(openHabItem)
 
-        return zone
+        return None
 
-    def _addCo2Sensors(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createCo2Sensors(self, deviceName, openHabItem, itemRegistry):
         if 'Co2' == deviceName:
             stateItem = itemRegistry.getItem(openHabItem.getName() + 'State')
+            return Co2GasSensor(openHabItem, stateItem)
 
-            device = Co2GasSensor(openHabItem, stateItem)
-            zone = self._addDeviceToZone(device, zone)
+        return None
 
-        return zone
-
-    def _addNaturalGasSensors(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createNaturalGasSensors(self, deviceName, openHabItem, itemRegistry):
         if 'NaturalGas' == deviceName:
             stateItem = itemRegistry.getItem(openHabItem.getName() + 'State')
+            return NaturalGasSensor(openHabItem, stateItem)
 
-            device = NaturalGasSensor(openHabItem, stateItem)
-            zone = self._addDeviceToZone(device, zone)
+        return None
 
-        return zone
-
-    def _addSmokeSensors(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createSmokeSensors(self, deviceName, openHabItem, itemRegistry):
         if 'Smoke' == deviceName:
             stateItem = itemRegistry.getItem(openHabItem.getName() + 'State')
+            return SmokeSensor(openHabItem, stateItem)
 
-            device = SmokeSensor(openHabItem, stateItem)
-            zone = self._addDeviceToZone(device, zone)
+        return None
 
-        return zone
-
-    def _addPlugs(self, deviceName, openHabItem, zone, itemRegistry):
+    def _createPlugs(self, deviceName, openHabItem, itemRegistry):
         if 'Plug' == deviceName:
             itemName = openHabItem.getName()
             
@@ -239,12 +223,12 @@ class ZoneParser:
             else:
                 powerItem = None
 
-            plug = Plug(openHabItem, powerItem)
-            zone = self._addDeviceToZone(plug, zone)
+            return Plug(openHabItem, powerItem)
 
-        return zone
+        return None
 
-    def _addSwitches(self, deviceName, openHabItem, zone, itemRegistry, neighbors):
+    def _createSwitches(self, deviceName, openHabItem, zone, itemRegistry,
+            neighbors):
         itemName = openHabItem.getName()
         zoneId = zone.getId()
 
@@ -299,7 +283,7 @@ class ZoneParser:
                         ILLUMINANCE_THRESHOLD_IN_LUX,
                         disableMotionSensorTriggering)
 
-            zone = zone.addDevice(switch)
+            return switch
         elif 'FanSwitch' == deviceName:
             durationMeta = MetadataRegistry.get(
                     MetadataKey('durationInMinutes', itemName)) 
@@ -309,16 +293,13 @@ class ZoneParser:
                 raise ValueError(
                         'Missing durationInMinutes value for {}'.format(itemName))
 
-            fan = Fan(openHabItem, durationInMinutes)
-            zone = zone.addDevice(fan)
+            return Fan(openHabItem, durationInMinutes)
         elif 'LightSwitch_Illuminance' == deviceName:
-            illuminanceSensor = IlluminanceSensor(openHabItem)
-            zone = self._addDeviceToZone(illuminanceSensor, zone)
+            return IlluminanceSensor(openHabItem)
         elif deviceName.endswith('MotionSensor'):
-            motionSensor = MotionSensor(openHabItem)
-            zone = self._addDeviceToZone(motionSensor, zone)
+            return MotionSensor(openHabItem)
 
-        return zone
+        return None
 
     def _normalizeNeighbors(self, zone):
         '''
@@ -426,23 +407,26 @@ class ZoneParser:
 
         :return: a new zone containing the device.
         '''
-        wifiMeta = MetadataRegistry.get(MetadataKey('wifi', device.getItemName()))
-        if None != wifiMeta and "true" == wifiMeta.value.lower():
-            device = device.setUseWifi(True)
+        # special handling for items with name containing ':'
+        if not isinstance(device, ChromeCastAudioSink): 
+            wifiMeta = MetadataRegistry.get(
+                    MetadataKey('wifi', device.getItemName()))
+            if None != wifiMeta and "true" == wifiMeta.value.lower():
+                device = device.setUseWifi(True)
 
-        batteryPoweredMeta = MetadataRegistry.get(MetadataKey('batteryPowered',
-                    device.getItemName()))
-        if None != batteryPoweredMeta and "true" == batteryPoweredMeta.value.lower():
-            device = device.setBatteryPowered(True)
+            batteryPoweredMeta = MetadataRegistry.get(MetadataKey('batteryPowered',
+                        device.getItemName()))
+            if None != batteryPoweredMeta and "true" == batteryPoweredMeta.value.lower():
+                device = device.setBatteryPowered(True)
 
-        autoReportMeta = MetadataRegistry.get(MetadataKey('autoReport',
-                    device.getItemName()))
-        if None != autoReportMeta and "true" == autoReportMeta.value.lower():
-            device = device.setAutoReport(True)
+            autoReportMeta = MetadataRegistry.get(MetadataKey('autoReport',
+                        device.getItemName()))
+            if None != autoReportMeta and "true" == autoReportMeta.value.lower():
+                device = device.setAutoReport(True)
 
         return zone.addDevice(device)
 
-zones = ZoneParser().parse(scope.items, scope.itemRegistry)
+zones = ZoneParser().parse(scope.items, scope.itemRegistry, None)
 output = "{} zones".format(len(zones))
 for z in zones:
     output += '\n' + str(z)

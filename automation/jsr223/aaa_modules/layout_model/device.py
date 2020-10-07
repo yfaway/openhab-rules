@@ -34,6 +34,7 @@ class Device(object):
         self.wifi = wifi
         self.autoReport = autoReport
         self.lastActivatedTimestamp = None
+        self.zoneManager = None
 
     def containsItem(self, item):
         '''
@@ -124,6 +125,25 @@ class Device(object):
         :rtype: Boolean
         '''
         return self.autoReport
+
+    def setZoneManager(self, zoneManager):
+        '''
+        :return: A NEW object with the zoneManager attribute set to the
+            specified value.
+        '''
+        newObj = copy(self)
+        newObj.zoneManager = zoneManager
+
+        return newObj
+
+    def getZoneManager(self):
+        '''
+        Returns the zone the device belong to or None if the device does not
+        belong to any zone.
+
+        :rtype: Zone
+        '''
+        return self.zoneManager
 
     def getLastActivatedTimestamp(self):
         '''

@@ -104,6 +104,24 @@ class ZoneManagerTest(DeviceTest):
         self.zm.removeZone(zone2)
         self.assertEqual(0, len(self.zm.getZones()))
 
+    def testContainingZone_validDevice_returnsCorrectZone(self):
+        zone1 = Zone('ff').addDevice(self.light)
+        zone2 = Zone('sf').addDevice(self.fan)
+
+        self.zm.addZone(zone1)
+        self.zm.addZone(zone2)
+        self.assertEqual(zone1,
+                self.zm._createImmutableInstance().getContainingZone(self.light))
+        self.assertEqual(zone2,
+                self.zm._createImmutableInstance().getContainingZone(self.fan))
+
+    def testContainingZone_invalidDevice_returnsNone(self):
+        zone1 = Zone('ff').addDevice(self.light)
+
+        self.zm.addZone(zone1)
+        self.assertEqual(None,
+                self.zm._createImmutableInstance().getContainingZone(self.fan))
+
     def testGetDevicesByType_variousScenarios_returnsCorrectList(self):
         zone1 = Zone('ff').addDevice(self.light)
         zone2 = Zone('sf').addDevice(self.fan)

@@ -13,6 +13,23 @@ class ImmutableZoneManager:
         self.getZoneByIdLambda = getZoneByIdLambda
         self.getDevicesByTypeLambda = getDevicesByTypeLambda
 
+    def getContainingZone(self, device):
+        '''
+        Returns the first zone containing the device or None if the device
+        does not belong to a zone.
+
+        :param Device device: the device
+        :rtype: Zone or None
+        '''
+        if None == device:
+            raise ValueError('device must not be None')
+
+        for zone in self.getZones():
+            if zone.hasDevice(device):
+                return zone
+
+        return None
+
     def getZones(self):
         ''' 
         Returns a new list contains all zone.

@@ -18,11 +18,14 @@ from aaa_modules.zone_parser import ZoneParser
 class ZoneParserTest(unittest.TestCase):
 
     def testParse_scopeHasItems_returnsNonEmptyZoneList(self):
-        zones = ZoneParser().parse(scope.items, scope.itemRegistry)
+        zoneManager = "mocked"
+        zones = ZoneParser().parse(scope.items, scope.itemRegistry, zoneManager)
         self.assertTrue(len(zones) > 0)
 
         for z in zones:
             self.assertTrue(len(z.getDevices()) > 0)
+            for d in z.getDevices():
+                self.assertEqual(zoneManager, d.getZoneManager())
 
         self.assertTrue(any(len(z.getDevicesByType(AstroSensor)) > 0 for z in zones))
         self.assertTrue(any(len(z.getDevicesByType(Dimmer)) > 0 for z in zones))
