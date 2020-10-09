@@ -3,10 +3,7 @@ from aaa_modules.layout_model.device import Device
 
 from aaa_modules.layout_model.devices.astro_sensor import AstroSensor
 from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSensor
-from aaa_modules.layout_model.devices.motion_sensor import MotionSensor
 from aaa_modules.layout_model.devices.switch import Light, Switch
-from aaa_modules.layout_model.devices.network_presence import NetworkPresence
-from aaa_modules.layout_model.devices.plug import Plug
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
@@ -79,12 +76,6 @@ class Zone:
 
     @Immutable (the Zone object only)
     """
-
-    POWER_USAGE_THRESHOLD_IN_WATT = 8
-    '''
-    The plug power usage threshold; if it is above this value, the light won't
-    be turned off.
-    '''
 
     def __init__(self, name, devices = [], level = Level.UNDEFINED,
             neighbors = [], actions = {}, external = False,
@@ -377,38 +368,24 @@ class Zone:
         else:
             return any(s.isLightOnTime() for s in astroSensors)
 
-    def isOccupied(self, secondsFromLastEvent = 5 * 60):
+    def isOccupied(self, ignoredDeviceTypes = [], secondsFromLastEvent = 5 * 60):
         '''
-        Returns an array of two items. The first item is True if
-          - at least one switch turned on, or
-          - a motion event was triggered within the provided # of seconds, or
+        Returns an array of two items. The first item is True if - at least one switch turned on, or - a motion event was triggered within the provided # of seconds, or
           - a network device was active in the local network within the
             provided # of seconds.
         If the first item is True, the item is a Device that indicates
         occupancy. Otherwise it is None.
 
+        :param list(Device) ignoredDeviceTypes: the devices not to be
+            considered for the occupancy check.
         :rtype: list(bool, Device)
         '''
-        occupied = False
-        device = None
+        for device in self.getDevices():
+            if not any(isinstance(device, l) for l in ignoredDeviceTypes):
+                if device.isOccupied(secondsFromLastEvent):
+                    return (True, device)
 
-        presenceSensors = self.getDevicesByType(MotionSensor) + \
-            self.getDevicesByType(NetworkPresence)
-
-        for sensor in presenceSensors:
-            if sensor.wasRecentlyActivated(secondsFromLastEvent):
-                occupied = True
-                device = sensor
-                break
-
-        if not occupied:
-            for light in self.getDevicesByType(Light):
-                if light.isOn():
-                    occupied = True
-                    device = light
-                    break
-
-        return (occupied, device)
+        return (False, None)
 
     def isLightOn(self):
         '''
@@ -455,18 +432,7 @@ class Zone:
         zone; if yes, turns off the switch and returns True. Otherwise returns
         False.
         '''
-        isProcessed = False
-
-        # find active plugs
-        plugs = [p for p in self.getDevicesByType(Plug) 
-            if p.hasPowerReading() and p.getWattage() > Zone.POWER_USAGE_THRESHOLD_IN_WATT]
-
-        if len(plugs) == 0: # no active smart plug
-            switches = self.getDevicesByType(Switch)
-            for switch in switches:
-                pass
-            
-        return isProcessed
+        return False
 
     def onSwitchTurnedOn(self, events, item, immutableZoneManager):
         '''

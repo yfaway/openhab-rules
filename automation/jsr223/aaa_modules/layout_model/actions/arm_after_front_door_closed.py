@@ -71,7 +71,7 @@ class ArmAfterFrontDoorClosed:
                         motionDelayInSec = 3 * 60
                         delayTimeInSec = self.maxElapsedTimeInSeconds + motionDelayInSec
 
-                        (occupied, activeDevice) = z.isOccupied( delayTimeInSec)
+                        (occupied, activeDevice) = z.isOccupied([], delayTimeInSec)
                         if occupied:
                             break
 

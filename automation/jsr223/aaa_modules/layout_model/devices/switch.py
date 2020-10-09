@@ -38,7 +38,10 @@ class Switch(Device):
         Creates and returns the timer to turn off the switch.
         '''
         def turnOffSwitch():
-            events.sendCommand(self.getItemName(), "OFF")
+            zone = self.getZoneManager().getContainingZone(self)
+
+            if not zone.isOccupied([Light], 60):
+                events.sendCommand(self.getItemName(), "OFF")
 
         self._cancelTimer() # cancel the previous timer, if any.
 
@@ -191,6 +194,15 @@ class Light(Switch):
             return False
 
         return currentIlluminance < self.getIlluminanceThreshold()
+
+    def isOccupied(self, secondsFromLastEvent = 5 * 60):
+        '''
+        Returns True if the device is on.
+        @override
+
+        :rtype: bool
+        '''
+        return self.isOn();
 
     def __unicode__(self):
         '''

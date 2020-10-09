@@ -23,4 +23,12 @@ class NetworkPresence(Device):
         '''
         return PE.isInStateOn(self.getItem().getState())
 
+    def isOccupied(self, secondsFromLastEvent = 5 * 60):
+        '''
+        Returns True if the device is on.
+        @override
+
+        :rtype: bool
+        '''
+        return self.isPresence() or self.wasRecentlyActivated(secondsFromLastEvent)
 

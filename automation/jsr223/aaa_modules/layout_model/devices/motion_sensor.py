@@ -1,5 +1,3 @@
-import time
-
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device import Device
 
@@ -21,21 +19,18 @@ class MotionSensor(Device):
         '''
         return PE.isInStateOn(self.getItem().getState())
 
-    def isOccupied(self, minutesFromLastMotionEvent = 5):
+    def isOccupied(self, secondsFromLastEvent = 5 * 60):
         '''
         Returns true if a motion event was triggered within the provided # of
-        minutes. Returns false otherwise.
+        seconds. Returns false otherwise.
+        @override
 
         :rtype: bool
         '''
         if self.isOn():
             return True
 
-        if None == self.getLastActivatedTimestamp():
-            return False
-        else:
-            elapsedTime = time.time() - self.getLastActivatedTimestamp()
-            return elapsedTime < (minutesFromLastMotionEvent * 60)
+        return self.wasRecentlyActivated(secondsFromLastEvent)
 
     def onMotionSensorTurnedOn(self, events, itemName):
         '''

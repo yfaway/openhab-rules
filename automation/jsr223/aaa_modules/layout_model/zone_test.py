@@ -170,6 +170,30 @@ class ZoneTest(DeviceTest):
         self.assertTrue(occupied)
         self.assertEqual(self.light, device)
 
+    def testIsOccupied_switchIsOnAndIgnoreMotionSensor_returnsTrue(self):
+        zone = Zone('ff', [self.light, self.motionSensor])
+        self.light.turnOn(self.getMockedEventDispatcher())
+
+        (occupied, device) = zone.isOccupied([MotionSensor])
+        self.assertTrue(occupied)
+        self.assertEqual(self.light, device)
+
+    def testIsOccupied_switchIsOnAndIgnoreLight_returnsFalse(self):
+        zone = Zone('ff', [self.light, self.motionSensor])
+        self.light.turnOn(self.getMockedEventDispatcher())
+
+        (occupied, device) = zone.isOccupied([Light])
+        self.assertFalse(occupied)
+        self.assertEqual(None, device)
+
+    def testIsOccupied_switchIsOnAndIgnoreLightAndMotionSensor_returnsFalse(self):
+        zone = Zone('ff', [self.light, self.motionSensor])
+        self.light.turnOn(self.getMockedEventDispatcher())
+
+        (occupied, device) = zone.isOccupied([Light, MotionSensor])
+        self.assertFalse(occupied)
+        self.assertEqual(None, device)
+
     def testIsOccupied_motionEventTriggeredButLightIsOff_returnsTrue(self):
         self.assertFalse(self.light.isOn())
 

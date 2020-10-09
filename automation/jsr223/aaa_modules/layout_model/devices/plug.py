@@ -6,6 +6,12 @@ class Plug(Device):
     Represents a smart plug with optional power reading in Watt.
     '''
 
+    POWER_USAGE_THRESHOLD_IN_WATT = 8
+    '''
+    The plug power usage threshold; if it is above this value, the zone 
+    containing this plug is considered to be occupied.
+    '''
+
     def __init__(self, plugItem, powerReadingItem = None):
         '''
         Ctor
@@ -43,6 +49,17 @@ class Plug(Device):
             raise ValueError("Plug has no power reading capability")
 
         return PE.getIntegerStateValue(self.powerReadingItem, 0)
+
+    def isOccupied(self, secondsFromLastEvent = 5 * 60):
+        '''
+        Returns True if the power reading is above the threshold.
+        @override
+
+        :rtype: bool
+        '''
+
+        return self.hasPowerReading() \
+            and self.getWattage() > Plug.POWER_USAGE_THRESHOLD_IN_WATT
 
     def turnOn(self, events):
         '''
