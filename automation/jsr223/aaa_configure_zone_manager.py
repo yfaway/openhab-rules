@@ -42,7 +42,7 @@ def initializeZoneManager():
     :rtype: ZoneManager
     '''
     zm = ZoneManager()
-    zones = ZoneParser().parse(items, itemRegistry, zm)
+    zones = ZoneParser().parse(items, itemRegistry, zm._createImmutableInstance())
 
     # actions
     externalZoneActions = [
