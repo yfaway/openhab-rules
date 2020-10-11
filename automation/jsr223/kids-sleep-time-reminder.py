@@ -6,11 +6,8 @@ from core.triggers import when
 from aaa_modules import cast_manager
 from aaa_modules import switch_manager
 
-from org.slf4j import Logger, LoggerFactory
-log = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
-
 @rule("Say the first notice")
-@when("Time cron 0 30 19 1/1 * ? *")
+@when("Time cron 0 45 19 ? * MON-THU,SUN *")
 def sayFirstNotice(event):
     if switch_manager.isAnyFirstFloorLightOn():
         cast_manager.playMessage(createMessageWithTime(
@@ -18,7 +15,7 @@ def sayFirstNotice(event):
                 cast_manager.getFirstFloorCasts())
 
 @rule("Say the second notice and turn off the lights")
-@when("Time cron 0 45 19 1/1 * ? *")
+@when("Time cron 0 50 19 ? * MON-THU,SUN *")
 def saySecondNotice(event):
     if switch_manager.isAnyFirstFloorLightOn():
         cast_manager.playMessage(createMessageWithTime(

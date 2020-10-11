@@ -40,8 +40,18 @@ class Switch(Device):
         def turnOffSwitch():
             zone = self.getZoneManager().getContainingZone(self)
 
-            if not zone.isOccupied([Light], 60):
+            (occupied, device) = zone.isOccupied([Fan, Light], 60)
+            if not occupied:
                 events.sendCommand(self.getItemName(), "OFF")
+                PE.logDebug("{}: turning off {}.".format(
+                            zone.getName(), self.getItemName()))
+            else:
+                self.timer = Timer(self.durationInMinutes * 60, turnOffSwitch)
+                self.timer.start()
+
+                PE.logDebug("{}: {} is in use by {}.".format(
+                            zone.getName(), self.getItemName(), device))
+
 
         self._cancelTimer() # cancel the previous timer, if any.
 

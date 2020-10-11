@@ -1,10 +1,13 @@
 import unittest
+import time
 
 from core.jsr223 import scope
 from org.eclipse.smarthome.core.library.items import SwitchItem
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device_test import MockedEventDispatcher
+from aaa_modules.layout_model.zone import Zone
+from aaa_modules.layout_model.zone_manager import ZoneManager
 
 #from aaa_modules.layout_model.devices import switch
 #reload(switch)
@@ -91,5 +94,22 @@ class LightTest(unittest.TestCase):
     def testIsLowIlluminance_currentIlluminanceBelowThreshold_returnsTrue(self):
         self.light = Light(self.lightItem, 10, 50)
         self.assertTrue(self.light.isLowIlluminance(10))
+
+    def testTimerTurnedOff_validParams_switchIsOff(self):
+        zm = ZoneManager()
+        self.light = Light(self.lightItem, 0.004) # makes it 0.24 sec
+        self.light = self.light.setZoneManager(zm._createImmutableInstance())
+
+        zone = Zone('ff', [self.light])
+        zm.addZone(zone)
+
+
+        self.lightItem.setState(scope.OnOffType.ON)
+        self.light._startTimer(MockedEventDispatcher(scope.itemRegistry))
+        self.assertTrue(self.light._isTimerActive())
+
+        time.sleep(0.3)
+        self.assertFalse(self.light._isTimerActive())
+        self.assertFalse(self.light.isOn())
 
 PE.runUnitTest(LightTest)
