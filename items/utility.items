@@ -1,17 +1,17 @@
 Number BM_Utility_Temperature "Basement Temperature [%.1f °C]"
   (gTemperature)
-  { channel="mqtt:topic:utilityRoom:temperature",
+  { channel="mqtt:topic:myBroker:utilityRoom:temperature",
     wifi="true", autoReport="true" }
 Number BM_Utility_Humidity "Basement Humidity [%d %%]"
   (gHumidity) 
-  { channel="mqtt:topic:utilityRoom:humidity",
+  { channel="mqtt:topic:myBroker:utilityRoom:humidity",
     wifi="true", autoReport="true" }
 
 Number BM_Utility_NaturalGas "Natural Gas Value [%d]"
-  { channel="mqtt:topic:utilityRoom:naturalGasValue",
+  { channel="mqtt:topic:myBroker:utilityRoom:naturalGasValue",
     wifi="true", autoReport="true" }
 
 Switch BM_Utility_NaturalGasState "Natural Gas Detected [%s]"
   (gGasSensorState)
-  { channel="mqtt:topic:utilityRoom:naturalGasState",
+  { channel="mqtt:topic:myBroker:utilityRoom:naturalGasState",
     wifi="true", autoReport="true" }

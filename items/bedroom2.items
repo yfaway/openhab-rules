@@ -1,17 +1,17 @@
 Number SF_Bedroom2_Temperature "Bedroom2 Temperature [%.1f °C]"
   (gTemperature)
-  { channel="mqtt:topic:bedroom2:temperature",
+  { channel="mqtt:topic:myBroker:bedroom2:temperature",
     wifi="true", autoReport="true" }
 Number SF_Bedroom2_Humidity "Bedroom2 Humidity [%d %%]"
   (gHumidity) 
-  { channel="mqtt:topic:bedroom2:humidity",
+  { channel="mqtt:topic:myBroker:bedroom2:humidity",
     wifi="true", autoReport="true" }
 
 Number SF_Bedroom2_Smoke "Smoke Value [%d]"
-  { channel="mqtt:topic:bedroom2:smokeValue",
+  { channel="mqtt:topic:myBroker:bedroom2:smokeValue",
     wifi="true", autoReport="true" }
 
 Switch SF_Bedroom2_SmokeState "Smoke Detected [%s]"
   (gGasSensorState)
-  { channel="mqtt:topic:bedroom2:smokeState",
+  { channel="mqtt:topic:myBroker:bedroom2:smokeState",
     wifi="true", autoReport="true" }

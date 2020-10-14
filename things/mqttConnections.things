@@ -1,6 +1,6 @@
-Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
+Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
 {
-    Thing mqtt:topic:mything {
+    Thing topic xiaomiMotionSensors {
     Channels:
       Type switch : PorchMotionSensor "Porch Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d0002047fe0", commandTopic="zigbee2mqtt/0x00158d0002047fe0", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
@@ -24,15 +24,15 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
         [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
     }
 
-    Thing mqtt:topic:temperatureAndHumidity {
+    Thing topic masterBedroom {
     Channels:
-      Type number : MasterBedroomTemperature "Master Bedroom Temperature"
+      Type number : temperature "Master Bedroom Temperature"
         [stateTopic="esp/master-bedroom/temperature"]
-      Type number : MasterBedroomHumidity "Master Bedroom Humidity"
+      Type number : humidity "Master Bedroom Humidity"
         [stateTopic="esp/master-bedroom/humidity"]
     }
 
-    Thing mqtt:topic:bedroom2 {
+    Thing topic bedroom2 {
     Channels:
       Type number : temperature "Bedroom2 Temperature"
         [stateTopic="esp/bedroom2/temperature/value"]
@@ -45,7 +45,7 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
         [stateTopic="esp/bedroom2/smoke/state", on="1", off="0"]
     }
 
-    Thing mqtt:topic:bedroom3 {
+    Thing topic bedroom3 {
     Channels:
       Type number : temperature "Bedroom3 Temperature"
         [stateTopic="esp/bedroom3/temperature/value"]
@@ -58,7 +58,7 @@ Bridge mqtt:broker:myUnsecureBroker [ host="localhost", secure=false ]
         [stateTopic="esp/bedroom3/smoke/state", on="1", off="0"]
     }
 
-    Thing mqtt:topic:utilityRoom {
+    Thing topic utilityRoom {
     Channels:
       Type number : temperature "Basement Temperature"
         [stateTopic="esp/utility/temperature/value"]

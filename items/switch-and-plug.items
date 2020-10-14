@@ -63,7 +63,7 @@ String FF_Porch_Camera "Porch Camera" (gCamera)
 
 Switch FF_Porch_MotionSensor "Porch Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
-  { channel="mqtt:topic:mything:PorchMotionSensor" }
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PorchMotionSensor" }
 
 Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node2:switch_binary",
@@ -74,7 +74,7 @@ Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
 Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
   (gWallSwitchMotionSensor, FF_Foyer_LightSwitch_MotionSensor) 
-  { channel="mqtt:topic:mything:FoyerMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:FoyerMotionSensor"}
 
 Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
@@ -83,7 +83,7 @@ Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFl
     durationInMinutes="15" }
 Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
-  { channel="mqtt:topic:mything:OfficeMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:OfficeMotionSensor"}
 
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
@@ -94,10 +94,10 @@ Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirst
 Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
   (gWallSwitchMotionSensor, FF_Kitchen_LightSwitch_MotionSensor) 
-  { channel="mqtt:topic:mything:PantryMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryMotionSensor"}
 Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 
-  { channel="mqtt:topic:mything:PantryIlluminance"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}
 
 Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [disable-triggering-from-motion-sensor]
@@ -114,14 +114,14 @@ Switch SF_MasterWashroom_LightSwitch "Master Washroom Light"
     durationInMinutes="10" }
 Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%d]"
   (gIlluminance) 
-  { channel="mqtt:topic:mything:MasterWashroomIlluminance"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomIlluminance"}
 // This wash room has two motion sensors (one in the standing shower area).
 Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:mything:MasterWashroomLightMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomLightMotionSensor"}
 Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomFanMotionSensor"}
 
 Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan" 
   (gWallSwitch, gFanSwitch) 
@@ -129,7 +129,7 @@ Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan"
     durationInMinutes="15" }
 Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:mything:MasterWashroomFanMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomFanMotionSensor"}
 
 Switch SF_MainWashroom_LightSwitch "Main Washroom Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
@@ -138,18 +138,18 @@ Switch SF_MainWashroom_LightSwitch "Main Washroom Light"
     durationInMinutes="15" }
 //Number SF_MainWashroom_LightSwitch_Illuminance "Main Washroom Illuminance [%d]"
 //  (gIlluminance) 
-//  { channel="mqtt:topic:mything:MainWashroomIlluminance"}
+//  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomIlluminance"}
 
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
 
 Switch SF_MainWashroomShower_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
   { channel="zwave:device:9e4ce05e:node19:switch_binary",
     durationInMinutes="15" }
 Switch SF_MainWashroomShower_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:mything:MainWashroomFanMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
 
 Dimmer SF_Lobby_LightSwitch "Lobby Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
@@ -159,7 +159,7 @@ Dimmer SF_Lobby_LightSwitch "Lobby Light"
     durationInMinutes="2" }
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:mything:SecondFloorMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:SecondFloorMotionSensor"}
 
 /**
  * Smart plugs.
