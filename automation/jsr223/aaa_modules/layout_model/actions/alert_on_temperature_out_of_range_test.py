@@ -13,8 +13,8 @@ from aaa_modules.layout_model.zone import Zone, Level, ZoneEvent
 from aaa_modules.layout_model.devices.temperature_sensor import TemperatureSensor
 from aaa_modules.layout_model.device_test import DeviceTest
 
-from aaa_modules.layout_model.actions import alert_on_temperature_out_of_range
-reload(alert_on_temperature_out_of_range)
+#from aaa_modules.layout_model.actions import alert_on_temperature_out_of_range
+#reload(alert_on_temperature_out_of_range)
 
 from aaa_modules.layout_model.actions.alert_on_temperature_out_of_range import AlertOnTemperatureOutOfRange
 

@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.action import action
 from aaa_modules.layout_model.actions.range_violation_alert import RangeViolationAlert
@@ -40,7 +39,7 @@ class AlertOnTemperatureOutOfRange:
             raise ValueError('notificationStepValue must be positive')
 
         self.rangeAlert = RangeViolationAlert(minTemperature, maxTemperature,
-                notificationStepValue, "temperature", "°C", "TEMPERATURE", 30, False)
+                notificationStepValue, "temperature", "C", "TEMPERATURE", 30, False)
 
     def onAction(self, eventInfo):
         zone = eventInfo.getZone()
