@@ -8,6 +8,7 @@ Number BM_Utility_Humidity "Basement Humidity [%d %%]"
     wifi="true", autoReport="true" }
 
 Number BM_Utility_NaturalGas "Natural Gas Value [%d]"
+  (gGasSensorValue)
   { channel="mqtt:topic:myBroker:utilityRoom:naturalGasValue",
     wifi="true", autoReport="true" }
 

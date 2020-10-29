@@ -10,10 +10,8 @@ class GasSensor(Device):
         '''
         Ctor
 
-        :param org.openhab.core.library.items.NumberItem valueItem: \
-            the item to get the value reading
-        :param org.openhab.core.library.items.SwitchItem stateItem: \
-            the item to get the state reading
+        :param NumberItem valueItem: the item to get the value reading
+        :param SwitchItem stateItem: the item to get the state reading
         :raise ValueError: if valueItem is invalid
         '''
         Device.__init__(self, valueItem)
@@ -39,7 +37,13 @@ class GasSensor(Device):
         return PE.isInStateOn(self.stateItem.getState())
 
     def containsItem(self, item):
+        ''' Override. '''
         return super(GasSensor, self).containsItem(item) or self.stateItem == item
+
+    def resetValueStates(self):
+        ''' Override. '''
+        PE.setDecimalState(self.getItem(), -1)
+        PE.setOffState(self.stateItem)
 
 class Co2GasSensor(GasSensor):
     ''' Represents a CO2 sensor.  '''

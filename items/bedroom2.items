@@ -8,6 +8,7 @@ Number SF_Bedroom2_Humidity "Bedroom2 Humidity [%d %%]"
     wifi="true", autoReport="true" }
 
 Number SF_Bedroom2_Smoke "Smoke Value [%d]"
+  (gGasSensorValue)
   { channel="mqtt:topic:myBroker:bedroom2:smokeValue",
     wifi="true", autoReport="true" }
 

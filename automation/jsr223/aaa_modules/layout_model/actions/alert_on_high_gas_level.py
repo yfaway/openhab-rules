@@ -46,6 +46,6 @@ class AlertOnHighGasLevel:
                 alert = Alert.createInfoAlert(alertMessage)
                 AlertManager.processAlert(alert)
 
-            del self.notifiedForGasType[gasType]
+                del self.notifiedForGasType[gasType]
 
         return True

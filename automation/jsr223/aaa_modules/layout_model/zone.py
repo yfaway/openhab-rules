@@ -32,6 +32,7 @@ class ZoneEvent:
     HUMIDITY_CHANGED = 10            # The humidity percentage changed
     TEMPERATURE_CHANGED = 11         # The temperature changed
     GAS_TRIGGER_STATE_CHANGED = 12   # The gas sensor triggering boolean changed 
+    GAS_VALUE_CHANGED = 12           # The gas sensor value changed 
 
 class Zone:
     """

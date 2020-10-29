@@ -24,6 +24,7 @@ DateTime VT_Evening_Time "Evening [%1$tH:%1$tM]"
     { channel="astro:sun:minus90:set#start" }
 
 Group gGasSensorState
+Group gGasSensorValue
 
 /**
  * Security system

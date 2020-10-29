@@ -101,6 +101,8 @@ def initializeZoneManager():
         output += '\n' + str(z)
     PE.logInfo(output)
 
+    zm.startAutoReporWatchDog()
+
     return zm
 
 def addContextVariables(zoneManager):
@@ -178,6 +180,11 @@ def onHumidityChanged(event):
 @when("Member of gGasSensorState changed")
 def onGasSensorStateChanged(event):
     dispatchEvent(ZoneEvent.GAS_TRIGGER_STATE_CHANGED, event)
+
+@rule("Dispatch gas sensor value change event.")
+@when("Member of gGasSensorValue changed")
+def onGasSensorValueChanged(event):
+    dispatchEvent(ZoneEvent.GAS_VALUE_CHANGED, event)
 
 @rule("Dispatch temperature changed event")
 @when("Member of gTemperature changed")

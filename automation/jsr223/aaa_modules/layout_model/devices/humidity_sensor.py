@@ -10,8 +10,7 @@ class HumiditySensor(Device):
         '''
         Ctor
 
-        :param org.eclipse.smarthome.core.library.items.NumberItem humidityItem: \
-            the item to get the humidity reading
+        :param NumberItem humidityItem: the item to get the humidity reading
         :raise ValueError: if humidityItem is invalid
         '''
         Device.__init__(self, humidityItem)
@@ -22,3 +21,7 @@ class HumiditySensor(Device):
         :rtype: int
         '''
         return PE.getIntegerStateValue(self.getItem(), 0)
+
+    def resetValueStates(self):
+        ''' Override. '''
+        PE.setDecimalState(self.getItem(), -1)

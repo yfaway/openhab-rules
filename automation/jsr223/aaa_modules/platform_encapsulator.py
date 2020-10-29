@@ -1,5 +1,6 @@
 from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.core.types import UnDefType
+from org.eclipse.smarthome.core.library.types import DecimalType
 from org.eclipse.smarthome.core.library.items import StringItem
 from org.eclipse.smarthome.core.library.types import OnOffType
 from org.eclipse.smarthome.core.library.types import OpenClosedType
@@ -24,7 +25,7 @@ class PlatformEncapsulator:
     @staticmethod
     def isInStateOn(state):
         '''
-        :param org.eclipse.smarthome.core.types.State state:
+        :param State state:
         :return: True if the state is ON.
         '''
 
@@ -33,7 +34,7 @@ class PlatformEncapsulator:
     @staticmethod
     def isInStateOff(state):
         '''
-        :param org.eclipse.smarthome.core.types.State state:
+        :param State state:
         :return: True if the state is OFF.
         '''
 
@@ -42,7 +43,7 @@ class PlatformEncapsulator:
     @staticmethod
     def isInStateOpen(state):
         '''
-        :param org.eclipse.smarthome.core.types.State state:
+        :param State state:
         :return: True if the state is OPEN.
         '''
 
@@ -51,7 +52,7 @@ class PlatformEncapsulator:
     @staticmethod
     def isInStateClosed(state):
         '''
-        :param org.eclipse.smarthome.core.types.State state:
+        :param State state:
         :return: True if the state is CLOSED.
         '''
 
@@ -60,7 +61,7 @@ class PlatformEncapsulator:
     @staticmethod
     def getIntegerStateValue(item, defaultVal):
         '''
-        :param openHabItem item: 
+        :param Item item: 
         :param * defaultVal: the value to return if the state is not available 
         :return: the integer state value or defaultVal is the state is not
             available.
@@ -71,6 +72,28 @@ class PlatformEncapsulator:
             return item.getState().intValue()
         else:
             return defaultVal
+
+    @staticmethod
+    def setDecimalState(item, decimalValue):
+        '''
+        :param NumberItem item: 
+        :param int decimalValue:
+        '''
+        item.setState(DecimalType(decimalValue))
+
+    @staticmethod
+    def setOnState(item):
+        '''
+        :param SwitchItem item: 
+        '''
+        item.setState(OnOffType.ON)
+
+    @staticmethod
+    def setOffState(item):
+        '''
+        :param SwitchItem item: 
+        '''
+        item.setState(OnOffType.OFF)
 
     @staticmethod
     def getLogger():

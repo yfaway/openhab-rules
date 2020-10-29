@@ -1,3 +1,6 @@
+from threading import Timer
+
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.immutable_zone_manager import ImmutableZoneManager
 from aaa_modules.layout_model.zone import Zone
 from aaa_modules.layout_model.device import Device
@@ -9,6 +12,7 @@ class ZoneManager:
 
     def __init__(self):
         self.zones = {} # map from string zoneId to Zone
+        self.autoReportWatchDogTimer = None
 
     def addZone(self, zone):
         """
@@ -73,6 +77,57 @@ class ZoneManager:
 
         return devices
 
+    def startAutoReporWatchDog(self, timerIntervalInSeconds = 10 * 60,
+            inactiveIntervalInSeconds = 10 * 60):
+        '''
+        Starts a timer that run every timerIntervalInSeconds. When the timer is
+        triggered, it will scan auto-report devices (Devices::isAutoReport),
+        and if any of them hasn't been triggered in the last
+        inactiveIntervalInSeconds, it will reset the item value.
+
+        This method is safe to call multiple times (a new timer will be started
+        and any old timer is cancelled).
+
+        :param int timerIntervalInSeconds: the timer duration
+        :param int inactiveIntervalInSeconds: the inactive duration after which
+            the device's value will be reset.
+        :rtype: None
+        '''
+
+        def resetFailedAutoReportDevices():
+            devices = []
+            for z in self.getZones():
+                [devices.append(d) for d in z.getDevices() \
+                     if d.isAutoReport() and \
+                        not d.wasRecentlyActivated(inactiveIntervalInSeconds)]
+
+            if len(devices) > 0:
+                itemNames = []
+                for d in devices:
+                    itemNames.append(d.getItemName())
+                    d.resetValueStates()
+
+                PE.logWarning(
+                        "AutoReport Watchdog: {} failed auto-report devices: {}".format(
+                            len(devices), itemNames))
+            else:
+                PE.logDebug("AutoReport Watchdog: no failed auto-report devices")
+
+            # restart the timer
+            self.autoReportWatchDogTimer = Timer(
+                    timerIntervalInSeconds, resetFailedAutoReportDevices)
+            self.autoReportWatchDogTimer.start()
+
+        if None != self.autoReportWatchDogTimer \
+                   and self.autoReportWatchDogTimer.isAlive():
+            self.autoReportWatchDogTimer.cancel()
+            self.autoReportWatchDogTimer = None
+
+        self.autoReportWatchDogTimer = Timer(
+                timerIntervalInSeconds, resetFailedAutoReportDevices)
+        self.autoReportWatchDogTimer.start()
+        PE.logInfo("Started auto-report watchdog timer.")
+
     def onTimerExpired(self, events, item):
         """
         Dispatches the timer expiry event to each zone.
@@ -93,7 +148,7 @@ class ZoneManager:
         :return: True if at least one zone processed the event; False otherwise
         :rtype: bool
         """
-        self._updateDeviceLastActivatedTime(item.getName())
+        self._updateDeviceLastActivatedTime(item)
 
         returnValues = [
             z.onSwitchTurnedOn(events, item, self._createImmutableInstance())
@@ -119,7 +174,7 @@ class ZoneManager:
         :return: True if at least one zone processed the event; False otherwise
         :rtype: bool
         """
-        self._updateDeviceLastActivatedTime(item.getName())
+        self._updateDeviceLastActivatedTime(item)
 
         return True
 
@@ -132,7 +187,7 @@ class ZoneManager:
         :param bool enforceItemInZone: if set to true, the actions won't be
             triggered if the zone doesn't contain the item.
         """
-        self._updateDeviceLastActivatedTime(item.getName())
+        self._updateDeviceLastActivatedTime(item)
 
         zm = self._createImmutableInstance()
         returnValues = [
@@ -140,13 +195,13 @@ class ZoneManager:
             for z in self.zones.values()]
         return any(returnValues)
 
-    def _updateDeviceLastActivatedTime(self, itemName):
+    def _updateDeviceLastActivatedTime(self, item):
         """
         Determine if the itemName is associated with a managed device. If yes,
         update it last activated time to the current epoch second.
         """
         for zone in self.zones.values():
-            devices = [d for d in zone.getDevices() if d.getItemName() == itemName]
+            devices = [d for d in zone.getDevices() if d.containsItem(item)]
             for d in devices:
                 d._updateLastActivatedTimestamp()
 

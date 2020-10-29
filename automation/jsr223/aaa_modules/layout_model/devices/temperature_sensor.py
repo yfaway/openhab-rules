@@ -10,8 +10,7 @@ class TemperatureSensor(Device):
         '''
         Ctor
 
-        :param org.eclipse.smarthome.core.library.items.NumberItem temperatureItem: \
-            the item to get the humidity reading
+        :param NumberItem temperatureItem: the item to get the humidity reading
         :raise ValueError: if temperatureItem is invalid
         '''
         Device.__init__(self, temperatureItem)
@@ -22,3 +21,7 @@ class TemperatureSensor(Device):
         :rtype: int
         '''
         return PE.getIntegerStateValue(self.getItem(), 0)
+
+    def resetValueStates(self):
+        ''' Override. '''
+        PE.setDecimalState(self.getItem(), -999)

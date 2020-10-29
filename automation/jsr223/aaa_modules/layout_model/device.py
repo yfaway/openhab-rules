@@ -19,7 +19,7 @@ class Device(object):
         '''
         Ctor
 
-        :param org.eclipse.smarthome.core.items.Item openhabItem:
+        :param Item openhabItem:
         :param bool batteryPowered: indicates if the device is powered by battery.
         :param bool wifi: indicates if the device communicates by WiFi.
         :param bool autoReport: indicates if the device periodically reports
@@ -47,7 +47,7 @@ class Device(object):
         '''
         Returns the backed OpenHab item.
 
-        :rtype: org.eclipse.smarthome.core.items.Item
+        :rtype: Item
         '''
         return self.item
 
@@ -163,6 +163,19 @@ class Device(object):
             been generated.
         '''
         return self.lastActivatedTimestamp
+
+    def resetValueStates(self):
+        '''
+        Reset the underlying OpenHab item state.
+
+        This method can be used when the physical device mal-functions and
+        no longer sends the value update. A watch dog process can determine
+        that the device is offline and invoke this method to reset the states.
+
+        Devices that have more than one underlying OpenHab values must override
+        this method.
+        '''
+        pass
 
     def wasRecentlyActivated(self, seconds):
         '''
