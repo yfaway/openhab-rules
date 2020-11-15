@@ -10,6 +10,7 @@ from aaa_modules.layout_model.devices.illuminance_sensor import IlluminanceSenso
 from aaa_modules.layout_model.devices.plug import Plug
 from aaa_modules.layout_model.devices.switch import Fan, Light
 from aaa_modules.layout_model.devices.temperature_sensor import TemperatureSensor
+from aaa_modules.layout_model.devices.tv import Tv
 
 def generate(zm):
     '''
@@ -43,6 +44,7 @@ def generate(zm):
             (Co2GasSensor, 'Text item={} icon="carbondioxide"'),
             (NaturalGasSensor, 'Text item={} icon="gas"'),
             (SmokeSensor, 'Text item={} icon="fire"'),
+            (Tv, 'Switch item={} icon="screen"'),
         ])
 
         for cls in mappings.keys():

@@ -23,6 +23,7 @@ from aaa_modules.layout_model.devices.network_presence import NetworkPresence
 from aaa_modules.layout_model.devices.plug import Plug
 from aaa_modules.layout_model.devices.switch import Fan, Light
 from aaa_modules.layout_model.devices.temperature_sensor import TemperatureSensor
+from aaa_modules.layout_model.devices.tv import Tv
 
 META_DIMMING_SETTING = 'dimmable'
 
@@ -116,6 +117,8 @@ class ZoneParser:
                 or self._createNaturalGasSensors(
                         deviceName, openHabItem, itemRegistry) \
                 or self._createSmokeSensors(
+                        deviceName, openHabItem, itemRegistry) \
+                or self._createTv(
                         deviceName, openHabItem, itemRegistry)
 
             if None != device:
@@ -210,6 +213,12 @@ class ZoneParser:
         if 'Smoke' == deviceName:
             stateItem = itemRegistry.getItem(openHabItem.getName() + 'State')
             return SmokeSensor(openHabItem, stateItem)
+
+        return None
+
+    def _createTv(self, deviceName, openHabItem, itemRegistry):
+        if 'Tv' == deviceName:
+            return Tv(openHabItem)
 
         return None
 

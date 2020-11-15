@@ -8,8 +8,7 @@ sitemap default label="HV Home"
   Selection item=PARTITION1_ARM_MODE icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
   Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
 
-  //Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
-
+  Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
   Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
   Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 
@@ -24,6 +23,7 @@ sitemap default label="HV Home"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
 			Switch item=FF_GreatRoom_Plug icon="poweroutlet"
 			Switch item=FF_GreatRoom_LightSwitch_MotionSensor
+      Switch item=FF_GreatRoom_Tv icon="screen"
 		} 
 	} 
 	Text label="Office" icon="office" {
@@ -58,6 +58,7 @@ sitemap default label="HV Home"
 	}
 	Text label="Garage" icon="garage" {
 		Frame label="Garage" {
+      Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
 			Text item=FF_Garage_Door icon="door"
 		}
 	}

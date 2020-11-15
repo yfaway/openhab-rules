@@ -1,0 +1,3 @@
+
+Switch FF_GreatRoom_Tv "TV"
+  {channel="sony:scalar:15618683d7d2:system#powerstatus"}
