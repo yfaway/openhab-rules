@@ -3,6 +3,7 @@ from threading import Timer
 
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 from aaa_modules.layout_model.device import Device
+from aaa_modules import time_utilities
 
 class Switch(Device):
     '''
@@ -173,14 +174,19 @@ class Light(Switch):
     ''' Represents a regular light.  '''
 
     def __init__(self, switchItem, durationInMinutes, illuminanceLevel = None,
-            disableTrigeringFromMotionSensor = False):
+            disableTrigeringFromMotionSensor = False,
+            noPrematureTurnOffTimeRange = None):
         '''
         :param int illuminanceLevel: the illuminance level in LUX unit. The \
             light should only be turned on if the light level is below this unit.
+        :param str noPrematureTurnOffTimeRange: optional parameter to define \
+            the time range when the light should not be turned off before its \
+            expiry time.
         '''
         Switch.__init__(self, switchItem, durationInMinutes, 
                 disableTrigeringFromMotionSensor)
-        self._illuminanceLevel = illuminanceLevel
+        self.illuminanceLevel = illuminanceLevel
+        self.noPrematureTurnOffTimeRange = noPrematureTurnOffTimeRange
 
     def getIlluminanceThreshold(self):
         '''
@@ -188,7 +194,7 @@ class Light(Switch):
 
         :rtype: int or None
         '''
-        return self._illuminanceLevel
+        return self.illuminanceLevel
 
     def isLowIlluminance(self, currentIlluminance):
         '''
@@ -205,6 +211,22 @@ class Light(Switch):
 
         return currentIlluminance < self.getIlluminanceThreshold()
 
+    def canBeTurnedOffByAdjacentZone(self):
+        '''
+        Returns True if this light can be turned off when the light of an
+        adjacent zone is turned on.
+        A False value might be desired if movement in the adjacent zone causes
+        the light to be turned off unexpectedly too often.
+
+        :rtype: bool
+        '''
+        if self.noPrematureTurnOffTimeRange == None:
+            return True
+        elif time_utilities.isInTimeRange(self.noPrematureTurnOffTimeRange):
+            return False
+        else:
+            return True
+
     def isOccupied(self, secondsFromLastEvent = 5 * 60):
         '''
         Returns True if the device is on.
@@ -219,7 +241,7 @@ class Light(Switch):
         @override
         '''
         return u"{}, illuminance: {}".format(
-                super(Light, self).__unicode__(), self._illuminanceLevel)
+                super(Light, self).__unicode__(), self.illuminanceLevel)
 
 class Fan(Switch):
     ''' Represents a fan switch.  '''

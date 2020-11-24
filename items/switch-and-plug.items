@@ -69,6 +69,7 @@ Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloo
   { channel="zwave:device:9e4ce05e:node2:switch_binary",
     turnOff="SF_Lobby_LightSwitch",
     disableMotionTriggeringIfOtherLightIsOn="FF_Office_LightSwitch",
+    noPrematureTurnOffTimeRange="6-8",
     durationInMinutes="5"}
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)

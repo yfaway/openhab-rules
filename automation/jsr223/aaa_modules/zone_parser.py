@@ -31,6 +31,8 @@ META_DIMMING_SETTING = 'dimmable'
 # is switched on.
 META_TURN_OFF_OTHER_LIGHT = 'turnOff'
 
+META_NO_PREMATURE_TURN_OFF_TIME_RANGE  = 'noPrematureTurnOffTimeRange'
+
 # A meta data item to indicate that this light shouldn't be turned on when a
 # motion event is triggered, if the other light is already on.
 META_DISABLE_MOTION_TRIGGERING_IF_OTHER_LIGHT_IS_ON = 'disableMotionTriggeringIfOtherLightIsOn'
@@ -265,6 +267,13 @@ class ZoneParser:
                 neighborReverse = [zoneId, masterZoneId, NeighborType.OPEN_SPACE_MASTER]
                 neighbors.append(neighborReverse)
 
+            # noPrematureTurnOffTimeRange
+            noPrematureTurnOffTimeRange = None
+            noPrematureTurnOffTimeRangeMeta = MetadataRegistry.get(
+                    MetadataKey(META_NO_PREMATURE_TURN_OFF_TIME_RANGE, itemName)) 
+            if None != noPrematureTurnOffTimeRangeMeta:
+                noPrematureTurnOffTimeRange = turnOffMeta.value
+
             disableMotionSensorTriggering = openHabItem.hasTag(
                     TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR)
 
@@ -286,11 +295,13 @@ class ZoneParser:
 
                 switch = Dimmer(openHabItem, durationInMinutes, level, timeRanges,
                         ILLUMINANCE_THRESHOLD_IN_LUX,
-                        disableMotionSensorTriggering)
+                        disableMotionSensorTriggering,
+                        noPrematureTurnOffTimeRange)
             else:
                 switch = Light(openHabItem, durationInMinutes, 
                         ILLUMINANCE_THRESHOLD_IN_LUX,
-                        disableMotionSensorTriggering)
+                        disableMotionSensorTriggering,
+                        noPrematureTurnOffTimeRange)
 
             return switch
         elif 'FanSwitch' == deviceName:

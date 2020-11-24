@@ -2,6 +2,7 @@ from aaa_modules.layout_model.zone import ZoneEvent
 from aaa_modules.layout_model.neighbor import Neighbor, NeighborType
 from aaa_modules.layout_model.devices.switch import Light
 from aaa_modules.layout_model.action import action
+from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 @action(events = [ZoneEvent.SWITCH_TURNED_ON], devices = [Light], internal = True, external = True)
 class TurnOffAdjacentZones:
@@ -24,7 +25,8 @@ class TurnOffAdjacentZones:
         adjacentZones = zone.getNeighborZones(zoneManager,
                 [NeighborType.OPEN_SPACE, NeighborType.OPEN_SPACE_SLAVE])
         for z in adjacentZones:
-            if z.isLightOn():
-                z.turnOffLights(events)
+            for l in z.getDevicesByType(Light):
+                if l.isOn() and l.canBeTurnedOffByAdjacentZone():
+                    l.turnOff(events)
         
         return True

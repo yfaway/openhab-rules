@@ -11,14 +11,15 @@ class Dimmer(Light):
 
     def __init__(self, switchItem, durationInMinutes, dimLevel = 5, timeRanges = None,
             illuminanceLevel = None,
-            disableTrigeringFromMotionSensor = False):
+            disableTrigeringFromMotionSensor = False,
+            noPrematureTurnOffTimeRange = None):
         '''
         Constructs a new object.
 
         :raise ValueError: if any parameter is invalid
         '''
         Light.__init__(self, switchItem, durationInMinutes, illuminanceLevel,
-                disableTrigeringFromMotionSensor)
+                disableTrigeringFromMotionSensor, noPrematureTurnOffTimeRange)
 
         if dimLevel < 0 or dimLevel > 100:
             raise ValueError('dimLevel must be between 0 and 100 inclusive')
