@@ -272,7 +272,7 @@ class ZoneParser:
             noPrematureTurnOffTimeRangeMeta = MetadataRegistry.get(
                     MetadataKey(META_NO_PREMATURE_TURN_OFF_TIME_RANGE, itemName)) 
             if None != noPrematureTurnOffTimeRangeMeta:
-                noPrematureTurnOffTimeRange = turnOffMeta.value
+                noPrematureTurnOffTimeRange = noPrematureTurnOffTimeRangeMeta.value
 
             disableMotionSensorTriggering = openHabItem.hasTag(
                     TAG_DISABLE_TRIGGERING_FROM_MOTION_SENSOR)
