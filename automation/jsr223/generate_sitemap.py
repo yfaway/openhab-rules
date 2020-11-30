@@ -11,6 +11,7 @@ from aaa_modules.layout_model.devices.plug import Plug
 from aaa_modules.layout_model.devices.switch import Fan, Light
 from aaa_modules.layout_model.devices.temperature_sensor import TemperatureSensor
 from aaa_modules.layout_model.devices.tv import Tv
+from aaa_modules.layout_model.devices.wled import Wled
 
 def generate(zm):
     '''
@@ -37,6 +38,7 @@ def generate(zm):
             (HumiditySensor, 'Text item={} icon="humidity"'),
             (Door, 'Text item={} icon="door"'),
             (Light, 'Switch item={} icon="light"'),
+            (Wled, 'Switch item={} icon="rgb"'),
             (Fan,  'Switch item={} icon="fan"'),
             (Plug, 'Switch item={} icon="poweroutlet"'),
             (IlluminanceSensor, 'Text item={}'),

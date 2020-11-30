@@ -1,3 +1,29 @@
-
 Switch FF_GreatRoom_Tv "TV"
   {channel="sony:scalar:15618683d7d2:system#powerstatus"}
+
+Color FF_GreatRoom_Wled_MasterControls_XmasTree "Xmas Tree"
+  (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
+	{ channel="wled:wled:XmasTree:masterControls",
+  	durationInMinutes="120" }
+Color FF_GreatRoom_Wled_Primary_XmasTree "Primary Color"    
+  {channel="wled:wled:XmasTree:primaryColor"}
+Color FF_GreatRoom_Wled_Secondary_XmasTree   "Secondary Color"  
+  { channel="wled:wled:XmasTree:secondaryColor" }
+String FF_GreatRoom_Wled_FX_XmasTree       "FX"        <text>
+  { channel="wled:wled:XmasTree:fx" }
+String FF_GreatRoom_Wled_Palette_XmasTree  "Palette"   <colorwheel>    
+  { channel="wled:wled:XmasTree:palettes" }
+String FF_GreatRoom_Wled_Presets_XmasTree  "Preset"    <text> 
+  { channel="wled:wled:XmasTree:presets" }
+Dimmer FF_GreatRoom_Wled_Speed_XmasTree    "FX Speed"  <time>  
+  { channel="wled:wled:XmasTree:speed" }
+Dimmer FF_GreatRoom_Wled_Intensity_XmasTree "FX Intensity" 
+  { channel="wled:wled:XmasTree:intensity" }
+Switch FF_GreatRoom_Wled_PresetCycle_XmasTree "presetCycle" <time> 
+  { channel="wled:wled:XmasTree:presetCycle" }
+Dimmer FF_GreatRoom_Wled_PresetDuration_XmasTree "presetDuration" <time> 
+  { channel="wled:wled:XmasTree:presetDuration" }
+Dimmer FF_GreatRoom_Wled_TransformTime_XmasTree "presetTransformTime" <time> 
+  { channel="wled:wled:XmasTree:transformTime" }
+Switch FF_GreatRoom_Wled_Sleep_XmasTree    "Sleep"     <moon> 
+  { channel="wled:wled:XmasTree:sleep" }

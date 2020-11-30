@@ -24,6 +24,7 @@ from aaa_modules.layout_model.devices.plug import Plug
 from aaa_modules.layout_model.devices.switch import Fan, Light
 from aaa_modules.layout_model.devices.temperature_sensor import TemperatureSensor
 from aaa_modules.layout_model.devices.tv import Tv
+from aaa_modules.layout_model.devices.wled import Wled
 
 META_DIMMING_SETTING = 'dimmable'
 
@@ -314,6 +315,17 @@ class ZoneParser:
                         'Missing durationInMinutes value for {}'.format(itemName))
 
             return Fan(openHabItem, durationInMinutes)
+        elif 'Wled_MasterControls' in deviceName:
+            durationMeta = MetadataRegistry.get(
+                    MetadataKey('durationInMinutes', itemName)) 
+            if None != durationMeta:
+                durationInMinutes = int(durationMeta.value)
+            else:
+                raise ValueError(
+                        'Missing durationInMinutes value for {}'.format(itemName))
+
+            return Wled(openHabItem, durationInMinutes)
+
         elif 'LightSwitch_Illuminance' == deviceName:
             return IlluminanceSensor(openHabItem)
         elif deviceName.endswith('MotionSensor'):

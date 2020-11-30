@@ -21,6 +21,7 @@ sitemap default label="HV Home"
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
 			Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
+      Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="rgb"
 			Switch item=FF_GreatRoom_Plug icon="poweroutlet"
 			Switch item=FF_GreatRoom_LightSwitch_MotionSensor
       Switch item=FF_GreatRoom_Tv icon="screen"
@@ -311,4 +312,23 @@ sitemap default label="HV Home"
 			Text item=BM_Utility_Humidity icon="humidity"
     }
   }
+
+ 	Text label="XmasLights" icon="rgb"{
+    Frame label="XmasLights" {
+ 		  Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree
+      Slider item=FF_GreatRoom_Wled_MasterControls_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_MasterControls_XmasTree
+      Switch item=FF_GreatRoom_Wled_Sleep_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_Primary_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_Secondary_XmasTree
+      Selection item=FF_GreatRoom_Wled_FX_XmasTree
+      Selection item=FF_GreatRoom_Wled_Palette_XmasTree
+      Selection item=FF_GreatRoom_Wled_Presets_XmasTree
+      Default item=FF_GreatRoom_Wled_Speed_XmasTree
+      Default item=FF_GreatRoom_Wled_Intensity_XmasTree
+      Default item=FF_GreatRoom_Wled_PresetCycle_XmasTree
+      Default item=FF_GreatRoom_Wled_PresetDuration_XmasTree
+      Default item=FF_GreatRoom_Wled_TransformTime_XmasTree
+		}
+	}
 }
