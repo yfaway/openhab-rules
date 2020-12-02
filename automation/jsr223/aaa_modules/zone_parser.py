@@ -316,6 +316,9 @@ class ZoneParser:
 
             return Fan(openHabItem, durationInMinutes)
         elif 'Wled_MasterControls' in deviceName:
+            effectItemName = itemName.replace('MasterControls', 'FX')
+            effectItem = itemRegistry.getItem(effectItemName)
+
             durationMeta = MetadataRegistry.get(
                     MetadataKey('durationInMinutes', itemName)) 
             if None != durationMeta:
@@ -324,7 +327,7 @@ class ZoneParser:
                 raise ValueError(
                         'Missing durationInMinutes value for {}'.format(itemName))
 
-            return Wled(openHabItem, durationInMinutes)
+            return Wled(openHabItem, effectItem, durationInMinutes)
 
         elif 'LightSwitch_Illuminance' == deviceName:
             return IlluminanceSensor(openHabItem)
