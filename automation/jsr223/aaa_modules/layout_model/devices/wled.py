@@ -13,7 +13,8 @@ class Wled(Light):
     @see https://github.com/Aircoookie/WLED
     '''
 
-    def __init__(self, masterControlItem, effectItem, durationInMinutes):
+    def __init__(self, masterControlItem, effectItem, primaryColorItem,
+            secondaryColorItem, durationInMinutes):
         '''
         Constructs a new object.
 
@@ -24,6 +25,8 @@ class Wled(Light):
 
         self.effectItem = effectItem
         self.effectTimer = None
+        self.primaryColorItem = primaryColorItem
+        self.secondaryColorItem = secondaryColorItem
 
     def getEffects(self):
         return {0: 'Solid',
@@ -75,17 +78,29 @@ class Wled(Light):
         Creates and returns the timer to change to a random effect
         '''
         def changeEffect():
+            # Randomize the primary and secondary HSB colours
+            # Focus on bright colours (randomize over all Hue range, with
+            # Saturation between 50 and 100%, and full Brightness.
+            primaryColor = "{},{},100".format(
+                    random.choice(range(0, 360)), random.choice(range(50, 100)))
+            events.sendCommand(self.primaryColorItem.getName(), primaryColor)
+
+            secondaryColor = "{},{},100".format(
+                    random.choice(range(0, 360)), random.choice(range(50, 100)))
+            events.sendCommand(self.secondaryColorItem.getName(), secondaryColor)
+
+            # now randomize the effect
             effectId = random.choice(self.getEffects().keys())
             events.sendCommand(self.effectItem.getName(), str(effectId))
 
-            nextDurationInMinute = random.choice(range(3, 7))
+            # start the next timer
+            nextDurationInMinute = random.choice(range(2, 7))
             self.timer = Timer(nextDurationInMinute * 60, changeEffect)
             self.timer.start()
 
         self._cancelTimer() # cancel the previous timer, if any.
 
-        nextDurationInMinute = random.choice(range(1, 3))
-        self.timer = Timer(5, changeEffect) # start timer in 5 secs
+        self.timer = Timer(3, changeEffect) # start timer in 3 secs
         self.timer.start()
 
     def _cancelEffectTimer(self):
