@@ -436,6 +436,9 @@ class ZoneParser:
         if None != openSpaceMeta:
             for neighborId in openSpaceMeta.value.split(','):
                 neighborId = neighborId.strip()
+                # Temporary replacement to align with HABapp zone-apis code.
+                neighborId = neighborId.replace('FF_', '1_')
+                neighborId = neighborId.replace('SF_', '2_')
                 neighbors.append([zone.getId(), neighborId, NeighborType.OPEN_SPACE])
             
         return [zone, neighbors]

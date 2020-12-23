@@ -18,41 +18,57 @@ Group:Switch:OR(ON,OFF) gSecondFloorLightSwitch "Active First Floor Lights [%d]"
 // Used to send an ON/OFF command to all controlled fans
 Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
-String Zone_GreatRoom { level="FF", displayIcon="player", displayOrder="1" }
+String Zone_GreatRoom 
+  { level="FF", displayIcon="player", displayOrder="1",
+    openSpaceSlaveNeighbors="FF_Kitchen" }
 
-String Zone_Office { level="FF", displayIcon="office", displayOrder="2" }
+String Zone_Office 
+  { level="FF", displayIcon="office", displayOrder="2",
+    openSpaceSlaveNeighbors="FF_Foyer" }
 
-String Zone_Kitchen { level="FF", displayIcon="kitchen", displayOrder="3" }
+String Zone_Kitchen 
+  { level="FF", displayIcon="kitchen", displayOrder="3",
+    openSpaceNeighbors="FF_Foyer",
+    openSpaceMasterNeighbors="FF_GreatRoom" }
 
-String Zone_Foyer { level="FF", displayIcon="groundfloor", displayOrder="4" }
+String Zone_Foyer 
+  { level="FF", displayIcon="groundfloor", displayOrder="4",
+    openSpaceMasterNeighbors="FF_Office",
+    openSpaceNeighbors="SF_Lobby" }
 
 String Zone_Porch 
   { level="FF", external="true", displayIcon="groundfloor", displayOrder="20",
-    openSpaceNeighbors="1_Foyer, 1_Office" }
+    openSpaceNeighbors="FF_Foyer, FF_Office" }
 
 String Zone_Garage 
   { level="FF", external="true", displayIcon="garage", displayOrder="21" }
 
 String Zone_Patio 
   { level="FF", external="true", displayIcon="terrace", displayOrder="22",
-		openSpaceNeighbors="1_Kitchen" }
+		openSpaceNeighbors="FF_Kitchen" }
 
 String Zone_Outdoor 
   { level="VT", external="true", displayIcon="garden", displayOrder="23" }
 
-String Zone_MainWashroom { level="SF", displayIcon="bath", displayOrder="30" }
+String Zone_MainWashroom 
+  { level="SF", displayIcon="bath", displayOrder="30",
+    openSpaceNeighbors="SF_Lobby" }
 
 String Zone_MainWashroomShower { level="SF", displayIcon="bath", displayOrder="31" }
 
-String Zone_Lobby { level="SF", displayIcon="corridor", displayOrder="32" }
+String Zone_Lobby 
+  { level="SF", displayIcon="corridor", displayOrder="32",
+    openSpaceNeighbors="FF_Foyer" }
 
 String Zone_MasterBedroom { level="SF", displayIcon="bedroom", displayOrder="33" }
 
-String Zone_MasterWashroom { level="SF", displayIcon="bath", displayOrder="34" }
+String Zone_MasterWashroom 
+  { level="SF", displayIcon="bath", displayOrder="34",
+    openSpaceNeighbors="SF_Lobby" }
 
 String Zone_MasterWashroomShower
   { level="SF", displayIcon="bath", displayOrder="35",
-	  openSpaceNeighbors="2_MasterWashroom" }
+	  openSpaceNeighbors="SF_MasterWashroom" }
 
 String Zone_Bedroom2 { level="SF", displayIcon="bedroom", displayOrder="36" }
 String Zone_Bedroom3 { level="SF", displayIcon="bedroom", displayOrder="37" }
@@ -69,7 +85,7 @@ Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloo
   { channel="zwave:device:9e4ce05e:node2:switch_binary",
     turnOff="SF_Lobby_LightSwitch",
     disableMotionTriggeringIfOtherLightIsOn="FF_Office_LightSwitch",
-    noPrematureTurnOffTimeRange="6-8",
+    noPrematureTurnOffTimeRange="0-23:59",
     durationInMinutes="5"}
 Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
@@ -104,7 +120,8 @@ Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, g
   [disable-triggering-from-motion-sensor]
   { channel="zwave:device:9e4ce05e:node7:switch_binary",
     turnOff="FF_Kitchen_LightSwitch",
-    durationInMinutes="30" }
+    durationInMinutes="30",
+    disableTriggeringFromMotionSensor="true" }
 Group:Switch:OR(ON,OFF) FF_GreatRoom_LightSwitch_MotionSensor 
   (gWallSwitchMotionSensor)
 
