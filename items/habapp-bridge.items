@@ -1,0 +1,7 @@
+
+// These 4 items are used to trigger the Audio and Voice OpenHab actions.
+String AudioVoiceSinkName
+
+String TextToSpeechMessage
+String AudioFileLocation
+String AudioStreamUrl
