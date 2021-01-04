@@ -44,14 +44,28 @@ def onAudioFileLocationChanged(event):
 def onEmailAddressesChanged(event):
     email_addresses = scope.items[event.itemName].toString()
     if email_addresses is not None and email_addresses != '':
-        attachment_urls = scope.items['EmailAttachmentUrls'].toString().split(', ')
-        if attachment_urls == ['']:
+        attachmentState = scope.items['EmailAttachmentUrls']
+        if scope.UnDefType.NULL ==  attachmentState \
+                or scope.UnDefType.UNDEF == attachmentState:
             attachment_urls = []
+        else: 
+            attachment_urls = attachmentState.toString().split(', ')
+
+        bodyState = scope.items['EmailBody']
+        if scope.UnDefType.NULL ==  bodyState or scope.UnDefType.UNDEF == bodyState:
+            body = ''
+        else:
+            body = bodyState.toString()
+
+        PE.logInfo("Sending email to '{}' for subject '{}', body '{}'".format(
+                email_addresses,
+                scope.items['EmailBody'].toString(),
+                scope.items['EmailAttachmentUrls']))
 
         actions.get("mail", "mail:smtp:gmail").sendMail(
                 email_addresses,
                 scope.items['EmailSubject'].toString(),
-                scope.items['EmailBody'].toString(),
+                body,
                 attachment_urls)
 
         # reset the item to wait for the next message.

@@ -108,10 +108,12 @@ Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirst
     turnOff="FF_Foyer_LightSwitch",
     disableMotionTriggeringIfOtherLightIsOn="FF_GreatRoom_LightSwitch",
     durationInMinutes="5" }
-Group:Switch:OR(ON,OFF) FF_Kitchen_LightSwitch_MotionSensor (gWallSwitchMotionSensor)
 Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
-  (gWallSwitchMotionSensor, FF_Kitchen_LightSwitch_MotionSensor) 
+  (gFirstFloorMotionSensors, gWallSwitchMotionSensor) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryMotionSensor"}
+Switch FF_Kitchen_SecurityMotionSensor
+  (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
+  {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
 Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}
@@ -122,8 +124,9 @@ Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, g
     turnOff="FF_Kitchen_LightSwitch",
     durationInMinutes="30",
     disableTriggeringFromMotionSensor="true" }
-Group:Switch:OR(ON,OFF) FF_GreatRoom_LightSwitch_MotionSensor 
-  (gWallSwitchMotionSensor)
+Switch FF_GreatRoom_MotionSensor
+  (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
+  {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
 
 Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
