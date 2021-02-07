@@ -1,4 +1,5 @@
 from core import osgi
+from core.actions import EcobeeAction
 from core.jsr223.scope import actions
 from core.jsr223 import scope
 from core.rules import rule
@@ -7,6 +8,7 @@ from org.eclipse.smarthome.model.script.actions import Audio
 from org.eclipse.smarthome.model.script.actions import Voice
 from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
+ECOBEE_ID = '411921197263'
 SINK_ITEM_NAME = 'AudioVoiceSinkName'
 
 @rule("Play voice TTS message")
@@ -46,7 +48,8 @@ def onEmailAddressesChanged(event):
     if email_addresses is not None and email_addresses != '':
         attachmentState = scope.items['EmailAttachmentUrls']
         if scope.UnDefType.NULL ==  attachmentState \
-                or scope.UnDefType.UNDEF == attachmentState:
+                or scope.UnDefType.UNDEF == attachmentState \
+                or attachmentState.toString() == '':
             attachment_urls = []
         else: 
             attachment_urls = attachmentState.toString().split(', ')
@@ -59,8 +62,8 @@ def onEmailAddressesChanged(event):
 
         PE.logInfo("Sending email to '{}' for subject '{}', body '{}'".format(
                 email_addresses,
-                scope.items['EmailBody'].toString(),
-                scope.items['EmailAttachmentUrls']))
+                scope.items['EmailSubject'].toString(),
+                scope.items['EmailBody']))
 
         actions.get("mail", "mail:smtp:gmail").sendMail(
                 email_addresses,
@@ -70,6 +73,26 @@ def onEmailAddressesChanged(event):
 
         # reset the item to wait for the next message.
         scope.events.sendCommand(event.itemName, '')
+        scope.events.sendCommand("EmailSubject", '')
+        scope.events.sendCommand("EmailBody", '')
+        scope.events.sendCommand("EmailAttachmentUrls", '')
+
+@rule("Change Ecobee thermostat mode.")
+@when("Item EcobeeThermostatHoldMode changed")
+def on_ecobee_thermostat_hold_mode_changed(event):
+    hold_mode = scope.items[event.itemName].toString()
+    if hold_mode is not None and hold_mode != '':
+        EcobeeAction.ecobeeSetHold(ECOBEE_ID, None, None, hold_mode, None,
+                None, None, None)
+
+        scope.events.sendCommand(event.itemName, '')
+
+@rule("Resume Ecobee thermostat.")
+@when("Item EcobeeThermostatResume changed to ON")
+def on_ecobee_thermostat_hold_mode_changed(event):
+    EcobeeAction.ecobeeResumeProgram(ECOBEE_ID, True)
+    scope.events.sendCommand(event.itemName, 'OFF')
+
 
 #scope.events.sendCommand('EmailSubject', 'Test subject')
 #scope.events.sendCommand('EmailBody', 'Test body')
@@ -80,3 +103,6 @@ def onEmailAddressesChanged(event):
 #scope.events.sendCommand('AudioFileLocation', 'bell-outside.wav')
 #scope.events.sendCommand('AudioStreamUrl', "https://wwfm.streamguys1.com/live-mp3")
 #scope.events.sendCommand('TextToSpeechMessage', 'Anna frowns a lot to day')
+
+#scope.events.sendCommand('EcobeeThermostatHoldMode', "away")
+#scope.events.sendCommand('EcobeeThermostatResume', "ON")

@@ -6,9 +6,13 @@ String TextToSpeechMessage
 String AudioFileLocation
 String AudioStreamUrl
 
-// The following items are to support the email action.
+// The following items support the email action.
 // The rule will listen to change on the EmailAddresses field, so ensure to set the other fields first.
 String EmailAddresses // comma separated list of email addresses
 String EmailSubject 
 String EmailBody
 String EmailAttachmentUrls // comma separated list of email addresses
+
+// The following items support the Ecobee action.
+String EcobeeThermostatHoldMode
+Switch EcobeeThermostatResume
