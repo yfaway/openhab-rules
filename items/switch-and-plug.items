@@ -193,6 +193,6 @@ Switch FF_GreatRoom_Plug "Great Room Plug" (gPlug)
 
 // Not include in gPlug group as that intefere with the PC's suspense function
 Switch FF_Office_Plug "Office Plug"
-  { channel="tplinksmarthome:hs110:office:switch"}
+  { alwaysOn="true", channel="tplinksmarthome:hs110:office:switch"}
 Number FF_Office_Plug_Power "Office Plug Power [%d Watts]" (gPlugPower)
   { channel="tplinksmarthome:hs110:office:power"}
