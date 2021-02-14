@@ -4,12 +4,14 @@ from core.jsr223.scope import actions
 from core.jsr223 import scope
 from core.rules import rule
 from core.triggers import when
+from org.slf4j import Logger, LoggerFactory
 from org.eclipse.smarthome.model.script.actions import Audio
 from org.eclipse.smarthome.model.script.actions import Voice
-from aaa_modules.platform_encapsulator import PlatformEncapsulator as PE
 
 ECOBEE_ID = '411921197263'
 SINK_ITEM_NAME = 'AudioVoiceSinkName'
+
+logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
 
 @rule("Play voice TTS message")
 @when("Item TextToSpeechMessage changed")
@@ -60,7 +62,7 @@ def onEmailAddressesChanged(event):
         else:
             body = bodyState.toString()
 
-        PE.logInfo("Sending email to '{}' for subject '{}', body '{}'".format(
+        logger.info("Sending email to '{}' for subject '{}', body '{}'".format(
                 email_addresses,
                 scope.items['EmailSubject'].toString(),
                 scope.items['EmailBody']))
