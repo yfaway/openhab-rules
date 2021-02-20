@@ -62,7 +62,7 @@ def onEmailAddressesChanged(event):
         else:
             body = bodyState.toString()
 
-        logger.info("Sending email to '{}' for subject '{}', body '{}'".format(
+        logger.info(u"Sending email to '{}' for subject '{}', body '{}'".format(
                 email_addresses,
                 scope.items['EmailSubject'].toString(),
                 scope.items['EmailBody']))
