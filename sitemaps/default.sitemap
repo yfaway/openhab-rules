@@ -38,9 +38,9 @@ sitemap default label="HV Home"
 		Frame label="Kitchen" {
 			Text item=FF_Kitchen_Humidity icon="humidity"
 			Switch item=FF_Kitchen_LightSwitch icon="light"
-			Text item=FF_Kitchen_LightSwitch_Illuminance
-			Switch item=FF_Kitchen_LightSwitch_MotionSensor
+			Switch item=FF_Kitchen_SecurityMotionSensor
 			Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor
+			Text item=FF_Kitchen_LightSwitch_Illuminance
 		}
 	}  
 	Text label="Foyer" icon="groundfloor" {
@@ -49,6 +49,7 @@ sitemap default label="HV Home"
 			Switch item=FF_Foyer_LightSwitch icon="light"
 			Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor
 			Switch item=FF_Foyer_LightSwitch_MotionSensor
+			Text item=FF_Foyer_LightSwitch_Illuminance
 		}
 	} 
 	Text label="Porch" icon="groundfloor" {
@@ -90,6 +91,7 @@ sitemap default label="HV Home"
 		Frame label="Lobby" {
 			Switch item=SF_Lobby_LightSwitch icon="light"
 			Switch item=SF_Lobby_LightSwitch_MotionSensor
+			Text item=SF_Lobby_LightSwitch_Illuminance
 		}
 	}  
 	Text label="MasterBedroom" icon="bedroom" {

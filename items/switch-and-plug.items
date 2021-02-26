@@ -92,6 +92,9 @@ Group:Switch:OR(ON,OFF) FF_Foyer_LightSwitch_MotionSensor
 Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
   (gWallSwitchMotionSensor, FF_Foyer_LightSwitch_MotionSensor) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:FoyerMotionSensor"}
+Number FF_Foyer_LightSwitch_Illuminance "Foyer Closet Illuminance [%d]"
+  (gIlluminance) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:FoyerIlluminance"}
 
 Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
@@ -180,7 +183,10 @@ Dimmer SF_Lobby_LightSwitch "Lobby Light"
     durationInMinutes="2" }
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:SecondFloorMotionSensor"}
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:SecondFloorLobbyMotionSensor"}
+Number SF_Lobby_LightSwitch_Illuminance "Second Floor Lobby Illuminance [%d]"
+  (gIlluminance) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:SecondFloorLobbyIlluminance"}
 
 /**
  * Smart plugs.
