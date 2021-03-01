@@ -134,6 +134,9 @@ sitemap default label="HV Home"
 			Text item=BM_Utility_Temperature icon="temperature"
 			Text item=BM_Utility_Humidity icon="humidity"
 			Text item=BM_Utility_NaturalGas icon="gas"
+
+			Text item=BM_Utility_WaterLeakState icon="water"
+			Text item=BM_Utility_WaterLeakBattery icon="battery"
 		}
 	}
 

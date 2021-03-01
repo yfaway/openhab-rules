@@ -73,5 +73,13 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="esp/utility/naturalGas/value"]
       Type switch : naturalGasState "Basement Natural Gas State"
         [stateTopic="esp/utility/naturalGas/state", on="1", off="0"]
+
+      Type switch : leakSensorState "Basement Leak Sensor state"
+        [stateTopic="zigbee2mqtt/0x00158d0002482d69", 
+         transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
+
+      Type number : leakSensorBattery "Basement Leak Sensor battery"
+        [stateTopic="zigbee2mqtt/0x00158d0002482d69",
+         transformationPattern="JSONPATH:$.battery"]
     }
 }

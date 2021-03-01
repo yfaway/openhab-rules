@@ -16,3 +16,11 @@ Switch BM_Utility_NaturalGasState "Natural Gas Detected [%s]"
   (gGasSensorState)
   { channel="mqtt:topic:myBroker:utilityRoom:naturalGasState",
     wifi="true", autoReport="true" }
+
+
+Switch BM_Utility_WaterLeakState "Water Leak Detected [%s]"
+  { channel="mqtt:topic:myBroker:utilityRoom:leakSensorState" }
+
+Number BM_Utility_WaterLeakBattery "Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:utilityRoom:leakSensorBattery" }
+
