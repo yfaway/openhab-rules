@@ -48,3 +48,18 @@ Switch FF_Virtual_NetworkPresenceOwner3Phone "Owner3's Phone" <network>
 
 Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" 
   (gPresence) {expire="5m,command=OFF"}
+
+/**
+ * Astro items.
+ */
+String FF_Virtual_TimeOfDay "Current Time of Day [%s]"
+DateTime VT_Sunrise_Time "Sunrise [%1$tH:%1$tM]"
+    { channel="astro:sun:home:rise#start" }
+DateTime VT_Sunset_Time  "Sunset [%1$tH:%1$tM]"  
+    { channel="astro:sun:home:set#start" }
+
+// TODO figure out how to do this with offsets instead of a new Thing
+DateTime VT_Evening_Time "Evening [%1$tH:%1$tM]" 
+    { channel="astro:sun:minus90:set#start" }
+
+

@@ -2,7 +2,7 @@
  * From Design Pattern: Time of Day
  * https://community.openhab.org/t/design-pattern-time-of-day/15407
  *
- * Set the state of VT_Time_Of_Day to one of the followings: MORNING (6AM),
+ * Set the state of FF_Virtual_TimeOfDay to one of the followings: MORNING (6AM),
  * DAY (sunrise), AFTERNOON (90' before sunset), EVENING (sunset),
  * NIGHT (11PM), BED (before morning). 
  *
@@ -42,5 +42,5 @@ then
   }
 
   logInfo(LOGGER_NAME, "Calculated time of day is: " + curr)
-  VT_Time_Of_Day.sendCommand(curr)
+  FF_Virtual_TimeOfDay.sendCommand(curr)
 end
