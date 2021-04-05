@@ -1,0 +1,62 @@
+/**
+ * Defines all the zones and their relationship.
+ */
+
+String Zone_GreatRoom 
+  { level="FF", displayIcon="player", displayOrder="1",
+    openSpaceSlaveNeighbors="FF_Kitchen" }
+
+String Zone_Office 
+  { level="FF", displayIcon="office", displayOrder="2",
+    openSpaceSlaveNeighbors="FF_Foyer" }
+
+String Zone_Kitchen 
+  { level="FF", displayIcon="kitchen", displayOrder="3",
+    openSpaceNeighbors="FF_Foyer",
+    openSpaceMasterNeighbors="FF_GreatRoom" }
+
+String Zone_Foyer 
+  { level="FF", displayIcon="groundfloor", displayOrder="4",
+    openSpaceMasterNeighbors="FF_Office",
+    openSpaceNeighbors="SF_Lobby" }
+
+String Zone_Porch 
+  { level="FF", external="true", displayIcon="groundfloor", displayOrder="20",
+    openSpaceNeighbors="FF_Foyer, FF_Office" }
+
+String Zone_Garage 
+  { level="FF", external="true", displayIcon="garage", displayOrder="21" }
+
+String Zone_Patio 
+  { level="FF", external="true", displayIcon="terrace", displayOrder="22",
+		openSpaceNeighbors="FF_Kitchen" }
+
+String Zone_Outdoor 
+  { level="VT", external="true", displayIcon="garden", displayOrder="23" }
+
+String Zone_MainWashroom 
+  { level="SF", displayIcon="bath", displayOrder="30",
+    openSpaceNeighbors="SF_Lobby" }
+
+String Zone_MainWashroomShower { level="SF", displayIcon="bath", displayOrder="31" }
+
+String Zone_Lobby 
+  { level="SF", displayIcon="corridor", displayOrder="32",
+    openSpaceNeighbors="FF_Foyer" }
+
+String Zone_MasterBedroom { level="SF", displayIcon="bedroom", displayOrder="33" }
+
+String Zone_MasterWashroom 
+  { level="SF", displayIcon="bath", displayOrder="34",
+    openSpaceNeighbors="SF_Lobby" }
+
+String Zone_MasterWashroomShower
+  { level="SF", displayIcon="bath", displayOrder="35",
+	  openSpaceNeighbors="SF_MasterWashroom" }
+
+String Zone_Bedroom2 { level="SF", displayIcon="bedroom", displayOrder="36" }
+String Zone_Bedroom3 { level="SF", displayIcon="bedroom", displayOrder="37" }
+
+String Zone_Utility { level="BM", displayIcon="groundfloor", displayOrder="40" }
+
+String Zone_Virtual { level="FF" }

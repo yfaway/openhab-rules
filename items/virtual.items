@@ -1,17 +1,15 @@
 /**
- * Presence states.
+ * Vacation state; purely for displaying in the sitemap.
  */
-Switch VT_In_Vacation "In Vacation [%s]" <vacation>
+Switch Out_Vacation "In Vacation [%s]" <vacation>
 
-// When changes to OFF, arm away
-Switch VT_Arm_Vacation {expire="60m,command=OFF"}
-
-// When changes to OFF and if system is not in ARMED mode, determine if
-// anyone is presence; if no, arm away.
-Switch VT_Arm_Away {expire="10m,command=OFF"}
+/**
+ * Indicate if light simulation is running; purely for displaying in the sitemap.
+ */
+Switch Out_Light_Simulation "Light Simulation [%s]" <light>
 
 // https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html
-DateTime VT_Last_Presence_Timestamp "Last Presence [%1$ta %1$tb %1$td %1$tI:%1$tM %1$tp]"
+DateTime Out_Last_Presence_Timestamp "Last Presence [%1$ta %1$tb %1$td %1$tI:%1$tM %1$tp]"
 
 Group:Switch:AND(OFF,ON) gPresence "Someone is at home"
 
@@ -32,8 +30,6 @@ Switch Presence_Owner1_Just_Got_Home "Owner1 just got home" <network>
   {expire="5m,command=OFF"}
 Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network> 
   {expire="5m,command=OFF"}
-
-String Zone_Virtual { level="FF" }
 
 Group gNetworkPresence
 Switch FF_Virtual_NetworkPresenceOwner1Phone "Owner1's Phone" <network> 

@@ -1,9 +1,9 @@
 sitemap default label="HV Home"
 {
   Text item=gPresence icon="presence"
-  Text item=VT_In_Vacation visibility=[VT_In_Vacation==ON]
-  Text item=VT_Light_Simulation visibility=[VT_Light_Simulation==ON]
-  Text item=VT_Last_Presence_Timestamp visibility=[VT_In_Vacation==ON]
+  Text item=Out_Vacation visibility=[Out_Vacation==ON]
+  Text item=Out_Light_Simulation visibility=[Out_Light_Simulation==ON]
+  Text item=Out_Last_Presence_Timestamp visibility=[Out_Vacation==ON]
 
   Selection item=FF_Foyer_AlarmPartition_ArmMode icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
   Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
