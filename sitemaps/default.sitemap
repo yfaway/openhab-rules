@@ -18,6 +18,8 @@ sitemap default label="HV Home"
 /** BEGIN AUTO-GENERATED SITEMAP **/
 	Text label="GreatRoom" icon="player" {
 		Frame label="GreatRoom" {
+      Default item=FF_GreatRoom_ChromeCastPlayer
+      Default item=FF_GreatRoom_ChromeCastVolume
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
 			Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
@@ -102,6 +104,8 @@ sitemap default label="HV Home"
 	}
 	Text label="MasterWashroom" icon="bath" {
 		Frame label="MasterWashroom" {
+      Default item=SF_MasterWashroom_ChromeCastPlayer
+      Default item=SF_MasterWashroom_ChromeCastVolume
 			Switch item=SF_MasterWashroom_LightSwitch icon="light"
 			Text item=SF_MasterWashroom_LightSwitch_Illuminance
 			Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor

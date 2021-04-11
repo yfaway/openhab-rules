@@ -10,7 +10,7 @@ Group gCastVolume
 Group gCastPlayer
 
 String FF_GreatRoom_ChromeCast { sinkName = "chromecast:audio:greatRoom" }
-Player FF_GreatRoom_ChromeCastPlayer "Control" (gCastPlayer)
+Player FF_GreatRoom_ChromeCastPlayer "Player" (gCastPlayer)
   { channel="chromecast:audio:greatRoom:control" }
 Dimmer FF_GreatRoom_ChromeCastVolume "Volume" (gCastVolume)
   { channel="chromecast:audio:greatRoom:volume" }
