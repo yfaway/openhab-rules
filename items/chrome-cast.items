@@ -30,7 +30,7 @@ String FF_GreatRoom_ChromeCastAppId "App Id [%s]"
   { channel="chromecast:audio:greatRoom:appId" }
 
 String SF_MasterBedroom_ChromeCast { sinkName = "chromecast:audio:masterBedroom" }
-Player SF_MasterBedroom_ChromeCastPlayer "Control" (gCastPlayer)
+Player SF_MasterBedroom_ChromeCastPlayer "Player" (gCastPlayer)
   { channel="chromecast:audio:masterBedroom:control" }
 Dimmer SF_MasterBedroom_ChromeCastVolume "Volume" (gCastVolume)
   { channel="chromecast:audio:masterBedroom:volume" }
@@ -50,7 +50,7 @@ String SF_MasterBedroom_ChromeCastAppId "App Id [%s]"
   { channel="chromecast:audio:masterBedroom:appId" }
 
 String SF_MasterWashroom_ChromeCast { sinkName = "chromecast:audio:masterBathroom" }
-Player SF_MasterWashroom_ChromeCastPlayer "Control" (gCastPlayer)
+Player SF_MasterWashroom_ChromeCastPlayer "Player" (gCastPlayer)
   { channel="chromecast:audio:masterBathroom:control" }
 Dimmer SF_MasterWashroom_ChromeCastVolume "Volume" (gCastVolume)
   { channel="chromecast:audio:masterBathroom:volume" }

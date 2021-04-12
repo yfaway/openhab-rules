@@ -1,0 +1,22 @@
+Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
+  { channel="zwave:device:9e4ce05e:node2:switch_binary",
+    turnOff="SF_Lobby_LightSwitch",
+    disableMotionTriggeringIfOtherLightIsOn="FF_Office_LightSwitch",
+    noPrematureTurnOffTimeRange="0-23:59",
+    durationInMinutes="5"}
+Switch FF_Foyer_LightSwitch_ClosetMotionSensor "Foyer Closet Motion Sensor"
+  (gWallSwitchMotionSensor) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:FoyerMotionSensor"}
+
+// Treats the porch door open/close state as a motion sensor.
+Switch FF_Foyer_PorchDoorMotionSensor
+  {channel="dscalarm:zone:706cd89d:zone1:zone_tripped"}
+
+// Treats the door to garage open/close state as a motion sensor.
+Switch FF_Foyer_DoorMotionSensor
+  {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
+
+Number FF_Foyer_LightSwitch_Illuminance "Foyer Closet Illuminance [%d]"
+  (gIlluminance) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:FoyerIlluminance"}
+

@@ -1,6 +1,25 @@
+Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
+  [disable-triggering-from-motion-sensor]
+  { channel="zwave:device:9e4ce05e:node7:switch_binary",
+    turnOff="FF_Kitchen_LightSwitch",
+    durationInMinutes="30",
+    disableTriggeringFromMotionSensor="true" }
+
+Switch FF_GreatRoom_MotionSensor
+  (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
+  {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
+
+// Treats the TV status as a motion sensor.
+Switch FF_GreatRoom_TvMotionSensor "TV as Motion Sensor"
+  {channel="sony:scalar:15618683d7d2:system#powerstatus"}
+
+Switch FF_GreatRoom_Plug "Great Room Plug" (gPlug)
+  { channel="tplinksmarthome:hs100:greatroom:switch"}
+
 Switch FF_GreatRoom_Tv "TV"
   {channel="sony:scalar:15618683d7d2:system#powerstatus"}
 
+// WLED light
 Color FF_GreatRoom_Wled_MasterControls_XmasTree "Xmas Tree"
   (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
 	{ channel="wled:wled:XmasTree:masterControls",

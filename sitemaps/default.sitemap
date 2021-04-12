@@ -50,7 +50,6 @@ sitemap default label="HV Home"
 			Text item=FF_Foyer_Door icon="door"
 			Switch item=FF_Foyer_LightSwitch icon="light"
 			Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor
-			Switch item=FF_Foyer_LightSwitch_MotionSensor
 			Text item=FF_Foyer_LightSwitch_Illuminance
 		}
 	} 
