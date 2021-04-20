@@ -1,4 +1,5 @@
 services
+**/readme.txt
 things/camera.things
 things/mail.things
 transform/owner-email-addresses.map

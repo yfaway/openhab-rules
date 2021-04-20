@@ -4,27 +4,49 @@ any links from an Item before it is removed.
 """
 __all__ = ["add_item", "remove_item"]
 
+try:
+    import typing as t
+    if t.TYPE_CHECKING:
+        basestring = str
+        unicode = str
+        try:
+            from org.openhab.core.items import (
+                ItemBuilderFactory as ohItemBuilderFactory,
+                ManagedItemProvider as ohManagedItemProvider,
+            )
+        except:
+            from org.eclipse.smarthome.core.items import (
+                ItemBuilderFactory as ohItemBuilderFactory,
+                ManagedItemProvider as ohManagedItemProvider,
+            )
+except:
+    pass
+
 from core.jsr223.scope import scriptExtension, itemRegistry
-scriptExtension.importPreset(None)
+
+try:
+    scriptExtension.importPreset(None)
+except:
+    pass
 
 import core
 from core import osgi
-from core.log import logging, LOG_PREFIX
+from core.log import getLogger
 from core.links import remove_all_links
 
 ItemBuilderFactory = osgi.get_service(
         "org.openhab.core.items.ItemBuilderFactory"
     ) or osgi.get_service(
         "org.eclipse.smarthome.core.items.ItemBuilderFactory"
-    )
+    ) # type: ohItemBuilderFactory
 
 ManagedItemProvider = osgi.get_service(
         "org.openhab.core.items.ManagedItemProvider"
     ) or osgi.get_service(
         "org.eclipse.smarthome.core.items.ManagedItemProvider"
-    )
+    ) # type: ohManagedItemProvider
 
-log = logging.getLogger("{}.core.items".format(LOG_PREFIX))
+log = getLogger("core.items")
 
 def add_item(item_or_item_name, item_type=None, category=None, groups=None, label=None, tags=[], gi_base_type=None, group_function=None):
     """

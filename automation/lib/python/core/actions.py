@@ -17,33 +17,46 @@ from core import osgi
 
 __all__ = []
 
-oh1_actions = osgi.find_services("org.openhab.core.scriptengine.action.ActionService", None) or []
-oh2_actions = osgi.find_services("org.eclipse.smarthome.model.script.engine.action.ActionService", None) or []
+OH1_ACTIONS = osgi.find_services("org.openhab.core.scriptengine.action.ActionService", None) or []
+OH2_ACTIONS = osgi.find_services("org.openhab.core.model.script.engine.action.ActionService", None) or osgi.find_services("org.eclipse.smarthome.model.script.engine.action.ActionService", None) or []
 
-_module = sys.modules[__name__]
+_MODULE = sys.modules[__name__]
 
-for s in oh1_actions + oh2_actions:
-    action_class = s.actionClass
+for action in OH1_ACTIONS + OH2_ACTIONS:
+    action_class = action.actionClass
     name = str(action_class.simpleName)
-    setattr(_module, name, action_class)
+    setattr(_MODULE, name, action_class)
     __all__.append(name)
 
 try:
     from org.openhab.core.model.script.actions import Exec
     from org.openhab.core.model.script.actions import HTTP
-    from org.openhab.core.model.script.actions import LogAction
     from org.openhab.core.model.script.actions import Ping
     from org.openhab.core.model.script.actions import ScriptExecution
 except:
     from org.eclipse.smarthome.model.script.actions import Exec
     from org.eclipse.smarthome.model.script.actions import HTTP
-    from org.eclipse.smarthome.model.script.actions import LogAction
     from org.eclipse.smarthome.model.script.actions import Ping
     from org.eclipse.smarthome.model.script.actions import ScriptExecution
 
-static_imports = [Exec, HTTP, LogAction, Ping]
+try:
+    # OH3
+    from org.openhab.core.model.script.actions import Log
+    LogAction = Log
+except:
+    try:
+        # OH2 post ESH merge
+        from org.openhab.core.model.script.actions import LogAction
+        Log = LogAction
+    except:
+        # OH2 pre ESH merge
+        from org.eclipse.smarthome.model.script.actions import LogAction
+        Log = LogAction
 
-for s in static_imports:
-    name = str(s.simpleName)
-    setattr(_module, name, s)
+
+STATIC_IMPORTS = [Exec, HTTP, Log, LogAction, Ping, ScriptExecution]
+
+for action in STATIC_IMPORTS:
+    name = str(action.simpleName)
+    setattr(_MODULE, name, action)
     __all__.append(name)

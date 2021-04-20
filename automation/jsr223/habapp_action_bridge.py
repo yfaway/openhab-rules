@@ -1,17 +1,20 @@
+from java.time import ZonedDateTime
+
 from core import osgi
-from core.actions import EcobeeAction
+#from core.actions import EcobeeAction
+
 from core.jsr223.scope import actions
 from core.jsr223 import scope
 from core.rules import rule
 from core.triggers import when
 from org.slf4j import Logger, LoggerFactory
-from org.eclipse.smarthome.model.script.actions import Audio
-from org.eclipse.smarthome.model.script.actions import Voice
+from org.openhab.core.model.script.actions import Audio
+from org.openhab.core.model.script.actions import Voice
 
 ECOBEE_ID = '411921197263'
 SINK_ITEM_NAME = 'AudioVoiceSinkName'
 
-logger = LoggerFactory.getLogger("org.eclipse.smarthome.model.script.Rules")
+logger = LoggerFactory.getLogger("org.openhab.core.model.script.Rules")
 
 @rule("Play voice TTS message")
 @when("Item TextToSpeechMessage changed")

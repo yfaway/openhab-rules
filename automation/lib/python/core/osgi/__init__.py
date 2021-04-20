@@ -3,6 +3,7 @@ Provides utility functions for retrieving, registering and removing OSGi
 services.
 """
 __all__ = [
+    'REGISTERED_SERVICES',
     'get_service',
     'find_services',
     'register_service',
@@ -11,11 +12,13 @@ __all__ = [
 
 from core.jsr223.scope import scriptExtension
 from org.osgi.framework import FrameworkUtil
+from core.log import getLogger
 
-_bundle = FrameworkUtil.getBundle(type(scriptExtension))
-bundle_context = _bundle.getBundleContext() if _bundle else None
+_BUNDLE = FrameworkUtil.getBundle(type(scriptExtension))
+BUNDLE_CONTEXT = _BUNDLE.getBundleContext() if _BUNDLE else None
+REGISTERED_SERVICES = {}
+LOG = getLogger("core.osgi")
 
-registered_services = {}
 
 def get_service(class_or_name):
     """
@@ -28,31 +31,35 @@ def get_service(class_or_name):
     Returns:
         OSGi service or None: the requested OSGi service or None
     """
-    if bundle_context:
+    if BUNDLE_CONTEXT:
         classname = class_or_name.getName() if isinstance(class_or_name, type) else class_or_name
-        ref = bundle_context.getServiceReference(classname)
-        return bundle_context.getService(ref) if ref else None
+        ref = BUNDLE_CONTEXT.getServiceReference(classname)
+        return BUNDLE_CONTEXT.getService(ref) if ref else None
     else:
         return None
 
-def find_services(class_name, filter):
+
+def find_services(class_name, service_filter):
     """
     This function finds the specified OSGi service.
 
     Args:
         class_or_name (class or str): the class or class name of the service to
             get
-        filter (str): the filter expression or None for all services
+        service_filter (str): the filter expression or None for all services
 
     Returns:
         list: a list of matching OSGi services
     """
-    if bundle_context:
-        refs = bundle_context.getAllServiceReferences(class_name, filter)
-        if refs:
-            return [bundle_context.getService(ref) for ref in refs]
+    if BUNDLE_CONTEXT:
+        references = BUNDLE_CONTEXT.getServiceReferences(class_name, service_filter)
+        if references:
+            return [BUNDLE_CONTEXT.getService(reference) for reference in references]
+        else:
+            return []
     else:
         return None
+
 
 def register_service(service, interface_names, properties=None):
     """
@@ -69,15 +76,18 @@ def register_service(service, interface_names, properties=None):
         unregister the service
     """
     if properties:
-        import java.util
-        p = java.util.Hashtable()
-        for k, v in properties.iteritems():
-            p.put(k, v)
-        properties = p
-    reg = bundle_context.registerService(interface_names, service, properties)
+        from java.util import Hashtable
+        properties_hashmap = Hashtable()
+        for key, value in properties.iteritems():
+            properties_hashmap.put(key, value)
+        properties = properties_hashmap
+    registered_service = BUNDLE_CONTEXT.registerService(interface_names, service, properties)
     for name in interface_names:
-        registered_services[name] = (service, reg)
-    return reg
+        REGISTERED_SERVICES[name] = (service, registered_service)
+    #LOG.debug("Registered service: {}".format(service))
+    #LOG.debug("REGISTERED_SERVICES: {}".format(REGISTERED_SERVICES))
+    return registered_service
+
 
 def unregister_service(service):
     """
@@ -86,9 +96,10 @@ def unregister_service(service):
     Args:
         service (java.lang.Object): the service to unregister
     """
-    keys = registered_services.keys()
+    keys = REGISTERED_SERVICES.keys()
     for key in keys:
-        registered_service, reg = registered_services[key]
-        if service == registered_service:
-            del registered_services[key]
-            reg.unregister()
+        service_object, registered_service = REGISTERED_SERVICES[key]
+        if service == service_object:
+            LOG.debug("Unregistered service: {}".format(key))
+            del REGISTERED_SERVICES[key]
+            registered_service.unregister()

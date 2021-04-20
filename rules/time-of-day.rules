@@ -1,6 +1,6 @@
 /**
  * From Design Pattern: Time of Day
- * https://community.openhab.org/t/design-pattern-time-of-day/15407
+ * https://community.openhab.org/t/design-pattern-time-of-day/15407/622
  *
  * Set the state of FF_Virtual_TimeOfDay to one of the followings: MORNING (6AM),
  * DAY (sunrise), AFTERNOON (90' before sunset), EVENING (sunset),
@@ -9,38 +9,55 @@
  * Depenency: astro binding.
  */
 
-val LOGGER_NAME = "TimeOfTheDay"
+val logName = "Time Of Day"
 
 rule "Calculate time of day state" 
 when
-  System started or
+  System started or // run at system start in case the time changed when OH was offline
   Channel 'astro:sun:home:rise#event'    triggered START or
   Channel 'astro:sun:home:set#event'     triggered START or
   Channel 'astro:sun:minus90:set#event'  triggered START or
   Channel 'astro:sun:minus120:set#event' triggered START or
   Channel 'astro:sun:minus150:set#event' triggered START or
-  Time cron "0 1 0 * * ? *" or
+  Time cron "0 1 0 * * ? *" or // one minute after midnight so give Astro time to calculate the new day's times
   Time cron "0 0 6 * * ? *" or
   Time cron "0 0 23 * * ? *"
 then
 
-  val long morningStart   = now.withTimeAtStartOfDay.plusHours(6).millis
-  val long dayStart       = (VT_Sunrise_Time.state as DateTimeType).getZonedDateTime.toInstant.toEpochMilli
-  val long eveningStart   = (VT_Sunset_Time.state as DateTimeType).getZonedDateTime.toInstant.toEpochMilli
-  val long nightStart     = now.withTimeAtStartOfDay.plusHours(23).millis
-  val long bedStart       = now.withTimeAtStartOfDay.millis
-  val long afternoonStart = (VT_Evening_Time.state as DateTimeType).getZonedDateTime.toInstant.toEpochMilli
+  logInfo(logName, "Calculating time of day...")
 
+  val ZonedDateTime zdt = ZonedDateTime.now()
+  val ZonedDateTime start_of_day = zdt.toLocalDate().atStartOfDay(zdt.getOffset())
+
+  // Calculate the times for the static tods and populate the associated Items
+  // Update when changing static times
+  // Jump to tomorrow and subtract to avoid problems at the change over to/from DST
+  val morning_start = start_of_day.plusDays(1).minusHours(18)
+  vMorning_Time.postUpdate(morning_start.toString) 
+
+  val night_start = start_of_day.plusDays(1).minusHours(1)
+  vNight_Time.postUpdate(night_start.toString)
+
+  val bed_start = start_of_day
+  vBed_Time.postUpdate(bed_start.toString)
+
+  // Convert the Astro Items to Joda DateTime
+  val day_start = (vSunrise_Time.state as DateTimeType).getZonedDateTime()
+  val evening_start = (vSunset_Time.state as DateTimeType).getZonedDateTime()
+  val afternoon_start = (vEvening_Time.state as DateTimeType).getZonedDateTime()
+
+  // Calculate the current time of day
   var curr = "UNKNOWN"
   switch now {
-    case now.isAfter(morningStart)   && now.isBefore(dayStart):       curr = "MORNING"
-    case now.isAfter(dayStart)       && now.isBefore(afternoonStart): curr = "DAY"
-    case now.isAfter(afternoonStart) && now.isBefore(eveningStart):   curr = "AFTERNOON"
-    case now.isAfter(eveningStart)   && now.isBefore(nightStart):     curr = "EVENING"
-    case now.isAfter(nightStart):                                     curr = "NIGHT"
-    case now.isAfter(bedStart)       && now.isBefore(morningStart):   curr = "BED"
+  	case now.isAfter(morning_start)   && now.isBefore(day_start):       curr = "MORNING"
+  	case now.isAfter(day_start)       && now.isBefore(afternoon_start): curr = "DAY"
+  	case now.isAfter(afternoon_start) && now.isBefore(evening_start):   curr = "AFTERNOON"
+  	case now.isAfter(evening_start)   && now.isBefore(night_start):     curr = "EVENING"
+  	case now.isAfter(night_start):                                      curr = "NIGHT"
+  	case now.isAfter(bed_start)       && now.isBefore(morning_start):   curr = "BED"
   }
 
-  logInfo(LOGGER_NAME, "Calculated time of day is: " + curr)
+  // Publish the current state
+  logInfo(logName, "Calculated time of day is " + curr)
   FF_Virtual_TimeOfDay.sendCommand(curr)
 end
