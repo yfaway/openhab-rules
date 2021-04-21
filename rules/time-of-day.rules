@@ -24,8 +24,6 @@ when
   Time cron "0 0 23 * * ? *"
 then
 
-  logInfo(logName, "Calculating time of day...")
-
   val ZonedDateTime zdt = ZonedDateTime.now()
   val ZonedDateTime start_of_day = zdt.toLocalDate().atStartOfDay(zdt.getOffset())
 

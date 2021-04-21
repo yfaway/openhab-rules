@@ -194,8 +194,6 @@ sitemap default label="HV Home"
         Text item=VT_Outdoor_Temperature icon="temperature"
         Text item=VT_Outdoor_WeatherCondition
         Text item=VT_Outdoor_RelativeHumidity icon="humidity"
-
-        Text item=FF_GreatRoom_Thermostat_RoomOccupancy
       }
     }
   }
@@ -324,6 +322,7 @@ sitemap default label="HV Home"
       Frame label="Ecobee Thermostat" {
         Text item=FF_GreatRoom_Thermostat_FirstEvent_Type
         Text item=FF_GreatRoom_Thermostat_EcobeeName
+				Switch item=FF_GreatRoom_Thermostat_UseCelsius
         Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
         Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
         Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
@@ -335,8 +334,6 @@ sitemap default label="HV Home"
         Text item=VT_Outdoor_Temperature icon="temperature"
         Text item=VT_Outdoor_WeatherCondition
         Text item=VT_Outdoor_RelativeHumidity icon="humidity"
-
-        Text item=FF_GreatRoom_Thermostat_RoomOccupancy
       }
     }
   }

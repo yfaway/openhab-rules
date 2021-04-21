@@ -73,8 +73,7 @@ def onEmailAddressesChanged(event):
         actions.get("mail", "mail:smtp:gmail").sendMail(
                 email_addresses,
                 scope.items['EmailSubject'].toString(),
-                body,
-                attachment_urls)
+                body)
 
         # reset the item to wait for the next message.
         scope.events.sendCommand(event.itemName, '')

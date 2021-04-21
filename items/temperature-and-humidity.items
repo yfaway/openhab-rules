@@ -17,34 +17,32 @@ Number FF_Kitchen_Humidity "Kitchen Humidity [%d %%]"
  */
 Group gEcobeeRuntime
 
-String FF_GreatRoom_Thermostat_EcobeeName "Name [%s]" { ecobee="=[411921197263#name]" }
+String FF_GreatRoom_Thermostat_EcobeeName "Name [%s]" 
+  { channel="ecobee:thermostat:account:411921197263:info#name" }
+Switch FF_GreatRoom_Thermostat_UseCelsius "Use Celsius [%s]" <switch> 
+  { channel="ecobee:thermostat:account:411921197263:settings#useCelsius" }
 Number FF_GreatRoom_Thermostat_ActualTemperature "Thermostat Temperature [%.1f °C]" (gTemperature, gEcobeeRuntime) 
-  { ecobee="<[411921197263#runtime.actualTemperature]" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#actualTemperature" }
 Number FF_GreatRoom_Thermostat_ActualHumidity "Thermostat Humidity [%d %%]" (gHumidity, gEcobeeRuntime) 
-  { ecobee="<[411921197263#runtime.actualHumidity]" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#actualHumidity" }
 Number FF_GreatRoom_Thermostat_DesiredHeat "Desired Heat [%.1f °C]" (gEcobeeRuntime) 
-  { ecobee="<[411921197263#runtime.desiredHeat]" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#desiredHeat" }
 Number FF_GreatRoom_Thermostat_DesiredCool "Desired Cool [%.1f °C]" (gEcobeeRuntime) 
-  { ecobee="<[411921197263#runtime.desiredCool]" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#desiredCool" }
 String FF_GreatRoom_Thermostat_DesiredFanMode "Desired Fan Mode [%s]" (gEcobeeRuntime) 
-  { ecobee="<[411921197263#runtime.desiredFanMode]" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#desiredFanMode" }
 
 String FF_GreatRoom_Thermostat_HvacMode "Hvac Mode [%s]" (gEcobeeRuntime) 
-  { ecobee="=[411921197263#settings.hvacMode]" }
+  { channel="ecobee:thermostat:account:411921197263:settings#hvacMode" }
 String FF_GreatRoom_Thermostat_CurrentClimateRef "Current Profile [%s]"  
-  { ecobee="<[411921197263#program.currentClimateRef]" }
+  { channel="ecobee:thermostat:account:411921197263:program#currentClimateRef" }
 
 String FF_GreatRoom_Thermostat_FirstEvent_Type "First Event Type [%s]"       
-  { ecobee="<[411921197263#events[0].type]" }
+  { channel="ecobee:thermostat:account:411921197263:events#type" }
 
 String VT_Outdoor_WeatherCondition "Weather Condition [%s]" (gWeather) 
-  { ecobee="<[411921197263#weather.forecasts[0].condition]" }
+  { channel="ecobee:thermostat:account:411921197263:forecast0#condition" }
 Number VT_Outdoor_Temperature "Outdoor Temperature [%.1f °C]" (gWeather) 
-  { ecobee="<[411921197263#weather.forecasts[0].temperature]" }
+  { channel="ecobee:thermostat:account:411921197263:forecast0#temperature" }
 Number VT_Outdoor_RelativeHumidity "Relative Humidity [%d %%]" (gWeather) 
-  { ecobee="<[411921197263#weather.forecasts[0].relativeHumidity]" }
-
-Switch FF_GreatRoom_Thermostat_RoomOccupancy "Great Room Occupancy [%s]" 
-  { ecobee="<[411921197263#remoteSensors(Main Floor).capability(occupancy).value]" }
-
-
+  { channel="ecobee:thermostat:account:411921197263:forecast0#relativeHumidity" }
