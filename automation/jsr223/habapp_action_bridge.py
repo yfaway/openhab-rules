@@ -1,7 +1,6 @@
 from java.time import ZonedDateTime
 
 from core import osgi
-#from core.actions import EcobeeAction
 
 from core.jsr223.scope import actions
 from core.jsr223 import scope
@@ -85,16 +84,17 @@ def onEmailAddressesChanged(event):
 @when("Item EcobeeThermostatHoldMode changed")
 def on_ecobee_thermostat_hold_mode_changed(event):
     hold_mode = scope.items[event.itemName].toString()
+    action = actions.get("ecobee", "ecobee:thermostat:account:411921197263")
     if hold_mode is not None and hold_mode != '':
-        EcobeeAction.ecobeeSetHold(ECOBEE_ID, None, None, hold_mode, None,
-                None, None, None)
+        action.setHold(hold_mode)
 
         scope.events.sendCommand(event.itemName, '')
 
 @rule("Resume Ecobee thermostat.")
 @when("Item EcobeeThermostatResume changed to ON")
 def on_ecobee_thermostat_hold_mode_changed(event):
-    EcobeeAction.ecobeeResumeProgram(ECOBEE_ID, True)
+    action = actions.get("ecobee", "ecobee:thermostat:account:411921197263")
+    action.resumeProgram(True)
     scope.events.sendCommand(event.itemName, 'OFF')
 
 

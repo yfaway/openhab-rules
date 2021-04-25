@@ -4,7 +4,7 @@ Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, g
     turnOff="FF_Kitchen_LightSwitch",
     durationInMinutes="30" }
 
-Switch FF_GreatRoom_MotionSensor
+Switch FF_GreatRoom_MotionSensor "Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
   { channel="dscalarm:zone:706cd89d:zone4:zone_tripped",
     disableTriggeringSwitches="true" }

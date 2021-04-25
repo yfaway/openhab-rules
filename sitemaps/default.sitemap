@@ -25,7 +25,7 @@ sitemap default label="HV Home"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
       Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="rgb"
 			Switch item=FF_GreatRoom_Plug icon="poweroutlet"
-			Switch item=FF_GreatRoom_LightSwitch_MotionSensor
+			Switch item=FF_GreatRoom_MotionSensor
       Switch item=FF_GreatRoom_Tv icon="screen"
 		} 
 	} 
@@ -33,6 +33,7 @@ sitemap default label="HV Home"
 		Frame label="Office" {
 			Switch item=FF_Office_LightSwitch icon="light"
 			Switch item=FF_Office_Plug icon="poweroutlet"
+      Default item=FF_Office_Plug_Power
 			Switch item=FF_Office_LightSwitch_MotionSensor
 		}
 	}  
@@ -322,7 +323,6 @@ sitemap default label="HV Home"
       Frame label="Ecobee Thermostat" {
         Text item=FF_GreatRoom_Thermostat_FirstEvent_Type
         Text item=FF_GreatRoom_Thermostat_EcobeeName
-				Switch item=FF_GreatRoom_Thermostat_UseCelsius
         Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
         Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
         Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
