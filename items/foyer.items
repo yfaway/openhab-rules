@@ -1,6 +1,5 @@
 Switch FF_Foyer_LightSwitch "Foyer Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node2:switch_binary",
-    turnOff="SF_Lobby_LightSwitch",
     disableMotionTriggeringIfOtherLightIsOn="FF_Office_LightSwitch",
     noPrematureTurnOffTimeRange="0-23:59",
     durationInMinutes="5"}

@@ -12,8 +12,8 @@ sitemap default label="HV Home"
   Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
   Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 
-  Text item=VT_Outdoor_Temperature icon="temperature"
-  Text item=VT_Outdoor_RelativeHumidity icon="humidity"
+  Text item=VT_Weather_Temperature icon="temperature"
+  Text item=VT_Weather_Humidity icon="humidity"
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
 	Text label="GreatRoom" icon="player" {
@@ -32,7 +32,7 @@ sitemap default label="HV Home"
 	Text label="Office" icon="office" {
 		Frame label="Office" {
 			Switch item=FF_Office_LightSwitch icon="light"
-			Switch item=FF_Office_Plug icon="poweroutlet"
+			Text item=FF_Office_Plug icon="poweroutlet"
       Default item=FF_Office_Plug_Power
 			Switch item=FF_Office_LightSwitch_MotionSensor
 		}
@@ -73,8 +73,21 @@ sitemap default label="HV Home"
 	}
 	Text label="Outdoor" icon="garden" {
 		Frame label="Outdoor" {
-      Text item=VT_Outdoor_Temperature icon="temperature"
-			Text item=VT_Outdoor_RelativeHumidity icon="humidity"
+      Text item=VT_Weather_Temperature icon="temperature"
+      Text item=VT_Weather_Humidity icon="humidity"
+
+      Text item=VT_Weather_Condition        
+
+      Text item=VT_Weather_ForecastTempMin icon="temperature"
+      Text item=VT_Weather_ForecastTempMax icon="temperature"
+      Text item=VT_Weather_ForecastPrecipationProbability visibility=[VT_Weather_ForecastPrecipationProbability > 0]
+      Text item=VT_Weather_ForecastWindSpeed icon="wind" visibility=[VT_Weather_ForecastWindSpeed > 0]
+      Text item=VT_Weather_ForecastWindGust icon="wind" visibility=[VT_Weather_ForecastWindGust > 0]
+
+      Text item=VT_Weather_LastUpdate       
+
+      Text item=VT_Weather_Alert_Title
+      Text item=VT_Weather_Alert_Date
 		}
 	}
 	Text label="MainWashroom" icon="bath" {
@@ -145,90 +158,6 @@ sitemap default label="HV Home"
 	}
 
 /** END OF AUTO-GENERATED SITEMAP **/
-
-  Text item=VT_Outdoor_WeatherCondition
-  Switch item=gLightSwitch icon="light"
-  Switch item=gFanSwitch icon="fan"
-
-/*
-  Text label="Lights, Fans, and Plugs" icon="poweroutlet" {
-    Frame label="Lights, Fans, and Plugs" {
-      Switch item=FF_Foyer_LightSwitch icon="light"
-      Switch item=FF_Office_LightSwitch icon="light"
-
-      Switch item=FF_GreatRoom_LightSwitch icon="light"
-      Switch item=FF_Kitchen_LightSwitch icon="light"
-
-      Switch item=SF_Lobby_LightSwitch icon="light"
-
-      Switch item=SF_MasterWashroom_LightSwitch icon="light"
-      Switch item=SF_MasterWashroomShower_FanSwitch icon="fan"
-
-      Switch item=SF_MainWashroom_LightSwitch icon="light"
-      Switch item=SF_MainWashroomShower_FanSwitch icon="fan"
-
-      Switch item=FF_GreatRoom_Plug icon="poweroutlet"
-
-      Switch item=FF_Office_Plug icon="poweroutlet"
-      Text item=FF_Office_Plug_Power
-    }
-  }
-
-  Text label="Indoor Temperature & Humidity" icon="temperature" {
-    Frame label="Temperature & Humidity" {
-      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-      Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-      Text item=FF_Kitchen_Temperature icon="temperature"
-      Text item=FF_Kitchen_Humidity icon="humidity"
-    }
-    Text label="Ecobee Thermostat" icon="temperature" {
-      Frame label="Ecobee Thermostat" {
-        Text item=FF_GreatRoom_Thermostat_EcobeeName
-        Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-        Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-        Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
-        Text item=FF_GreatRoom_Thermostat_DesiredCool icon="snow"
-        Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
-        Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
-        Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
-
-        Text item=VT_Outdoor_Temperature icon="temperature"
-        Text item=VT_Outdoor_WeatherCondition
-        Text item=VT_Outdoor_RelativeHumidity icon="humidity"
-      }
-    }
-  }
-*/
-
-  Text label="Weather" icon="temperature" {
-    Frame label="Weather" {
-      Text item=VT_Weather_Temperature icon="temperature"
-      Text item=VT_Weather_Humidity icon="humidity"
-
-      Text item=VT_Weather_Condition        
-      Text item=VT_Weather_Rain icon="rain" visibility=[VT_Weather_Rain > 0]
-      Text item=VT_Weather_Snow icon="snow" visibility=[VT_Weather_Snow > 0]
-      Text item=VT_Weather_PrecipationProbability visibility=[VT_Weather_PrecipationProbability > 0]
-      Text item=VT_Weather_WindSpeed icon="wind" visibility=[VT_Weather_WindSpeed > 0]
-      Text item=VT_Weather_WindGust icon="wind" visibility=[VT_Weather_WindGust > 0]
-
-      Text item=VT_Weather_ForecastTempMin
-      Text item=VT_Weather_ForecastTempMax
-      Text item=VT_Weather_ForecastRain visibility=[VT_Weather_ForecastRain > 0]
-      Text item=VT_Weather_ForecastSnow visibility=[VT_Weather_ForecastSnow > 0]
-      Text item=VT_Weather_ForecastPrecipationProbability visibility=[VT_Weather_ForecastPrecipationProbability > 0]
-      Text item=VT_Weather_ForecastWindSpeed icon="wind" visibility=[VT_Weather_ForecastWindSpeed > 0]
-      Text item=VT_Weather_ForecastWindGust icon="wind" visibility=[VT_Weather_ForecastWindGust > 0]
-
-      // Text item=VT_Weather_Condition_ID     
-      Text item=VT_Weather_ObservationTime  
-      Text item=VT_Weather_LastUpdate       
-      Text item=VT_Weather_CommonId         
-
-      Text item=VT_Weather_Alert_Title
-      Text item=VT_Weather_Alert_Date
-    }
-  }
 
   Text label="Camera" icon="camera" {
     Frame label="Camera" {
@@ -331,9 +260,9 @@ sitemap default label="HV Home"
         Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
         Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
 
-        Text item=VT_Outdoor_Temperature icon="temperature"
-        Text item=VT_Outdoor_WeatherCondition
-        Text item=VT_Outdoor_RelativeHumidity icon="humidity"
+        Text item=VT_Weather_Temperature icon="temperature"
+        Text item=VT_Weather_WeatherCondition
+        Text item=VT_Weather_Humidity icon="humidity"
       }
     }
   }

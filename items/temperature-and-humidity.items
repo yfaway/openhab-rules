@@ -37,13 +37,3 @@ String FF_GreatRoom_Thermostat_CurrentClimateRef "Current Profile [%s]"
 
 String FF_GreatRoom_Thermostat_FirstEvent_Type "First Event Type [%s]"       
   { channel="ecobee:thermostat:account:411921197263:events#type" }
-
-DateTime VT_Outdoor_WeatherTimestamp "Timestamp [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> (gWeather) 
-  { channel="ecobee:thermostat:account:411921197263:weather#timestamp" }
-
-String VT_Outdoor_WeatherCondition "Weather Condition [%s]" (gWeather) 
-  { channel="ecobee:thermostat:account:411921197263:forecast0#condition" }
-Number:Temperature VT_Outdoor_Temperature "Outdoor Temperature [%.1f %unit%]" (gWeather) 
-  { channel="ecobee:thermostat:account:411921197263:forecast0#temperature" }
-Number VT_Outdoor_RelativeHumidity "Relative Humidity [%d %%]" (gWeather) 
-  { channel="ecobee:thermostat:account:411921197263:forecast0#relativeHumidity" }

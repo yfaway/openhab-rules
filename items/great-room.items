@@ -1,7 +1,6 @@
 Switch FF_GreatRoom_LightSwitch "Great Room Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [disable-triggering-from-motion-sensor]
   { channel="zwave:device:9e4ce05e:node7:switch_binary",
-    turnOff="FF_Kitchen_LightSwitch",
     durationInMinutes="30" }
 
 Switch FF_GreatRoom_MotionSensor "Motion Sensor"
