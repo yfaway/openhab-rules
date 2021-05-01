@@ -7,3 +7,29 @@ Number SF_MasterBedroom_Humidity "Master Bedroom Humidity [%d %%]"
   { channel="mqtt:topic:myBroker:masterBedroom:humidity",
     wifi="true", autoReport="true" }
 
+/**
+ * Chromecast
+ */
+String SF_MasterBedroom_ChromeCast { sinkName = "chromecast:audio:masterBedroom" }
+
+// We don't rely on the title channel as it is not reliable (changed by the ChromCast).
+String SF_MasterBedroom_ChromeCastStreamTitle "Stream [%s]"
+
+Player SF_MasterBedroom_ChromeCastPlayer "Player" (gCastPlayer)
+  { channel="chromecast:audio:masterBedroom:control" }
+Dimmer SF_MasterBedroom_ChromeCastVolume "Volume" (gCastVolume)
+  { channel="chromecast:audio:masterBedroom:volume" }
+String SF_MasterBedroom_ChromeCastPlayUri "Play URI [%s]"
+  { channel="chromecast:audio:masterBedroom:playuri" }
+Switch SF_MasterBedroom_ChromeCastIdling "Idling"
+  { channel="chromecast:audio:masterBedroom:idling" }
+Number SF_MasterBedroom_ChromeCastDuration "Duration [%d]" 
+  { channel="chromecast:audio:masterBedroom:duration" }
+Number SF_MasterBedroom_ChromeCastCurrentTime "Current Time [%d]"
+  { channel="chromecast:audio:masterBedroom:currentTime" }
+String SF_MasterBedroom_ChromeCastTitle "Title [%s]"
+  { channel="chromecast:audio:masterBedroom:title" }
+String SF_MasterBedroom_ChromeCastAppName "App Name [%s]"
+  { channel="chromecast:audio:masterBedroom:appName" }
+String SF_MasterBedroom_ChromeCastAppId "App Id [%s]"
+  { channel="chromecast:audio:masterBedroom:appId" }

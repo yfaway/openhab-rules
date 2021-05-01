@@ -20,6 +20,7 @@ sitemap default label="HV Home"
 		Frame label="GreatRoom" {
       Default item=FF_GreatRoom_ChromeCastPlayer
       Default item=FF_GreatRoom_ChromeCastVolume
+      Default item=FF_GreatRoom_ChromeCastStreamTitle
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
 			Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
@@ -90,13 +91,13 @@ sitemap default label="HV Home"
       Text item=VT_Weather_Alert_Date
 		}
 	}
-	Text label="MainWashroom" icon="bath" {
+	Text label="Main Washroom" icon="bath" {
 		Frame label="MainWashroom" {
 			Switch item=SF_MainWashroom_LightSwitch icon="light"
 			Switch item=SF_MainWashroom_FanSwitch_MotionSensor
 		}
 	}
-	Text label="MainWashroomShower" icon="bath" {
+	Text label="Main Washroom Shower" icon="bath" {
 		Frame label="MainWashroomShower" {
 			Switch item=SF_MainWashroomShower_FanSwitch icon="fan"
 			Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor
@@ -109,23 +110,24 @@ sitemap default label="HV Home"
 			Text item=SF_Lobby_LightSwitch_Illuminance
 		}
 	}  
-	Text label="MasterBedroom" icon="bedroom" {
+	Text label="Master Bedroom" icon="bedroom" {
 		Frame label="MasterBedroom" {
       Text item=SF_MasterBedroom_Temperature icon="temperature"
 			Text item=SF_MasterBedroom_Humidity icon="humidity"
 		}
 	}
-	Text label="MasterWashroom" icon="bath" {
+	Text label="Master Washroom" icon="bath" {
 		Frame label="MasterWashroom" {
       Default item=SF_MasterWashroom_ChromeCastPlayer
       Default item=SF_MasterWashroom_ChromeCastVolume
+      Default item=SF_MasterWashroom_ChromeCastStreamTitle
 			Switch item=SF_MasterWashroom_LightSwitch icon="light"
 			Text item=SF_MasterWashroom_LightSwitch_Illuminance
 			Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor
 			Switch item=SF_MasterWashroom_FanSwitch_MotionSensor
 		}
 	}  
-	Text label="MasterWashroomShower" icon="bath" {
+	Text label="Master Washroom Shower" icon="bath" {
 		Frame label="MasterWashroomShower" {
 			Switch item=SF_MasterWashroomShower_FanSwitch icon="fan"
 			Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor
