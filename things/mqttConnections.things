@@ -28,6 +28,14 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.illuminance"]
     }
 
+    Thing topic office {
+    Channels:
+      Type number : dellG5GfxFanSpeed "Desktop Nvidia Fanspeed"
+        [stateTopic="computer/office/dell/gfxFanSpeed"]
+      Type number : dellG5GfxTemperature "Desktop Nvidia Temperature"
+        [stateTopic="computer/office/dell/gfxTemperature"]
+    }
+
     Thing topic masterBedroom {
     Channels:
       Type number : temperature "Master Bedroom Temperature"

@@ -8,3 +8,4 @@ transform/routes.map
 *.swo
 sphinx/_build
 *.pyc
+**/*.class

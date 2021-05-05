@@ -26,7 +26,7 @@ sitemap default label="HV Home"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
       Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="rgb"
 			Switch item=FF_GreatRoom_Plug icon="poweroutlet"
-			Switch item=FF_GreatRoom_MotionSensor
+			Switch item=FF_GreatRoom_MotionSensor icon="motion"
       Switch item=FF_GreatRoom_Tv icon="screen"
 		} 
 	} 
@@ -34,16 +34,18 @@ sitemap default label="HV Home"
 		Frame label="Office" {
 			Switch item=FF_Office_LightSwitch icon="light"
 			Text item=FF_Office_Plug icon="poweroutlet"
-      Default item=FF_Office_Plug_Power
-			Switch item=FF_Office_LightSwitch_MotionSensor
+      Default item=FF_Office_Plug_Power icon="energy"
+			Switch item=FF_Office_LightSwitch_MotionSensor icon="motion"
+      Default item=FF_Office_ComputerGpuTemperature icon="temperature"
+      Default item=FF_Office_ComputerGpuFanSpeed icon="fan"
 		}
 	}  
 	Text label="Kitchen" icon="kitchen" {
 		Frame label="Kitchen" {
 			Text item=FF_Kitchen_Humidity icon="humidity"
 			Switch item=FF_Kitchen_LightSwitch icon="light"
-			Switch item=FF_Kitchen_SecurityMotionSensor
-			Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor
+			Switch item=FF_Kitchen_SecurityMotionSensor icon="motion"
+			Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor icon="motion"
 			Text item=FF_Kitchen_LightSwitch_Illuminance
 		}
 	}  
@@ -51,14 +53,14 @@ sitemap default label="HV Home"
 		Frame label="Foyer" {
 			Text item=FF_Foyer_Door icon="door"
 			Switch item=FF_Foyer_LightSwitch icon="light"
-			Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor
+			Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor icon="motion"
 			Text item=FF_Foyer_LightSwitch_Illuminance
 		}
 	} 
 	Text label="Porch" icon="groundfloor" {
 		Frame label="Porch" {
 			Text item=FF_Porch_Door icon="door"
-			Switch item=FF_Porch_MotionSensor
+			Switch item=FF_Porch_MotionSensor icon="motion"
 		}
 	}
 	Text label="Garage" icon="garage" {
@@ -94,19 +96,19 @@ sitemap default label="HV Home"
 	Text label="Main Washroom" icon="bath" {
 		Frame label="MainWashroom" {
 			Switch item=SF_MainWashroom_LightSwitch icon="light"
-			Switch item=SF_MainWashroom_FanSwitch_MotionSensor
+			Switch item=SF_MainWashroom_FanSwitch_MotionSensor icon="motion"
 		}
 	}
 	Text label="Main Washroom Shower" icon="bath" {
 		Frame label="MainWashroomShower" {
 			Switch item=SF_MainWashroomShower_FanSwitch icon="fan"
-			Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor
+			Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor icon="motion"
 		}
 	}
 	Text label="Lobby" icon="corridor" {
 		Frame label="Lobby" {
 			Switch item=SF_Lobby_LightSwitch icon="light"
-			Switch item=SF_Lobby_LightSwitch_MotionSensor
+			Switch item=SF_Lobby_LightSwitch_MotionSensor icon="motion"
 			Text item=SF_Lobby_LightSwitch_Illuminance
 		}
 	}  
@@ -123,14 +125,14 @@ sitemap default label="HV Home"
       Default item=SF_MasterWashroom_ChromeCastStreamTitle
 			Switch item=SF_MasterWashroom_LightSwitch icon="light"
 			Text item=SF_MasterWashroom_LightSwitch_Illuminance
-			Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor
-			Switch item=SF_MasterWashroom_FanSwitch_MotionSensor
+			Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor icon="motion"
+			Switch item=SF_MasterWashroom_FanSwitch_MotionSensor icon="motion"
 		}
 	}  
 	Text label="Master Washroom Shower" icon="bath" {
 		Frame label="MasterWashroomShower" {
 			Switch item=SF_MasterWashroomShower_FanSwitch icon="fan"
-			Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor
+			Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor icon="motion"
 		}
 	}
 	Text label="Bedroom2" icon="bedroom" {
