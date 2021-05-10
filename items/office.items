@@ -18,9 +18,10 @@ Switch FF_Office_Plug "Office Plug"
 Number FF_Office_Plug_Power "Office Plug Power [%d Watts]" (gPlugPower)
   { channel="tplinksmarthome:hs110:office:power"}
 
-Number FF_Office_ComputerGpuFanSpeed "Dell GPU Fan Speed [%d %%]"
+String FF_Office_Computer_Dell
+Number FF_Office_Computer_Dell_GpuFanSpeed "Dell GPU Fan Speed [%d %%]"
   { channel="mqtt:topic:myBroker:office:dellG5GfxFanSpeed", autoReport="true" }
-
-Number FF_Office_ComputerGpuTemperature "Dell GPU Temperature [%d °C]"
+Number FF_Office_Computer_Dell_GpuTemperature "Dell GPU Temperature [%d °C]"
   { channel="mqtt:topic:myBroker:office:dellG5GfxTemperature", autoReport="true" }
-
+DateTime FF_Office_Computer_Dell_UpdatedTimestamp "Dell Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
+  { channel="mqtt:topic:myBroker:office:dellUpdatedTimestamp", autoReport="true" }

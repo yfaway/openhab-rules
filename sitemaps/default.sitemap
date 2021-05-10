@@ -36,8 +36,9 @@ sitemap default label="HV Home"
 			Text item=FF_Office_Plug icon="poweroutlet"
       Default item=FF_Office_Plug_Power icon="energy"
 			Switch item=FF_Office_LightSwitch_MotionSensor icon="motion"
-      Default item=FF_Office_ComputerGpuTemperature icon="temperature"
-      Default item=FF_Office_ComputerGpuFanSpeed icon="fan"
+      Default item=FF_Office_Computer_Dell_GpuTemperature icon="temperature"
+      Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="fan"
+      Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="time"
 		}
 	}  
 	Text label="Kitchen" icon="kitchen" {
@@ -158,6 +159,14 @@ sitemap default label="HV Home"
 
 			Text item=BM_Utility_WaterLeakState icon="water"
 			Text item=BM_Utility_WaterLeakBattery icon="battery"
+
+      Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="temperature"
+      Default item=BM_Utility_Computer_RaspberryOpenHab_GpuTemperature icon="temperature"
+      Default item=BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp icon="time"
+
+      Default item=BM_Utility_Computer_RaspberryNfs_CpuTemperature icon="temperature"
+      Default item=BM_Utility_Computer_RaspberryNfs_GpuTemperature icon="temperature"
+      Default item=BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp icon="time"
 		}
 	}
 

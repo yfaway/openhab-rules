@@ -24,3 +24,18 @@ Switch BM_Utility_WaterLeakState "Water Leak Detected [%s]"
 Number BM_Utility_WaterLeakBattery "Water Leak Battery [%d]"
   { channel="mqtt:topic:myBroker:utilityRoom:leakSensorBattery" }
 
+String BM_Utility_Computer_RaspberryOpenHab
+Number BM_Utility_Computer_RaspberryOpenHab_CpuTemperature "Rasp OH CPU Temperature [%d °C]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhCpuTemperature", autoReport="true" }
+Number BM_Utility_Computer_RaspberryOpenHab_GpuTemperature "Rasp OH GPU Temperature [%d °C]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhGfxTemperature", autoReport="true" }
+DateTime BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp "Rasp OH Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhUpdatedTimestamp", autoReport="true" }
+
+String BM_Utility_Computer_RaspberryNfs
+Number BM_Utility_Computer_RaspberryNfs_CpuTemperature "Rasp NFS CPU Temperature [%d °C]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsCpuTemperature", autoReport="true" }
+Number BM_Utility_Computer_RaspberryNfs_GpuTemperature "Rasp NFS GPU Temperature [%d °C]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsGfxTemperature", autoReport="true" }
+DateTime BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp "Rasp NFS Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsUpdatedTimestamp", autoReport="true" }

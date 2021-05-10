@@ -34,6 +34,8 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/office/dell/gfxFanSpeed"]
       Type number : dellG5GfxTemperature "Desktop Nvidia Temperature"
         [stateTopic="computer/office/dell/gfxTemperature"]
+      Type datetime : dellUpdatedTimestamp "Desktop Update Timestamp"
+        [stateTopic="computer/office/dell/updatedTimestamp"]
     }
 
     Thing topic masterBedroom {
@@ -89,5 +91,19 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
       Type number : leakSensorBattery "Basement Leak Sensor battery"
         [stateTopic="zigbee2mqtt/0x00158d0002482d69",
          transformationPattern="JSONPATH:$.battery"]
+
+      Type number : rpiOhCpuTemperature "CPU Temperature"
+        [stateTopic="computer/utility/rpiOpenhab/cpuTemperature"]
+      Type number : rpiOhGfxTemperature "Graphic Card Temperature"
+        [stateTopic="computer/utility/rpiOpenhab/gfxTemperature"]
+      Type datetime : rpiOhUpdatedTimestamp "Update Timestamp"
+        [stateTopic="computer/utility/rpiOpenhab/updatedTimestamp"]
+
+      Type number : rpiNfsCpuTemperature "CPU Temperature"
+        [stateTopic="computer/utility/rpiNfs/cpuTemperature"]
+      Type number : rpiNfsGfxTemperature "Graphic Card Temperature"
+        [stateTopic="computer/utility/rpiNfs/gfxTemperature"]
+      Type datetime : rpiNfsUpdatedTimestamp "Update Timestamp"
+        [stateTopic="computer/utility/rpiNfs/updatedTimestamp"]
     }
 }
