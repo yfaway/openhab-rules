@@ -4,6 +4,7 @@
 Group:Number gTemperature
 Group:Number gHumidity
 
+/*
 Number FF_Kitchen_Temperature "Kitchen Temperature[%.1f °C]"
   (gTemperature) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000245f049:state:JSONPATH($.temperature)]"}
@@ -11,6 +12,7 @@ Number FF_Kitchen_Temperature "Kitchen Temperature[%.1f °C]"
 Number FF_Kitchen_Humidity "Kitchen Humidity [%d %%]"
   (gHumidity) 
   {mqtt="<[broker:zigbee2mqtt/0x00158d000245f049:state:JSONPATH($.humidity)]"}
+*/
 
 /**
  * Ecobee

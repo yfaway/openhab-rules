@@ -1,58 +1,58 @@
 /**
  * Environment Canada alerts.
  */
-String   VT_Weather_Alert_Description  "Alert Description [%s]"
+String   FF_Virtual_Weather_Alert_Description  "Alert Description [%s]"
   {channel="feed:feed:envCanada:latest-description"}
-DateTime VT_Weather_Alert_Date  "Alert Last Update [%1tb %1$td %1$tY %1$tH:%1$tM]"
+DateTime FF_Virtual_Weather_Alert_Date  "Alert Last Update [%1tb %1$td %1$tY %1$tH:%1$tM]"
   {channel="feed:feed:envCanada:latest-date"}
-String   VT_Weather_Alert_Title "Alert [%s]"         
+String   FF_Virtual_Weather_Alert_Title "Alert [%s]"         
   {channel="feed:feed:envCanada:latest-title"}
 
 /*
-Number   VT_Weather_Alert_Of_entries    {channel="feed:feed:envCanada:number-of-entries"}
-String   VT_Weather_AlertDescription    {channel="feed:feed:envCanada:description"}
-String   VT_Weather_AlertAuthor         {channel="feed:feed:envCanada:author"}
-DateTime VT_Weather_AlertPublished_date {channel="feed:feed:envCanada:last-update"}
-String   VT_Weather_AlertTitle          {channel="feed:feed:envCanada:title"}
+Number   FF_Virtual_Weather_Alert_Of_entries    {channel="feed:feed:envCanada:number-of-entries"}
+String   FF_Virtual_Weather_AlertDescription    {channel="feed:feed:envCanada:description"}
+String   FF_Virtual_Weather_AlertAuthor         {channel="feed:feed:envCanada:author"}
+DateTime FF_Virtual_Weather_AlertPublished_date {channel="feed:feed:envCanada:last-update"}
+String   FF_Virtual_Weather_AlertTitle          {channel="feed:feed:envCanada:title"}
 */
 
 // condition
-String VT_Weather_Condition "Condition [%s]" (gWeather) 
+String FF_Virtual_Weather_Condition "Condition [%s]" (gWeather) 
   { channel="ecobee:thermostat:account:411921197263:forecast0#condition" }
-Number:Temperature VT_Weather_Temperature "Temperature [%.1f %unit%]" (gWeather) 
+Number:Temperature FF_Virtual_Weather_Temperature "Temperature [%.1f %unit%]" (gWeather) 
   { channel="ecobee:thermostat:account:411921197263:forecast0#temperature" }
-Number VT_Weather_Humidity "Relative Humidity [%d %%]" (gWeather) 
+Number FF_Virtual_Weather_Humidity "Relative Humidity [%d %%]" (gWeather) 
   { channel="ecobee:thermostat:account:411921197263:forecast0#relativeHumidity" }
-DateTime VT_Weather_LastUpdate "Last update [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> (gWeather) 
+DateTime FF_Virtual_Weather_LastUpdate "Last update [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> (gWeather) 
   { channel="ecobee:thermostat:account:411921197263:weather#timestamp" }
-// String VT_Weather_Condition_ID "Condition id [%s]"   
+// String FF_Virtual_Weather_Condition_ID "Condition id [%s]"   
 //   {weather="locationId=home, type=condition, property=id"}
-// DateTime VT_Weather_ObservationTime "Observation time [%1tb %1$td %1$tY %1$tH:%1$tM]"   
+// DateTime FF_Virtual_Weather_ObservationTime "Observation time [%1tb %1$td %1$tY %1$tH:%1$tM]"   
 //   {weather="locationId=home, type=condition, property=observationTime"}
 
-// Number VT_Weather_Rain "Rain [%.1f mm/h]"   
+// Number FF_Virtual_Weather_Rain "Rain [%.1f mm/h]"   
 //   {weather="locationId=home, type=precipitation, property=rain"}
-// Number VT_Weather_Snow "Snow [%.1f mm/h]"   
+// Number FF_Virtual_Weather_Snow "Snow [%.1f mm/h]"   
 //   {weather="locationId=home, type=precipitation, property=snow"}
-// Number VT_Weather_PrecipationProbability "Precipation Probability [%d %%]"   
+// Number FF_Virtual_Weather_PrecipationProbability "Precipation Probability [%d %%]"   
 //   {weather="locationId=home, type=precipitation, property=probability"}
-// Number VT_Weather_WindSpeed "Windspeed [%.1f km/h]"    
+// Number FF_Virtual_Weather_WindSpeed "Windspeed [%.1f km/h]"    
 //   {weather="locationId=home, type=wind, property=speed"}
-// Number VT_Weather_WindGust "Wind gust [%.1f km/h]"    
+// Number FF_Virtual_Weather_WindGust "Wind gust [%.1f km/h]"    
 //   {weather="locationId=home, type=wind, property=gust"}
 
 // today forecast
-Number:Temperature VT_Weather_ForecastTempMin "Forecast Min Temperature [%.1f %unit%]"   
+Number:Temperature FF_Virtual_Weather_ForecastTempMin "Forecast Min Temperature [%.1f %unit%]"   
   { channel="ecobee:thermostat:account:411921197263:forecast0#tempLow" }
-Number:Temperature VT_Weather_ForecastTempMax "Forecast Max Temperature [%.1f %unit%]"   
+Number:Temperature FF_Virtual_Weather_ForecastTempMax "Forecast Max Temperature [%.1f %unit%]"   
   { channel="ecobee:thermostat:account:411921197263:forecast0#tempHigh" }
-Number VT_Weather_ForecastPrecipationProbability "Forecast Precipation Prob [%d %%]"   
+Number FF_Virtual_Weather_ForecastPrecipationProbability "Forecast Precipation Prob [%d %%]"   
   { channel="ecobee:thermostat:account:411921197263:forecast0#pop" }
-Number VT_Weather_ForecastWindSpeed "Forecast Windspeed [%.1f km/h]"    
+Number FF_Virtual_Weather_ForecastWindSpeed "Forecast Windspeed [%.1f km/h]"    
   { channel="ecobee:thermostat:account:411921197263:forecast0#windSpeed" }
-Number VT_Weather_ForecastWindGust "Forecast Wind gust [%.1f km/h]"    
+Number FF_Virtual_Weather_ForecastWindGust "Forecast Wind gust [%.1f km/h]"    
   { channel="ecobee:thermostat:account:411921197263:forecast0#windGust" }
-// Number VT_Weather_ForecastRain "Forecast Rain [%.1f mm/h]"   
+// Number FF_Virtual_Weather_ForecastRain "Forecast Rain [%.1f mm/h]"   
 //   {weather="locationId=home, forecast=0, type=precipitation, property=rain"}
-// Number VT_Weather_ForecastSnow "Forecast Snow [%.1f mm/h]"   
+// Number FF_Virtual_Weather_ForecastSnow "Forecast Snow [%.1f mm/h]"   
 //   {weather="locationId=home, forecast=0, type=precipitation, property=snow"}

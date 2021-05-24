@@ -19,6 +19,7 @@ Number FF_Office_Plug_Power "Office Plug Power [%d Watts]" (gPlugPower)
   { channel="tplinksmarthome:hs110:office:power"}
 
 String FF_Office_Computer_Dell
+  { name="Dell G5", alwaysOn="true" }
 Number FF_Office_Computer_Dell_GpuFanSpeed "Dell GPU Fan Speed [%d %%]"
   { channel="mqtt:topic:myBroker:office:dellG5GfxFanSpeed", autoReport="true" }
 Number FF_Office_Computer_Dell_GpuTemperature "Dell GPU Temperature [%d °C]"
