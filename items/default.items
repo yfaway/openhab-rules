@@ -64,10 +64,8 @@ Contact FF_Windows_Status (gZoneStatus)
  * Garage door
  */
 Switch FF_Garage_Door        "Garage Door [%s]" 
-    {channel="chamberlainmyq:MyQDoorOpener:a54c2feb:CG08600DF614:doorstate"}
-String GarageDoorString      "Garage Door [%s]"
-    {channel="chamberlainmyq:MyQDoorOpener:a54c2feb:CG08600DF614:doorstatus"}
+    {channel="myq:garagedoor:home:main:switch"}
 Switch GarageDoorSwitch      "Garage Door Open"
-    {channel="chamberlainmyq:MyQDoorOpener:a54c2feb:CG08600DF614:doorstate"}
+    {channel="myq:garagedoor:home:main:status"}
 
 Switch MQTT_Test "Testing..." { mqtt="<[broker:testing/mqtt/topic:state:default], >[broker:testing/mqtt/back-topic:command:*:default]" } 

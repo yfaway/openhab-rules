@@ -12,8 +12,8 @@ sitemap default label="HV Home"
   Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
   Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 
-  Text item=VT_Weather_Temperature icon="temperature"
-  Text item=VT_Weather_Humidity icon="humidity"
+  Text item=FF_Virtual_Weather_Temperature icon="temperature"
+  Text item=FF_Virtual_Weather_Humidity icon="humidity"
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
 	Text label="GreatRoom" icon="player" {
@@ -77,21 +77,21 @@ sitemap default label="HV Home"
 	}
 	Text label="Outdoor" icon="garden" {
 		Frame label="Outdoor" {
-      Text item=VT_Weather_Temperature icon="temperature"
-      Text item=VT_Weather_Humidity icon="humidity"
+      Text item=FF_Virtual_Weather_Temperature icon="temperature"
+      Text item=FF_Virtual_Weather_Humidity icon="humidity"
 
-      Text item=VT_Weather_Condition        
+      Text item=FF_Virtual_Weather_Condition        
 
-      Text item=VT_Weather_ForecastTempMin icon="temperature"
-      Text item=VT_Weather_ForecastTempMax icon="temperature"
-      Text item=VT_Weather_ForecastPrecipationProbability visibility=[VT_Weather_ForecastPrecipationProbability > 0]
-      Text item=VT_Weather_ForecastWindSpeed icon="wind" visibility=[VT_Weather_ForecastWindSpeed > 0]
-      Text item=VT_Weather_ForecastWindGust icon="wind" visibility=[VT_Weather_ForecastWindGust > 0]
+      Text item=FF_Virtual_Weather_ForecastTempMin icon="temperature"
+      Text item=FF_Virtual_Weather_ForecastTempMax icon="temperature"
+      Text item=FF_Virtual_Weather_ForecastPrecipationProbability visibility=[FF_Virtual_Weather_ForecastPrecipationProbability > 0]
+      Text item=FF_Virtual_Weather_ForecastWindSpeed icon="wind" visibility=[FF_Virtual_Weather_ForecastWindSpeed > 0]
+      Text item=FF_Virtual_Weather_ForecastWindGust icon="wind" visibility=[FF_Virtual_Weather_ForecastWindGust > 0]
 
-      Text item=VT_Weather_LastUpdate       
+      Text item=FF_Virtual_Weather_LastUpdate       
 
-      Text item=VT_Weather_Alert_Title
-      Text item=VT_Weather_Alert_Date
+      Text item=FF_Virtual_Weather_Alert_Title
+      Text item=FF_Virtual_Weather_Alert_Date
 		}
 	}
 	Text label="Main Washroom" icon="bath" {
@@ -273,9 +273,9 @@ sitemap default label="HV Home"
         Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
         Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
 
-        Text item=VT_Weather_Temperature icon="temperature"
-        Text item=VT_Weather_WeatherCondition
-        Text item=VT_Weather_Humidity icon="humidity"
+        Text item=FF_Virtual_Weather_Temperature icon="temperature"
+        Text item=FF_Virtual_Weather_WeatherCondition
+        Text item=FF_Virtual_Weather_Humidity icon="humidity"
       }
     }
   }

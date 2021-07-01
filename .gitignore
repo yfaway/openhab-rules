@@ -1,7 +1,9 @@
 services
 **/readme.txt
 things/camera.things
+things/ecobee.things
 things/mail.things
+things/myq.things
 transform/owner-email-addresses.map
 transform/routes.map
 *.swp
