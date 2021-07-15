@@ -63,9 +63,9 @@ Contact FF_Windows_Status (gZoneStatus)
 /**
  * Garage door
  */
-Switch FF_Garage_Door        "Garage Door [%s]" 
+Switch FF_Garage_Door        "Garage Door" 
     {channel="myq:garagedoor:home:main:switch"}
 Switch GarageDoorSwitch      "Garage Door Open"
-    {channel="myq:garagedoor:home:main:status"}
+    {channel="myq:garagedoor:home:main:switch"}
 
 Switch MQTT_Test "Testing..." { mqtt="<[broker:testing/mqtt/topic:state:default], >[broker:testing/mqtt/back-topic:command:*:default]" } 
