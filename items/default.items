@@ -27,29 +27,32 @@ Switch FF_Foyer_AlarmPartition
 Number FF_Foyer_AlarmPartition_ArmMode
   {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
 
-Number PARTITION1_ARM_MODE "Partition 1 Arm Mode: [%d]" (DSCAlarmPartitions) 
+Number PARTITION1_ARM_MODE "Partition 1 Arm Mode: [%d]"
   {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
 
-Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED> (DSCAlarmKeypads) 
+Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED>
   {channel="dscalarm:keypad:706cd89d:keypad:keypad_fire_led"}
 
-Switch FF_FrontDoor_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone1:zone_in_alarm"}
-Switch FF_GarageDoor_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone2:zone_in_alarm"}
-Switch FF_PatioDoor_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone3:zone_in_alarm"}
-Switch FF_GreatRoom_MotionSensor_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone4:zone_in_alarm"}
-Switch FF_Windows_InAlarm (gZoneInAlarm) {channel="dscalarm:zone:706cd89d:zone5:zone_in_alarm"}
+Switch FF_GreatRoom_MotionSensor_InAlarm (gZoneInAlarm) 
+	{channel="dscalarm:zone:706cd89d:zone4:zone_in_alarm"}
 
 Switch FF_Porch_Door (gZoneTripped) 
   {channel="dscalarm:zone:706cd89d:zone1:zone_tripped"}
+Switch FF_Porch_Door_InAlarm (gZoneInAlarm)
+	{channel="dscalarm:zone:706cd89d:zone1:zone_in_alarm"}
+
 Switch FF_Foyer_Door (gZoneTripped) 
   {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
 Switch FF_Patio_Door (gZoneTripped)
   {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
+Switch FF_Patio_Door_InAlarm (gZoneInAlarm) 
+	{channel="dscalarm:zone:706cd89d:zone3:zone_in_alarm"}
 
-Switch FF_GreatRoom_MotionSensor_Tripped 
-  (gZoneTripped)
-  {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
-Switch FF_Porch_Window (gZoneTripped) {channel="dscalarm:zone:706cd89d:zone5:zone_tripped"}
+// Represent all windows in the house.
+Switch FF_Porch_Window (gZoneTripped) 
+	{channel="dscalarm:zone:706cd89d:zone5:zone_tripped"}
+Switch FF_Porch_Window_InAlarm (gZoneInAlarm) 
+	{channel="dscalarm:zone:706cd89d:zone5:zone_in_alarm"}
 
 Contact FF_FrontDoor_Status (gZoneStatus) 
   {channel="dscalarm:zone:706cd89d:zone1:zone_status"}
@@ -64,8 +67,10 @@ Contact FF_Windows_Status (gZoneStatus)
  * Garage door
  */
 Switch FF_Garage_Door        "Garage Door" 
-    {channel="myq:garagedoor:home:main:switch"}
+  {channel="myq:garagedoor:home:main:switch"}
 Switch GarageDoorSwitch      "Garage Door Open"
-    {channel="myq:garagedoor:home:main:switch"}
+  {channel="myq:garagedoor:home:main:switch"}
+Switch FF_Garage_Door_InAlarm (gZoneInAlarm) 
+	{channel="dscalarm:zone:706cd89d:zone2:zone_in_alarm"}
 
 Switch MQTT_Test "Testing..." { mqtt="<[broker:testing/mqtt/topic:state:default], >[broker:testing/mqtt/back-topic:command:*:default]" } 
