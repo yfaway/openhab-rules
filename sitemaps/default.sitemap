@@ -1,6 +1,6 @@
 sitemap default label="HV Home"
 {
-  Text item=gPresence icon="presence"
+  // Text item=gPresence icon="presence"
   Text item=Out_Vacation visibility=[Out_Vacation==ON]
   Text item=Out_Light_Simulation visibility=[Out_Light_Simulation==ON]
   Text item=Out_Last_Presence_Timestamp visibility=[Out_Vacation==ON]
@@ -14,6 +14,9 @@ sitemap default label="HV Home"
 
   Text item=FF_Virtual_Weather_Temperature icon="temperature"
   Text item=FF_Virtual_Weather_Humidity icon="humidity"
+  Text item=FF_Virtual_Weather_Alert_Title
+		valuecolor=[FF_Virtual_Weather_Alert_Title!=""="red"]
+		visibility=[FF_Virtual_Weather_Alert_Title != "No alerts in effect, City of Ottawa"]
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
 	Text label="GreatRoom" icon="player" {
@@ -21,6 +24,7 @@ sitemap default label="HV Home"
       Default item=FF_GreatRoom_ChromeCastPlayer
       Default item=FF_GreatRoom_ChromeCastVolume
       Default item=FF_GreatRoom_ChromeCastStreamTitle
+			Default item=EcobeeThermostatResume
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
 			Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
