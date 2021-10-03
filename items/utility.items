@@ -1,8 +1,8 @@
-Number BM_Utility_Temperature "Basement Temperature [%.1f °C]"
+Number BM_Utility_Temperature "Basement Temperature ESP [%.1f °C]"
   (gTemperature)
   { channel="mqtt:topic:myBroker:utilityRoom:temperature",
     wifi="true", autoReport="true" }
-Number BM_Utility_Humidity "Basement Humidity [%d %%]"
+Number BM_Utility_Humidity "Basement Humidity ESP [%d %%]"
   (gHumidity) 
   { channel="mqtt:topic:myBroker:utilityRoom:humidity",
     wifi="true", autoReport="true" }
@@ -17,6 +17,24 @@ Switch BM_Utility_NaturalGasState "Natural Gas Detected [%s]"
   { channel="mqtt:topic:myBroker:utilityRoom:naturalGasState",
     wifi="true", autoReport="true" }
 
+Number BM_Utility_RadonGas "Radon Gas Value [%d]"
+  (gGasSensorValue)
+  { channel="mqtt:topic:myBroker:utilityRoom:radonGasValue",
+    wifi="true", autoReport="true" }
+
+Switch BM_Utility_RadonGasState "Radon Gas Detected [%s]"
+  (gGasSensorState)
+  { channel="mqtt:topic:myBroker:utilityRoom:radonGasState",
+    wifi="true", autoReport="true" }
+
+Number BM_Utility_AirThingsTemperature "Basement Temperature [%.1f °C]"
+  (gTemperature)
+  { channel="mqtt:topic:myBroker:utilityRoom:airthingsTemperature",
+    wifi="true", autoReport="true" }
+Number BM_Utility_AirThingsHumidity "Basement Humidity [%d %%]"
+  (gHumidity) 
+  { channel="mqtt:topic:myBroker:utilityRoom:airthingsHumidity",
+    wifi="true", autoReport="true" }
 
 Switch BM_Utility_WaterLeakState "Water Leak Detected [%s]"
   { channel="mqtt:topic:myBroker:utilityRoom:leakSensorState" }

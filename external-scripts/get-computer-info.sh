@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# To run the script at start-up, follow these steps:
+#  1. Run "crontab -e"
+#  2. Add this line "@reboot ./get-computer-info.sh utility rpiNfs &"
+#  3. Run "sudo reboot -h now"
+
 MQTT_IP=192.168.0.204
 MQTT_PORT=1883
 

@@ -84,6 +84,15 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
       Type switch : naturalGasState "Basement Natural Gas State"
         [stateTopic="esp/utility/naturalGas/state", on="1", off="0"]
 
+      Type number : radonGasValue "Basement Radon Gas"
+        [stateTopic="airthings/utility/radonGas/value"]
+      Type switch : radonGasState "Basement Radon Gas State"
+        [stateTopic="airthings/utility/radonGas/state", on="1", off="0"]
+      Type number : airthingsTemperature "Basement AirThings Temperature"
+        [stateTopic="airthings/utility/temperature/value"]
+      Type number : airthingsHumidity "Basement AirThings Humidity"
+        [stateTopic="airthings/utility/humidity/value"]
+
       Type switch : leakSensorState "Basement Leak Sensor state"
         [stateTopic="zigbee2mqtt/0x00158d0002482d69", 
          transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]

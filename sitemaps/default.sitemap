@@ -24,7 +24,7 @@ sitemap default label="HV Home"
       Default item=FF_GreatRoom_ChromeCastPlayer
       Default item=FF_GreatRoom_ChromeCastVolume
       Default item=FF_GreatRoom_ChromeCastStreamTitle
-			Default item=EcobeeThermostatResume
+			Default item=FF_GreatRoom_ChromeCastIdling
       Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
 			Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
@@ -157,9 +157,12 @@ sitemap default label="HV Home"
 
 	Text label="Utility" icon="groundfloor" {
 		Frame label="Utility" {
+			Text item=BM_Utility_AirThingsTemperature icon="temperature"
+			Text item=BM_Utility_AirThingsHumidity icon="humidity"
 			Text item=BM_Utility_Temperature icon="temperature"
 			Text item=BM_Utility_Humidity icon="humidity"
 			Text item=BM_Utility_NaturalGas icon="gas"
+			Text item=BM_Utility_RadonGas icon="gas"
 
 			Text item=BM_Utility_WaterLeakState icon="water"
 			Text item=BM_Utility_WaterLeakBattery icon="battery"
