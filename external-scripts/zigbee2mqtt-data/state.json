@@ -1,0 +1,87 @@
+{
+    "0x00124b0018ed254b": {
+        "description": "0/0x00124B00120234F2",
+        "type": "COORD",
+        "rssi": 1,
+        "linkquality": 0,
+        "state": true,
+        "led_state": false,
+        "led": false
+    },
+    "0x00124b000be89d13": {
+        "state": true,
+        "led_state": true,
+        "linkquality": 0,
+        "led": true
+    },
+    "0x00158d000236b4cd": {
+        "occupancy": true,
+        "linkquality": 0,
+        "illuminance": 268,
+        "battery": 100,
+        "voltage": 3025,
+        "illuminance_lux": 268
+    },
+    "0x00158d0002047fe0": {
+        "illuminance": 1000,
+        "linkquality": 23,
+        "occupancy": false,
+        "battery": 100,
+        "voltage": 3015,
+        "illuminance_lux": 1000
+    },
+    "0x00158d000204c7ef": {
+        "illuminance": 4,
+        "linkquality": 47,
+        "occupancy": false,
+        "battery": 100,
+        "voltage": 3035,
+        "illuminance_lux": 4
+    },
+    "0x00158d000239725a": {
+        "illuminance": 14,
+        "linkquality": 0,
+        "occupancy": false,
+        "battery": 100,
+        "voltage": 3025,
+        "illuminance_lux": 14
+    },
+    "0x00158d000200ed5e": {
+        "illuminance": 0,
+        "linkquality": 5,
+        "occupancy": false,
+        "battery": 100,
+        "voltage": 3045,
+        "illuminance_lux": 0
+    },
+    "0x00158d000200eb10": {
+        "illuminance": 74,
+        "linkquality": 10,
+        "occupancy": false,
+        "battery": 100,
+        "voltage": 3025,
+        "illuminance_lux": 74
+    },
+    "0x00158d0001fa45fd": {
+        "illuminance": 82,
+        "linkquality": 47,
+        "occupancy": false,
+        "battery": 100,
+        "voltage": 3015,
+        "illuminance_lux": 82
+    },
+    "0x00158d000236b6c0": {
+        "illuminance": 41,
+        "linkquality": 0,
+        "occupancy": false,
+        "battery": 100,
+        "voltage": 3025,
+        "illuminance_lux": 41
+    },
+    "0x00158d0002482d69": {
+        "battery": 100,
+        "voltage": 3005,
+        "linkquality": 0,
+        "water_leak": false
+    }
+}
