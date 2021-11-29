@@ -15,12 +15,6 @@ Group:Switch:OR(ON,OFF) gSecondFloorLightSwitch "Active First Floor Lights [%d]"
 // Used to send an ON/OFF command to all controlled fans
 Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
-String FF_Porch_Camera "Porch Camera" (gCamera)
-
-Switch FF_Porch_MotionSensor "Porch Motion Sensor"
-  (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
-  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PorchMotionSensor" }
-
 Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node3:switch_binary",

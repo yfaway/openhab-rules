@@ -1,2 +1,3 @@
 tplinksmarthome:hs100:greatroom "Great Room" [ ipAddress="192.168.0.180", refresh=60 ]
 tplinksmarthome:hs110:office "Office" [ ipAddress="192.168.0.181", refresh=120 ]
+tplinksmarthome:kp400:porch "Porch" [ ipAddress="192.168.0.183", refresh=60 ]

@@ -27,9 +27,6 @@ Switch FF_Foyer_AlarmPartition
 Number FF_Foyer_AlarmPartition_ArmMode
   {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
 
-Number PARTITION1_ARM_MODE "Partition 1 Arm Mode: [%d]"
-  {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
-
 Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED>
   {channel="dscalarm:keypad:706cd89d:keypad:keypad_fire_led"}
 
@@ -64,7 +61,7 @@ Contact FF_Windows_Status (gZoneStatus)
   {channel="dscalarm:zone:706cd89d:zone5:zone_status"}
 
 /**
- * Garage door
+ * Garage door (serial #: cg08600df614 - can be retrieved from the scan in Inbox)
  */
 Switch FF_Garage_Door        "Garage Door" 
   {channel="myq:garagedoor:home:main:switch"}

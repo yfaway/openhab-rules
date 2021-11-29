@@ -1,0 +1,10 @@
+String FF_Porch_Camera "Porch Camera" (gCamera)
+
+Switch FF_Porch_MotionSensor "Porch Motion Sensor"
+  (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PorchMotionSensor" }
+
+Switch FF_Porch_Plug1 "Porch Plug 1" (gPlug)
+  { channel="tplinksmarthome:kp400:porch:outlet1#switch"}
+Switch FF_Porch_Plug2 "Porch Plug 2" (gPlug)
+  { channel="tplinksmarthome:kp400:porch:outlet2#switch"}

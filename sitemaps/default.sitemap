@@ -65,6 +65,8 @@ sitemap default label="HV Home"
 	Text label="Porch" icon="groundfloor" {
 		Frame label="Porch" {
 			Text item=FF_Porch_Door icon="door"
+			Switch item=FF_Porch_Plug1 icon="poweroutlet"
+			Switch item=FF_Porch_Plug2 icon="poweroutlet"
 			Switch item=FF_Porch_MotionSensor icon="motion"
 		}
 	}
