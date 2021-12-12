@@ -38,6 +38,14 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/office/dell/updatedTimestamp"]
     }
 
+    Thing topic mainWashroom {
+    Channels:
+      Type switch : MainWashroomMotionSensor "Main Washroom Motion Sensor"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffeb68d5c", commandTopic="zigbee2mqtt/0xb4e3f9fffeb68d5c", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : MainWashroomBattery "Main Washroom Battery"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffeb68d5c", commandTopic="zigbee2mqtt/0xb4e3f9fffeb68d5c", transformationPattern="JSONPATH:$.battery"]
+    }
+
     Thing topic masterBedroom {
     Channels:
       Type number : temperature "Master Bedroom Temperature"

@@ -53,25 +53,6 @@ Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motio
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomFanMotionSensor"}
 
-Switch SF_MainWashroom_LightSwitch "Main Washroom Light" 
-  (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
-  { channel="zwave:device:9e4ce05e:node9:switch_binary",
-    durationInMinutes="15" }
-//Number SF_MainWashroom_LightSwitch_Illuminance "Main Washroom Illuminance [%d]"
-//  (gIlluminance) 
-//  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomIlluminance"}
-
-Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
-  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
-
-Switch SF_MainWashroomShower_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node19:switch_binary",
-    durationInMinutes="15" }
-Switch SF_MainWashroomShower_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
-  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
-  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
-
 Dimmer SF_Lobby_LightSwitch "Lobby Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node10:switch_dimmer",

@@ -103,6 +103,7 @@ sitemap default label="HV Home"
 	Text label="Main Washroom" icon="bath" {
 		Frame label="MainWashroom" {
 			Switch item=SF_MainWashroom_LightSwitch icon="light"
+			Switch item=SF_MainWashroom_MotionSensor icon="motion"
 			Switch item=SF_MainWashroom_FanSwitch_MotionSensor icon="motion"
 		}
 	}
