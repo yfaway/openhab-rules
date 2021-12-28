@@ -26,6 +26,10 @@ Switch FF_Foyer_AlarmPartition
   {channel="dscalarm:partition:706cd89d:partition1:partition_in_alarm"}
 Number FF_Foyer_AlarmPartition_ArmMode
   {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
+String FF_Foyer_AlarmPartition_SendCommand "Send a DSC Alarm Command" 
+  {channel="dscalarm:envisalink:706cd89d:send_command"}
+Switch FF_Foyer_AlarmPartition_PanelFireKeyAlarm
+  {channel="dscalarm:panel:706cd89d:panel:panel_fire_key_alarm"}
 
 Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED>
   {channel="dscalarm:keypad:706cd89d:keypad:keypad_fire_led"}

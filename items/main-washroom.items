@@ -10,6 +10,9 @@ Switch SF_MainWashroom_MotionSensor "Main Washroom Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:mainWashroom:MainWashroomMotionSensor"}
 
+Number SF_MainWashroom_MotionSensor_BatteryPercentage "Main Washroom Motion Sensor Battery [%d %%]"
+  { channel="mqtt:topic:myBroker:mainWashroom:MainWashroomBattery"}
+
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
