@@ -125,6 +125,17 @@ sitemap default label="HV Home"
 		Frame label="MasterBedroom" {
       Text item=SF_MasterBedroom_Temperature icon="temperature"
 			Text item=SF_MasterBedroom_Humidity icon="humidity"
+
+      Default item=SF_MasterBedroom_IkeaControl
+      Default item=SF_MasterBedroom_IkeaControl_BrightnessUpHold
+      Default item=SF_MasterBedroom_IkeaControl_BrightnessDownHold
+      Default item=SF_MasterBedroom_IkeaControl_ArrowLeftClick
+      Default item=SF_MasterBedroom_IkeaControl_ArrowLeftHold
+      Default item=SF_MasterBedroom_IkeaControl_ArrowRightClick
+      Default item=SF_MasterBedroom_IkeaControl_ArrowRightHold
+      Default item=SF_MasterBedroom_IkeaControl_BrightnessUpClick
+      Default item=SF_MasterBedroom_IkeaControl_BrightnessDownClick
+			Default item=SF_MasterBedroom_IkeaControl_BatteryPercentage icon="battery"
 		}
 	}
 	Text label="Master Washroom" icon="bath" {

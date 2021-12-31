@@ -7,6 +7,28 @@ Number SF_MasterBedroom_Humidity "Master Bedroom Humidity [%d %%]"
   { channel="mqtt:topic:myBroker:masterBedroom:humidity",
     wifi="true", autoReport="true" }
 
+
+Switch SF_MasterBedroom_IkeaControl "MB Ikea Control Power"
+  { channel="mqtt:topic:myBroker:masterBedroom:power_toggle" }
+Switch SF_MasterBedroom_IkeaControl_BrightnessUpHold "MB Turn On Panic Alarm"
+  { channel="mqtt:topic:myBroker:masterBedroom:brightness_up_hold" }
+Switch SF_MasterBedroom_IkeaControl_BrightnessDownHold "MB Turn Off Panic Alarm"
+  { channel="mqtt:topic:myBroker:masterBedroom:brightness_down_hold" }
+Switch SF_MasterBedroom_IkeaControl_ArrowLeftClick "MB Ikea Control Left Click"
+  { channel="mqtt:topic:myBroker:masterBedroom:arrow_left_click" }
+Switch SF_MasterBedroom_IkeaControl_ArrowLeftHold "MB Ikea Control Left Hold"
+  { channel="mqtt:topic:myBroker:masterBedroom:arrow_left_hold" }
+Switch SF_MasterBedroom_IkeaControl_ArrowRightClick "MB Ikea Control Right Click"
+  { channel="mqtt:topic:myBroker:masterBedroom:arrow_right_click" }
+Switch SF_MasterBedroom_IkeaControl_ArrowRightHold "MB Ikea Control Right Hold"
+  { channel="mqtt:topic:myBroker:masterBedroom:arrow_right_hold" }
+Switch SF_MasterBedroom_IkeaControl_BrightnessDownClick "MB Ikea Control Brightness Down Click"
+  { channel="mqtt:topic:myBroker:masterBedroom:brightness_down_click" }
+Switch SF_MasterBedroom_IkeaControl_BrightnessUpClick "MB Ikea Control Brightness Up Click"
+  { channel="mqtt:topic:myBroker:masterBedroom:brightness_up_click" }
+Number SF_MasterBedroom_IkeaControl_BatteryPercentage "MB Ikea Control Battery [%d %%]"
+  { channel="mqtt:topic:myBroker:masterBedroom:power_battery" }
+
 /**
  * Chromecast
  */

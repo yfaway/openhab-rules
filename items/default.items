@@ -28,8 +28,26 @@ Number FF_Foyer_AlarmPartition_ArmMode
   {channel="dscalarm:partition:706cd89d:partition1:partition_arm_mode"}
 String FF_Foyer_AlarmPartition_SendCommand "Send a DSC Alarm Command" 
   {channel="dscalarm:envisalink:706cd89d:send_command"}
-Switch FF_Foyer_AlarmPartition_PanelFireKeyAlarm
+
+Switch FF_Foyer_AlarmPartition_DscPanelFireKeyAlarm
   {channel="dscalarm:panel:706cd89d:panel:panel_fire_key_alarm"}
+Switch FF_Foyer_AlarmPartition_DscPanelAmbulanceKeyAlarm
+  {channel="dscalarm:panel:706cd89d:panel:panel_panic_key_alarm"}
+Switch FF_Foyer_AlarmPartition_DscPanelPoliceKeyAlarm
+  {channel="dscalarm:panel:706cd89d:panel:panel_police_key_alarm"}
+
+/**
+ * The next three alarm items are loosely linked to the DscPanelXxxKeyAlarm items. There is a
+ * limitation on the DSC panel. When one of those panel keys are pressed, the DSC triggers the
+ * alarm and immediately sends the Restore event. However, the alarm is only silenced after the
+ * user has entered the code.
+ * We don't want this behavior. And thus we will track the key states separatedly in additional
+ * items. These switched are turned on when the keys are pressed, and turned off when the partition
+ * is disarmed.
+ */
+Switch FF_Foyer_AlarmPartition_PanelFireKeyAlarm
+Switch FF_Foyer_AlarmPartition_PanelAmbulanceKeyAlarm
+Switch FF_Foyer_AlarmPartition_PanelPoliceKeyAlarm
 
 Number KEYPAD_FIRE_LED "Fire LED Status" <fireLED>
   {channel="dscalarm:keypad:706cd89d:keypad:keypad_fire_led"}

@@ -52,6 +52,46 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="esp/master-bedroom/temperature"]
       Type number : humidity "Master Bedroom Humidity"
         [stateTopic="esp/master-bedroom/humidity"]
+
+      Type switch : arrow_left_click "Master Bedroom Arrow Left Click"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="arrow_left_click"]
+
+      Type switch : arrow_left_hold "Master Bedroom Arrow Left Hold"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="arrow_left_hold"]
+
+      Type switch : arrow_right_click "Master Bedroom Arrow Right Click"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="arrow_right_click"]
+
+      Type switch : arrow_right_hold "Master Bedroom Arrow Right Hold"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="arrow_right_hold"]
+
+      Type switch : brightness_down_click "Master Bedroom Brightness Down Click"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="brightness_down_click"]
+
+      Type switch : brightness_down_hold "Master Bedroom Brightness Down Hold"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="brightness_down_hold"]
+
+      Type switch : brightness_up_click "Master Bedroom Brightness Up Click"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="brightness_up_click"]
+
+      Type switch : brightness_up_hold "Master Bedroom Brightness Up Hold"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="brightness_up_hold"]
+
+      Type switch : power_toggle "Master Bedroom Power Toggle"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.action", on="toggle"]
+
+      Type number : power_battery "Master Bedroom Remote Control Battery"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe641e22",
+         transformationPattern="JSONPATH:$.battery"]
     }
 
     Thing topic bedroom2 {
