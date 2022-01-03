@@ -1,20 +1,8 @@
 /**
- * Environment Canada alerts.
+ * Environment Canada alerts. These two values are updated by rules in HABApp.
  */
-String   FF_Virtual_Weather_Alert_Description  "Alert Description [%s]"
-  {channel="feed:feed:envCanada:latest-description"}
 DateTime FF_Virtual_Weather_Alert_Date  "Alert Last Update [%1tb %1$td %1$tY %1$tH:%1$tM]"
-  {channel="feed:feed:envCanada:latest-date"}
 String   FF_Virtual_Weather_Alert_Title "Alert [%s]"         
-  {channel="feed:feed:envCanada:latest-title"}
-
-/*
-Number   FF_Virtual_Weather_Alert_Of_entries    {channel="feed:feed:envCanada:number-of-entries"}
-String   FF_Virtual_Weather_AlertDescription    {channel="feed:feed:envCanada:description"}
-String   FF_Virtual_Weather_AlertAuthor         {channel="feed:feed:envCanada:author"}
-DateTime FF_Virtual_Weather_AlertPublished_date {channel="feed:feed:envCanada:last-update"}
-String   FF_Virtual_Weather_AlertTitle          {channel="feed:feed:envCanada:title"}
-*/
 
 // condition
 String FF_Virtual_Weather_Condition "Condition [%s]" (gWeather) 
