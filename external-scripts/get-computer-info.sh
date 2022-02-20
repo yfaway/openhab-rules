@@ -1,8 +1,13 @@
 #!/bin/bash
 
+# Retrieve the CPU and GPU temperatures, and the fan speed. Currently only support Windows with
+# Nvidia and Raspberry Pi.
+#
 # To run the script at start-up, follow these steps:
 #  1. Run "crontab -e"
-#  2. Add this line "@reboot ./get-computer-info.sh utility rpiNfs &"
+#  2. Add this line 
+#       @reboot /home/pi/git/openhab-rules/external-scripts/get-computer-info.sh <room_name> <machine_name> &
+#     Replace <room_name> and <machine_name> with the actual values.
 #  3. Run "sudo reboot -h now"
 
 MQTT_IP=192.168.0.204

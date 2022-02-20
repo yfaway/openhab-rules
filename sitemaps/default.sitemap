@@ -182,13 +182,17 @@ sitemap default label="HV Home"
 			Text item=BM_Utility_WaterLeakState icon="water"
 			Text item=BM_Utility_WaterLeakBattery icon="battery"
 
-      Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="temperature"
-      Default item=BM_Utility_Computer_RaspberryOpenHab_GpuTemperature icon="temperature"
-      Default item=BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp icon="time"
+            Default item=BM_Utility_Computer_RaspberryHa_CpuTemperature icon="temperature"
+            Default item=BM_Utility_Computer_RaspberryHa_GpuTemperature icon="temperature"
+            Default item=BM_Utility_Computer_RaspberryHa_UpdatedTimestamp icon="time"
 
-      Default item=BM_Utility_Computer_RaspberryNfs_CpuTemperature icon="temperature"
-      Default item=BM_Utility_Computer_RaspberryNfs_GpuTemperature icon="temperature"
-      Default item=BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp icon="time"
+            Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="temperature"
+            Default item=BM_Utility_Computer_RaspberryOpenHab_GpuTemperature icon="temperature"
+            Default item=BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp icon="time"
+
+            Default item=BM_Utility_Computer_RaspberryNfs_CpuTemperature icon="temperature"
+            Default item=BM_Utility_Computer_RaspberryNfs_GpuTemperature icon="temperature"
+            Default item=BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp icon="time"
 		}
 	}
 

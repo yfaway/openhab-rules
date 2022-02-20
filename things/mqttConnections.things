@@ -162,5 +162,12 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/utility/rpiNfs/gfxTemperature"]
       Type datetime : rpiNfsUpdatedTimestamp "Update Timestamp"
         [stateTopic="computer/utility/rpiNfs/updatedTimestamp"]
+
+      Type number : rpiHaCpuTemperature "CPU Temperature"
+        [stateTopic="computer/utility/rpiHa/cpuTemperature"]
+      Type number : rpiHaGfxTemperature "Graphic Card Temperature"
+        [stateTopic="computer/utility/rpiHa/gfxTemperature"]
+      Type datetime : rpiHaUpdatedTimestamp "Update Timestamp"
+        [stateTopic="computer/utility/rpiHa/updatedTimestamp"]
     }
 }

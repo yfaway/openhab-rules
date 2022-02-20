@@ -50,6 +50,14 @@ Number BM_Utility_Computer_RaspberryOpenHab_GpuTemperature "Rasp OH GPU Temperat
 DateTime BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp "Rasp OH Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
   { channel="mqtt:topic:myBroker:utilityRoom:rpiOhUpdatedTimestamp", autoReport="true" }
 
+String BM_Utility_Computer_RaspberryHa
+Number BM_Utility_Computer_RaspberryHa_CpuTemperature "Rasp Ha CPU Temperature [%d °C]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaCpuTemperature", autoReport="true" }
+Number BM_Utility_Computer_RaspberryHa_GpuTemperature "Rasp HA GPU Temperature [%d °C]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaGfxTemperature", autoReport="true" }
+DateTime BM_Utility_Computer_RaspberryHa_UpdatedTimestamp "Rasp HA Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaUpdatedTimestamp", autoReport="true" }
+
 String BM_Utility_Computer_RaspberryNfs
 Number BM_Utility_Computer_RaspberryNfs_CpuTemperature "Rasp NFS CPU Temperature [%d °C]"
   { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsCpuTemperature", autoReport="true" }
@@ -57,3 +65,4 @@ Number BM_Utility_Computer_RaspberryNfs_GpuTemperature "Rasp NFS GPU Temperature
   { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsGfxTemperature", autoReport="true" }
 DateTime BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp "Rasp NFS Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
   { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsUpdatedTimestamp", autoReport="true" }
+
