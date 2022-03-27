@@ -21,28 +21,28 @@ sitemap default label="HV Home"
 /** BEGIN AUTO-GENERATED SITEMAP **/
 	Text label="GreatRoom" icon="player" {
 		Frame label="GreatRoom" {
-      Default item=FF_GreatRoom_ChromeCastPlayer
-      Default item=FF_GreatRoom_ChromeCastVolume
-      Default item=FF_GreatRoom_ChromeCastStreamTitle
+            Default item=FF_GreatRoom_ChromeCastPlayer
+            Default item=FF_GreatRoom_ChromeCastVolume
+            Default item=FF_GreatRoom_ChromeCastStreamTitle
 			Default item=FF_GreatRoom_ChromeCastIdling
-      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
+            Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
 			Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 			Switch item=FF_GreatRoom_LightSwitch icon="light"
-      Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="rgb"
+            Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="rgb"
 			Switch item=FF_GreatRoom_Plug icon="poweroutlet"
 			Switch item=FF_GreatRoom_MotionSensor icon="motion"
-      Switch item=FF_GreatRoom_Tv icon="screen"
+            Switch item=FF_GreatRoom_Tv icon="screen"
 		} 
 	} 
 	Text label="Office" icon="office" {
 		Frame label="Office" {
 			Switch item=FF_Office_LightSwitch icon="light"
 			Text item=FF_Office_Plug icon="poweroutlet"
-      Default item=FF_Office_Plug_Power icon="energy"
+            Default item=FF_Office_Plug_Power icon="energy"
 			Switch item=FF_Office_LightSwitch_MotionSensor icon="motion"
-      Default item=FF_Office_Computer_Dell_GpuTemperature icon="temperature"
-      Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="fan"
-      Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="time"
+            Default item=FF_Office_Computer_Dell_GpuTemperature icon="temperature"
+            Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="fan"
+            Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="time"
 		}
 	}  
 	Text label="Kitchen" icon="kitchen" {
@@ -72,7 +72,7 @@ sitemap default label="HV Home"
 	}
 	Text label="Garage" icon="garage" {
 		Frame label="Garage" {
-      Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
+            Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
 			Text item=FF_Garage_Door icon="door"
 		}
 	}
@@ -83,21 +83,21 @@ sitemap default label="HV Home"
 	}
 	Text label="Outdoor" icon="garden" {
 		Frame label="Outdoor" {
-      Text item=FF_Virtual_Weather_Temperature icon="temperature"
-      Text item=FF_Virtual_Weather_Humidity icon="humidity"
+            Text item=FF_Virtual_Weather_Temperature icon="temperature"
+            Text item=FF_Virtual_Weather_Humidity icon="humidity"
 
-      Text item=FF_Virtual_Weather_Condition        
+            Text item=FF_Virtual_Weather_Condition        
 
-      Text item=FF_Virtual_Weather_ForecastTempMin icon="temperature"
-      Text item=FF_Virtual_Weather_ForecastTempMax icon="temperature"
-      Text item=FF_Virtual_Weather_ForecastPrecipationProbability visibility=[FF_Virtual_Weather_ForecastPrecipationProbability > 0]
-      Text item=FF_Virtual_Weather_ForecastWindSpeed icon="wind" visibility=[FF_Virtual_Weather_ForecastWindSpeed > 0]
-      Text item=FF_Virtual_Weather_ForecastWindGust icon="wind" visibility=[FF_Virtual_Weather_ForecastWindGust > 0]
+            Text item=FF_Virtual_Weather_ForecastTempMin icon="temperature"
+            Text item=FF_Virtual_Weather_ForecastTempMax icon="temperature"
+            Text item=FF_Virtual_Weather_ForecastPrecipationProbability visibility=[FF_Virtual_Weather_ForecastPrecipationProbability > 0]
+            Text item=FF_Virtual_Weather_ForecastWindSpeed icon="wind" visibility=[FF_Virtual_Weather_ForecastWindSpeed > 0]
+            Text item=FF_Virtual_Weather_ForecastWindGust icon="wind" visibility=[FF_Virtual_Weather_ForecastWindGust > 0]
 
-      Text item=FF_Virtual_Weather_LastUpdate       
+            Text item=FF_Virtual_Weather_LastUpdate       
 
-      Text item=FF_Virtual_Weather_Alert_Title
-      Text item=FF_Virtual_Weather_Alert_Date
+            Text item=FF_Virtual_Weather_Alert_Title
+            Text item=FF_Virtual_Weather_Alert_Date
 		}
 	}
 	Text label="Main Washroom" icon="bath" {
@@ -123,26 +123,26 @@ sitemap default label="HV Home"
 	}  
 	Text label="Master Bedroom" icon="bedroom" {
 		Frame label="MasterBedroom" {
-      Text item=SF_MasterBedroom_Temperature icon="temperature"
+            Text item=SF_MasterBedroom_Temperature icon="temperature"
 			Text item=SF_MasterBedroom_Humidity icon="humidity"
 
-      Default item=SF_MasterBedroom_IkeaControl
-      Default item=SF_MasterBedroom_IkeaControl_BrightnessUpHold
-      Default item=SF_MasterBedroom_IkeaControl_BrightnessDownHold
-      Default item=SF_MasterBedroom_IkeaControl_ArrowLeftClick
-      Default item=SF_MasterBedroom_IkeaControl_ArrowLeftHold
-      Default item=SF_MasterBedroom_IkeaControl_ArrowRightClick
-      Default item=SF_MasterBedroom_IkeaControl_ArrowRightHold
-      Default item=SF_MasterBedroom_IkeaControl_BrightnessUpClick
-      Default item=SF_MasterBedroom_IkeaControl_BrightnessDownClick
+            Default item=SF_MasterBedroom_IkeaControl
+            Default item=SF_MasterBedroom_IkeaControl_BrightnessUpHold
+            Default item=SF_MasterBedroom_IkeaControl_BrightnessDownHold
+            Default item=SF_MasterBedroom_IkeaControl_ArrowLeftClick
+            Default item=SF_MasterBedroom_IkeaControl_ArrowLeftHold
+            Default item=SF_MasterBedroom_IkeaControl_ArrowRightClick
+            Default item=SF_MasterBedroom_IkeaControl_ArrowRightHold
+            Default item=SF_MasterBedroom_IkeaControl_BrightnessUpClick
+            Default item=SF_MasterBedroom_IkeaControl_BrightnessDownClick
 			Default item=SF_MasterBedroom_IkeaControl_BatteryPercentage icon="battery"
 		}
 	}
 	Text label="Master Washroom" icon="bath" {
 		Frame label="MasterWashroom" {
-      Default item=SF_MasterWashroom_ChromeCastPlayer
-      Default item=SF_MasterWashroom_ChromeCastVolume
-      Default item=SF_MasterWashroom_ChromeCastStreamTitle
+            Default item=SF_MasterWashroom_ChromeCastPlayer
+            Default item=SF_MasterWashroom_ChromeCastVolume
+            Default item=SF_MasterWashroom_ChromeCastStreamTitle
 			Switch item=SF_MasterWashroom_LightSwitch icon="light"
 			Text item=SF_MasterWashroom_LightSwitch_Illuminance
 			Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor icon="motion"
@@ -159,18 +159,23 @@ sitemap default label="HV Home"
 		Frame label="Bedroom2" {
 			Text item=SF_Bedroom2_Temperature icon="temperature"
 			Text item=SF_Bedroom2_Humidity icon="humidity"
-      Text item=SF_Bedroom2_Smoke icon="fire"
+            Text item=SF_Bedroom2_Smoke icon="fire"
 		}
 	}
 	Text label="Bedroom3" icon="bedroom" {
 		Frame label="Bedroom3" {
 			Text item=SF_Bedroom3_Temperature icon="temperature"
 			Text item=SF_Bedroom3_Humidity icon="humidity"
-      Text item=SF_Bedroom3_Smoke icon="fire"
+            Text item=SF_Bedroom3_Smoke icon="fire"
 		}
-  }
-
-	Text label="Utility" icon="groundfloor" {
+    }
+	Text label="Main Basement" icon="groundfloor" {
+		Frame label="MainBasement" {
+			Switch item=BM_MainBasement_MotionSensor icon="motion"
+			Default item=BM_MainBasement_MotionSensor_BatteryPercentage icon="battery"
+		}
+	}
+    Text label="Utility" icon="groundfloor" {
 		Frame label="Utility" {
 			Text item=BM_Utility_AirThingsTemperature icon="temperature"
 			Text item=BM_Utility_AirThingsHumidity icon="humidity"
@@ -273,19 +278,19 @@ sitemap default label="HV Home"
 
   Text label="Indoor Temperature & Humidity" icon="temperature" {
     Frame label="Temperature & Humidity" {
-      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-      Text item=SF_MasterBedroom_Temperature icon="temperature"
-			Text item=SF_Bedroom2_Temperature icon="temperature"
-			Text item=SF_Bedroom3_Temperature icon="temperature"
-			Text item=BM_Utility_Temperature icon="temperature"
+        Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
+        Text item=SF_MasterBedroom_Temperature icon="temperature"
+        Text item=SF_Bedroom2_Temperature icon="temperature"
+        Text item=SF_Bedroom3_Temperature icon="temperature"
+        Text item=BM_Utility_Temperature icon="temperature"
 
-
-      Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-			Text item=SF_MasterBedroom_Humidity icon="humidity"
-			Text item=SF_Bedroom2_Humidity icon="humidity"
-			Text item=SF_Bedroom3_Humidity icon="humidity"
-			Text item=BM_Utility_Humidity icon="humidity"
+        Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+        Text item=SF_MasterBedroom_Humidity icon="humidity"
+        Text item=SF_Bedroom2_Humidity icon="humidity"
+        Text item=SF_Bedroom3_Humidity icon="humidity"
+        Text item=BM_Utility_Humidity icon="humidity"
     }
+  }
 
     Text label="Ecobee Thermostat" icon="temperature" {
       Frame label="Ecobee Thermostat" {
@@ -304,24 +309,23 @@ sitemap default label="HV Home"
         Text item=FF_Virtual_Weather_Humidity icon="humidity"
       }
     }
-  }
 
  	Text label="XmasLights" icon="rgb"{
-    Frame label="XmasLights" {
- 		  Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree
-      Slider item=FF_GreatRoom_Wled_MasterControls_XmasTree
-      Colorpicker item=FF_GreatRoom_Wled_MasterControls_XmasTree
-      Switch item=FF_GreatRoom_Wled_Sleep_XmasTree
-      Colorpicker item=FF_GreatRoom_Wled_Primary_XmasTree
-      Colorpicker item=FF_GreatRoom_Wled_Secondary_XmasTree
-      Selection item=FF_GreatRoom_Wled_FX_XmasTree
-      Selection item=FF_GreatRoom_Wled_Palette_XmasTree
-      Selection item=FF_GreatRoom_Wled_Presets_XmasTree
-      Default item=FF_GreatRoom_Wled_Speed_XmasTree
-      Default item=FF_GreatRoom_Wled_Intensity_XmasTree
-      Default item=FF_GreatRoom_Wled_PresetCycle_XmasTree
-      Default item=FF_GreatRoom_Wled_PresetDuration_XmasTree
-      Default item=FF_GreatRoom_Wled_TransformTime_XmasTree
+        Frame label="XmasLights" {
+            Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree
+            Slider item=FF_GreatRoom_Wled_MasterControls_XmasTree
+            Colorpicker item=FF_GreatRoom_Wled_MasterControls_XmasTree
+            Switch item=FF_GreatRoom_Wled_Sleep_XmasTree
+            Colorpicker item=FF_GreatRoom_Wled_Primary_XmasTree
+            Colorpicker item=FF_GreatRoom_Wled_Secondary_XmasTree
+            Selection item=FF_GreatRoom_Wled_FX_XmasTree
+            Selection item=FF_GreatRoom_Wled_Palette_XmasTree
+            Selection item=FF_GreatRoom_Wled_Presets_XmasTree
+            Default item=FF_GreatRoom_Wled_Speed_XmasTree
+            Default item=FF_GreatRoom_Wled_Intensity_XmasTree
+            Default item=FF_GreatRoom_Wled_PresetCycle_XmasTree
+            Default item=FF_GreatRoom_Wled_PresetDuration_XmasTree
+            Default item=FF_GreatRoom_Wled_TransformTime_XmasTree
 		}
 	}
 }

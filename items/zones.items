@@ -57,6 +57,7 @@ String Zone_MasterWashroomShower
 String Zone_Bedroom2 { level="SF", displayIcon="bedroom", displayOrder="36" }
 String Zone_Bedroom3 { level="SF", displayIcon="bedroom", displayOrder="37" }
 
+String Zone_MainBasement { level="BM", displayIcon="groundfloor", displayOrder="39" }
 String Zone_Utility { level="BM", displayIcon="groundfloor", displayOrder="40" }
 
 String Zone_Virtual { level="FF" }

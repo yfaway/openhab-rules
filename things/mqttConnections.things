@@ -170,4 +170,12 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
       Type datetime : rpiHaUpdatedTimestamp "Update Timestamp"
         [stateTopic="computer/utility/rpiHa/updatedTimestamp"]
     }
+
+    Thing topic mainBasement {
+    Channels:
+      Type switch : MainBasementMotionSensor "Main Basement Motion Sensor"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe214723", commandTopic="zigbee2mqtt/0xb4e3f9fffe214723", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : MainBasementBattery "Main Basement Battery"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffe214723", commandTopic="zigbee2mqtt/0xb4e3f9fffe214723", transformationPattern="JSONPATH:$.battery"]
+    }
 }
