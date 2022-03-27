@@ -2,7 +2,7 @@
     "0x00124b0018ed254b": {
         "description": "0/0x00124B00120234F2",
         "type": "COORD",
-        "rssi": 1,
+        "rssi": 3,
         "linkquality": 0,
         "state": true,
         "led_state": false,
@@ -17,34 +17,29 @@
     "0x00158d000236b4cd": {
         "occupancy": true,
         "linkquality": 0,
-        "illuminance": 268,
+        "illuminance": 233,
         "battery": 100,
         "voltage": 3025,
-        "illuminance_lux": 268
+        "illuminance_lux": 233,
+        "temperature": 25
     },
     "0x00158d0002047fe0": {
-        "illuminance": 1000,
+        "illuminance": 423,
         "linkquality": 23,
         "occupancy": false,
-        "battery": 100,
-        "voltage": 3015,
-        "illuminance_lux": 1000
-    },
-    "0x00158d000204c7ef": {
-        "illuminance": 4,
-        "linkquality": 47,
-        "occupancy": false,
-        "battery": 100,
-        "voltage": 3035,
-        "illuminance_lux": 4
+        "battery": 91,
+        "voltage": 2985,
+        "illuminance_lux": 423,
+        "temperature": 0
     },
     "0x00158d000239725a": {
-        "illuminance": 14,
+        "illuminance": 7,
         "linkquality": 0,
         "occupancy": false,
         "battery": 100,
         "voltage": 3025,
-        "illuminance_lux": 14
+        "illuminance_lux": 7,
+        "temperature": 25
     },
     "0x00158d000200ed5e": {
         "illuminance": 0,
@@ -52,36 +47,73 @@
         "occupancy": false,
         "battery": 100,
         "voltage": 3045,
-        "illuminance_lux": 0
+        "illuminance_lux": 0,
+        "temperature": 23
     },
     "0x00158d000200eb10": {
-        "illuminance": 74,
+        "illuminance": 85,
         "linkquality": 10,
         "occupancy": false,
         "battery": 100,
         "voltage": 3025,
-        "illuminance_lux": 74
-    },
-    "0x00158d0001fa45fd": {
-        "illuminance": 82,
-        "linkquality": 47,
-        "occupancy": false,
-        "battery": 100,
-        "voltage": 3015,
-        "illuminance_lux": 82
-    },
-    "0x00158d000236b6c0": {
-        "illuminance": 41,
-        "linkquality": 0,
-        "occupancy": false,
-        "battery": 100,
-        "voltage": 3025,
-        "illuminance_lux": 41
+        "illuminance_lux": 85,
+        "temperature": 24
     },
     "0x00158d0002482d69": {
         "battery": 100,
         "voltage": 3005,
         "linkquality": 0,
-        "water_leak": false
+        "water_leak": false,
+        "temperature": 20,
+        "tamper": false,
+        "battery_low": false
+    },
+    "0x00158d0001fa45fd": {
+        "occupancy": false,
+        "illuminance": 67,
+        "illuminance_lux": 67,
+        "voltage": 3015,
+        "battery": 100,
+        "temperature": 26
+    },
+    "0xb4e3f9fffeb68d5c": {
+        "update": {
+            "state": "idle"
+        },
+        "update_available": false,
+        "occupancy": false,
+        "battery": 74,
+        "illuminance_above_threshold": false
+    },
+    "0xb4e3f9fffe641e22": {
+        "update": {
+            "state": "available"
+        },
+        "update_available": true,
+        "battery": 60
+    },
+    "0x00158d000236b6c0": {
+        "occupancy": true,
+        "illuminance": 87,
+        "illuminance_lux": 87,
+        "voltage": 3025,
+        "battery": 100,
+        "temperature": 24
+    },
+    "0x00158d000204c7ef": {
+        "voltage": 3025,
+        "battery": 100,
+        "illuminance": 20,
+        "illuminance_lux": 20,
+        "temperature": 25,
+        "occupancy": false
+    },
+    "0xb4e3f9fffe214723": {
+        "battery": 100,
+        "update": {
+            "state": "idle"
+        },
+        "occupancy": false,
+        "illuminance_above_threshold": false
     }
 }

@@ -2,7 +2,7 @@ homeassistant: false
 permit_join: true
 mqtt:
   base_topic: zigbee2mqtt
-  server: 'mqtt://192.168.0.204'
+  server: mqtt://192.168.0.221
 serial:
   port: /dev/ttyACM0
 devices:
@@ -38,5 +38,15 @@ devices:
     retain: false
   '0x00158d0002482d69':
     friendly_name: '0x00158d0002482d69'
+  '0xb4e3f9fffeb68d5c':
+    friendly_name: '0xb4e3f9fffeb68d5c'
+  '0xb4e3f9fffe641e22':
+    friendly_name: '0xb4e3f9fffe641e22'
+  '0xb4e3f9fffe214723':
+    friendly_name: '0xb4e3f9fffe214723'
 advanced:
   log_level: debug
+  homeassistant_legacy_entity_attributes: false
+  legacy_api: false
+device_options:
+  legacy: false
