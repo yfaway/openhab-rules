@@ -47,11 +47,12 @@ sitemap default label="HV Home"
 	}  
 	Text label="Kitchen" icon="kitchen" {
 		Frame label="Kitchen" {
-			Text item=FF_Kitchen_Humidity icon="humidity"
 			Switch item=FF_Kitchen_LightSwitch icon="light"
 			Switch item=FF_Kitchen_SecurityMotionSensor icon="motion"
 			Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor icon="motion"
 			Text item=FF_Kitchen_LightSwitch_Illuminance
+			Switch item=FF_Kitchen_SinkLightSwitch icon="light"
+			Default item=FF_Kitchen_SinkLightSwitchColor
 		}
 	}  
 	Text label="Foyer" icon="groundfloor" {

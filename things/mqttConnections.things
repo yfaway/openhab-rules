@@ -38,6 +38,15 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/office/dell/updatedTimestamp"]
     }
 
+    Thing topic kitchen {
+    Channels:
+      Type switch : KitchenSinkLightSwitch "Kitchen Sink Light Switch"
+        [stateTopic="zigbee2mqtt/0x2c1165fffe03a2a6", commandTopic="zigbee2mqtt/0x2c1165fffe03a2a6/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+      Type colorRGB: KitchenSinkLightColor "Kitchen Sink Light Color"
+        [stateTopic="zigbee2mqtt/0x2c1165fffe03a2a6", commandTopic="zigbee2mqtt/0x2c1165fffe03a2a6/set", transformationPattern="JSONPATH:$.color", transformationPatternOut="JS:bulbColorFix.js"]
+    }
+
+
     Thing topic mainWashroom {
     Channels:
       Type switch : MainWashroomMotionSensor "Main Washroom Motion Sensor"

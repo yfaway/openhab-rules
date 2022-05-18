@@ -1,0 +1,4 @@
+Switch FF_Kitchen_SinkLightSwitch "Kitchen Sink Light"
+  { channel="mqtt:topic:myBroker:kitchen:KitchenSinkLightSwitch", durationInMinutes="15" }
+Color FF_Kitchen_SinkLightSwitchColor "Kitchen Sink Light Color"
+  { channel="mqtt:topic:myBroker:kitchen:KitchenSinkLightColor" }
