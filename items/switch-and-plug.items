@@ -15,21 +15,6 @@ Group:Switch:OR(ON,OFF) gSecondFloorLightSwitch "Active First Floor Lights [%d]"
 // Used to send an ON/OFF command to all controlled fans
 Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
-Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
-  [shared-motion-sensor]
-  { channel="zwave:device:9e4ce05e:node3:switch_binary",
-    disableMotionTriggeringIfOtherLightIsOn="FF_GreatRoom_LightSwitch",
-    durationInMinutes="5" }
-Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"
-  (gFirstFloorMotionSensors, gWallSwitchMotionSensor) 
-  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryMotionSensor"}
-Switch FF_Kitchen_SecurityMotionSensor
-  (gWallSwitchMotionSensor, gFirstFloorMotionSensors)
-  {channel="dscalarm:zone:706cd89d:zone4:zone_tripped"}
-Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
-  (gIlluminance) 
-  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}
-
 Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
   { channel="zwave:device:9e4ce05e:node4:switch_binary",
