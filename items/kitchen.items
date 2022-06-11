@@ -1,4 +1,4 @@
-Switch FF_Kitchen_LightSwitch "Kitchen Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
+Switch FF_Kitchen_LightSwitch "Kitchen Island Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
   { channel="zwave:device:9e4ce05e:node3:switch_binary",
     disableMotionTriggeringIfOtherLightIsOn="FF_GreatRoom_LightSwitch",
@@ -16,7 +16,7 @@ Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
 
 Switch FF_Kitchen_SinkLightSwitch "Kitchen Sink Light"
   { channel="mqtt:topic:myBroker:kitchen:KitchenSinkLightSwitch",
-	durationInMinutes="15",
+	durationInMinutes="5",
 	colorBulb="true" }
 Color FF_Kitchen_SinkLightSwitchColor "Kitchen Sink Light Color"
   { channel="mqtt:topic:myBroker:kitchen:KitchenSinkLightColor" }
