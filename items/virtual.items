@@ -56,3 +56,9 @@ DateTime vSunset_Time "Evening [%1$tH:%1$tM]" <sunset> { channel="astro:sun:home
 DateTime vNight_Time "Night [%1$tH:%1$tM]" <moon>
 DateTime vBed_Time "Bed [%1$tH:%1$tM]" <bedroom_blue>
 DateTime vEvening_Time "Afternoon [ %1$tH:%1$tM]" <sunset> { channel="astro:sun:minus90:set#start" }
+
+/**
+ * Item to control defer notification for auto-report devices.
+ */ 
+Number FF_Virtual_Notification_AutoReportDeferredDurationInHour "Deferred Hours"
+String FF_Virtual_Notification_AutoReportDeviceName "Device Name"

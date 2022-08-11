@@ -329,4 +329,27 @@ sitemap default label="HV Home"
             Default item=FF_GreatRoom_Wled_TransformTime_XmasTree
 		}
 	}
+
+ 	Text label="Admin Controls" {
+        Frame label="Auto-report Devices" {
+          // The mapping is generated using the GenerateWifiItemMappings in Habapp.
+          Selection item=FF_Virtual_Notification_AutoReportDeferredDurationInHour icon="time"
+              mappings=[
+                0="None", 1="1 hour", 3="3 hour", 6="6 hour", 8="8 hour", 10="10 hour",
+                12="12 hour", 24="1 day", 32="1.5 days", 48="2 days", 72="3 days", 96="4 days"]
+          Selection item=FF_Virtual_Notification_AutoReportDeviceName icon="status"
+              mappings=[
+                ""="None",
+                "FF_GreatRoom_Thermostat_ActualTemperature"="GreatRoom: Thermostat ActualTemperature",
+                "SF_MasterBedroom_Temperature"="MasterBedroom: Temperature",
+                "SF_Bedroom2_Temperature"="Bedroom2: Temperature",
+                "SF_Bedroom2_Smoke"="Bedroom2: Smoke",
+                "SF_Bedroom3_Smoke"="Bedroom3: Smoke",
+                "SF_Bedroom3_Temperature"="Bedroom3: Temperature",
+                "BM_Utility_RadonGas"="Utility: RadonGas",
+                "BM_Utility_AirThingsTemperature"="Utility: AirThingsTemperature",
+                "BM_Utility_Temperature"="Utility: Temperature",
+                "BM_Utility_NaturalGas"="Utility: NaturalGas"]
+        }
+    }
 }
