@@ -43,26 +43,29 @@ Number BM_Utility_WaterLeakBattery "Water Leak Battery [%d]"
   { channel="mqtt:topic:myBroker:utilityRoom:leakSensorBattery" }
 
 String BM_Utility_Computer_RaspberryOpenHab
+  { name="Raspberry Old OpenHab", alwaysOn="true" }
 Number BM_Utility_Computer_RaspberryOpenHab_CpuTemperature "Rasp OH CPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhCpuTemperature", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhCpuTemperature" }
 Number BM_Utility_Computer_RaspberryOpenHab_GpuTemperature "Rasp OH GPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhGfxTemperature", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhGfxTemperature" }
 DateTime BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp "Rasp OH Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhUpdatedTimestamp", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiOhUpdatedTimestamp" }
 
 String BM_Utility_Computer_RaspberryHa
+  { name="Raspberry Home Automation", alwaysOn="true" }
 Number BM_Utility_Computer_RaspberryHa_CpuTemperature "Rasp Ha CPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaCpuTemperature", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaCpuTemperature" }
 Number BM_Utility_Computer_RaspberryHa_GpuTemperature "Rasp HA GPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaGfxTemperature", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaGfxTemperature" }
 DateTime BM_Utility_Computer_RaspberryHa_UpdatedTimestamp "Rasp HA Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaUpdatedTimestamp", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaUpdatedTimestamp" }
 
 String BM_Utility_Computer_RaspberryNfs
+  { name="Raspberry NFS", alwaysOn="true" }
 Number BM_Utility_Computer_RaspberryNfs_CpuTemperature "Rasp NFS CPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsCpuTemperature", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsCpuTemperature" }
 Number BM_Utility_Computer_RaspberryNfs_GpuTemperature "Rasp NFS GPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsGfxTemperature", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsGfxTemperature" }
 DateTime BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp "Rasp NFS Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsUpdatedTimestamp", autoReport="true" }
+  { channel="mqtt:topic:myBroker:utilityRoom:rpiNfsUpdatedTimestamp" }
 
