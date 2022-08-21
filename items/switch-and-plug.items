@@ -32,7 +32,7 @@ Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sens
 
 Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan" 
   (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node21:switch_binary",
+  { channel="zwave:device:9e4ce05e:node22:switch_binary",
     durationInMinutes="15" }
 Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 

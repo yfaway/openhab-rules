@@ -18,7 +18,7 @@ Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
 
 Switch SF_MainWashroomShower_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node20:switch_binary",
+  { channel="zwave:device:9e4ce05e:node23:switch_binary",
     durationInMinutes="15" }
 Switch SF_MainWashroomShower_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
