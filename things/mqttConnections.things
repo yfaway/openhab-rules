@@ -4,12 +4,17 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
     Channels:
       Type switch : PorchMotionSensor "Porch Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d0002047fe0", commandTopic="zigbee2mqtt/0x00158d0002047fe0", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : PorchIlluminance "Porch Illuminance Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d0002047fe0", commandTopic="zigbee2mqtt/0x00158d0002047fe0", transformationPattern="JSONPATH:$.illuminance"]
+
       Type switch : FoyerMotionSensor "Foyer Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000204c7ef", commandTopic="zigbee2mqtt/0x00158d000204c7ef", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type number : FoyerIlluminance "Foyer Illuminance Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000204c7ef", commandTopic="zigbee2mqtt/0x00158d000204c7ef", transformationPattern="JSONPATH:$.illuminance"]
+
       Type switch : OfficeMotionSensor "Office Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000236b6c0", commandTopic="zigbee2mqtt/0x00158d000236b6c0", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+
       Type switch : PantryMotionSensor "Pantry Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000236b4cd", commandTopic="zigbee2mqtt/0x00158d000236b4cd", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type number : PantryIlluminance "Pantry Illuminance Sensor"
@@ -38,11 +43,11 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/office/dell/updatedTimestamp"]
     }
 
-    Thing topic kitchen {
+    Thing topic porch {
     Channels:
-      Type switch : KitchenSinkLightSwitch "Kitchen Sink Light Switch"
+      Type switch : PorchLightSwitch "Porch Light Switch"
         [stateTopic="zigbee2mqtt/0x2c1165fffe03a2a6", commandTopic="zigbee2mqtt/0x2c1165fffe03a2a6/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
-      Type colorRGB: KitchenSinkLightColor "Kitchen Sink Light Color"
+      Type colorRGB: PorchLightColor "Porch Light Color"
         [stateTopic="zigbee2mqtt/0x2c1165fffe03a2a6", commandTopic="zigbee2mqtt/0x2c1165fffe03a2a6/set", transformationPattern="JSONPATH:$.color", transformationPatternOut="JS:bulbColorFix.js"]
     }
 

@@ -21,8 +21,7 @@ String Zone_Foyer
     openSpaceNeighbors="SF_Lobby" }
 
 String Zone_Porch 
-  { level="FF", external="true", displayIcon="groundfloor", displayOrder="20",
-    openSpaceNeighbors="FF_Foyer, FF_Office" }
+  { level="FF", external="true", displayIcon="groundfloor", displayOrder="20" }
 
 String Zone_Garage 
   { level="FF", external="true", displayIcon="garage", displayOrder="21" }

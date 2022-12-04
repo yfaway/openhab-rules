@@ -3,8 +3,19 @@ String FF_Porch_Camera "Porch Camera" (gCamera)
 Switch FF_Porch_MotionSensor "Porch Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PorchMotionSensor" }
+Number FF_Porch_LightSwitch_Illuminance "Porch Illuminance [%d]"
+  (gIlluminance) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PorchIlluminance"}
+
 
 Switch FF_Porch_Plug1 "Porch Plug 1" (gPlug)
   { channel="tplinksmarthome:kp400:porch:outlet1#switch"}
 Switch FF_Porch_Plug2 "Porch Plug 2" (gPlug)
   { channel="tplinksmarthome:kp400:porch:outlet2#switch"}
+
+Switch FF_Porch_CeilingLightSwitch "Porch Light"
+  { channel="mqtt:topic:myBroker:porch:PorchLightSwitch",
+	durationInMinutes="5",
+	colorBulb="true" }
+Color FF_Porch_CeilingLightSwitchColor "Porch Light Color"
+  { channel="mqtt:topic:myBroker:porch:PorchLightColor" }

@@ -12,11 +12,3 @@ Switch FF_Kitchen_SecurityMotionSensor
 Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}
-
-
-Switch FF_Kitchen_SinkLightSwitch "Kitchen Sink Light"
-  { channel="mqtt:topic:myBroker:kitchen:KitchenSinkLightSwitch",
-	durationInMinutes="5",
-	colorBulb="true" }
-Color FF_Kitchen_SinkLightSwitchColor "Kitchen Sink Light Color"
-  { channel="mqtt:topic:myBroker:kitchen:KitchenSinkLightColor" }

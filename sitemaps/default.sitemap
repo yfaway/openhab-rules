@@ -51,8 +51,6 @@ sitemap default label="HV Home"
 			Switch item=FF_Kitchen_SecurityMotionSensor icon="motion"
 			Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor icon="motion"
 			Text item=FF_Kitchen_LightSwitch_Illuminance
-			Switch item=FF_Kitchen_SinkLightSwitch icon="light"
-			Default item=FF_Kitchen_SinkLightSwitchColor
 		}
 	}  
 	Text label="Foyer" icon="groundfloor" {
@@ -66,6 +64,8 @@ sitemap default label="HV Home"
 	Text label="Porch" icon="groundfloor" {
 		Frame label="Porch" {
 			Text item=FF_Porch_Door icon="door"
+			Switch item=FF_Porch_CeilingLightSwitch icon="light"
+			Default item=FF_Porch_CeilingLightSwitchColor
 			Switch item=FF_Porch_Plug1 icon="poweroutlet"
 			Switch item=FF_Porch_Plug2 icon="poweroutlet"
 			Switch item=FF_Porch_MotionSensor icon="motion"
