@@ -44,6 +44,8 @@ devices:
     friendly_name: '0xb4e3f9fffe641e22'
   '0xb4e3f9fffe214723':
     friendly_name: '0xb4e3f9fffe214723'
+  '0x2c1165fffe03a2a6':
+    friendly_name: '0x2c1165fffe03a2a6'
 advanced:
   log_level: debug
   homeassistant_legacy_entity_attributes: false
