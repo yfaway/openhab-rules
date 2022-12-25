@@ -59,27 +59,29 @@ Switch FF_Porch_Door (gZoneTripped)
   {channel="dscalarm:zone:706cd89d:zone1:zone_tripped"}
 Switch FF_Porch_Door_InAlarm (gZoneInAlarm)
 	{channel="dscalarm:zone:706cd89d:zone1:zone_in_alarm"}
+Contact FF_Front_Door_Status (gZoneStatus) 
+  {channel="dscalarm:zone:706cd89d:zone1:zone_status"}
 
 Switch FF_Foyer_Door (gZoneTripped) 
   {channel="dscalarm:zone:706cd89d:zone2:zone_tripped"}
+Switch FF_Foyer_Door_InAlarm (gZoneInAlarm) 
+  {channel="dscalarm:zone:706cd89d:zone2:zone_in_alarm"}
+Contact FF_Foyer_Door_Status (gZoneStatus) 
+  {channel="dscalarm:zone:706cd89d:zone2:zone_status"}
+
 Switch FF_Patio_Door (gZoneTripped)
   {channel="dscalarm:zone:706cd89d:zone3:zone_tripped"}
 Switch FF_Patio_Door_InAlarm (gZoneInAlarm) 
 	{channel="dscalarm:zone:706cd89d:zone3:zone_in_alarm"}
+Contact FF_Patio_Door_Status (gZoneStatus) 
+  {channel="dscalarm:zone:706cd89d:zone3:zone_status"}
 
 // Represent all windows in the house.
 Switch FF_Porch_Window (gZoneTripped) 
 	{channel="dscalarm:zone:706cd89d:zone5:zone_tripped"}
 Switch FF_Porch_Window_InAlarm (gZoneInAlarm) 
 	{channel="dscalarm:zone:706cd89d:zone5:zone_in_alarm"}
-
-Contact FF_FrontDoor_Status (gZoneStatus) 
-  {channel="dscalarm:zone:706cd89d:zone1:zone_status"}
-Contact FF_GarageDoor_Status (gZoneStatus) 
-  {channel="dscalarm:zone:706cd89d:zone2:zone_status"}
-Contact FF_PatioDoor_Status (gZoneStatus) 
-  {channel="dscalarm:zone:706cd89d:zone3:zone_status"}
-Contact FF_Windows_Status (gZoneStatus) 
+Contact FF_Porch_Window_Status (gZoneStatus) 
   {channel="dscalarm:zone:706cd89d:zone5:zone_status"}
 
 /**
@@ -89,7 +91,5 @@ Switch FF_Garage_Door        "Garage Door"
   {channel="myq:garagedoor:home:main:switch"}
 Switch GarageDoorSwitch      "Garage Door Open"
   {channel="myq:garagedoor:home:main:switch"}
-Switch FF_Garage_Door_InAlarm (gZoneInAlarm) 
-	{channel="dscalarm:zone:706cd89d:zone2:zone_in_alarm"}
 
 Switch MQTT_Test "Testing..." { mqtt="<[broker:testing/mqtt/topic:state:default], >[broker:testing/mqtt/back-topic:command:*:default]" } 

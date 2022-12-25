@@ -270,9 +270,9 @@ sitemap default label="HV Home"
 
   Text label="Security Details" {
     Frame label="Security" {
-      Text item=FF_FrontDoor_Status
-      Text item=FF_GarageDoor_Status
-      Text item=FF_PatioDoor_Status
+      Text item=FF_Porch_Door_Status
+      Text item=FF_Foyer_Door_Status
+      Text item=FF_Patio_Door_Status
       Text item=FF_Windows_Status
     }
   }
