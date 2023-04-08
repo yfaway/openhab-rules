@@ -188,10 +188,6 @@ sitemap default label="HV Home"
 			Text item=BM_Utility_WaterLeakState icon="water"
 			Text item=BM_Utility_WaterLeakBattery icon="battery"
 
-            Default item=BM_Utility_Computer_RaspberryHa_CpuTemperature icon="temperature"
-            Default item=BM_Utility_Computer_RaspberryHa_GpuTemperature icon="temperature"
-            Default item=BM_Utility_Computer_RaspberryHa_UpdatedTimestamp icon="time"
-
             Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="temperature"
             Default item=BM_Utility_Computer_RaspberryOpenHab_GpuTemperature icon="temperature"
             Default item=BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp icon="time"
@@ -350,7 +346,6 @@ sitemap default label="HV Home"
                 "BM_Utility_AirThingsTemperature"="Utility: AirThingsTemperature",
                 "BM_Utility_Temperature"="Utility: Temperature",
                 "Computer: Raspberry NFS"="Utility: Computer: Raspberry NFS",
-                "Computer: Raspberry Home Automation"="Utility: Computer: Raspberry Home Automation",
                 "BM_Utility_NaturalGas"="Utility: NaturalGas",
                 "Computer: Raspberry Old OpenHab"="Utility: Computer: Raspberry Old OpenHab"]
         }

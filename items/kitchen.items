@@ -1,6 +1,6 @@
 Switch FF_Kitchen_LightSwitch "Kitchen Island Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
-  { channel="zwave:device:9e4ce05e:node3:switch_binary",
+  { channel="zwave:device:7fb4270383:node3:switch_binary",
     disableMotionTriggeringIfOtherLightIsOn="FF_GreatRoom_LightSwitch",
     durationInMinutes="5" }
 Switch FF_Kitchen_LightSwitch_PantryMotionSensor "Pantry Motion Sensor"

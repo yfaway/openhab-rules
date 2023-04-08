@@ -51,15 +51,6 @@ Number BM_Utility_Computer_RaspberryOpenHab_GpuTemperature "Rasp OH GPU Temperat
 DateTime BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp "Rasp OH Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
   { channel="mqtt:topic:myBroker:utilityRoom:rpiOhUpdatedTimestamp" }
 
-String BM_Utility_Computer_RaspberryHa
-  { name="Raspberry Home Automation", alwaysOn="true" }
-Number BM_Utility_Computer_RaspberryHa_CpuTemperature "Rasp Ha CPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaCpuTemperature" }
-Number BM_Utility_Computer_RaspberryHa_GpuTemperature "Rasp HA GPU Temperature [%d °C]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaGfxTemperature" }
-DateTime BM_Utility_Computer_RaspberryHa_UpdatedTimestamp "Rasp HA Last Updated [%1tb %1$td %1$tY %1$tH:%1$tM]"
-  { channel="mqtt:topic:myBroker:utilityRoom:rpiHaUpdatedTimestamp" }
-
 String BM_Utility_Computer_RaspberryNfs
   { name="Raspberry NFS", alwaysOn="true" }
 Number BM_Utility_Computer_RaspberryNfs_CpuTemperature "Rasp NFS CPU Temperature [%d °C]"

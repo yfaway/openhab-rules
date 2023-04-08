@@ -17,7 +17,7 @@ Group:Switch:OR(ON,OFF) gFanSwitch "Active Washroom Fans [%d]"
 
 Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
-  { channel="zwave:device:9e4ce05e:node4:switch_binary",
+  { channel="zwave:device:7fb4270383:node4:switch_binary",
     durationInMinutes="10" }
 Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%d]"
   (gIlluminance) 
@@ -32,7 +32,7 @@ Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sens
 
 Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan" 
   (gWallSwitch, gFanSwitch) 
-  { channel="zwave:device:9e4ce05e:node22:switch_binary",
+  { channel="zwave:device:7fb4270383:node22:switch_binary",
     durationInMinutes="15" }
 Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
@@ -40,7 +40,7 @@ Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motio
 
 Dimmer SF_Lobby_LightSwitch "Lobby Light" 
   (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
-  { channel="zwave:device:9e4ce05e:node10:switch_dimmer",
+  { channel="zwave:device:7fb4270383:node10:switch_dimmer",
     dimmable="true" [level=2, timeRanges="20-8"],
     durationInMinutes="2" }
 Switch SF_Lobby_LightSwitch_MotionSensor "Second Floor Lobby Motion Sensor"
