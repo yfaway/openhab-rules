@@ -1,5 +1,9 @@
 sitemap default label="HV Home"
 {
+  Frame label="System Message" visibility=[FF_Virtual_FlashMessage!=""] {
+    Text item=FF_Virtual_FlashMessage label="" icon="material:chat" iconcolor=[!=""="green"]
+  }
+
   // Text item=gPresence icon="presence"
   Text item=Out_Vacation visibility=[Out_Vacation==ON]
   Text item=Out_Light_Simulation visibility=[Out_Light_Simulation==ON]
@@ -16,7 +20,7 @@ sitemap default label="HV Home"
   Text item=FF_Virtual_Weather_Humidity icon="humidity"
   Text item=FF_Virtual_Weather_Alert_Title
 		valuecolor=[FF_Virtual_Weather_Alert_Title!=""="red"]
-		visibility=[FF_Virtual_Weather_Alert_Title != "No alerts in effect, City of Ottawa"]
+		visibility=[FF_Virtual_Weather_Alert_Title != "No alerts in effect, Ottawa North - Kanata - Orléans"]
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
 	Text label="GreatRoom" icon="player" {
@@ -327,6 +331,11 @@ sitemap default label="HV Home"
 	}
 
  	Text label="Admin Controls" {
+
+	  Frame label="System Message" visibility=[FF_Virtual_FlashMessage!=""] {
+	    Text item=FF_Virtual_FlashMessage label="" icon="material:chat" iconcolor=[!=""="green"]
+	  }
+
         Frame label="Auto-report Devices" {
           // The mapping is generated using the GenerateWifiItemMappings in Habapp.
           Selection item=FF_Virtual_Notification_AutoReportDeferredDurationInHour icon="time"
@@ -348,6 +357,10 @@ sitemap default label="HV Home"
                 "Computer: Raspberry NFS"="Utility: Computer: Raspberry NFS",
                 "BM_Utility_NaturalGas"="Utility: NaturalGas",
                 "Computer: Raspberry Old OpenHab"="Utility: Computer: Raspberry Old OpenHab"]
+        }
+
+        Frame label="Remote Command" {
+            Input item=FF_Virtual_RemoteCommand label="Command" icon="material:message" inputHint="text"
         }
     }
 }

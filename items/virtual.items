@@ -57,8 +57,12 @@ DateTime vNight_Time "Night [%1$tH:%1$tM]" <moon>
 DateTime vBed_Time "Bed [%1$tH:%1$tM]" <bedroom_blue>
 DateTime vEvening_Time "Afternoon [ %1$tH:%1$tM]" <sunset> { channel="astro:sun:minus90:set#start" }
 
+String FF_Virtual_FlashMessage "[%s]"
+
 /**
  * Item to control defer notification for auto-report devices.
  */ 
 Number FF_Virtual_Notification_AutoReportDeferredDurationInHour "Deferred Hours"
 String FF_Virtual_Notification_AutoReportDeviceName "Device Name"
+
+String FF_Virtual_RemoteCommand "Remote Command"
