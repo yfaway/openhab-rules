@@ -1,0 +1,8 @@
+Switch BM_BasementWashroom_LightSwitch "Basement Washroom Light"
+  { channel="mqtt:topic:myBroker:basementWashroom:BasementWashroomLightSwitch",
+	durationInMinutes="10" }
+
+Switch BM_BasementWashroomShower_FanSwitch "Basement Wash Fan"
+  { channel="mqtt:topic:myBroker:basementWashroom:BasementWashroomFanSwitch",
+	durationInMinutes="15" }
+

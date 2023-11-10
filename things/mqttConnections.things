@@ -185,11 +185,39 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/utility/rpiHa/updatedTimestamp"]
     }
 
-    Thing topic mainBasement {
+    Thing topic basementLobby {
     Channels:
-      Type switch : MainBasementMotionSensor "Main Basement Motion Sensor"
+      Type switch : BasementLobbyMotionSensor "Basement Lobby Motion Sensor"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffeaf01fd", commandTopic="zigbee2mqtt/0xb4e3f9fffeaf01fd", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : BasementLobbyBattery "Basement Lobby Battery"
+        [stateTopic="zigbee2mqtt/0xb4e3f9fffeaf01fd", commandTopic="zigbee2mqtt/0xb4e3f9fffeaf01fd", transformationPattern="JSONPATH:$.battery"]
+
+      Type switch : BasementLobbyLightSwitch "Basement Lobby Light Switch"
+       [stateTopic="zigbee2mqtt/0x0022a30000266983", commandTopic="zigbee2mqtt/0x0022a30000266983/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+    }
+
+    Thing topic basementExtraSpace {
+    Channels:
+      Type switch : BasementExtraSpaceMotionSensor "Basement Extra Space Motion Sensor"
         [stateTopic="zigbee2mqtt/0xb4e3f9fffe214723", commandTopic="zigbee2mqtt/0xb4e3f9fffe214723", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
-      Type number : MainBasementBattery "Main Basement Battery"
+      Type number : BasementExtraSpaceBattery "Main Basement Extra Space Battery"
         [stateTopic="zigbee2mqtt/0xb4e3f9fffe214723", commandTopic="zigbee2mqtt/0xb4e3f9fffe214723", transformationPattern="JSONPATH:$.battery"]
+
+      Type switch : BasementExtraSpaceLightSwitch "Basement Extra Space Light Switch"
+       [stateTopic="zigbee2mqtt/0x0022a3000040a350", commandTopic="zigbee2mqtt/0x0022a3000040a350/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+    }
+
+    Thing topic basementRecRoom {
+    Channels:
+      Type switch : BasementRecRoomLightSwitch "Basement Rec Room Light Switch"
+       [stateTopic="zigbee2mqtt/0x0022a3000040a769", commandTopic="zigbee2mqtt/0x0022a3000040a769/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+    }
+
+    Thing topic basementWashroom {
+    Channels:
+      Type switch : BasementWashroomFanSwitch "Basement WashRoom Fan Switch"
+       [stateTopic="zigbee2mqtt/0x0022a30000266826", commandTopic="zigbee2mqtt/0x0022a30000266826/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+      Type switch : BasementWashroomLightSwitch "Basement WashRoom Light Switch"
+       [stateTopic="zigbee2mqtt/0x0022a3000026699c", commandTopic="zigbee2mqtt/0x0022a3000026699c/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
     }
 }

@@ -1,0 +1,10 @@
+Switch BM_BasementRecRoom1_LightSwitch "Basement Rec Room Light"
+  { channel="mqtt:topic:myBroker:basementRecRoom:BasementRecRoomLightSwitch",
+	durationInMinutes="10" }
+
+Switch BM_BasementRecRoom1_MotionSensor "Basement Extra Space Motion Sensor"
+  { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceMotionSensor"}
+
+Number BM_BasementRecRoom1_MotionSensor_BatteryPercentage "Basement Extra Space Motion Sensor Battery [%d %%]"
+  { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceBattery"}
+

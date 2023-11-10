@@ -56,7 +56,22 @@ String Zone_MasterWashroomShower
 String Zone_Bedroom2 { level="SF", displayIcon="bedroom", displayOrder="36" }
 String Zone_Bedroom3 { level="SF", displayIcon="bedroom", displayOrder="37" }
 
-String Zone_MainBasement { level="BM", displayIcon="groundfloor", displayOrder="39" }
-String Zone_Utility { level="BM", displayIcon="groundfloor", displayOrder="40" }
+String Zone_BasementLobby 
+  { level="BM", displayIcon="groundfloor", displayOrder="40",
+    openSpaceMasterNeighbors="BM_BasementRecRoom1"  }
+
+String Zone_BasementRecRoom1 
+  { level="BM", displayIcon="groundfloor", displayOrder="41",
+    openSpaceSlaveNeighbors="BM_BasementRecRoom2, BM_BasementLobby" }
+
+String Zone_BasementRecRoom2 
+  { level="BM", displayIcon="groundfloor", displayOrder="42",
+    openSpaceMasterNeighbors="BM_BasementRecRoom1",
+    openSpaceSlaveNeighbors="BM_BasementLobby" }
+
+String Zone_BasementBedroom { level="BM", displayIcon="groundfloor", displayOrder="43" }
+String Zone_BasementWashroom { level="BM", displayIcon="groundfloor", displayOrder="44" }
+String Zone_BasementWashroomShower { level="BM", displayIcon="groundfloor", displayOrder="45" }
+String Zone_Utility { level="BM", displayIcon="groundfloor", displayOrder="46" }
 
 String Zone_Virtual { level="FF" }

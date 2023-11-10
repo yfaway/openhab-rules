@@ -1,5 +1,0 @@
-Switch BM_MainBasement_MotionSensor "Main Basement Motion Sensor"
-  { channel="mqtt:topic:myBroker:mainBasement:MainBasementMotionSensor"}
-
-Number BM_MainBasement_MotionSensor_BatteryPercentage "Main Basement Motion Sensor Battery [%d %%]"
-  { channel="mqtt:topic:myBroker:mainBasement:MainBasementBattery"}

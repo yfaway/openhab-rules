@@ -174,12 +174,34 @@ sitemap default label="HV Home"
             Text item=SF_Bedroom3_Smoke icon="fire"
 		}
     }
-	Text label="Main Basement" icon="groundfloor" {
-		Frame label="MainBasement" {
-			Switch item=BM_MainBasement_MotionSensor icon="motion"
-			Default item=BM_MainBasement_MotionSensor_BatteryPercentage icon="battery"
+	Text label="Basement Lobby" icon="groundfloor" {
+		Frame label="Basement Lobby" {
+			Switch item=BM_BasementLobby_MotionSensor icon="motion"
+			Default item=BM_BasementLobby_MotionSensor_BatteryPercentage icon="battery"
+
+			Switch item=BM_BasementLobby_LightSwitch icon="light"
 		}
 	}
+	Text label="Basement Washroom" icon="groundfloor" {
+		Frame label="Basement Washroom" {
+			Switch item=BM_BasementWashroom_LightSwitch icon="light"
+			Switch item=BM_BasementWashroomShower_FanSwitch icon="fan"
+		}
+    }
+	Text label="Basement Rec Room 1" icon="groundfloor" {
+		Frame label="Basement Rec Room" {
+			Switch item=BM_BasementRecRoom1_MotionSensor icon="motion"
+			Default item=BM_BasementRecRoom1_MotionSensor_BatteryPercentage icon="battery"
+
+			Switch item=BM_BasementRecRoom1_LightSwitch icon="light"
+		}
+	}
+	Text label="Basement Rec Room 2" icon="groundfloor" {
+		Frame label="MainBasement" {
+			Switch item=BM_BasementRecRoom2_LightSwitch icon="light"
+		}
+	}
+
     Text label="Utility" icon="groundfloor" {
 		Frame label="Utility" {
 			Text item=BM_Utility_AirThingsTemperature icon="temperature"

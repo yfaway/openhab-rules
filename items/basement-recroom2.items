@@ -1,0 +1,3 @@
+Switch BM_BasementRecRoom2_LightSwitch "Basement Extra Space Light"
+  { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceLightSwitch",
+	durationInMinutes="10" }
