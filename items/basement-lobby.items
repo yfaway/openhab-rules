@@ -5,6 +5,9 @@ Switch BM_BasementLobby_LightSwitch "Basement Lobby Light"
 Switch BM_BasementLobby_MotionSensor "Basement Lobby Motion Sensor"
   { channel="mqtt:topic:myBroker:basementLobby:BasementLobbyMotionSensor"}
 
+Number BM_BasementLobby_FixedValue_Illuminance "Basement Lobby Illuminance"
+  { luminanceValue="5" }
+
 Number BM_BasementLobby_MotionSensor_BatteryPercentage "Basement Lobby Motion Sensor Battery [%d %%]"
   { channel="mqtt:topic:myBroker:basementLobby:BasementLobbyBattery"}
 

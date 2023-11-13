@@ -5,6 +5,9 @@ Switch BM_BasementRecRoom1_LightSwitch "Basement Rec Room Light"
 Switch BM_BasementRecRoom1_MotionSensor "Basement Extra Space Motion Sensor"
   { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceMotionSensor"}
 
+Number BM_BasementRecRoom1_FixedValue_Illuminance "Basement Rec Room 1 Illuminance"
+  { luminanceValue="5" }
+
 Number BM_BasementRecRoom1_MotionSensor_BatteryPercentage "Basement Extra Space Motion Sensor Battery [%d %%]"
   { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceBattery"}
 
