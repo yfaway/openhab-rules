@@ -1,7 +1,7 @@
 Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
   [shared-motion-sensor]
   { channel="zwave:device:7fb4270383:node8:switch_binary",
-    durationInMinutes="15" }
+    durationInMinutes="5" }
 Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:OfficeMotionSensor"}
