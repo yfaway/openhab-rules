@@ -48,27 +48,27 @@ String FF_GreatRoom_ChromeCastAppId "App Id [%s]"
 // WLED light
 Color FF_GreatRoom_Wled_MasterControls_XmasTree "Xmas Tree"
   (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
-	{ channel="wled:wled:XmasTree:masterControls",
+	{ channel="wled:segment:XmasTree:segment0:masterControls",
   	durationInMinutes="120" }
 Color FF_GreatRoom_Wled_Primary_XmasTree "Primary Color"    
-  {channel="wled:wled:XmasTree:primaryColor"}
+  {channel="wled:segment:XmasTree:segment0:primaryColor"}
 Color FF_GreatRoom_Wled_Secondary_XmasTree   "Secondary Color"  
-  { channel="wled:wled:XmasTree:secondaryColor" }
+  { channel="wled:segment:XmasTree:segment0:secondaryColor" }
 String FF_GreatRoom_Wled_FX_XmasTree       "FX"        <text>
-  { channel="wled:wled:XmasTree:fx" }
+  { channel="wled:segment:XmasTree:segment0:fx" }
 String FF_GreatRoom_Wled_Palette_XmasTree  "Palette"   <colorwheel>    
-  { channel="wled:wled:XmasTree:palettes" }
+  { channel="wled:segment:XmasTree:segment0:palettes" }
 String FF_GreatRoom_Wled_Presets_XmasTree  "Preset"    <text> 
-  { channel="wled:wled:XmasTree:presets" }
+  { channel="wled:segment:XmasTree:segment0:presets" }
 Dimmer FF_GreatRoom_Wled_Speed_XmasTree    "FX Speed"  <time>  
-  { channel="wled:wled:XmasTree:speed" }
+  { channel="wled:segment:XmasTree:segment0:speed" }
 Dimmer FF_GreatRoom_Wled_Intensity_XmasTree "FX Intensity" 
-  { channel="wled:wled:XmasTree:intensity" }
+  { channel="wled:segment:XmasTree:segment0:intensity" }
 Switch FF_GreatRoom_Wled_PresetCycle_XmasTree "presetCycle" <time> 
-  { channel="wled:wled:XmasTree:presetCycle" }
+  { channel="wled:segment:XmasTree:segment0:presetCycle" }
 Dimmer FF_GreatRoom_Wled_PresetDuration_XmasTree "presetDuration" <time> 
-  { channel="wled:wled:XmasTree:presetDuration" }
+  { channel="wled:segment:XmasTree:segment0:presetDuration" }
 Dimmer FF_GreatRoom_Wled_TransformTime_XmasTree "presetTransformTime" <time> 
-  { channel="wled:wled:XmasTree:transformTime" }
+  { channel="wled:segment:XmasTree:segment0:transformTime" }
 Switch FF_GreatRoom_Wled_Sleep_XmasTree    "Sleep"     <moon> 
-  { channel="wled:wled:XmasTree:sleep" }
+  { channel="wled:segment:XmasTree:segment0:sleep" }

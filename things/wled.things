@@ -1,2 +1,3 @@
-Thing wled:wled:XmasTree "My XMas Tree" @ "Lights" [address="http://192.168.0.213:80"]
-
+Bridge wled:json:XmasTree "WLED1 Bridge" [ address="http://192.168.0.213:80", pollTime=10, saturationThreshold=0]{
+    Thing segment segment0 "WLED1 Segment0"  [ segmentIndex = 0]
+}
