@@ -1,3 +1,7 @@
 Bridge wled:json:XmasTree "WLED1 Bridge" [ address="http://192.168.0.213:80", pollTime=10, saturationThreshold=0]{
     Thing segment segment0 "WLED1 Segment0"  [ segmentIndex = 0]
 }
+
+Bridge wled:json:basement "Basement WLED Bridge" [ address="http://192.168.0.214:80", pollTime=10, saturationThreshold=0]{
+    Thing segment segment0 "Basement WLED Segment0"  [ segmentIndex = 0]
+}

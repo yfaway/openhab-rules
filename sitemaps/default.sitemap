@@ -187,17 +187,39 @@ sitemap default label="HV Home"
 			Switch item=BM_BasementWashroom_LightSwitch icon="light"
 			Switch item=BM_BasementWashroomShower_FanSwitch icon="fan"
 		}
-    }
+  }
+
 	Text label="Basement Rec Room 1" icon="groundfloor" {
 		Frame label="Basement Rec Room" {
 			Switch item=BM_BasementRecRoom1_MotionSensor icon="motion"
 			Default item=BM_BasementRecRoom1_MotionSensor_BatteryPercentage icon="battery"
 
 			Switch item=BM_BasementRecRoom1_LightSwitch icon="light"
+			Switch item=BM_BasementRecRoom1_LightSwitch icon="light"
+      Switch item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed icon="rgb"
+
+      Text label="Basement WLed Light" icon="rgb"{
+        Frame label="Basement WLed Light" {
+          Switch item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed
+          Slider item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed
+          Colorpicker item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed
+          Switch item=BM_BasementRecRoom1_Wled_Sleep_CeilingWLed
+          Colorpicker item=BM_BasementRecRoom1_Wled_Primary_CeilingWLed
+          Colorpicker item=BM_BasementRecRoom1_Wled_Secondary_CeilingWLed
+          Selection item=BM_BasementRecRoom1_Wled_FX_CeilingWLed
+          Selection item=BM_BasementRecRoom1_Wled_Palette_CeilingWLed
+          Selection item=BM_BasementRecRoom1_Wled_Presets_CeilingWLed
+          Default item=BM_BasementRecRoom1_Wled_Speed_CeilingWLed
+          Default item=BM_BasementRecRoom1_Wled_Intensity_CeilingWLed
+          Default item=BM_BasementRecRoom1_Wled_PresetCycle_CeilingWLed
+          Default item=BM_BasementRecRoom1_Wled_PresetDuration_CeilingWLed
+          Default item=BM_BasementRecRoom1_Wled_TransformTime_CeilingWLed
+        }
+      }
 		}
 	}
 	Text label="Basement Rec Room 2" icon="groundfloor" {
-		Frame label="MainBasement" {
+		Frame label="Basement Rec Room 2" {
 			Switch item=BM_BasementRecRoom2_LightSwitch icon="light"
 		}
 	}
@@ -315,40 +337,40 @@ sitemap default label="HV Home"
     }
   }
 
-    Text label="Ecobee Thermostat" icon="temperature" {
-      Frame label="Ecobee Thermostat" {
-        Text item=FF_GreatRoom_Thermostat_FirstEvent_Type
-        Text item=FF_GreatRoom_Thermostat_EcobeeName
-        Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-        Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-        Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
-        Text item=FF_GreatRoom_Thermostat_DesiredCool icon="snow"
-        Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
-        Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
-        Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
+  Text label="Ecobee Thermostat" icon="temperature" {
+    Frame label="Ecobee Thermostat" {
+      Text item=FF_GreatRoom_Thermostat_FirstEvent_Type
+      Text item=FF_GreatRoom_Thermostat_EcobeeName
+      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
+      Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+      Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
+      Text item=FF_GreatRoom_Thermostat_DesiredCool icon="snow"
+      Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
+      Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
+      Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
 
-        Text item=FF_Virtual_Weather_Temperature icon="temperature"
-        Text item=FF_Virtual_Weather_WeatherCondition
-        Text item=FF_Virtual_Weather_Humidity icon="humidity"
+      Text item=FF_Virtual_Weather_Temperature icon="temperature"
+      Text item=FF_Virtual_Weather_WeatherCondition
+      Text item=FF_Virtual_Weather_Humidity icon="humidity"
       }
-    }
+  }
 
  	Text label="XmasLights" icon="rgb"{
-        Frame label="XmasLights" {
-            Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree
-            Slider item=FF_GreatRoom_Wled_MasterControls_XmasTree
-            Colorpicker item=FF_GreatRoom_Wled_MasterControls_XmasTree
-            Switch item=FF_GreatRoom_Wled_Sleep_XmasTree
-            Colorpicker item=FF_GreatRoom_Wled_Primary_XmasTree
-            Colorpicker item=FF_GreatRoom_Wled_Secondary_XmasTree
-            Selection item=FF_GreatRoom_Wled_FX_XmasTree
-            Selection item=FF_GreatRoom_Wled_Palette_XmasTree
-            Selection item=FF_GreatRoom_Wled_Presets_XmasTree
-            Default item=FF_GreatRoom_Wled_Speed_XmasTree
-            Default item=FF_GreatRoom_Wled_Intensity_XmasTree
-            Default item=FF_GreatRoom_Wled_PresetCycle_XmasTree
-            Default item=FF_GreatRoom_Wled_PresetDuration_XmasTree
-            Default item=FF_GreatRoom_Wled_TransformTime_XmasTree
+    Frame label="XmasLights" {
+      Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree
+      Slider item=FF_GreatRoom_Wled_MasterControls_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_MasterControls_XmasTree
+      Switch item=FF_GreatRoom_Wled_Sleep_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_Primary_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_Secondary_XmasTree
+      Selection item=FF_GreatRoom_Wled_FX_XmasTree
+      Selection item=FF_GreatRoom_Wled_Palette_XmasTree
+      Selection item=FF_GreatRoom_Wled_Presets_XmasTree
+      Default item=FF_GreatRoom_Wled_Speed_XmasTree
+      Default item=FF_GreatRoom_Wled_Intensity_XmasTree
+      Default item=FF_GreatRoom_Wled_PresetCycle_XmasTree
+      Default item=FF_GreatRoom_Wled_PresetDuration_XmasTree
+      Default item=FF_GreatRoom_Wled_TransformTime_XmasTree
 		}
 	}
 

@@ -11,3 +11,30 @@ Number BM_BasementRecRoom1_FixedValue_Illuminance "Basement Rec Room 1 Illuminan
 Number BM_BasementRecRoom1_MotionSensor_BatteryPercentage "Basement Red Room 1 Motion Sensor Battery [%d %%]"
   { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceBattery"}
 
+// WLED light
+Color BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed "Ceiling LED Strip"
+  (gWallSwitch, gLightSwitch) 
+	{ channel="wled:segment:basement:segment0:masterControls",
+  	durationInMinutes="10" }
+Color BM_BasementRecRoom1_Wled_Primary_CeilingWLed "Primary Color"    
+  {channel="wled:segment:basement:segment0:primaryColor"}
+Color BM_BasementRecRoom1_Wled_Secondary_CeilingWLed   "Secondary Color"  
+  { channel="wled:segment:basement:segment0:secondaryColor" }
+String BM_BasementRecRoom1_Wled_FX_CeilingWLed       "FX"        <text>
+  { channel="wled:segment:basement:segment0:fx" }
+String BM_BasementRecRoom1_Wled_Palette_CeilingWLed  "Palette"   <colorwheel>    
+  { channel="wled:segment:basement:segment0:palettes" }
+String BM_BasementRecRoom1_Wled_Presets_CeilingWLed  "Preset"    <text> 
+  { channel="wled:segment:basement:segment0:presets" }
+Dimmer BM_BasementRecRoom1_Wled_Speed_CeilingWLed    "FX Speed"  <time>  
+  { channel="wled:segment:basement:segment0:speed" }
+Dimmer BM_BasementRecRoom1_Wled_Intensity_CeilingWLed "FX Intensity" 
+  { channel="wled:segment:basement:segment0:intensity" }
+Switch BM_BasementRecRoom1_Wled_PresetCycle_CeilingWLed "presetCycle" <time> 
+  { channel="wled:segment:basement:segment0:presetCycle" }
+Dimmer BM_BasementRecRoom1_Wled_PresetDuration_CeilingWLed "presetDuration" <time> 
+  { channel="wled:segment:basement:segment0:presetDuration" }
+Dimmer BM_BasementRecRoom1_Wled_TransformTime_CeilingWLed "presetTransformTime" <time> 
+  { channel="wled:segment:basement:segment0:transformTime" }
+Switch BM_BasementRecRoom1_Wled_Sleep_CeilingWLed    "Sleep"     <moon> 
+  { channel="wled:segment:basement:segment0:sleep" }
