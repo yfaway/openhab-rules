@@ -12,3 +12,18 @@ Switch FF_Kitchen_SecurityMotionSensor
 Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   (gIlluminance) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}
+
+Switch FF_Kitchen_CameraPlug "Kitchen Camera Plug" (gPlug)
+  { channel="mqtt:topic:myBroker:kitchen:KitchenCameraPlug"}
+
+
+Switch FF_KitchenSink_LightSwitch "Kitchen Sink Light"
+  { channel="mqtt:topic:myBroker:kitchenSink:KitchenSinkLightSwitch",
+	durationInMinutes="5" }
+Switch FF_KitchenSink_LightSwitch_MotionSensor "Kitchen Sink Motion Sensor"
+  { channel="mqtt:topic:myBroker:kitchenSink:KitchenSinkMotionSensor"}
+
+// Intentially using the Pantry sensor as it is always dark for the motion sensor under the disk rack.
+Number FF_KitchenSink_LightSwitch_Illuminance "Kitchen Sink Illuminance [%d]"
+  (gIlluminance) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}

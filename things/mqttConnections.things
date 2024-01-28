@@ -43,6 +43,12 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/office/dell/updatedTimestamp"]
     }
 
+    Thing topic kitchen {
+    Channels:
+      Type switch : KitchenCameraPlug "Kitchen Camera Plug"
+        [stateTopic="zigbee2mqtt/0x50325ffffe1458d7", commandTopic="zigbee2mqtt/0x50325ffffe1458d7/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+    }
+
     Thing topic porch {
     Channels:
       Type switch : PorchLightSwitch "Porch Light Switch"
@@ -217,7 +223,23 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
     Channels:
       Type switch : BasementWashroomFanSwitch "Basement WashRoom Fan Switch"
        [stateTopic="zigbee2mqtt/0x0022a30000266826", commandTopic="zigbee2mqtt/0x0022a30000266826/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+
       Type switch : BasementWashroomLightSwitch "Basement WashRoom Light Switch"
        [stateTopic="zigbee2mqtt/0x0022a3000026699c", commandTopic="zigbee2mqtt/0x0022a3000026699c/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+
+      Type switch : BasementWashroomLightMotionSensor "Basement Washroom Light Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000a822430", commandTopic="zigbee2mqtt/0x00158d000a822430", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : BasementWashroomLightIlluminance "Basement Washroom Illuminance Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000a822430", commandTopic="zigbee2mqtt/0x00158d000a822430", transformationPattern="JSONPATH:$.illuminance"]
+    }
+
+    Thing topic kitchenSink {
+    Channels:
+      Type switch : KitchenSinkLightSwitch "Kitchen Sink Light Switch"
+       [stateTopic="zigbee2mqtt/0x54ef44100098fc12", commandTopic="zigbee2mqtt/0x54ef44100098fc12/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+      Type switch : KitchenSinkMotionSensor "Kitchen Sink Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000a822360", commandTopic="zigbee2mqtt/0x00158d000a822360", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : KitchenSinkIlluminance "Kitchen Sink Illuminance Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000a822360", commandTopic="zigbee2mqtt/0x00158d000a822360", transformationPattern="JSONPATH:$.illuminance"]
     }
 }
