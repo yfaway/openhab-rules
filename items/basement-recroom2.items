@@ -1,14 +1,13 @@
-Switch BM_BasementRecRoom2_LightSwitch "Basement Red Room 2 Light"
+Switch BM_BasementRecRoom2_LightSwitch "Basement Rec Room 2 Light"
   { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceLightSwitch",
     durationInMinutes="10" }
 
-Switch BM_BasementRecRoom2_MotionSensor "Basement Red Room 2 Motion Sensor"
-  { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceMotionSensor",
-    disableTriggeringSwitches="true" }
+Switch BM_BasementRecRoom2_MotionSensor "Basement Rec Room 2 Motion Sensor"
+  { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceMotionSensor" }
 
 Number BM_BasementRecRoom2_FixedValue_Illuminance "Basement Rec Room 2 Illuminance"
   { luminanceValue="5" }
 
-Number BM_BasementRecRoom2_MotionSensor_BatteryPercentage "Basement Red Room 2 Motion Sensor Battery [%d %%]"
+Number BM_BasementRecRoom2_MotionSensor_BatteryPercentage "Basement Rec Room 2 Motion Sensor Battery [%d %%]"
   { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceBattery"}
 

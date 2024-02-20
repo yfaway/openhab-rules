@@ -202,8 +202,7 @@ sitemap default label="HV Home"
             Default item=BM_BasementRecRoom1_MotionSensor_BatteryPercentage icon="battery"
 
             Switch item=BM_BasementRecRoom1_LightSwitch icon="light"
-            Switch item=BM_BasementRecRoom1_LightSwitch icon="light"
-      Switch item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed icon="rgb"
+            Switch item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed icon="rgb"
 
       Text label="Basement WLed Light" icon="rgb"{
         Frame label="Basement WLed Light" {

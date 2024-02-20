@@ -2,13 +2,14 @@ Switch BM_BasementRecRoom1_LightSwitch "Basement Rec Room 1 Light"
   { channel="mqtt:topic:myBroker:basementRecRoom:BasementRecRoomLightSwitch",
 	durationInMinutes="10" }
 
-Switch BM_BasementRecRoom1_MotionSensor "Basement Red Room 1 Motion Sensor"
-  { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceMotionSensor"}
+Switch BM_BasementRecRoom1_MotionSensor "Basement Rec Room 1 Motion Sensor"
+  { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceMotionSensor",
+    disableTriggeringSwitches="true" }
 
 Number BM_BasementRecRoom1_FixedValue_Illuminance "Basement Rec Room 1 Illuminance"
   { luminanceValue="5" }
 
-Number BM_BasementRecRoom1_MotionSensor_BatteryPercentage "Basement Red Room 1 Motion Sensor Battery [%d %%]"
+Number BM_BasementRecRoom1_MotionSensor_BatteryPercentage "Basement Rec Room 1 Motion Sensor Battery [%d %%]"
   { channel="mqtt:topic:myBroker:basementExtraSpace:BasementExtraSpaceBattery"}
 
 // WLED light

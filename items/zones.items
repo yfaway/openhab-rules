@@ -58,16 +58,16 @@ String Zone_Bedroom3 { level="SF", displayIcon="bedroom", displayOrder="37" }
 
 String Zone_BasementLobby 
   { level="BM", displayIcon="groundfloor", displayOrder="40",
-    openSpaceMasterNeighbors="BM_BasementRecRoom1"  }
+    openSpaceMasterNeighbors="BM_BasementRecRoom2"  }
 
 String Zone_BasementRecRoom1 
   { level="BM", displayIcon="groundfloor", displayOrder="41",
-    openSpaceSlaveNeighbors="BM_BasementRecRoom2, BM_BasementLobby" }
+    openSpaceMasterNeighbors="BM_BasementRecRoom2",
+    openSpaceSlaveNeighbors="BM_BasementLobby" }
 
 String Zone_BasementRecRoom2 
   { level="BM", displayIcon="groundfloor", displayOrder="42",
-    openSpaceMasterNeighbors="BM_BasementRecRoom1",
-    openSpaceSlaveNeighbors="BM_BasementLobby" }
+    openSpaceSlaveNeighbors="BM_BasementRecRoom1, BM_BasementLobby" }
 
 String Zone_BasementBedroom { level="BM", displayIcon="groundfloor", displayOrder="43" }
 String Zone_BasementWashroom { level="BM", displayIcon="groundfloor", displayOrder="44" }
