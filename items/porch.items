@@ -1,5 +1,3 @@
-String FF_Porch_Camera "Porch Camera" (gCamera)
-
 Switch FF_Porch_MotionSensor "Porch Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PorchMotionSensor" }
@@ -19,3 +17,11 @@ Switch FF_Porch_CeilingLightSwitch "Porch Light"
 	colorBulb="true" }
 Color FF_Porch_CeilingLightSwitchColor "Porch Light Color"
   { channel="mqtt:topic:myBroker:porch:PorchLightColor" }
+
+String FF_Porch_Camera "Porch Camera" (gCamera)
+String FF_Porch_Camera_ImageUrl "Camera Image URL"
+  { channel="ipcamera:onvif:1921680161:imageUrl" }
+String FF_Porch_Camera_MjpegUrl "Camera MJPEG URL"
+  { channel="ipcamera:onvif:1921680161:mjpegUrl" }
+Switch FF_Porch_Camera_PollImage "Poll Image"
+  { channel="ipcamera:onvif:1921680161:pollImage" }

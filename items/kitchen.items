@@ -14,7 +14,7 @@ Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}
 
 Switch FF_Kitchen_CameraPlug "Kitchen Camera Plug" (gPlug)
-  { channel="mqtt:topic:myBroker:kitchen:KitchenCameraPlug"}
+  { reversedSecurityControl="true", channel="mqtt:topic:myBroker:kitchen:KitchenCameraPlug"}
 
 
 Switch FF_KitchenSink_LightSwitch "Kitchen Sink Light"

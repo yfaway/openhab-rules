@@ -77,6 +77,11 @@ sitemap default label="HV Home"
             Switch item=FF_Porch_Plug1 icon="poweroutlet"
             Switch item=FF_Porch_Plug2 icon="poweroutlet"
             Switch item=FF_Porch_MotionSensor icon="motion"
+
+            Switch item=FF_Porch_Camera_PollImage label="Poll Camera Image"
+            //Video url="http://192.168.0.221:8080/ipcamera/1921680161/snapshots.mjpeg" encoding="mjpeg" 
+            //      visibility=[FF_Porch_Camera_PollImage==ON]
+            // Video item=FF_Porch_Camera_MjpegUrl
         }
     }
     Text label="Garage" icon="garage" {
@@ -255,12 +260,14 @@ sitemap default label="HV Home"
 /** END OF AUTO-GENERATED SITEMAP **/
 
   Text label="Camera" icon="camera" {
-    Frame label="Camera" {
+    Frame label="Porch" {
       //Switch item=CamEnableMotion label="Turn motion on/off"
       Switch item=FF_Porch_Camera_MotionAlarm label="Motion detected"
       //Switch item=CamAudioAlarm label="Audio detected"    
       Switch item=FF_Porch_Camera_UpdateImage label="Fetch new image"
-      Image url="http://google.com/leaveLinkAsThis" item=FF_Porch_Camera_Image refresh=10000
+
+      Video url="http://192.168.0.221:8080/ipcamera/1921680161/snapshots.mjpeg" encoding="mjpeg"
+      // Video item=FF_Porch_Camera_MjpegUrl
     }
   }
 
