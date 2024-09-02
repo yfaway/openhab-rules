@@ -84,12 +84,7 @@ Switch FF_Porch_Window_InAlarm (gZoneInAlarm)
 Contact FF_Porch_Window_Status (gZoneStatus) 
   {channel="dscalarm:zone:706cd89d:zone5:zone_status"}
 
-/**
- * Garage door (serial #: cg08600df614 - can be retrieved from the scan in Inbox)
- */
-Switch FF_Garage_Door        "Garage Door" 
-  {channel="myq:garagedoor:home:main:switch"}
-Switch GarageDoorSwitch      "Garage Door Open"
-  {channel="myq:garagedoor:home:main:switch"}
+Switch FF_Garage_Door "Garage Door" 
+  { channel="mqtt:topic:myBroker:garage:GarageDoorContact" }
 
 Switch MQTT_Test "Testing..." { mqtt="<[broker:testing/mqtt/topic:state:default], >[broker:testing/mqtt/back-topic:command:*:default]" } 

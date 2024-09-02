@@ -12,7 +12,7 @@ sitemap default label="HV Home"
   Selection item=FF_Foyer_AlarmPartition_ArmMode icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
   Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
 
-  Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
+  Default item=FF_Garage_Door label="Garage Door" icon="garagedoor"
   Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
   Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
 
@@ -63,7 +63,7 @@ sitemap default label="HV Home"
     }  
     Text label="Foyer" icon="groundfloor" {
         Frame label="Foyer" {
-            Text item=FF_Foyer_Door icon="door"
+            Switch item=FF_Foyer_Door icon="door"
             Switch item=FF_Foyer_LightSwitch icon="light"
             Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor icon="motion"
             Text item=FF_Foyer_LightSwitch_Illuminance
@@ -71,14 +71,14 @@ sitemap default label="HV Home"
     } 
     Text label="Porch" icon="groundfloor" {
         Frame label="Porch" {
-            Text item=FF_Porch_Door icon="door"
+            Switch item=FF_Porch_Door icon="door"
             Switch item=FF_Porch_CeilingLightSwitch icon="light"
             Default item=FF_Porch_CeilingLightSwitchColor
             Switch item=FF_Porch_Plug1 icon="poweroutlet"
             Switch item=FF_Porch_Plug2 icon="poweroutlet"
             Switch item=FF_Porch_MotionSensor icon="motion"
 
-            Switch item=FF_Porch_Camera_PollImage label="Poll Camera Image"
+            Switch item=FF_Porch_Camera_EnableFfmpeg label="Enable FFmpeg"
             //Video url="http://192.168.0.221:8080/ipcamera/1921680161/snapshots.mjpeg" encoding="mjpeg" 
             //      visibility=[FF_Porch_Camera_PollImage==ON]
             // Video item=FF_Porch_Camera_MjpegUrl
@@ -86,13 +86,12 @@ sitemap default label="HV Home"
     }
     Text label="Garage" icon="garage" {
         Frame label="Garage" {
-            Selection item=GarageDoorSwitch label="Garage Door" icon="garagedoor" mappings=[ON="Open", OFF="Closed"]
-            Text item=FF_Garage_Door icon="door"
+            Switch item=FF_Garage_Door icon="garagedoor"
         }
     }
     Text label="Patio" icon="terrace" {
         Frame label="Patio" {
-            Text item=FF_Patio_Door icon="door"
+            Switch item=FF_Patio_Door icon="door"
         }
     }
     Text label="Outdoor" icon="garden" {

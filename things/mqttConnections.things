@@ -236,10 +236,16 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
     Thing topic kitchenSink {
     Channels:
       Type switch : KitchenSinkLightSwitch "Kitchen Sink Light Switch"
-       [stateTopic="zigbee2mqtt/0x54ef44100098fc12", commandTopic="zigbee2mqtt/0x54ef44100098fc12/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+        [stateTopic="zigbee2mqtt/0x54ef44100098fc12", commandTopic="zigbee2mqtt/0x54ef44100098fc12/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
       Type switch : KitchenSinkMotionSensor "Kitchen Sink Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000a822360", commandTopic="zigbee2mqtt/0x00158d000a822360", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type number : KitchenSinkIlluminance "Kitchen Sink Illuminance Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000a822360", commandTopic="zigbee2mqtt/0x00158d000a822360", transformationPattern="JSONPATH:$.illuminance"]
+    }
+
+    Thing topic garage {
+    Channels:
+      Type switch : GarageDoorContact "Garage Door"
+        [stateTopic="zigbee2mqtt/0xa4c138dc0633100d", commandTopic="zigbee2mqtt/0xa4c138dc0633100d", transformationPattern="JSONPATH:$.contact", on="false", off="true"]
     }
 }
