@@ -4,7 +4,7 @@ mqtt:
   base_topic: zigbee2mqtt
   server: mqtt://192.168.0.221
 serial:
-  port: /dev/ttyACM0
+  port: /dev/ttyUSB0
 devices:
   '0x00124b0018ed254b':
     friendly_name: Router1
@@ -46,8 +46,30 @@ devices:
     friendly_name: '0xb4e3f9fffe214723'
   '0x2c1165fffe03a2a6':
     friendly_name: '0x2c1165fffe03a2a6'
+  '0x0022a30000266826':
+    friendly_name: '0x0022a30000266826'
+  '0x0022a3000026699c':
+    friendly_name: '0x0022a3000026699c'
+  '0x0022a3000040a350':
+    friendly_name: '0x0022a3000040a350'
+  '0x0022a3000040a769':
+    friendly_name: '0x0022a3000040a769'
+  '0x0022a30000266983':
+    friendly_name: '0x0022a30000266983'
+  '0xb4e3f9fffeaf01fd':
+    friendly_name: '0xb4e3f9fffeaf01fd'
+  '0x50325ffffe1458d7':
+    friendly_name: '0x50325ffffe1458d7'
+  '0x54ef44100098fc12':
+    friendly_name: '0x54ef44100098fc12'
+  '0x00158d000a822360':
+    friendly_name: '0x00158d000a822360'
+  '0x00158d000a822430':
+    friendly_name: '0x00158d000a822430'
+  '0xa4c138dc0633100d':
+    friendly_name: '0xa4c138dc0633100d'
 advanced:
-  log_level: debug
+  log_level: info
   homeassistant_legacy_entity_attributes: false
   legacy_api: false
 device_options:

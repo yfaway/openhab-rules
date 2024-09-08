@@ -1,0 +1,6 @@
+Commands to use:
+
+scp pi@192.168.0.211:/opt/zigbee2mqtt/data/configuration.yaml .
+scp pi@192.168.0.211:/opt/zigbee2mqtt/data/coordinator_backup.json .
+scp pi@192.168.0.211:/opt/zigbee2mqtt/data/database.db .
+scp pi@192.168.0.211:/opt/zigbee2mqtt/data/state.json .
