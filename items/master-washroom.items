@@ -1,3 +1,9 @@
+Switch SF_MasterWashroom_WaterLeakState "Water Leak Detected [%s]"
+  { channel="mqtt:topic:myBroker:masterWashroom:leakSensorState" }
+
+Number SF_MasterWashroom_WaterLeakBattery "Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:masterWashroom:leakSensorBattery" }
+
 String VT_SelectedChromeCast "Source"
 String VT_SelectedStream "Stream"
 Switch VT_GreatRoom_PlayMorningAnnouncement "Play Morning Announcement"

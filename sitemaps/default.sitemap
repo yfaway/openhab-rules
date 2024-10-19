@@ -160,6 +160,9 @@ sitemap default label="HV Home"
             Text item=SF_MasterWashroom_LightSwitch_Illuminance
             Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor icon="motion"
             Switch item=SF_MasterWashroom_FanSwitch_MotionSensor icon="motion"
+
+            Text item=SF_MasterWashroom_WaterLeakState icon="water"
+            Text item=SF_MasterWashroom_WaterLeakBattery icon="battery"
         }
     }  
     Text label="Master Washroom Shower" icon="bath" {
@@ -255,6 +258,14 @@ sitemap default label="HV Home"
             Default item=BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp icon="time"
         }
     }
+
+    Text label="Powder" icon="groundfloor" {
+        Frame label="Powder" {
+            Text item=FF_Powder_WaterLeakState icon="water"
+            Text item=FF_Powder_WaterLeakBattery icon="battery"
+        }
+    }
+
 
 /** END OF AUTO-GENERATED SITEMAP **/
 

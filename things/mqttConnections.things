@@ -246,6 +246,31 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
     Thing topic garage {
     Channels:
       Type switch : GarageDoorContact "Garage Door"
-        [stateTopic="zigbee2mqtt/0xa4c138dc0633100d", commandTopic="zigbee2mqtt/0xa4c138dc0633100d", transformationPattern="JSONPATH:$.contact", on="false", off="true"]
+        [stateTopic="zigbee2mqtt/0xa4c138dc0633100d",
+         commandTopic="zigbee2mqtt/0xa4c138dc0633100d",
+         transformationPattern="JSONPATH:$.contact", on="false", off="true"]
     }
+
+    Thing topic masterWashroom {
+    Channels:
+      Type switch : leakSensorState "PowderRoom Leak Sensor state"
+        [stateTopic="zigbee2mqtt/0x282c02bfffeaea37", 
+         transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
+
+      Type number : leakSensorBattery "PowderRoom Leak Sensor battery"
+        [stateTopic="zigbee2mqtt/0x282c02bfffeaea37",
+         transformationPattern="JSONPATH:$.battery"]
+    }
+
+    Thing topic powderRoom {
+    Channels:
+      Type switch : leakSensorState "PowderRoom Leak Sensor state"
+        [stateTopic="zigbee2mqtt/0x282c02bfffeaee23", 
+         transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
+
+      Type number : leakSensorBattery "PowderRoom Leak Sensor battery"
+        [stateTopic="zigbee2mqtt/0x282c02bfffeaee23",
+         transformationPattern="JSONPATH:$.battery"]
+    }
+
 }

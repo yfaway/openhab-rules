@@ -77,4 +77,7 @@ String Zone_Utility { level="BM", displayIcon="groundfloor", displayOrder="46" }
 String Zone_KitchenSink 
   { level="FF", displayIcon="kitchen", displayOrder="47" }
 
+String Zone_Powder 
+  { level="FF", displayIcon="power", displayOrder="48" }
+
 String Zone_Virtual { level="FF" }

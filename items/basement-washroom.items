@@ -1,6 +1,6 @@
 Switch BM_BasementWashroom_LightSwitch "Basement Washroom Light"
   { channel="mqtt:topic:myBroker:basementWashroom:BasementWashroomLightSwitch",
-	durationInMinutes="10" }
+	durationInMinutes="15" }
 Switch BM_BasementWashroom_LightSwitch_MotionSensor "Basement Washroom Motion Sensor"
   { channel="mqtt:topic:myBroker:basementWashroom:BasementWashroomLightMotionSensor"}
 Number BM_BasementWashroom_LightSwitch_Illuminance "Basement Washroom Illuminance [%d]"
@@ -9,5 +9,5 @@ Number BM_BasementWashroom_LightSwitch_Illuminance "Basement Washroom Illuminanc
 
 Switch BM_BasementWashroomShower_FanSwitch "Basement Wash Fan"
   { channel="mqtt:topic:myBroker:basementWashroom:BasementWashroomFanSwitch",
-	durationInMinutes="15" }
+	durationInMinutes="20" }
 
