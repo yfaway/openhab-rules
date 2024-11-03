@@ -325,7 +325,7 @@ sitemap default label="HV Home"
   Text label="Presence Details" icon="presence" {
     Frame label="Presence" {
       Switch item=gPresence
-      Text item=VT_Last_Presence_Timestamp
+      Text item=Out_Last_Presence_Timestamp
       Switch item=gFirstFloorPresence
       Switch item=gSecondFloorPresence
       Switch item=gOwner1Presence icon="network"
@@ -337,10 +337,10 @@ sitemap default label="HV Home"
 
   Text label="Security Details" {
     Frame label="Security" {
-      Text item=FF_Porch_Door_Status
+      Text item=FF_Front_Door_Status
       Text item=FF_Foyer_Door_Status
       Text item=FF_Patio_Door_Status
-      Text item=FF_Windows_Status
+      Text item=FF_Porch_Windows_Status
     }
   }
 
@@ -373,7 +373,7 @@ sitemap default label="HV Home"
       Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
 
       Text item=FF_Virtual_Weather_Temperature icon="temperature"
-      Text item=FF_Virtual_Weather_WeatherCondition
+      Text item=FF_Virtual_Weather_Condition        
       Text item=FF_Virtual_Weather_Humidity icon="humidity"
       }
   }

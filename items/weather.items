@@ -8,7 +8,7 @@ String   FF_Virtual_Weather_Alert_Title "Alert [%s]"
 String FF_Virtual_Weather_Condition "Condition [%s]" (gWeather) 
   { channel="ecobee:thermostat:account:411921197263:forecast0#condition" }
 Number:Temperature FF_Virtual_Weather_Temperature "Temperature [%.1f %unit%]" (gWeather) 
-  { channel="ecobee:thermostat:account:411921197263:forecast0#temperature" }
+  { channel="ecobee:thermostat:account:411921197263:forecast0#temperature", unit="°C" }
 Number FF_Virtual_Weather_Humidity "Relative Humidity [%d %%]" (gWeather) 
   { channel="ecobee:thermostat:account:411921197263:forecast0#relativeHumidity" }
 DateTime FF_Virtual_Weather_LastUpdate "Last update [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> (gWeather) 
@@ -31,9 +31,9 @@ DateTime FF_Virtual_Weather_LastUpdate "Last update [%1$tA, %1$tm/%1$td/%1$tY %1
 
 // today forecast
 Number:Temperature FF_Virtual_Weather_ForecastTempMin "Forecast Min Temperature [%.1f %unit%]"   
-  { channel="ecobee:thermostat:account:411921197263:forecast0#tempLow" }
+  { channel="ecobee:thermostat:account:411921197263:forecast0#tempLow", unit="°C" }
 Number:Temperature FF_Virtual_Weather_ForecastTempMax "Forecast Max Temperature [%.1f %unit%]"   
-  { channel="ecobee:thermostat:account:411921197263:forecast0#tempHigh" }
+  { channel="ecobee:thermostat:account:411921197263:forecast0#tempHigh", unit="°C" }
 Number FF_Virtual_Weather_ForecastPrecipationProbability "Forecast Precipation Prob [%d %%]"   
   { channel="ecobee:thermostat:account:411921197263:forecast0#pop" }
 Number FF_Virtual_Weather_ForecastWindSpeed "Forecast Windspeed [%.1f km/h]"    

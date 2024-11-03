@@ -22,13 +22,13 @@ Group gEcobeeRuntime
 String FF_GreatRoom_Thermostat_EcobeeName "Name [%s]" 
   { channel="ecobee:thermostat:account:411921197263:info#name" }
 Number:Temperature FF_GreatRoom_Thermostat_ActualTemperature "Thermostat Temperature [%.1f %unit%]" (gTemperature, gEcobeeRuntime) 
-  { channel="ecobee:thermostat:account:411921197263:runtime#actualTemperature" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#actualTemperature", unit="°C" }
 Number FF_GreatRoom_Thermostat_ActualHumidity "Thermostat Humidity [%d %%]" (gHumidity, gEcobeeRuntime) 
   { channel="ecobee:thermostat:account:411921197263:runtime#actualHumidity" }
 Number:Temperature FF_GreatRoom_Thermostat_DesiredHeat "Desired Heat [%.1f %unit%]" (gEcobeeRuntime) 
-  { channel="ecobee:thermostat:account:411921197263:runtime#desiredHeat" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#desiredHeat", unit="°C" }
 Number:Temperature FF_GreatRoom_Thermostat_DesiredCool "Desired Cool [%.1f %unit%]" (gEcobeeRuntime) 
-  { channel="ecobee:thermostat:account:411921197263:runtime#desiredCool" }
+  { channel="ecobee:thermostat:account:411921197263:runtime#desiredCool", unit="°C" }
 String FF_GreatRoom_Thermostat_DesiredFanMode "Desired Fan Mode [%s]" (gEcobeeRuntime) 
   { channel="ecobee:thermostat:account:411921197263:runtime#desiredFanMode" }
 
