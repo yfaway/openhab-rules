@@ -4,7 +4,13 @@ Switch FF_Office_LightSwitch "Office Light" (gWallSwitch, gLightSwitch, gFirstFl
     durationInMinutes="5" }
 Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
-  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:OfficeMotionSensor"}
+  { channel="mqtt:topic:myBroker:office:OfficeShelfMotionSensor"}
+
+Switch FF_Office_LightSwitch_FloorMotionSensor "Office Floor Motion Sensor"
+  (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:office:OfficeFloorMotionSensor"}
+Number FF_Office_LightSwitch_FloorMotionSensorBattery "Office Floor Motion Sensor Battery"
+  { channel="mqtt:topic:myBroker:office:OfficeFloorMotionSensorBattery"}
 
 /**
  * Smart plugs.

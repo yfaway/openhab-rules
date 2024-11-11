@@ -12,9 +12,6 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
       Type number : FoyerIlluminance "Foyer Illuminance Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000204c7ef", commandTopic="zigbee2mqtt/0x00158d000204c7ef", transformationPattern="JSONPATH:$.illuminance"]
 
-      Type switch : OfficeMotionSensor "Office Motion Sensor"
-        [stateTopic="zigbee2mqtt/0x00158d000236b6c0", commandTopic="zigbee2mqtt/0x00158d000236b6c0", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
-
       Type switch : PantryMotionSensor "Pantry Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000236b4cd", commandTopic="zigbee2mqtt/0x00158d000236b4cd", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type number : PantryIlluminance "Pantry Illuminance Sensor"
@@ -27,10 +24,6 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="zigbee2mqtt/0x00158d000200eb10", commandTopic="zigbee2mqtt/0x00158d000200eb10", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type switch : MainWashroomFanMotionSensor "Main Washroom Fan Motion Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000200ed5e", commandTopic="zigbee2mqtt/0x00158d000200ed5e", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
-      Type switch : SecondFloorLobbyMotionSensor "Second Floor Lobby Motion Sensor"
-        [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
-      Type number : SecondFloorLobbyIlluminance "Second Floor Lobby Illuminance Sensor"
-        [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.illuminance"]
     }
 
     Thing topic office {
@@ -41,6 +34,17 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="computer/office/dell/gfxTemperature"]
       Type datetime : dellUpdatedTimestamp "Desktop Update Timestamp"
         [stateTopic="computer/office/dell/updatedTimestamp"]
+
+      Type switch : OfficeShelfMotionSensor "Office Shelf Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000236b6c0", commandTopic="zigbee2mqtt/0x00158d000236b6c0",
+	 transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+
+      Type switch : OfficeFloorMotionSensor "Office Floor Motion Sensor"
+        [stateTopic="zigbee2mqtt/0xecf64cfffe449953", commandTopic="zigbee2mqtt/0xecf64cfffe449953",
+         transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : OfficeFloorMotionSensorBattery "Office Floor Motion Sensor battery"
+        [stateTopic="zigbee2mqtt/0xecf64cfffe449953",
+         transformationPattern="JSONPATH:$.battery"]
     }
 
     Thing topic kitchen {
@@ -273,4 +277,18 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
          transformationPattern="JSONPATH:$.battery"]
     }
 
+    Thing topic lobby {
+    Channels:
+      Type switch : SecondFloorLobbyMotionSensor "Second Floor Lobby Motion Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : SecondFloorLobbyIlluminance "Second Floor Lobby Illuminance Sensor"
+        [stateTopic="zigbee2mqtt/0x00158d000239725a", commandTopic="zigbee2mqtt/0x00158d000239725a", transformationPattern="JSONPATH:$.illuminance"]
+
+      Type switch : SecondFloorSecondLobbyMotionSensor "Second Floor Second Lobby Motion Sensor"
+        [stateTopic="zigbee2mqtt/0xecf64cfffe449ce6", commandTopic="zigbee2mqtt/0xecf64cfffe449ce6",
+         transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
+      Type number : SecondFloorSecondLobbyMotionSensorBattery "Second Floor Second Lobby Motion Sensor battery"
+        [stateTopic="zigbee2mqtt/0xecf64cfffe449ce6",
+         transformationPattern="JSONPATH:$.battery"]
+    }
 }

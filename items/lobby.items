@@ -1,0 +1,18 @@
+Dimmer SF_Lobby_LightSwitch "Lobby Light" 
+  (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
+  { channel="zwave:device:7fb4270383:node10:switch_dimmer",
+    dimmable="true" [level=2, timeRanges="20-8"],
+    durationInMinutes="2" }
+Switch SF_Lobby_LightSwitch_MotionSensor "Lobby Motion Sensor"
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:lobby:SecondFloorLobbyMotionSensor"}
+Number SF_Lobby_LightSwitch_Illuminance "Lobby Illuminance [%d]"
+  (gIlluminance) 
+  { channel="mqtt:topic:myBroker:lobby:SecondFloorLobbyIlluminance"}
+
+Switch SF_Lobby_LightSwitch_SecondMotionSensor "Second Lobby Motion Sensor"
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:lobby:SecondFloorSecondLobbyMotionSensor"}
+Number SF_Lobby_LightSwitch_SecondMotionSensorBattery "Second Lobby Motion Sensor Battery"
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:lobby:SecondFloorSecondLobbyMotionSensorBattery"}

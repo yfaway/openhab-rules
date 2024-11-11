@@ -43,7 +43,11 @@ sitemap default label="HV Home"
             Switch item=FF_Office_LightSwitch icon="light"
             Text item=FF_Office_Plug icon="poweroutlet"
             Default item=FF_Office_Plug_Power icon="energy"
+
             Switch item=FF_Office_LightSwitch_MotionSensor icon="motion"
+            Switch item=FF_Office_LightSwitch_FloorMotionSensor icon="motion"
+            Default item=FF_Office_LightSwitch_FloorMotionSensorBattery icon="battery"
+
             Default item=FF_Office_Computer_Dell_GpuTemperature icon="temperature"
             Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="fan"
             Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="time"
@@ -132,6 +136,9 @@ sitemap default label="HV Home"
             Switch item=SF_Lobby_LightSwitch icon="light"
             Switch item=SF_Lobby_LightSwitch_MotionSensor icon="motion"
             Text item=SF_Lobby_LightSwitch_Illuminance
+
+            Switch item=SF_Lobby_LightSwitch_SecondMotionSensor icon="motion"
+            Default item=SF_Lobby_LightSwitch_SecondMotionSensorBattery icon="battery"
         }
     }  
     Text label="Master Bedroom" icon="bedroom" {
