@@ -45,6 +45,16 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
       Type number : OfficeFloorMotionSensorBattery "Office Floor Motion Sensor battery"
         [stateTopic="zigbee2mqtt/0xecf64cfffe449953",
          transformationPattern="JSONPATH:$.battery"]
+
+      Type number : OfficeTemperature "Office Temperature"
+        [stateTopic="zigbee2mqtt/0xa4c138c03424c0d7", commandTopic="zigbee2mqtt/0xa4c138c03424c0d7",
+         transformationPattern="JSONPATH:$.temperature"]
+      Type number : OfficeHumidity "Office Humidity"
+        [stateTopic="zigbee2mqtt/0xa4c138c03424c0d7", commandTopic="zigbee2mqtt/0xa4c138c03424c0d7",
+         transformationPattern="JSONPATH:$.humidity"]
+      Type number : OfficeTemperatureBattery "Office Temperature Battery"
+        [stateTopic="zigbee2mqtt/0xa4c138c03424c0d7", commandTopic="zigbee2mqtt/0xa4c138c03424c0d7",
+         transformationPattern="JSONPATH:$.battery"]
     }
 
     Thing topic kitchen {

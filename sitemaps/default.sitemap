@@ -48,6 +48,10 @@ sitemap default label="HV Home"
             Switch item=FF_Office_LightSwitch_FloorMotionSensor icon="motion"
             Default item=FF_Office_LightSwitch_FloorMotionSensorBattery icon="battery"
 
+            Default item=FF_Office_Temperature icon="temperature"
+            Default item=FF_Office_Humidity icon="humidity"
+            Default item=FF_Office_TemperatureBattery icon="battery"
+
             Default item=FF_Office_Computer_Dell_GpuTemperature icon="temperature"
             Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="fan"
             Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="time"
