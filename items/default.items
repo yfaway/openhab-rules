@@ -84,7 +84,4 @@ Switch FF_Porch_Window_InAlarm (gZoneInAlarm)
 Contact FF_Porch_Window_Status (gZoneStatus) 
   {channel="dscalarm:zone:706cd89d:zone5:zone_status"}
 
-Switch FF_Garage_Door "Garage Door" 
-  { channel="mqtt:topic:myBroker:garage:GarageDoorContact" }
-
 Switch MQTT_Test "Testing..." { mqtt="<[broker:testing/mqtt/topic:state:default], >[broker:testing/mqtt/back-topic:command:*:default]" } 

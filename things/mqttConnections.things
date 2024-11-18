@@ -263,6 +263,13 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="zigbee2mqtt/0xa4c138dc0633100d",
          commandTopic="zigbee2mqtt/0xa4c138dc0633100d",
          transformationPattern="JSONPATH:$.contact", on="false", off="true"]
+
+      Type number : GarageTemperature "Garage Temperature"
+        [stateTopic="zigbee2mqtt/0xa4c1380a54d68fe9", transformationPattern="JSONPATH:$.temperature"]
+      Type number : GarageHumidity "Garage Humidity"
+        [stateTopic="zigbee2mqtt/0xa4c1380a54d68fe9", transformationPattern="JSONPATH:$.humidity"]
+      Type number : GarageTemperatureBattery "Garage Temperature Battery"
+        [stateTopic="zigbee2mqtt/0xa4c1380a54d68fe9", transformationPattern="JSONPATH:$.battery"]
     }
 
     Thing topic masterWashroom {

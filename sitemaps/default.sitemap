@@ -46,11 +46,11 @@ sitemap default label="HV Home"
 
             Switch item=FF_Office_LightSwitch_MotionSensor icon="motion"
             Switch item=FF_Office_LightSwitch_FloorMotionSensor icon="motion"
-            Default item=FF_Office_LightSwitch_FloorMotionSensorBattery icon="battery"
+            Default item=FF_Office_LightSwitch_FloorMotionSensor_BatteryPercentage icon="battery"
 
             Default item=FF_Office_Temperature icon="temperature"
             Default item=FF_Office_Humidity icon="humidity"
-            Default item=FF_Office_TemperatureBattery icon="battery"
+            Default item=FF_Office_Temperature_BatteryPercentage icon="battery"
 
             Default item=FF_Office_Computer_Dell_GpuTemperature icon="temperature"
             Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="fan"
@@ -95,6 +95,10 @@ sitemap default label="HV Home"
     Text label="Garage" icon="garage" {
         Frame label="Garage" {
             Switch item=FF_Garage_Door icon="garagedoor"
+
+            Default item=FF_Garage_Temperature icon="temperature"
+            Default item=FF_Garage_Humidity icon="humidity"
+            Default item=FF_Garage_Temperature_BatteryPercentage icon="battery"
         }
     }
     Text label="Patio" icon="terrace" {
@@ -142,7 +146,7 @@ sitemap default label="HV Home"
             Text item=SF_Lobby_LightSwitch_Illuminance
 
             Switch item=SF_Lobby_LightSwitch_SecondMotionSensor icon="motion"
-            Default item=SF_Lobby_LightSwitch_SecondMotionSensorBattery icon="battery"
+            Default item=SF_Lobby_LightSwitch_SecondMotionSensor_BatteryPercentage icon="battery"
         }
     }  
     Text label="Master Bedroom" icon="bedroom" {
@@ -173,7 +177,7 @@ sitemap default label="HV Home"
             Switch item=SF_MasterWashroom_FanSwitch_MotionSensor icon="motion"
 
             Text item=SF_MasterWashroom_WaterLeakState icon="water"
-            Text item=SF_MasterWashroom_WaterLeakBattery icon="battery"
+            Text item=SF_MasterWashroom_WaterLeakState_BatteryPercentage icon="battery"
         }
     }  
     Text label="Master Washroom Shower" icon="bath" {
@@ -258,7 +262,7 @@ sitemap default label="HV Home"
             Text item=BM_Utility_RadonGas icon="gas"
 
             Text item=BM_Utility_WaterLeakState icon="water"
-            Text item=BM_Utility_WaterLeakBattery icon="battery"
+            Text item=BM_Utility_WaterLeakState_BatteryPercentage icon="battery"
 
             Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="temperature"
             Default item=BM_Utility_Computer_RaspberryOpenHab_GpuTemperature icon="temperature"
@@ -273,7 +277,7 @@ sitemap default label="HV Home"
     Text label="Powder" icon="groundfloor" {
         Frame label="Powder" {
             Text item=FF_Powder_WaterLeakState icon="water"
-            Text item=FF_Powder_WaterLeakBattery icon="battery"
+            Text item=FF_Powder_WaterLeakState_BatteryPercentage icon="battery"
         }
     }
 

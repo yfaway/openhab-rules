@@ -39,7 +39,7 @@ Number BM_Utility_AirThingsHumidity "Basement Humidity [%d %%]"
 Switch BM_Utility_WaterLeakState "Water Leak Detected [%s]"
   { channel="mqtt:topic:myBroker:utilityRoom:leakSensorState" }
 
-Number BM_Utility_WaterLeakBattery "Water Leak Battery [%d]"
+Number BM_Utility_WaterLeakState_BatteryPercentage "Water Leak Battery [%d]"
   { channel="mqtt:topic:myBroker:utilityRoom:leakSensorBattery" }
 
 String BM_Utility_Computer_RaspberryOpenHab

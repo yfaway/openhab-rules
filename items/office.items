@@ -9,14 +9,14 @@ Switch FF_Office_LightSwitch_MotionSensor "Office Motion Sensor"
 Switch FF_Office_LightSwitch_FloorMotionSensor "Office Floor Motion Sensor"
   (gWallSwitchMotionSensor, gFirstFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:office:OfficeFloorMotionSensor"}
-Number FF_Office_LightSwitch_FloorMotionSensorBattery "Office Floor Motion Sensor Battery"
+Number FF_Office_LightSwitch_FloorMotionSensor_BatteryPercentage "Office Floor Motion Sensor Battery"
   { channel="mqtt:topic:myBroker:office:OfficeFloorMotionSensorBattery"}
 
 Number FF_Office_Temperature "Office Temperature [%.1f %unit%]" 
-  { channel="mqtt:topic:myBroker:office:OfficeTemperature", unit="°C" }
+  { channel="mqtt:topic:myBroker:office:OfficeTemperature", unit="°C", wifi="false", autoReport="true" }
 Number FF_Office_Humidity "Office Humidity [%d %%]" 
-  { channel="mqtt:topic:myBroker:office:OfficeHumidity"}
-Number FF_Office_TemperatureBattery "Office Temperature Battery"
+  { channel="mqtt:topic:myBroker:office:OfficeHumidity", wifi="false", autoReport="true" }
+Number FF_Office_Temperature_BatteryPercentage "Office Temperature Battery"
   { channel="mqtt:topic:myBroker:office:OfficeTemperatureBattery"}
 
 

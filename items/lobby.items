@@ -13,6 +13,6 @@ Number SF_Lobby_LightSwitch_Illuminance "Lobby Illuminance [%d]"
 Switch SF_Lobby_LightSwitch_SecondMotionSensor "Second Lobby Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:lobby:SecondFloorSecondLobbyMotionSensor"}
-Number SF_Lobby_LightSwitch_SecondMotionSensorBattery "Second Lobby Motion Sensor Battery"
+Number SF_Lobby_LightSwitch_SecondMotionSensor_BatteryPercentage "Second Lobby Motion Sensor Battery"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:lobby:SecondFloorSecondLobbyMotionSensorBattery"}
