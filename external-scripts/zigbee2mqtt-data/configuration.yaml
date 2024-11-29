@@ -68,6 +68,18 @@ devices:
     friendly_name: '0x00158d000a822430'
   '0xa4c138dc0633100d':
     friendly_name: '0xa4c138dc0633100d'
+  '0x282c02bfffeaee23':
+    friendly_name: '0x282c02bfffeaee23'
+  '0x282c02bfffeaea37':
+    friendly_name: '0x282c02bfffeaea37'
+  '0xecf64cfffe449953':
+    friendly_name: '0xecf64cfffe449953'
+  '0xecf64cfffe449ce6':
+    friendly_name: '0xecf64cfffe449ce6'
+  '0xa4c138c03424c0d7':
+    friendly_name: '0xa4c138c03424c0d7'
+  '0xa4c1380a54d68fe9':
+    friendly_name: '0xa4c1380a54d68fe9'
 advanced:
   log_level: info
   homeassistant_legacy_entity_attributes: false

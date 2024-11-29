@@ -2,7 +2,7 @@
     "0x00124b0018ed254b": {
         "description": "0/0x00124B00120234F2",
         "type": "COORD",
-        "rssi": 25,
+        "rssi": 6,
         "linkquality": 0,
         "state": true,
         "led_state": false,
@@ -15,15 +15,15 @@
         "led": true
     },
     "0x00158d0002047fe0": {
-        "illuminance": 3,
+        "illuminance": 0,
         "linkquality": 23,
         "occupancy": false,
         "battery": 100,
-        "voltage": 3055,
-        "illuminance_lux": 3,
+        "voltage": 3035,
+        "illuminance_lux": 0,
         "temperature": -1,
-        "device_temperature": 15,
-        "power_outage_count": 96
+        "device_temperature": 5,
+        "power_outage_count": 99
     },
     "0x00158d000200ed5e": {
         "illuminance": 6,
@@ -41,11 +41,11 @@
         "linkquality": 10,
         "occupancy": false,
         "battery": 100,
-        "voltage": 3035,
+        "voltage": 3025,
         "illuminance_lux": 3,
         "temperature": 23,
-        "device_temperature": 24,
-        "power_outage_count": 167
+        "device_temperature": 23,
+        "power_outage_count": 170
     },
     "0x00158d0002482d69": {
         "battery": 100,
@@ -55,7 +55,7 @@
         "temperature": 23,
         "tamper": false,
         "battery_low": false,
-        "device_temperature": 23,
+        "device_temperature": 21,
         "power_outage_count": 12,
         "trigger_count": 0
     },
@@ -77,10 +77,10 @@
         "brightness": 254,
         "color_temp": 250,
         "color": {
-            "x": 0.1783,
-            "y": 0.7166,
-            "hue": 121,
-            "saturation": 99
+            "x": 0.3061,
+            "y": 0.4453,
+            "hue": 106,
+            "saturation": 60
         }
     },
     "0xb4e3f9fffeb68d5c": {
@@ -103,22 +103,22 @@
     },
     "0x00158d000236b6c0": {
         "occupancy": false,
-        "voltage": 3025,
+        "voltage": 3015,
         "battery": 100,
-        "device_temperature": 24,
-        "power_outage_count": 161,
-        "illuminance": 72,
-        "illuminance_lux": 72
+        "device_temperature": 23,
+        "power_outage_count": 165,
+        "illuminance": 86,
+        "illuminance_lux": 86
     },
     "0x0022a30000266826": {
         "state": "OFF",
         "power": 0,
-        "energy": 0.02
+        "energy": 0.12
     },
     "0x0022a3000026699c": {
         "state": "OFF",
         "power": 0,
-        "energy": 0.12
+        "energy": 0.2
     },
     "0x0022a3000040a350": {
         "state": "OFF",
@@ -129,18 +129,18 @@
         "brightness": 41
     },
     "0x00158d000239725a": {
-        "voltage": 3025,
+        "voltage": 3015,
         "battery": 100,
-        "device_temperature": 25,
+        "device_temperature": 23,
         "power_outage_count": 151,
-        "illuminance": 0,
-        "illuminance_lux": 0,
-        "occupancy": false
+        "illuminance": 23,
+        "illuminance_lux": 23,
+        "occupancy": true
     },
     "0x0022a30000266983": {
         "state": "OFF",
         "power": 0,
-        "energy": 0.69
+        "energy": 0.57
     },
     "0xb4e3f9fffeaf01fd": {
         "battery": 100,
@@ -161,20 +161,20 @@
         "state": "OFF"
     },
     "0x00158d000236b4cd": {
-        "voltage": 2935,
-        "battery": 57,
+        "voltage": 2915,
+        "battery": 43,
         "device_temperature": 25,
-        "power_outage_count": 652,
-        "illuminance": 4,
-        "illuminance_lux": 4,
+        "power_outage_count": 967,
+        "illuminance": 0,
+        "illuminance_lux": 0,
         "occupancy": false
     },
     "0x54ef44100098fc12": {
         "state": "OFF",
-        "device_temperature": 26,
+        "device_temperature": 24,
         "power_outage_count": 3,
-        "energy": 5.45,
-        "consumption": 5.446378231048584,
+        "energy": 8.78,
+        "consumption": 8.775748252868652,
         "voltage": 121,
         "current": 0,
         "power": 0
@@ -182,7 +182,7 @@
     "0x00158d000a822360": {
         "voltage": 3005,
         "battery": 100,
-        "device_temperature": 26,
+        "device_temperature": 24,
         "power_outage_count": 19,
         "illuminance": 3,
         "illuminance_lux": 3,
@@ -191,35 +191,102 @@
     "0x00158d000a822430": {
         "voltage": 2985,
         "battery": 90,
-        "device_temperature": 27,
+        "device_temperature": 28,
         "power_outage_count": 9,
         "illuminance": 4,
         "illuminance_lux": 4,
         "occupancy": false
     },
     "0x00158d000204c7ef": {
-        "voltage": 3025,
+        "voltage": 3015,
         "battery": 100,
-        "device_temperature": 25,
-        "power_outage_count": 216,
-        "illuminance": 6,
-        "illuminance_lux": 6,
-        "occupancy": false
+        "device_temperature": 24,
+        "power_outage_count": 223,
+        "illuminance": 7,
+        "illuminance_lux": 7,
+        "occupancy": true
     },
     "0x00158d0001fa45fd": {
         "voltage": 3015,
         "battery": 100,
-        "device_temperature": 26,
-        "power_outage_count": 153,
-        "illuminance": 3,
-        "illuminance_lux": 3,
+        "device_temperature": 25,
+        "power_outage_count": 192,
+        "illuminance": 7,
+        "illuminance_lux": 7,
         "occupancy": false
     },
     "0xa4c138dc0633100d": {
-        "battery": 100,
-        "voltage": 2800,
+        "battery": 75,
+        "voltage": 2700,
         "contact": true,
         "tamper": false,
         "battery_low": false
+    },
+    "0x282c02bfffeaee23": {
+        "battery": 63,
+        "water_leak": false,
+        "tamper": false,
+        "battery_low": false,
+        "voltage": 2700,
+        "update": {
+            "state": "idle",
+            "installed_version": 66,
+            "latest_version": 66
+        }
+    },
+    "0x282c02bfffeaea37": {
+        "water_leak": false,
+        "tamper": false,
+        "battery_low": false,
+        "battery": 56.5,
+        "voltage": 2600,
+        "update": {
+            "state": "available",
+            "installed_version": 58,
+            "latest_version": 66
+        }
+    },
+    "0xecf64cfffe449953": {
+        "occupancy": false,
+        "illuminance_lux": 14,
+        "illuminance": 11461,
+        "battery": 84,
+        "update": {
+            "state": "idle",
+            "installed_version": 16777316,
+            "latest_version": 16777316
+        }
+    },
+    "0xecf64cfffe449ce6": {
+        "occupancy": false,
+        "illuminance_lux": 7,
+        "illuminance": 8450,
+        "battery": 87,
+        "update": {
+            "state": "idle",
+            "installed_version": 16777316,
+            "latest_version": 16777316
+        }
+    },
+    "0xa4c138c03424c0d7": {
+        "temperature_unit_convert": "celsius",
+        "max_temperature": 39,
+        "min_temperature": 0,
+        "max_humidity": 60,
+        "min_humidity": 20,
+        "temperature_report_interval": 120,
+        "humidity_report_interval": 120,
+        "temperature_sensitivity": 0.6,
+        "humidity_sensitivity": 6,
+        "temperature": 20.6,
+        "humidity": 40,
+        "temperature_alarm": "canceled",
+        "battery": 20
+    },
+    "0xa4c1380a54d68fe9": {
+        "humidity": 41.55,
+        "temperature": 8.73,
+        "battery": 100,
+        "voltage": 3000
     }
 }
