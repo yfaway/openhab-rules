@@ -1,8 +1,8 @@
-Number BM_Utility_Temperature "Basement Temperature ESP [%.1f °C]"
+Number BM_Utility_Temperature "Utility Temperature ESP [%.1f °C]"
   (gTemperature)
   { channel="mqtt:topic:myBroker:utilityRoom:temperature",
     wifi="true", autoReport="true" }
-Number BM_Utility_Humidity "Basement Humidity ESP [%d %%]"
+Number BM_Utility_Humidity "Utility Humidity ESP [%d %%]"
   (gHumidity) 
   { channel="mqtt:topic:myBroker:utilityRoom:humidity",
     wifi="true", autoReport="true" }

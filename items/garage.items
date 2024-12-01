@@ -1,7 +1,7 @@
 Switch FF_Garage_Door "Garage Door" 
   { channel="mqtt:topic:myBroker:garage:GarageDoorContact" }
 
-Number FF_Garage_Temperature "Garage Temperature [%.1f %unit%]" 
+Number FF_Garage_Temperature "Garage Temperature [%.1f °C]" 
   { channel="mqtt:topic:myBroker:garage:GarageTemperature", unit="°C", wifi="false", autoReport="true" }
 Number FF_Garage_Humidity "Garage Humidity [%d %%]" 
   { channel="mqtt:topic:myBroker:garage:GarageHumidity", wifi="false", autoReport="true" }

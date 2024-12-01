@@ -154,6 +154,16 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="esp/bedroom3/smoke/state", on="1", off="0"]
     }
 
+    Thing topic bedroom4 {
+    Channels:
+      Type number : temperature "Bedroom4 Temperature"
+        [stateTopic="zigbee2mqtt/0xa4c138c6c67fba03", transformationPattern="JSONPATH:$.temperature"]
+      Type number : humidity "Bedroom4 Humidity"
+        [stateTopic="zigbee2mqtt/0xa4c138c6c67fba03", transformationPattern="JSONPATH:$.humidity"]
+      Type number : temperatureBattery "Bedroom4 Temperature Battery"
+        [stateTopic="zigbee2mqtt/0xa4c138c6c67fba03", transformationPattern="JSONPATH:$.battery"]
+    }
+
     Thing topic utilityRoom {
     Channels:
       Type number : temperature "Basement Temperature"

@@ -200,6 +200,13 @@ sitemap default label="HV Home"
             Text item=SF_Bedroom3_Smoke icon="fire"
         }
     }
+    Text label="Bedroom4" icon="bedroom" {
+        Frame label="Bedroom4" {
+            Text item=SF_Bedroom4_Temperature icon="temperature"
+            Text item=SF_Bedroom4_Humidity icon="humidity"
+            Text item=SF_Bedroom4_Temperature_BatteryPercentage icon="battery"
+        }
+    }
     Text label="Basement Lobby" icon="groundfloor" {
         Frame label="Basement Lobby" {
             Switch item=BM_BasementLobby_MotionSensor icon="motion"
@@ -361,17 +368,25 @@ sitemap default label="HV Home"
 
   Text label="Indoor Temperature & Humidity" icon="temperature" {
     Frame label="Temperature & Humidity" {
-        Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-        Text item=SF_MasterBedroom_Temperature icon="temperature"
-        Text item=SF_Bedroom2_Temperature icon="temperature"
-        Text item=SF_Bedroom3_Temperature icon="temperature"
-        Text item=BM_Utility_Temperature icon="temperature"
+        Default item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
+        Default item=FF_Office_Temperature icon="temperature"
+        Default item=FF_Garage_Temperature icon="temperature"
+        Default item=SF_MasterBedroom_Temperature icon="temperature"
+        Default item=SF_Bedroom2_Temperature icon="temperature"
+        Default item=SF_Bedroom3_Temperature icon="temperature"
+        Default item=SF_Bedroom4_Temperature icon="temperature"
+        Default item=BM_Utility_AirThingsTemperature icon="temperature"
+        Default item=BM_Utility_Temperature icon="temperature"
 
-        Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-        Text item=SF_MasterBedroom_Humidity icon="humidity"
-        Text item=SF_Bedroom2_Humidity icon="humidity"
-        Text item=SF_Bedroom3_Humidity icon="humidity"
-        Text item=BM_Utility_Humidity icon="humidity"
+        Default item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+        Default item=FF_Office_Humidity icon="humidity"
+        Default item=FF_Garage_Humidity icon="humidity"
+        Default item=SF_MasterBedroom_Humidity icon="humidity"
+        Default item=SF_Bedroom2_Humidity icon="humidity"
+        Default item=SF_Bedroom3_Humidity icon="humidity"
+        Default item=SF_Bedroom4_Humidity icon="humidity"
+        Default item=BM_Utility_AirThingsHumidity icon="humidity"
+        Default item=BM_Utility_Humidity icon="humidity"
     }
   }
 

@@ -1,0 +1,7 @@
+Number SF_Bedroom4_Temperature "Bedroom4 Temperature [%.1f °C]" 
+  { channel="mqtt:topic:myBroker:bedroom4:temperature", unit="°C", wifi="false", autoReport="true" }
+Number SF_Bedroom4_Humidity "Bedroom4 Humidity [%d %%]" 
+  { channel="mqtt:topic:myBroker:bedroom4:humidity", wifi="false", autoReport="true" }
+Number SF_Bedroom4_Temperature_BatteryPercentage "Bedroom4 Temperature Battery"
+  { channel="mqtt:topic:myBroker:bedroom4:temperatureBattery"}
+
