@@ -123,6 +123,10 @@ sitemap default label="HV Home"
 
             Text item=FF_Virtual_Weather_Alert_Title
             Text item=FF_Virtual_Weather_Alert_Date
+
+            Frame label="Weather Forecast" {
+                Webview url="/static/weather-forecast.html" height=14
+            }
         }
     }
     Text label="Main Washroom" icon="bath" {
@@ -285,6 +289,15 @@ sitemap default label="HV Home"
         Frame label="Powder" {
             Text item=FF_Powder_WaterLeakState icon="water"
             Text item=FF_Powder_WaterLeakState_BatteryPercentage icon="battery"
+        }
+    }
+
+    Text label="Backyard" icon="groundfloor" {
+        Frame label="Backyard" {
+            Switch item=FF_Backyard_Camera_EnableFfmpeg label="Enable FFmpeg"
+            Video url="http://192.168.0.221:8080/ipcamera/1921680162/snapshots.mjpeg" encoding="mjpeg" 
+                 visibility=[FF_Backyard_Camera_PollImage==ON]
+            // Video item=FF_Backyard_Camera_MjpegUrl
         }
     }
 

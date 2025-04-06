@@ -81,4 +81,7 @@ String Zone_KitchenSink
 String Zone_Powder 
   { level="FF", displayIcon="power", displayOrder="48" }
 
+String Zone_Backyard 
+  { level="FF", external="true", displayIcon="groundfloor", displayOrder="49" }
+
 String Zone_Virtual { level="FF" }
