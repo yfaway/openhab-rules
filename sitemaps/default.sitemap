@@ -9,154 +9,154 @@ sitemap default label="HV Home"
   Text item=Out_Light_Simulation visibility=[Out_Light_Simulation==ON]
   Text item=Out_Last_Presence_Timestamp visibility=[Out_Vacation==ON]
 
-  Selection item=FF_Foyer_AlarmPartition_ArmMode icon="motion" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
+  Selection item=FF_Foyer_AlarmPartition_ArmMode icon="material:sensor_door" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
   Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
 
-  Default item=FF_Garage_Door label="Garage Door" icon="garagedoor"
-  Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-  Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+  Default item=FF_Garage_Door label="Garage Door" icon="material:garage"
+  Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
+  Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
 
-  Text item=FF_Virtual_Weather_Temperature icon="temperature"
-  Text item=FF_Virtual_Weather_Humidity icon="humidity"
+  Text item=FF_Virtual_Weather_Temperature icon="material:thermostat"
+  Text item=FF_Virtual_Weather_Humidity icon="material:water_drop"
   Text item=FF_Virtual_Weather_Alert_Title
         valuecolor=[FF_Virtual_Weather_Alert_Title!=""="red"]
         visibility=[FF_Virtual_Weather_Alert_Title != "No alerts in effect, Ottawa North - Kanata - Orléans"]
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
-    Text label="GreatRoom" icon="player" {
+    Text label="GreatRoom" icon="material:chair" {
         Frame label="GreatRoom" {
-            Default item=FF_GreatRoom_ChromeCastPlayer
-            Default item=FF_GreatRoom_ChromeCastVolume
-            Default item=FF_GreatRoom_ChromeCastStreamTitle
-            Default item=FF_GreatRoom_ChromeCastIdling
-            Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-            Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-            Switch item=FF_GreatRoom_LightSwitch icon="light"
-            Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="rgb"
-            Switch item=FF_GreatRoom_Plug icon="poweroutlet"
-            Switch item=FF_GreatRoom_MotionSensor icon="motion"
-            Switch item=FF_GreatRoom_Tv icon="screen"
+            Default item=FF_GreatRoom_ChromeCastPlayer icon="material:tune"
+            Default item=FF_GreatRoom_ChromeCastVolume icon="material:volume_up"
+            Default item=FF_GreatRoom_ChromeCastStreamTitle icon="material:library_music" 
+            Default item=FF_GreatRoom_ChromeCastIdling icon="material:power_settings_new"
+            Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
+            Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
+            Switch item=FF_GreatRoom_LightSwitch icon="material:lightbulb"
+            Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="material:flare"
+            Switch item=FF_GreatRoom_Plug icon="material:power"
+            Switch item=FF_GreatRoom_MotionSensor icon="material:directions_run"
+            Switch item=FF_GreatRoom_Tv icon="material:tv"
         } 
     } 
-    Text label="Office" icon="office" {
+    Text label="Office" icon="material:desk" {
         Frame label="Office" {
-            Switch item=FF_Office_LightSwitch icon="light"
-            Text item=FF_Office_Plug icon="poweroutlet"
-            Default item=FF_Office_Plug_Power icon="energy"
+            Switch item=FF_Office_LightSwitch icon="material:lightbulb"
+            Text item=FF_Office_Plug icon="material:power"
+            Default item=FF_Office_Plug_Power icon="material:bolt"
 
-            Switch item=FF_Office_LightSwitch_MotionSensor icon="motion"
-            Switch item=FF_Office_LightSwitch_FloorMotionSensor icon="motion"
+            Switch item=FF_Office_LightSwitch_MotionSensor icon="material:directions_run"
+            Switch item=FF_Office_LightSwitch_FloorMotionSensor icon="material:directions_run"
             Default item=FF_Office_LightSwitch_FloorMotionSensor_BatteryPercentage icon="battery"
 
-            Default item=FF_Office_Temperature icon="temperature"
-            Default item=FF_Office_Humidity icon="humidity"
+            Default item=FF_Office_Temperature icon="material:thermostat"
+            Default item=FF_Office_Humidity icon="material:water_drop"
             Default item=FF_Office_Temperature_BatteryPercentage icon="battery"
 
-            Default item=FF_Office_Computer_Dell_GpuTemperature icon="temperature"
-            Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="fan"
-            Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="time"
+            Default item=FF_Office_Computer_Dell_GpuTemperature icon="material:thermostat"
+            Default item=FF_Office_Computer_Dell_GpuFanSpeed icon="material:hvac"
+            Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="material:access_time"
         }
     }  
-    Text label="Kitchen" icon="kitchen" {
+    Text label="Kitchen" icon="material:kitchen" {
         Frame label="Kitchen" {
-            Switch item=FF_Kitchen_LightSwitch icon="light"
-            Switch item=FF_Kitchen_CameraPlug icon="poweroutlet"
-            Switch item=FF_Kitchen_SecurityMotionSensor icon="motion"
-            Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor icon="motion"
-            Text item=FF_Kitchen_LightSwitch_Illuminance
+            Switch item=FF_Kitchen_LightSwitch icon="material:lightbulb"
+            Switch item=FF_Kitchen_CameraPlug icon="material:power"
+            Switch item=FF_Kitchen_SecurityMotionSensor icon="material:directions_run"
+            Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor icon="material:directions_run"
+            Text item=FF_Kitchen_LightSwitch_Illuminance icon="material:brightness_low"
 
-            Switch item=FF_KitchenSink_LightSwitch icon="light"
-            Switch item=FF_KitchenSink_LightSwitch_MotionSensor icon="light"
+            Switch item=FF_KitchenSink_LightSwitch icon="material:lightbulb"
+            Switch item=FF_KitchenSink_LightSwitch_MotionSensor icon="material:lightbulb"
         }
     }  
-    Text label="Foyer" icon="groundfloor" {
+    Text label="Foyer" icon="material:checkroom" {
         Frame label="Foyer" {
-            Switch item=FF_Foyer_Door icon="door"
-            Switch item=FF_Foyer_LightSwitch icon="light"
-            Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor icon="motion"
-            Text item=FF_Foyer_LightSwitch_Illuminance
+            Switch item=FF_Foyer_Door icon="material:door_front"
+            Switch item=FF_Foyer_LightSwitch icon="material:lightbulb"
+            Switch item=FF_Foyer_LightSwitch_ClosetMotionSensor icon="material:directions_run"
+            Text item=FF_Foyer_LightSwitch_Illuminance icon="material:brightness_low"
         }
     } 
-    Text label="Porch" icon="groundfloor" {
+    Text label="Porch" icon="material:balcony" {
         Frame label="Porch" {
-            Switch item=FF_Porch_Door icon="door"
-            Switch item=FF_Porch_CeilingLightSwitch icon="light"
-            Default item=FF_Porch_CeilingLightSwitchColor
-            Switch item=FF_Porch_Plug1 icon="poweroutlet"
-            Switch item=FF_Porch_Plug2 icon="poweroutlet"
-            Switch item=FF_Porch_MotionSensor icon="motion"
+            Switch item=FF_Porch_Door icon="material:door_front"
+            Switch item=FF_Porch_CeilingLightSwitch icon="material:lightbulb"
+            Default item=FF_Porch_CeilingLightSwitchColor icon="material:palette"
+            Switch item=FF_Porch_Plug1 icon="material:power"
+            Switch item=FF_Porch_Plug2 icon="material:power"
+            Switch item=FF_Porch_MotionSensor icon="material:directions_run"
 
-            Switch item=FF_Porch_Camera_EnableFfmpeg label="Enable FFmpeg"
+            Switch item=FF_Porch_Camera_EnableFfmpeg label="Enable FFmpeg" icon="material:power_settings_new"
             //Video url="http://192.168.0.221:8080/ipcamera/1921680161/snapshots.mjpeg" encoding="mjpeg" 
             //      visibility=[FF_Porch_Camera_PollImage==ON]
             // Video item=FF_Porch_Camera_MjpegUrl
         }
     }
-    Text label="Garage" icon="garage" {
+    Text label="Garage" icon="material:garage" {
         Frame label="Garage" {
-            Switch item=FF_Garage_Door icon="garagedoor"
+            Switch item=FF_Garage_Door icon="material:roller_shades"
 
-            Default item=FF_Garage_Temperature icon="temperature"
-            Default item=FF_Garage_Humidity icon="humidity"
+            Default item=FF_Garage_Temperature icon="material:thermostat"
+            Default item=FF_Garage_Humidity icon="material:water_drop"
             Default item=FF_Garage_Temperature_BatteryPercentage icon="battery"
         }
     }
-    Text label="Patio" icon="terrace" {
+    Text label="Patio" icon="material:deck" {
         Frame label="Patio" {
-            Switch item=FF_Patio_Door icon="door"
+            Switch item=FF_Patio_Door icon="material:door_back"
         }
     }
-    Text label="Outdoor" icon="garden" {
+    Text label="Outdoor" icon="material:landscape" {
         Frame label="Outdoor" {
-            Text item=FF_Virtual_Weather_Temperature icon="temperature"
-            Text item=FF_Virtual_Weather_Humidity icon="humidity"
+            Text item=FF_Virtual_Weather_Temperature icon="material:thermostat"
+            Text item=FF_Virtual_Weather_Humidity icon="material:water_drop"
 
-            Text item=FF_Virtual_Weather_Condition        
+            Text item=FF_Virtual_Weather_Condition icon="material:message"        
 
-            Text item=FF_Virtual_Weather_ForecastTempMin icon="temperature"
-            Text item=FF_Virtual_Weather_ForecastTempMax icon="temperature"
-            Text item=FF_Virtual_Weather_ForecastPrecipationProbability visibility=[FF_Virtual_Weather_ForecastPrecipationProbability > 0]
-            Text item=FF_Virtual_Weather_ForecastWindSpeed icon="wind" visibility=[FF_Virtual_Weather_ForecastWindSpeed > 0]
-            Text item=FF_Virtual_Weather_ForecastWindGust icon="wind" visibility=[FF_Virtual_Weather_ForecastWindGust > 0]
+            Text item=FF_Virtual_Weather_ForecastTempMin icon="material:thermostat"
+            Text item=FF_Virtual_Weather_ForecastTempMax icon="material:thermostat"
+            Text item=FF_Virtual_Weather_ForecastPrecipationProbability visibility=[FF_Virtual_Weather_ForecastPrecipationProbability > 0] icon="material:casino"
+            Text item=FF_Virtual_Weather_ForecastWindSpeed icon="material:air" visibility=[FF_Virtual_Weather_ForecastWindSpeed > 0]
+            Text item=FF_Virtual_Weather_ForecastWindGust icon="material:air" visibility=[FF_Virtual_Weather_ForecastWindGust > 0]
 
-            Text item=FF_Virtual_Weather_LastUpdate       
+            Text item=FF_Virtual_Weather_LastUpdate icon="material:access_time"       
 
-            Text item=FF_Virtual_Weather_Alert_Title
-            Text item=FF_Virtual_Weather_Alert_Date
+            Text item=FF_Virtual_Weather_Alert_Title icon="material:message"
+            Text item=FF_Virtual_Weather_Alert_Date icon="material:access_time"
 
             Frame label="Weather Forecast" {
                 Webview url="/static/weather-forecast.html" height=14
             }
         }
     }
-    Text label="Main Washroom" icon="bath" {
+    Text label="Main Washroom" icon="material:bathroom" {
         Frame label="MainWashroom" {
-            Switch item=SF_MainWashroom_LightSwitch icon="light"
-            Switch item=SF_MainWashroom_MotionSensor icon="motion"
+            Switch item=SF_MainWashroom_LightSwitch icon="material:lightbulb"
+            Switch item=SF_MainWashroom_MotionSensor icon="material:directions_run"
             Default item=SF_MainWashroom_MotionSensor_BatteryPercentage icon="battery"
-            Switch item=SF_MainWashroom_FanSwitch_MotionSensor icon="motion"
+            Switch item=SF_MainWashroom_FanSwitch_MotionSensor icon="material:directions_run"
         }
     }
-    Text label="Main Washroom Shower" icon="bath" {
+    Text label="Main Washroom Shower" icon="material:bathroom" {
         Frame label="MainWashroomShower" {
-            Switch item=SF_MainWashroomShower_FanSwitch icon="fan"
-            Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor icon="motion"
+            Switch item=SF_MainWashroomShower_FanSwitch icon="material:hvac"
+            Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor icon="material:directions_run"
         }
     }
-    Text label="Lobby" icon="corridor" {
+    Text label="Lobby" icon="material:room" {
         Frame label="Lobby" {
-            Switch item=SF_Lobby_LightSwitch icon="light"
-            Switch item=SF_Lobby_LightSwitch_MotionSensor icon="motion"
-            Text item=SF_Lobby_LightSwitch_Illuminance
+            Switch item=SF_Lobby_LightSwitch icon="material:lightbulb"
+            Switch item=SF_Lobby_LightSwitch_MotionSensor icon="material:directions_run"
+            Text item=SF_Lobby_LightSwitch_Illuminance icon="material:brightness_low"
 
-            Switch item=SF_Lobby_LightSwitch_SecondMotionSensor icon="motion"
+            Switch item=SF_Lobby_LightSwitch_SecondMotionSensor icon="material:directions_run"
             Default item=SF_Lobby_LightSwitch_SecondMotionSensor_BatteryPercentage icon="battery"
         }
     }  
-    Text label="Master Bedroom" icon="bedroom" {
+    Text label="Master Bedroom" icon="material:king_bed" {
         Frame label="MasterBedroom" {
-            Text item=SF_MasterBedroom_Temperature icon="temperature"
-            Text item=SF_MasterBedroom_Humidity icon="humidity"
+            Text item=SF_MasterBedroom_Temperature icon="material:thermostat"
+            Text item=SF_MasterBedroom_Humidity icon="material:water_drop"
 
             Default item=SF_MasterBedroom_IkeaControl
             Default item=SF_MasterBedroom_IkeaControl_BrightnessUpHold
@@ -170,81 +170,81 @@ sitemap default label="HV Home"
             Default item=SF_MasterBedroom_IkeaControl_BatteryPercentage icon="battery"
         }
     }
-    Text label="Master Washroom" icon="bath" {
+    Text label="Master Washroom" icon="material:wc" {
         Frame label="MasterWashroom" {
-            Default item=SF_MasterWashroom_ChromeCastPlayer
-            Default item=SF_MasterWashroom_ChromeCastVolume
-            Default item=SF_MasterWashroom_ChromeCastStreamTitle
-            Switch item=SF_MasterWashroom_LightSwitch icon="light"
-            Text item=SF_MasterWashroom_LightSwitch_Illuminance
-            Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor icon="motion"
-            Switch item=SF_MasterWashroom_FanSwitch_MotionSensor icon="motion"
+            Default item=SF_MasterWashroom_ChromeCastPlayer icon="material:tune"
+            Default item=SF_MasterWashroom_ChromeCastVolume icon="material:volume_up"
+            Default item=SF_MasterWashroom_ChromeCastStreamTitle icon="material:library_music"
+            Switch item=SF_MasterWashroom_LightSwitch icon="material:lightbulb"
+            Text item=SF_MasterWashroom_LightSwitch_Illuminance icon="material:brightness_low"
+            Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor icon="material:directions_run"
+            Switch item=SF_MasterWashroom_FanSwitch_MotionSensor icon="material:directions_run"
 
-            Text item=SF_MasterWashroom_WaterLeakState icon="water"
+            Text item=SF_MasterWashroom_WaterLeakState icon="material:water_drop"
             Text item=SF_MasterWashroom_WaterLeakState_BatteryPercentage icon="battery"
         }
     }  
-    Text label="Master Washroom Shower" icon="bath" {
+    Text label="Master Washroom Shower" icon="material:bathroom" {
         Frame label="MasterWashroomShower" {
-            Switch item=SF_MasterWashroomShower_FanSwitch icon="fan"
-            Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor icon="motion"
+            Switch item=SF_MasterWashroomShower_FanSwitch icon="material:hvac"
+            Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor icon="material:directions_run"
         }
     }
-    Text label="Bedroom2" icon="bedroom" {
+    Text label="Bedroom 2" icon="material:bed" {
         Frame label="Bedroom2" {
-            Text item=SF_Bedroom2_Temperature icon="temperature"
-            Text item=SF_Bedroom2_Humidity icon="humidity"
+            Text item=SF_Bedroom2_Temperature icon="material:thermostat"
+            Text item=SF_Bedroom2_Humidity icon="material:water_drop"
             Text item=SF_Bedroom2_Smoke icon="fire"
         }
     }
-    Text label="Bedroom3" icon="bedroom" {
+    Text label="Bedroom 3" icon="material:bed" {
         Frame label="Bedroom3" {
-            Text item=SF_Bedroom3_Temperature icon="temperature"
-            Text item=SF_Bedroom3_Humidity icon="humidity"
+            Text item=SF_Bedroom3_Temperature icon="material:thermostat"
+            Text item=SF_Bedroom3_Humidity icon="material:water_drop"
             Text item=SF_Bedroom3_Smoke icon="fire"
         }
     }
-    Text label="Bedroom4" icon="bedroom" {
+    Text label="Bedroom 4" icon="material:bed" {
         Frame label="Bedroom4" {
-            Text item=SF_Bedroom4_Temperature icon="temperature"
-            Text item=SF_Bedroom4_Humidity icon="humidity"
+            Text item=SF_Bedroom4_Temperature icon="material:thermostat"
+            Text item=SF_Bedroom4_Humidity icon="material:water_drop"
             Text item=SF_Bedroom4_Temperature_BatteryPercentage icon="battery"
         }
     }
-    Text label="Basement Lobby" icon="groundfloor" {
+    Text label="Basement Lobby" icon="material:room" {
         Frame label="Basement Lobby" {
-            Switch item=BM_BasementLobby_MotionSensor icon="motion"
+            Switch item=BM_BasementLobby_MotionSensor icon="material:directions_run"
             Default item=BM_BasementLobby_MotionSensor_BatteryPercentage icon="battery"
 
-            Switch item=BM_BasementLobby_LightSwitch icon="light"
+            Switch item=BM_BasementLobby_LightSwitch icon="material:lightbulb"
         }
     }
-    Text label="Basement Washroom" icon="groundfloor" {
+    Text label="Basement Washroom" icon="material:bathroom" {
         Frame label="Basement Washroom" {
-            Switch item=BM_BasementWashroom_LightSwitch icon="light"
-            Switch item=BM_BasementWashroom_LightSwitch_MotionSensor icon="motion"
-            Text item=BM_BasementWashroom_LightSwitch_Illuminance
+            Switch item=BM_BasementWashroom_LightSwitch icon="material:lightbulb"
+            Switch item=BM_BasementWashroom_LightSwitch_MotionSensor icon="material:directions_run"
+            Text item=BM_BasementWashroom_LightSwitch_Illuminance icon="material:brightness_low"
 
-            Switch item=BM_BasementWashroomShower_FanSwitch icon="fan"
+            Switch item=BM_BasementWashroomShower_FanSwitch icon="material:hvac"
         }
   }
 
-    Text label="Basement Rec Room 1" icon="groundfloor" {
+    Text label="Basement Rec Room 1" icon="material:games" {
         Frame label="Basement Rec Room" {
-            Switch item=BM_BasementRecRoom1_MotionSensor icon="motion"
+            Switch item=BM_BasementRecRoom1_MotionSensor icon="material:directions_run"
             Default item=BM_BasementRecRoom1_MotionSensor_BatteryPercentage icon="battery"
 
-            Switch item=BM_BasementRecRoom1_LightSwitch icon="light"
-            Switch item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed icon="rgb"
+            Switch item=BM_BasementRecRoom1_LightSwitch icon="material:lightbulb"
+            Switch item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed icon="material:flare"
 
-      Text label="Basement WLed Light" icon="rgb"{
+      Text label="Basement WLed Light" icon="material:flare"{
         Frame label="Basement WLed Light" {
           Switch item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed
           Slider item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed
-          Colorpicker item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed
+          Colorpicker item=BM_BasementRecRoom1_Wled_MasterControls_CeilingWLed icon="material:palette"
           Switch item=BM_BasementRecRoom1_Wled_Sleep_CeilingWLed
-          Colorpicker item=BM_BasementRecRoom1_Wled_Primary_CeilingWLed
-          Colorpicker item=BM_BasementRecRoom1_Wled_Secondary_CeilingWLed
+          Colorpicker item=BM_BasementRecRoom1_Wled_Primary_CeilingWLed icon="material:palette"
+          Colorpicker item=BM_BasementRecRoom1_Wled_Secondary_CeilingWLed icon="material:palette"
           Selection item=BM_BasementRecRoom1_Wled_FX_CeilingWLed
           Selection item=BM_BasementRecRoom1_Wled_Palette_CeilingWLed
           Selection item=BM_BasementRecRoom1_Wled_Presets_CeilingWLed
@@ -257,42 +257,42 @@ sitemap default label="HV Home"
       }
         }
     }
-    Text label="Basement Rec Room 2" icon="groundfloor" {
+    Text label="Basement Rec Room 2" icon="material:games" {
         Frame label="Basement Rec Room 2" {
-            Switch item=BM_BasementRecRoom2_LightSwitch icon="light"
+            Switch item=BM_BasementRecRoom2_LightSwitch icon="material:lightbulb"
         }
     }
 
-    Text label="Utility" icon="groundfloor" {
+    Text label="Utility" icon="material:propane_tank" {
         Frame label="Utility" {
-            Text item=BM_Utility_AirThingsTemperature icon="temperature"
-            Text item=BM_Utility_AirThingsHumidity icon="humidity"
-            Text item=BM_Utility_Temperature icon="temperature"
-            Text item=BM_Utility_Humidity icon="humidity"
-            Text item=BM_Utility_NaturalGas icon="gas"
-            Text item=BM_Utility_RadonGas icon="gas"
+            Text item=BM_Utility_AirThingsTemperature icon="material:thermostat"
+            Text item=BM_Utility_AirThingsHumidity icon="material:water_drop"
+            Text item=BM_Utility_Temperature icon="material:thermostat"
+            Text item=BM_Utility_Humidity icon="material:water_drop"
+            Text item=BM_Utility_NaturalGas icon="material:gas_meter"
+            Text item=BM_Utility_RadonGas icon="material:gas_meter"
 
-            Text item=BM_Utility_WaterLeakState icon="water"
+            Text item=BM_Utility_WaterLeakState icon="material:water_drop"
             Text item=BM_Utility_WaterLeakState_BatteryPercentage icon="battery"
 
-            Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="temperature"
-            Default item=BM_Utility_Computer_RaspberryOpenHab_GpuTemperature icon="temperature"
-            Default item=BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp icon="time"
+            Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="material:thermostat"
+            Default item=BM_Utility_Computer_RaspberryOpenHab_GpuTemperature icon="material:thermostat"
+            Default item=BM_Utility_Computer_RaspberryOpenHab_UpdatedTimestamp icon="material:access_time"
 
-            Default item=BM_Utility_Computer_RaspberryNfs_CpuTemperature icon="temperature"
-            Default item=BM_Utility_Computer_RaspberryNfs_GpuTemperature icon="temperature"
-            Default item=BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp icon="time"
+            Default item=BM_Utility_Computer_RaspberryNfs_CpuTemperature icon="material:thermostat"
+            Default item=BM_Utility_Computer_RaspberryNfs_GpuTemperature icon="material:thermostat"
+            Default item=BM_Utility_Computer_RaspberryNfs_UpdatedTimestamp icon="material:access_time"
         }
     }
 
-    Text label="Powder" icon="groundfloor" {
+    Text label="Powder" icon="material:family_restroom" {
         Frame label="Powder" {
-            Text item=FF_Powder_WaterLeakState icon="water"
+            Text item=FF_Powder_WaterLeakState icon="material:water_drop"
             Text item=FF_Powder_WaterLeakState_BatteryPercentage icon="battery"
         }
     }
 
-    Text label="Backyard" icon="groundfloor" {
+    Text label="Backyard" icon="material:yard" {
         Frame label="Backyard" {
             Switch item=FF_Backyard_Camera_EnableFfmpeg label="Enable FFmpeg"
             Video url="http://192.168.0.221:8080/ipcamera/1921680162/snapshots.mjpeg" encoding="mjpeg" 
@@ -304,7 +304,7 @@ sitemap default label="HV Home"
 
 /** END OF AUTO-GENERATED SITEMAP **/
 
-  Text label="Camera" icon="camera" {
+  Text label="Camera" icon="material:camera" {
     Frame label="Porch" {
       //Switch item=CamEnableMotion label="Turn motion on/off"
       Switch item=FF_Porch_Camera_MotionAlarm label="Motion detected"
@@ -316,14 +316,14 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Music / Voice Announcement" icon="soundvolume" {
+  Text label="Music / Voice Announcement" icon="material:tune" {
     Frame label="Music / Voice Announcement" {
         Selection item=VT_SelectedChromeCast 
           mappings=["FF_GreatRoom_ChromeCast"="Great Room",
                     "SF_MasterBedroom_ChromeCast"="Master Bedroom",
                     "SF_MasterWashroom_ChromeCast"="Master Washroom",
                     "ALL"="ALL"]
-          icon="mediacontrol"
+          icon="material:source"
         Selection item=VT_SelectedStream 
           mappings=[
             "WWFM Classical"="WWFM Classical",
@@ -339,12 +339,13 @@ sitemap default label="HV Home"
             "Classic Rock Florida"="Classic Rock Florida",
             "Radio Paradise - Rock"="Radio Paradise - Rock"
             ]
-          icon="flow"
+          icon="material:library_music"
+          
           //"Jazz Cafe"="Jazz Cafe",
-        Default item=VT_Master_ChromeCastPlayer
-        Slider item=VT_Master_ChromeCastVolume icon=soundvolume
+        Default item=VT_Master_ChromeCastPlayer icon="material:tune"
+        Slider item=VT_Master_ChromeCastVolume icon="material:volume_up"
 
-        Switch item=VT_GreatRoom_PlayMorningAnnouncement
+        Switch item=VT_GreatRoom_PlayMorningAnnouncement icon="material:power_settings_new"
         // Switch item=VT_Master_PlayMusic
 
         // Switch item=FF_GreatRoom_ChromeCastIdling
@@ -357,10 +358,10 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Presence Details" icon="presence" {
+  Text label="Presence Details" icon="material:sensor_occupied" {
     Frame label="Presence" {
       Switch item=gPresence
-      Text item=Out_Last_Presence_Timestamp
+      Text item=Out_Last_Presence_Timestamp icon="material:access_time"
       Switch item=gFirstFloorPresence
       Switch item=gSecondFloorPresence
       Switch item=gOwner1Presence icon="network"
@@ -370,7 +371,7 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Security Details" {
+  Text label="Security Details" icon="material:sensor_door" {
     Frame label="Security" {
       Text item=FF_Front_Door_Status
       Text item=FF_Foyer_Door_Status
@@ -379,56 +380,56 @@ sitemap default label="HV Home"
     }
   }
 
-  Text label="Indoor Temperature & Humidity" icon="temperature" {
+  Text label="Indoor Temperature & Humidity" icon="material:thermostat" {
     Frame label="Temperature & Humidity" {
-        Default item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-        Default item=FF_Office_Temperature icon="temperature"
-        Default item=FF_Garage_Temperature icon="temperature"
-        Default item=SF_MasterBedroom_Temperature icon="temperature"
-        Default item=SF_Bedroom2_Temperature icon="temperature"
-        Default item=SF_Bedroom3_Temperature icon="temperature"
-        Default item=SF_Bedroom4_Temperature icon="temperature"
-        Default item=BM_Utility_AirThingsTemperature icon="temperature"
-        Default item=BM_Utility_Temperature icon="temperature"
+        Default item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
+        Default item=FF_Office_Temperature icon="material:thermostat"
+        Default item=FF_Garage_Temperature icon="material:thermostat"
+        Default item=SF_MasterBedroom_Temperature icon="material:thermostat"
+        Default item=SF_Bedroom2_Temperature icon="material:thermostat"
+        Default item=SF_Bedroom3_Temperature icon="material:thermostat"
+        Default item=SF_Bedroom4_Temperature icon="material:thermostat"
+        Default item=BM_Utility_AirThingsTemperature icon="material:thermostat"
+        Default item=BM_Utility_Temperature icon="material:thermostat"
 
-        Default item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
-        Default item=FF_Office_Humidity icon="humidity"
-        Default item=FF_Garage_Humidity icon="humidity"
-        Default item=SF_MasterBedroom_Humidity icon="humidity"
-        Default item=SF_Bedroom2_Humidity icon="humidity"
-        Default item=SF_Bedroom3_Humidity icon="humidity"
-        Default item=SF_Bedroom4_Humidity icon="humidity"
-        Default item=BM_Utility_AirThingsHumidity icon="humidity"
-        Default item=BM_Utility_Humidity icon="humidity"
+        Default item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
+        Default item=FF_Office_Humidity icon="material:water_drop"
+        Default item=FF_Garage_Humidity icon="material:water_drop"
+        Default item=SF_MasterBedroom_Humidity icon="material:water_drop"
+        Default item=SF_Bedroom2_Humidity icon="material:water_drop"
+        Default item=SF_Bedroom3_Humidity icon="material:water_drop"
+        Default item=SF_Bedroom4_Humidity icon="material:water_drop"
+        Default item=BM_Utility_AirThingsHumidity icon="material:water_drop"
+        Default item=BM_Utility_Humidity icon="material:water_drop"
     }
   }
 
-  Text label="Ecobee Thermostat" icon="temperature" {
+  Text label="Ecobee Thermostat" icon="material:thermostat" {
     Frame label="Ecobee Thermostat" {
       Text item=FF_GreatRoom_Thermostat_FirstEvent_Type
       Text item=FF_GreatRoom_Thermostat_EcobeeName
-      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="temperature"
-      Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="humidity"
+      Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
+      Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
       Text item=FF_GreatRoom_Thermostat_DesiredHeat icon="heating"
       Text item=FF_GreatRoom_Thermostat_DesiredCool icon="snow"
       Text item=FF_GreatRoom_Thermostat_HvacMode icon="hvac"
-      Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="fan_box"
+      Text item=FF_GreatRoom_Thermostat_DesiredFanMode icon="material:hvac"
       Text item=FF_GreatRoom_Thermostat_CurrentClimateRef
 
-      Text item=FF_Virtual_Weather_Temperature icon="temperature"
+      Text item=FF_Virtual_Weather_Temperature icon="material:thermostat"
       Text item=FF_Virtual_Weather_Condition        
-      Text item=FF_Virtual_Weather_Humidity icon="humidity"
+      Text item=FF_Virtual_Weather_Humidity icon="material:water_drop"
       }
   }
 
-     Text label="XmasLights" icon="rgb"{
+     Text label="XmasLights" icon="material:flare"{
     Frame label="XmasLights" {
       Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree
       Slider item=FF_GreatRoom_Wled_MasterControls_XmasTree
-      Colorpicker item=FF_GreatRoom_Wled_MasterControls_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="material:palette"
       Switch item=FF_GreatRoom_Wled_Sleep_XmasTree
-      Colorpicker item=FF_GreatRoom_Wled_Primary_XmasTree
-      Colorpicker item=FF_GreatRoom_Wled_Secondary_XmasTree
+      Colorpicker item=FF_GreatRoom_Wled_Primary_XmasTree icon="material:palette"
+      Colorpicker item=FF_GreatRoom_Wled_Secondary_XmasTree icon="material:palette"
       Selection item=FF_GreatRoom_Wled_FX_XmasTree
       Selection item=FF_GreatRoom_Wled_Palette_XmasTree
       Selection item=FF_GreatRoom_Wled_Presets_XmasTree
@@ -440,7 +441,7 @@ sitemap default label="HV Home"
         }
     }
 
-     Text label="Admin Controls" {
+     Text label="Admin Controls" icon="material:settings" {
 
       Frame label="System Message" visibility=[FF_Virtual_FlashMessage!=""] {
         Text item=FF_Virtual_FlashMessage label="" icon="material:chat" iconcolor=[!=""="green"]
@@ -448,11 +449,11 @@ sitemap default label="HV Home"
 
         Frame label="Auto-report Devices" {
           // The mapping is generated using the GenerateWifiItemMappings in Habapp.
-          Selection item=FF_Virtual_Notification_AutoReportDeferredDurationInHour icon="time"
+          Selection item=FF_Virtual_Notification_AutoReportDeferredDurationInHour icon="material:timer"
               mappings=[
                 0="None", 1="1 hour", 3="3 hour", 6="6 hour", 8="8 hour", 10="10 hour",
                 12="12 hour", 24="1 day", 32="1.5 days", 48="2 days", 72="3 days", 96="4 days"]
-          Selection item=FF_Virtual_Notification_AutoReportDeviceName icon="status"
+          Selection item=FF_Virtual_Notification_AutoReportDeviceName icon="material:devices_other"
              mappings=[
                 ""="None",
                 "FF_GreatRoom_Thermostat_ActualTemperature"="GreatRoom: Thermostat ActualTemperature",
