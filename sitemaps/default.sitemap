@@ -1,8 +1,7 @@
 sitemap default label="HV Home"
 {
-  Frame label="System Message" visibility=[FF_Virtual_FlashMessage!=""] {
-    Text item=FF_Virtual_FlashMessage label="" icon="material:chat" iconcolor=[!=""="green"]
-  }
+  Text item=FF_Virtual_FlashMessage label="" icon="material:chat" iconcolor=[!=""="green"] 
+       visibility=[FF_Virtual_FlashMessage!=""]
 
   // Text item=gPresence icon="presence"
   Text item=Out_Vacation visibility=[Out_Vacation==ON]
@@ -123,10 +122,10 @@ sitemap default label="HV Home"
 
             Text item=FF_Virtual_Weather_Alert_Title icon="material:message"
             Text item=FF_Virtual_Weather_Alert_Date icon="material:access_time"
+        }
 
-            Frame label="Weather Forecast" {
-                Webview url="/static/weather-forecast.html" height=14
-            }
+        Frame label="Weather Forecast" {
+            Webview url="/static/weather-forecast.html" height=14
         }
     }
     Text label="Main Washroom" icon="material:bathroom" {
@@ -135,6 +134,12 @@ sitemap default label="HV Home"
             Switch item=SF_MainWashroom_MotionSensor icon="material:directions_run"
             Default item=SF_MainWashroom_MotionSensor_BatteryPercentage icon="battery"
             Switch item=SF_MainWashroom_FanSwitch_MotionSensor icon="material:directions_run"
+
+            Text item=SF_MainWashroom_ToiletWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=SF_MainWashroom_ToiletWaterLeakState_BatteryPercentage icon="battery"
+
+            Text item=SF_MainWashroom_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=SF_MainWashroom_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }
     Text label="Main Washroom Shower" icon="material:bathroom" {
@@ -180,8 +185,11 @@ sitemap default label="HV Home"
             Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor icon="material:directions_run"
             Switch item=SF_MasterWashroom_FanSwitch_MotionSensor icon="material:directions_run"
 
-            Text item=SF_MasterWashroom_WaterLeakState icon="material:water_drop"
-            Text item=SF_MasterWashroom_WaterLeakState_BatteryPercentage icon="battery"
+            Text item=SF_MasterWashroom_ToiletWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=SF_MasterWashroom_ToiletWaterLeakState_BatteryPercentage icon="battery"
+
+            Text item=SF_MasterWashroom_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=SF_MasterWashroom_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }  
     Text label="Master Washroom Shower" icon="material:bathroom" {
@@ -209,6 +217,12 @@ sitemap default label="HV Home"
             Text item=SF_Bedroom4_Temperature icon="material:thermostat"
             Text item=SF_Bedroom4_Humidity icon="material:water_drop"
             Text item=SF_Bedroom4_Temperature_BatteryPercentage icon="battery"
+        }
+    }
+    Text label="Laundry Room" icon="material:local_laundry_service" {
+        Frame label="Laundry Room" {
+            Text item=SF_LaundryRoom_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=SF_LaundryRoom_WaterLeakState_BatteryPercentage icon="battery"
         }
     }
     Text label="Basement Lobby" icon="material:room" {
@@ -272,7 +286,7 @@ sitemap default label="HV Home"
             Text item=BM_Utility_NaturalGas icon="material:gas_meter"
             Text item=BM_Utility_RadonGas icon="material:gas_meter"
 
-            Text item=BM_Utility_WaterLeakState icon="material:water_drop"
+            Text item=BM_Utility_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=BM_Utility_WaterLeakState_BatteryPercentage icon="battery"
 
             Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="material:thermostat"
@@ -287,7 +301,7 @@ sitemap default label="HV Home"
 
     Text label="Powder" icon="material:family_restroom" {
         Frame label="Powder" {
-            Text item=FF_Powder_WaterLeakState icon="material:water_drop"
+            Text item=FF_Powder_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=FF_Powder_WaterLeakState_BatteryPercentage icon="battery"
         }
     }
@@ -441,37 +455,37 @@ sitemap default label="HV Home"
         }
     }
 
-     Text label="Admin Controls" icon="material:settings" {
+  Text label="Admin Controls" icon="material:settings" {
 
-      Frame label="System Message" visibility=[FF_Virtual_FlashMessage!=""] {
-        Text item=FF_Virtual_FlashMessage label="" icon="material:chat" iconcolor=[!=""="green"]
-      }
-
-        Frame label="Auto-report Devices" {
-          // The mapping is generated using the GenerateWifiItemMappings in Habapp.
-          Selection item=FF_Virtual_Notification_AutoReportDeferredDurationInHour icon="material:timer"
-              mappings=[
-                0="None", 1="1 hour", 3="3 hour", 6="6 hour", 8="8 hour", 10="10 hour",
-                12="12 hour", 24="1 day", 32="1.5 days", 48="2 days", 72="3 days", 96="4 days"]
-          Selection item=FF_Virtual_Notification_AutoReportDeviceName icon="material:devices_other"
-             mappings=[
-                ""="None",
-                "FF_GreatRoom_Thermostat_ActualTemperature"="GreatRoom: Thermostat ActualTemperature",
-                "SF_MasterBedroom_Temperature"="MasterBedroom: Temperature",
-                "SF_Bedroom2_Temperature"="Bedroom2: Temperature",
-                "SF_Bedroom2_Smoke"="Bedroom2: Smoke",
-                "SF_Bedroom3_Smoke"="Bedroom3: Smoke",
-                "SF_Bedroom3_Temperature"="Bedroom3: Temperature",
-                "BM_Utility_RadonGas"="Utility: RadonGas",
-                "BM_Utility_AirThingsTemperature"="Utility: AirThingsTemperature",
-                "BM_Utility_Temperature"="Utility: Temperature",
-                "Computer: Raspberry NFS"="Utility: Computer: Raspberry NFS",
-                "BM_Utility_NaturalGas"="Utility: NaturalGas",
-                "Computer: Raspberry Old OpenHab"="Utility: Computer: Raspberry Old OpenHab"]
-        }
-
-        Frame label="Remote Command" {
-            Input item=FF_Virtual_RemoteCommand label="Command" icon="material:message" inputHint="text"
-        }
+    Frame label="System Message" visibility=[FF_Virtual_FlashMessage!=""] {
+      Text item=FF_Virtual_FlashMessage label="" icon="material:chat" iconcolor=[!=""="green"]
     }
+
+    Frame label="Auto-report Devices" {
+      // The mapping is generated using the GenerateWifiItemMappings in Habapp.
+      Selection item=FF_Virtual_Notification_AutoReportDeferredDurationInHour icon="material:timer"
+          mappings=[
+            0="None", 1="1 hour", 3="3 hour", 6="6 hour", 8="8 hour", 10="10 hour",
+            12="12 hour", 24="1 day", 32="1.5 days", 48="2 days", 72="3 days", 96="4 days"]
+      Selection item=FF_Virtual_Notification_AutoReportDeviceName icon="material:devices_other"
+         mappings=[
+            ""="None",
+            "FF_GreatRoom_Thermostat_ActualTemperature"="GreatRoom: Thermostat ActualTemperature",
+            "SF_MasterBedroom_Temperature"="MasterBedroom: Temperature",
+            "SF_Bedroom2_Temperature"="Bedroom2: Temperature",
+            "SF_Bedroom2_Smoke"="Bedroom2: Smoke",
+            "SF_Bedroom3_Smoke"="Bedroom3: Smoke",
+            "SF_Bedroom3_Temperature"="Bedroom3: Temperature",
+            "BM_Utility_RadonGas"="Utility: RadonGas",
+            "BM_Utility_AirThingsTemperature"="Utility: AirThingsTemperature",
+            "BM_Utility_Temperature"="Utility: Temperature",
+            "Computer: Raspberry NFS"="Utility: Computer: Raspberry NFS",
+            "BM_Utility_NaturalGas"="Utility: NaturalGas",
+            "Computer: Raspberry Old OpenHab"="Utility: Computer: Raspberry Old OpenHab"]
+    }
+
+    Frame label="Remote Command" {
+        Input item=FF_Virtual_RemoteCommand label="Command" icon="material:message" inputHint="text"
+    }
+  }
 }

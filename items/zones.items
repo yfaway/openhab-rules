@@ -57,6 +57,9 @@ String Zone_Bedroom2 { level="SF", displayIcon="bedroom", displayOrder="36" }
 String Zone_Bedroom3 { level="SF", displayIcon="bedroom", displayOrder="37" }
 String Zone_Bedroom4 { level="SF", displayIcon="bedroom", displayOrder="38" }
 
+String Zone_LaundryRoom 
+  { level="SF", displayIcon="material:laundry", displayOrder="36" }
+
 String Zone_BasementLobby 
   { level="BM", displayIcon="groundfloor", displayOrder="40",
     openSpaceMasterNeighbors="BM_BasementRecRoom2"  }

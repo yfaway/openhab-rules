@@ -1,0 +1,7 @@
+String FF_Backyard_Camera "Backyard Camera" (gCamera)
+String FF_Backyard_Camera_ImageUrl "Camera Image URL"
+  { channel="ipcamera:onvif:1921680162:imageUrl" }
+String FF_Backyard_Camera_MjpegUrl "Camera MJPEG URL"
+  { channel="ipcamera:onvif:1921680162:mjpegUrl" }
+Switch FF_Backyard_Camera_EnableFfmpeg "Enable FFmpeg"
+  { channel="ipcamera:onvif:1921680162:pollImage" }

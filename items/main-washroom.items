@@ -13,6 +13,18 @@ Switch SF_MainWashroom_MotionSensor "Main Washroom Motion Sensor"
 Number SF_MainWashroom_MotionSensor_BatteryPercentage "Main Washroom Motion Sensor Battery [%d %%]"
   { channel="mqtt:topic:myBroker:mainWashroom:MainWashroomBattery"}
 
+Switch SF_MainWashroom_ToiletWaterLeakState "Toilet Water Leak Detected [%s]"
+  { channel="mqtt:topic:myBroker:mainWashroom:toiletLeakSensorState" }
+
+Number SF_MainWashroom_ToiletWaterLeakState_BatteryPercentage "Toilet Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:mainWashroom:toiletLeakSensorBattery" }
+
+Switch SF_MainWashroom_SinkWaterLeakState "Sink Water Leak Detected [%s]"
+  { channel="mqtt:topic:myBroker:mainWashroom:sinkLeakSensorState" }
+
+Number SF_MainWashroom_SinkWaterLeakState_BatteryPercentage "Sink Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:mainWashroom:sinkLeakSensorBattery" }
+
 Switch SF_MainWashroom_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
@@ -23,5 +35,4 @@ Switch SF_MainWashroomShower_FanSwitch "Main Washroom Fan" (gWallSwitch, gFanSwi
 Switch SF_MainWashroomShower_FanSwitch_MotionSensor "Main Washroom Fan Motion Sensor"
   (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MainWashroomFanMotionSensor"}
-
 

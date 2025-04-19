@@ -1,8 +1,14 @@
-Switch SF_MasterWashroom_WaterLeakState "Water Leak Detected [%s]"
-  { channel="mqtt:topic:myBroker:masterWashroom:leakSensorState" }
+Switch SF_MasterWashroom_ToiletWaterLeakState "Toilet Water Leak Detected [%s]"
+  { channel="mqtt:topic:myBroker:masterWashroom:toiletLeakSensorState" }
 
-Number SF_MasterWashroom_WaterLeakState_BatteryPercentage "Water Leak Battery [%d]"
-  { channel="mqtt:topic:myBroker:masterWashroom:leakSensorBattery" }
+Number SF_MasterWashroom_ToiletWaterLeakState_BatteryPercentage "Toilet Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:masterWashroom:toiletLeakSensorBattery" }
+
+Switch SF_MasterWashroom_SinkWaterLeakState "Sink Water Leak Detected [%s]"
+  { channel="mqtt:topic:myBroker:masterWashroom:sinkLeakSensorState" }
+
+Number SF_MasterWashroom_SinkWaterLeakState_BatteryPercentage "Sink Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:masterWashroom:sinkLeakSensorBattery" }
 
 String VT_SelectedChromeCast "Source"
 String VT_SelectedStream "Stream"
