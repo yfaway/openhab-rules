@@ -8,21 +8,33 @@ sitemap default label="HV Home"
   Text item=Out_Light_Simulation visibility=[Out_Light_Simulation==ON]
   Text item=Out_Last_Presence_Timestamp visibility=[Out_Vacation==ON]
 
-  Selection item=FF_Foyer_AlarmPartition_ArmMode icon="material:sensor_door" label="Security System" mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
+  Selection item=FF_Foyer_AlarmPartition_ArmMode label="Security System"
+        icon="material:sensor_door" iconcolor=[>0="green"]
+        mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
   Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
 
-  Default item=FF_Garage_Door label="Garage Door" icon="material:garage"
-  Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
-  Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
+  Default item=FF_Garage_Door label="Garage Door" icon="material:garage" iconcolor=[ON="red"]
 
-  Text item=FF_Virtual_Weather_Temperature icon="material:thermostat"
-  Text item=FF_Virtual_Weather_Humidity icon="material:water_drop"
+  Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
+        iconcolor=[> 30 = "red", > 25 AND < 31 = "maroon", > 15 AND < 22 = "navy", <16 = "blue"]
+  Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
+        iconcolor=[> 50 = "blue", < 35 = "red"]
+
+  Text item=FF_Virtual_Weather_Temperature
+        label="Outdoor Temperature"
+        icon="material:thermostat"
+        iconcolor=[> 30 = "red", > 25 AND < 31 = "maroon", > 15 AND < 22 = "navy", <16 = "blue"]
+  Text item=FF_Virtual_Weather_Humidity 
+        label="Ourdoor Humidity"
+        icon="material:water_drop"
+        iconcolor=[> 50 = "blue", < 35 = "red"]
   Text item=FF_Virtual_Weather_Alert_Title
         valuecolor=[FF_Virtual_Weather_Alert_Title!=""="red"]
         visibility=[FF_Virtual_Weather_Alert_Title != "No alerts in effect, Ottawa North - Kanata - Orléans"]
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
-    Text label="GreatRoom" icon="material:chair" {
+    Text label="GreatRoom" icon="material:chair" 
+            iconcolor=[FF_GreatRoom_LightSwitch == ON = "yellow"] {
         Frame label="GreatRoom" {
             Default item=FF_GreatRoom_ChromeCastPlayer icon="material:tune"
             Default item=FF_GreatRoom_ChromeCastVolume icon="material:volume_up"
@@ -37,7 +49,8 @@ sitemap default label="HV Home"
             Switch item=FF_GreatRoom_Tv icon="material:tv"
         } 
     } 
-    Text label="Office" icon="material:desk" {
+    Text label="Office" icon="material:desk" 
+            iconcolor=[FF_Office_LightSwitch == ON = "yellow"] {
         Frame label="Office" {
             Switch item=FF_Office_LightSwitch icon="material:lightbulb"
             Text item=FF_Office_Plug icon="material:power"
@@ -56,7 +69,9 @@ sitemap default label="HV Home"
             Default item=FF_Office_Computer_Dell_UpdatedTimestamp icon="material:access_time"
         }
     }  
-    Text label="Kitchen" icon="material:kitchen" {
+    Text label="Kitchen" icon="material:kitchen" 
+            iconcolor=[FF_Kitchen_LightSwitch == ON = "yellow",
+                       FF_KitchenSink_LightSwitch == ON = "yellow"] {
         Frame label="Kitchen" {
             Switch item=FF_Kitchen_LightSwitch icon="material:lightbulb"
             Switch item=FF_Kitchen_CameraPlug icon="material:power"
@@ -68,7 +83,8 @@ sitemap default label="HV Home"
             Switch item=FF_KitchenSink_LightSwitch_MotionSensor icon="material:lightbulb"
         }
     }  
-    Text label="Foyer" icon="material:checkroom" {
+    Text label="Foyer" icon="material:checkroom" 
+            iconcolor=[FF_Foyer_LightSwitch == ON = "yellow"] {
         Frame label="Foyer" {
             Switch item=FF_Foyer_Door icon="material:door_front"
             Switch item=FF_Foyer_LightSwitch icon="material:lightbulb"
@@ -76,7 +92,8 @@ sitemap default label="HV Home"
             Text item=FF_Foyer_LightSwitch_Illuminance icon="material:brightness_low"
         }
     } 
-    Text label="Porch" icon="material:balcony" {
+    Text label="Porch" icon="material:balcony" 
+            iconcolor=[FF_Porch_CeilingLightSwitch == ON = "yellow"] {
         Frame label="Porch" {
             Switch item=FF_Porch_Door icon="material:door_front"
             Switch item=FF_Porch_CeilingLightSwitch icon="material:lightbulb"
@@ -128,7 +145,8 @@ sitemap default label="HV Home"
             Webview url="/static/weather-forecast.html" height=14
         }
     }
-    Text label="Main Washroom" icon="material:bathroom" {
+    Text label="Main Washroom" icon="material:bathroom"
+            iconcolor=[SF_MainWashroom_LightSwitch==ON = "yellow"] {
         Frame label="MainWashroom" {
             Switch item=SF_MainWashroom_LightSwitch icon="material:lightbulb"
             Switch item=SF_MainWashroom_MotionSensor icon="material:directions_run"
@@ -148,7 +166,8 @@ sitemap default label="HV Home"
             Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor icon="material:directions_run"
         }
     }
-    Text label="Lobby" icon="material:room" {
+    Text label="Lobby" icon="material:room" 
+            iconcolor=[SF_Lobby_LightSwitch == ON = "yellow"] {
         Frame label="Lobby" {
             Switch item=SF_Lobby_LightSwitch icon="material:lightbulb"
             Switch item=SF_Lobby_LightSwitch_MotionSensor icon="material:directions_run"
@@ -175,7 +194,8 @@ sitemap default label="HV Home"
             Default item=SF_MasterBedroom_IkeaControl_BatteryPercentage icon="battery"
         }
     }
-    Text label="Master Washroom" icon="material:wc" {
+    Text label="Master Washroom" icon="material:wc" 
+            iconcolor=[SF_MasterWashroom_LightSwitch == ON = "yellow"] {
         Frame label="MasterWashroom" {
             Default item=SF_MasterWashroom_ChromeCastPlayer icon="material:tune"
             Default item=SF_MasterWashroom_ChromeCastVolume icon="material:volume_up"
@@ -225,7 +245,8 @@ sitemap default label="HV Home"
             Text item=SF_LaundryRoom_WaterLeakState_BatteryPercentage icon="battery"
         }
     }
-    Text label="Basement Lobby" icon="material:room" {
+    Text label="Basement Lobby" icon="material:room" 
+            iconcolor=[BM_BasementLobby_LightSwitch == ON = "yellow"] {
         Frame label="Basement Lobby" {
             Switch item=BM_BasementLobby_MotionSensor icon="material:directions_run"
             Default item=BM_BasementLobby_MotionSensor_BatteryPercentage icon="battery"
@@ -233,7 +254,8 @@ sitemap default label="HV Home"
             Switch item=BM_BasementLobby_LightSwitch icon="material:lightbulb"
         }
     }
-    Text label="Basement Washroom" icon="material:bathroom" {
+    Text label="Basement Washroom" icon="material:bathroom" 
+            iconcolor=[BM_BasementWashroom_LightSwitch == ON = "yellow"] {
         Frame label="Basement Washroom" {
             Switch item=BM_BasementWashroom_LightSwitch icon="material:lightbulb"
             Switch item=BM_BasementWashroom_LightSwitch_MotionSensor icon="material:directions_run"
@@ -241,9 +263,10 @@ sitemap default label="HV Home"
 
             Switch item=BM_BasementWashroomShower_FanSwitch icon="material:hvac"
         }
-  }
+    }
 
-    Text label="Basement Rec Room 1" icon="material:games" {
+    Text label="Basement Rec Room 1" icon="material:games" 
+            iconcolor=[BM_BasementRecRoom1_LightSwitch == ON = "yellow"] {
         Frame label="Basement Rec Room" {
             Switch item=BM_BasementRecRoom1_MotionSensor icon="material:directions_run"
             Default item=BM_BasementRecRoom1_MotionSensor_BatteryPercentage icon="battery"
@@ -271,7 +294,8 @@ sitemap default label="HV Home"
       }
         }
     }
-    Text label="Basement Rec Room 2" icon="material:games" {
+    Text label="Basement Rec Room 2" icon="material:games" 
+            iconcolor=[BM_BasementRecRoom2_LightSwitch == ON = "yellow"] {
         Frame label="Basement Rec Room 2" {
             Switch item=BM_BasementRecRoom2_LightSwitch icon="material:lightbulb"
         }
