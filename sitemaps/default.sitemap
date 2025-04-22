@@ -33,8 +33,10 @@ sitemap default label="HV Home"
         visibility=[FF_Virtual_Weather_Alert_Title != "No alerts in effect, Ottawa North - Kanata - Orléans"]
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
-    Text label="GreatRoom" icon="material:chair" 
-            iconcolor=[FF_GreatRoom_LightSwitch == ON = "yellow"] {
+    Text label="GreatRoom"
+            icon=[FF_GreatRoom_Tv == ON = material:tv, material:chair] 
+            iconcolor=[FF_GreatRoom_Tv == ON = "orange",
+                       FF_GreatRoom_LightSwitch == ON = "yellow"] {
         Frame label="GreatRoom" {
             Default item=FF_GreatRoom_ChromeCastPlayer icon="material:tune"
             Default item=FF_GreatRoom_ChromeCastVolume icon="material:volume_up"
@@ -122,7 +124,21 @@ sitemap default label="HV Home"
             Switch item=FF_Patio_Door icon="material:door_back"
         }
     }
-    Text label="Outdoor" icon="material:landscape" {
+    Text label="Outdoor" 
+            icon=[FF_Virtual_Weather_WeatherSymbol == 0 = material:wb_sunny,
+                  FF_Virtual_Weather_WeatherSymbol >= 1 AND FF_Virtual_Weather_WeatherSymbol <= 4 = material:wb_cloudy,
+                  FF_Virtual_Weather_WeatherSymbol >= 9 AND FF_Virtual_Weather_WeatherSymbol <= 9 = material:umbrella,
+                  FF_Virtual_Weather_WeatherSymbol >= 10 AND FF_Virtual_Weather_WeatherSymbol <= 14 = material:ac_unit,
+                  FF_Virtual_Weather_WeatherSymbol == 16 = material:air,
+                  material:landscape] 
+            iconcolor=[
+                  FF_Virtual_Weather_WeatherSymbol == 0 = 'orange',
+                  FF_Virtual_Weather_WeatherSymbol >= 1 AND FF_Virtual_Weather_WeatherSymbol <= 4 = 'purple',
+                  FF_Virtual_Weather_WeatherSymbol >= 9 AND FF_Virtual_Weather_WeatherSymbol <= 9 = 'blue',
+                  FF_Virtual_Weather_WeatherSymbol >= 10 AND FF_Virtual_Weather_WeatherSymbol <= 14 = 'aqua',
+                  FF_Virtual_Weather_WeatherSymbol == 16 = 'maroon'
+                  ] 
+            {
         Frame label="Outdoor" {
             Text item=FF_Virtual_Weather_Temperature icon="material:thermostat"
             Text item=FF_Virtual_Weather_Humidity icon="material:water_drop"
@@ -160,7 +176,8 @@ sitemap default label="HV Home"
             Text item=SF_MainWashroom_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }
-    Text label="Main Washroom Shower" icon="material:bathroom" {
+    Text label="Main Washroom Shower" icon="material:bathroom" 
+            iconcolor=[SF_MainWashroomShower_FanSwitch==ON = "orange"] {
         Frame label="MainWashroomShower" {
             Switch item=SF_MainWashroomShower_FanSwitch icon="material:hvac"
             Switch item=SF_MainWashroomShower_FanSwitch_MotionSensor icon="material:directions_run"
@@ -212,7 +229,8 @@ sitemap default label="HV Home"
             Text item=SF_MasterWashroom_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }  
-    Text label="Master Washroom Shower" icon="material:bathroom" {
+    Text label="Master Washroom Shower" icon="material:bathroom" 
+            iconcolor=[SF_MasterWashroomShower_FanSwitch==ON = "orange"] {
         Frame label="MasterWashroomShower" {
             Switch item=SF_MasterWashroomShower_FanSwitch icon="material:hvac"
             Switch item=SF_MasterWashroomShower_FanSwitch_MotionSensor icon="material:directions_run"
@@ -255,7 +273,8 @@ sitemap default label="HV Home"
         }
     }
     Text label="Basement Washroom" icon="material:bathroom" 
-            iconcolor=[BM_BasementWashroom_LightSwitch == ON = "yellow"] {
+            iconcolor=[BM_BasementWashroomShower_FanSwitch == ON = "orange",
+                       BM_BasementWashroom_LightSwitch == ON = "yellow"] {
         Frame label="Basement Washroom" {
             Switch item=BM_BasementWashroom_LightSwitch icon="material:lightbulb"
             Switch item=BM_BasementWashroom_LightSwitch_MotionSensor icon="material:directions_run"
