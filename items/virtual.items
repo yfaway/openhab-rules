@@ -66,3 +66,6 @@ Number FF_Virtual_Notification_AutoReportDeferredDurationInHour "Deferred Hours"
 String FF_Virtual_Notification_AutoReportDeviceName "Device Name"
 
 String FF_Virtual_RemoteCommand "Remote Command"
+
+
+Group:Switch:AND(OFF,ON) gWaterLeak "Water leak detected"

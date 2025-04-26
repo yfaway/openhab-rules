@@ -1,10 +1,10 @@
-Switch SF_MasterWashroom_ToiletWaterLeakState "Toilet Water Leak Detected [%s]"
+Switch SF_MasterWashroom_ToiletWaterLeakState "Toilet Water Leak Detected [%s]" (gWaterLeak)
   { channel="mqtt:topic:myBroker:masterWashroom:toiletLeakSensorState" }
 
 Number SF_MasterWashroom_ToiletWaterLeakState_BatteryPercentage "Toilet Water Leak Battery [%d]"
   { channel="mqtt:topic:myBroker:masterWashroom:toiletLeakSensorBattery" }
 
-Switch SF_MasterWashroom_SinkWaterLeakState "Sink Water Leak Detected [%s]"
+Switch SF_MasterWashroom_SinkWaterLeakState "Sink Water Leak Detected [%s]" (gWaterLeak)
   { channel="mqtt:topic:myBroker:masterWashroom:sinkLeakSensorState" }
 
 Number SF_MasterWashroom_SinkWaterLeakState_BatteryPercentage "Sink Water Leak Battery [%d]"

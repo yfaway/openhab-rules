@@ -1,4 +1,4 @@
-Switch SF_LaundryRoom_WaterLeakState "Water Leak Detected [%s]"
+Switch SF_LaundryRoom_WaterLeakState "Water Leak Detected [%s]" (gWaterLeak)
   { channel="mqtt:topic:myBroker:laundryRoom:leakSensorState" }
 
 Number SF_LaundryRoom_WaterLeakState_BatteryPercentage "Water Leak Battery [%d]"

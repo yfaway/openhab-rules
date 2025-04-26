@@ -1,4 +1,4 @@
-Switch FF_Powder_WaterLeakState "Water Leak Detected [%s]"
+Switch FF_Powder_WaterLeakState "Water Leak Detected [%s]" (gWaterLeak) 
   { channel="mqtt:topic:myBroker:powderRoom:leakSensorState" }
 
 Number FF_Powder_WaterLeakState_BatteryPercentage "Water Leak Battery [%d]"

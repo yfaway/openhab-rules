@@ -11,7 +11,9 @@ sitemap default label="HV Home"
   Selection item=FF_Foyer_AlarmPartition_ArmMode label="Security System"
         icon="material:sensor_door" iconcolor=[>0="green"]
         mappings=[0="Disarm", 1="Armed Away", 2="Armed Stay", 3="No Entry Delay", 4="With User Code"]
-  Text item=gZoneStatus icon="contact" visibility=[gZoneStatus == OPEN]
+  Text item=gZoneStatus icon="contact" iconcolor=["red"] visibility=[gZoneStatus == OPEN]
+
+  Text item=gWaterLeak icon="material:water_drop" iconcolor=["red"] visibility=[gWaterLeak == ON]
 
   Default item=FF_Garage_Door label="Garage Door" icon="material:garage" iconcolor=[ON="red"]
 
@@ -33,11 +35,14 @@ sitemap default label="HV Home"
         visibility=[FF_Virtual_Weather_Alert_Title != "No alerts in effect, Ottawa North - Kanata - Orléans"]
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
-    Text label="GreatRoom"
-            icon=[FF_GreatRoom_Tv == ON = material:tv, material:chair] 
-            iconcolor=[FF_GreatRoom_Tv == ON = "orange",
+    Text label="Great Room"
+            icon=[FF_GreatRoom_ChromeCastPlayer == PLAY = material:music_note,
+                  FF_GreatRoom_Tv == ON = material:tv,
+                  material:chair] 
+            iconcolor=[FF_GreatRoom_ChromeCastPlayer == PLAY = "orange",
+                       FF_GreatRoom_Tv == ON = "orange",
                        FF_GreatRoom_LightSwitch == ON = "yellow"] {
-        Frame label="GreatRoom" {
+        Frame label="Great Room" {
             Default item=FF_GreatRoom_ChromeCastPlayer icon="material:tune"
             Default item=FF_GreatRoom_ChromeCastVolume icon="material:volume_up"
             Default item=FF_GreatRoom_ChromeCastStreamTitle icon="material:library_music" 
@@ -162,17 +167,19 @@ sitemap default label="HV Home"
         }
     }
     Text label="Main Washroom" icon="material:bathroom"
-            iconcolor=[SF_MainWashroom_LightSwitch==ON = "yellow"] {
+            iconcolor=[SF_MainWashroom_ToiletWaterLeakState == ON = "red",
+                       SF_MainWashroom_SinkWaterLeakState == ON = "red",
+                       SF_MainWashroom_LightSwitch == ON = "yellow" ] {
         Frame label="MainWashroom" {
             Switch item=SF_MainWashroom_LightSwitch icon="material:lightbulb"
             Switch item=SF_MainWashroom_MotionSensor icon="material:directions_run"
             Default item=SF_MainWashroom_MotionSensor_BatteryPercentage icon="battery"
             Switch item=SF_MainWashroom_FanSwitch_MotionSensor icon="material:directions_run"
 
-            Text item=SF_MainWashroom_ToiletWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Switch item=SF_MainWashroom_ToiletWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=SF_MainWashroom_ToiletWaterLeakState_BatteryPercentage icon="battery"
 
-            Text item=SF_MainWashroom_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Switch item=SF_MainWashroom_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=SF_MainWashroom_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }
@@ -211,8 +218,14 @@ sitemap default label="HV Home"
             Default item=SF_MasterBedroom_IkeaControl_BatteryPercentage icon="battery"
         }
     }
-    Text label="Master Washroom" icon="material:wc" 
-            iconcolor=[SF_MasterWashroom_LightSwitch == ON = "yellow"] {
+    Text label="Master Washroom"
+            icon=[SF_MasterWashroom_ChromeCastPlayer == PLAY = material:music_note,
+                  material:wc]
+            iconcolor=[SF_MasterWashroom_ToiletWaterLeakState == ON = "red",
+                       SF_MasterWashroom_SinkWaterLeakState == ON = "red",
+                       SF_MasterWashroom_ChromeCastPlayer == PLAY = "orange",
+                       SF_MasterWashroom_LightSwitch == ON = "yellow"] 
+    {
         Frame label="MasterWashroom" {
             Default item=SF_MasterWashroom_ChromeCastPlayer icon="material:tune"
             Default item=SF_MasterWashroom_ChromeCastVolume icon="material:volume_up"
@@ -222,10 +235,10 @@ sitemap default label="HV Home"
             Switch item=SF_MasterWashroom_LightSwitch_EntranceMotionSensor icon="material:directions_run"
             Switch item=SF_MasterWashroom_FanSwitch_MotionSensor icon="material:directions_run"
 
-            Text item=SF_MasterWashroom_ToiletWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Switch item=SF_MasterWashroom_ToiletWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=SF_MasterWashroom_ToiletWaterLeakState_BatteryPercentage icon="battery"
 
-            Text item=SF_MasterWashroom_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Switch item=SF_MasterWashroom_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=SF_MasterWashroom_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }  
@@ -257,9 +270,10 @@ sitemap default label="HV Home"
             Text item=SF_Bedroom4_Temperature_BatteryPercentage icon="battery"
         }
     }
-    Text label="Laundry Room" icon="material:local_laundry_service" {
+    Text label="Laundry Room" icon="material:local_laundry_service" 
+            iconcolor=[SF_LaundryRoom_WaterLeakState == ON = "red"] {
         Frame label="Laundry Room" {
-            Text item=SF_LaundryRoom_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Switch item=SF_LaundryRoom_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=SF_LaundryRoom_WaterLeakState_BatteryPercentage icon="battery"
         }
     }
@@ -320,7 +334,8 @@ sitemap default label="HV Home"
         }
     }
 
-    Text label="Utility" icon="material:propane_tank" {
+    Text label="Utility" icon="material:propane_tank" 
+            iconcolor=[BM_Utility_WaterLeakState == ON = "red"] {
         Frame label="Utility" {
             Text item=BM_Utility_AirThingsTemperature icon="material:thermostat"
             Text item=BM_Utility_AirThingsHumidity icon="material:water_drop"
@@ -329,7 +344,7 @@ sitemap default label="HV Home"
             Text item=BM_Utility_NaturalGas icon="material:gas_meter"
             Text item=BM_Utility_RadonGas icon="material:gas_meter"
 
-            Text item=BM_Utility_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Switch item=BM_Utility_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=BM_Utility_WaterLeakState_BatteryPercentage icon="battery"
 
             Default item=BM_Utility_Computer_RaspberryOpenHab_CpuTemperature icon="material:thermostat"
@@ -342,9 +357,10 @@ sitemap default label="HV Home"
         }
     }
 
-    Text label="Powder" icon="material:family_restroom" {
+    Text label="Powder" icon="material:family_restroom" 
+            iconcolor=[FF_Powder_WaterLeakState == ON = "red"] {
         Frame label="Powder" {
-            Text item=FF_Powder_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Switch item=FF_Powder_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=FF_Powder_WaterLeakState_BatteryPercentage icon="battery"
         }
     }

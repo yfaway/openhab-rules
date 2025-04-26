@@ -36,7 +36,7 @@ Number BM_Utility_AirThingsHumidity "Basement Humidity [%d %%]"
   { channel="mqtt:topic:myBroker:utilityRoom:airthingsHumidity",
     wifi="true", autoReport="true" }
 
-Switch BM_Utility_WaterLeakState "Water Leak Detected [%s]"
+Switch BM_Utility_WaterLeakState "Water Leak Detected [%s]" (gWaterLeak)
   { channel="mqtt:topic:myBroker:utilityRoom:leakSensorState" }
 
 Number BM_Utility_WaterLeakState_BatteryPercentage "Water Leak Battery [%d]"

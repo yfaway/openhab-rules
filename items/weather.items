@@ -13,6 +13,8 @@ Number FF_Virtual_Weather_Humidity "Relative Humidity [%d %%]" (gWeather)
   { channel="ecobee:thermostat:account:411921197263:forecast0#relativeHumidity" }
 DateTime FF_Virtual_Weather_LastUpdate "Last update [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> (gWeather) 
   { channel="ecobee:thermostat:account:411921197263:weather#timestamp" }
+Number FF_Virtual_Weather_WeatherSymbol
+  { channel="ecobee:thermostat:account:411921197263:forecast2#weatherSymbol" }
 // String FF_Virtual_Weather_Condition_ID "Condition id [%s]"   
 //   {weather="locationId=home, type=condition, property=id"}
 // DateTime FF_Virtual_Weather_ObservationTime "Observation time [%1tb %1$td %1$tY %1$tH:%1$tM]"   
@@ -47,7 +49,7 @@ Number FF_Virtual_Weather_ForecastWindGust "Forecast Wind gust [%.1f km/h]"
 
 Number:Temperature FF_Virtual_Weather_Temperature_Tomorrow "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast1#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_Tomorrow_WeatherSymbol 
+Number FF_Virtual_Weather_Temperature_Tomorrow_WeatherSymbol 
   { channel="ecobee:thermostat:account:411921197263:forecast1#weatherSymbol" }
 Number:Temperature FF_Virtual_Weather_Temperature_Tomorrow_TempHigh "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast1#tempHigh", unit="°C" }
@@ -58,7 +60,7 @@ DateTime FF_Virtual_Weather_Temperature_Tomorrow_Datetime "DateTime [%1$tA, %1$t
 
 Number:Temperature FF_Virtual_Weather_Temperature_In2Days "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast2#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_In2Days_WeatherSymbol
+Number FF_Virtual_Weather_Temperature_In2Days_WeatherSymbol
   { channel="ecobee:thermostat:account:411921197263:forecast2#weatherSymbol" }
 Number:Temperature FF_Virtual_Weather_Temperature_In2Days_TempHigh "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast2#tempHigh", unit="°C" }
@@ -69,7 +71,7 @@ DateTime FF_Virtual_Weather_Temperature_In2Days_Datetime "DateTime [%1$tA, %1$tm
 
 Number:Temperature FF_Virtual_Weather_Temperature_In3Days "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast3#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_In3Days_WeatherSymbol 
+Number FF_Virtual_Weather_Temperature_In3Days_WeatherSymbol 
   { channel="ecobee:thermostat:account:411921197263:forecast3#weatherSymbol" }
 Number:Temperature FF_Virtual_Weather_Temperature_In3Days_TempHigh "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast3#tempHigh", unit="°C" }
@@ -80,7 +82,7 @@ DateTime FF_Virtual_Weather_Temperature_In3Days_Datetime "DateTime [%1$tA, %1$tm
 
 Number:Temperature FF_Virtual_Weather_Temperature_In4Days "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast4#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_In4Days_WeatherSymbol 
+Number FF_Virtual_Weather_Temperature_In4Days_WeatherSymbol 
   { channel="ecobee:thermostat:account:411921197263:forecast4#weatherSymbol" }
 Number:Temperature FF_Virtual_Weather_Temperature_In4Days_TempHigh "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast4#tempHigh", unit="°C" }
@@ -91,28 +93,28 @@ DateTime FF_Virtual_Weather_Temperature_In4Days_Datetime "DateTime [%1$tA, %1$tm
 
 Number:Temperature FF_Virtual_Weather_Temperature_Quarter1 "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast5#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_Quarter1_WeatherSymbol 
+Number FF_Virtual_Weather_Temperature_Quarter1_WeatherSymbol 
   { channel="ecobee:thermostat:account:411921197263:forecast5#weatherSymbol" }
 DateTime FF_Virtual_Weather_Temperature_Quarter1_Datetime "DateTime [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> 
   { channel="ecobee:thermostat:account:411921197263:forecast5#dateTime" }
 
 Number:Temperature FF_Virtual_Weather_Temperature_Quarter2 "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast6#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_Quarter2_WeatherSymbol 
+Number FF_Virtual_Weather_Temperature_Quarter2_WeatherSymbol 
   { channel="ecobee:thermostat:account:411921197263:forecast6#weatherSymbol" }
 DateTime FF_Virtual_Weather_Temperature_Quarter2_Datetime "DateTime [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> 
   { channel="ecobee:thermostat:account:411921197263:forecast6#dateTime" }
 
 Number:Temperature FF_Virtual_Weather_Temperature_Quarter3 "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast7#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_Quarter3_WeatherSymbol 
+Number FF_Virtual_Weather_Temperature_Quarter3_WeatherSymbol 
   { channel="ecobee:thermostat:account:411921197263:forecast7#weatherSymbol" }
 DateTime FF_Virtual_Weather_Temperature_Quarter3_Datetime "DateTime [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> 
   { channel="ecobee:thermostat:account:411921197263:forecast7#dateTime" }
 
 Number:Temperature FF_Virtual_Weather_Temperature_Quarter4 "Temperature [%.1f %unit%]"
   { channel="ecobee:thermostat:account:411921197263:forecast8#temperature", unit="°C" }
-Number:Temperature FF_Virtual_Weather_Temperature_Quarter4_WeatherSymbol 
+Number FF_Virtual_Weather_Temperature_Quarter4_WeatherSymbol 
   { channel="ecobee:thermostat:account:411921197263:forecast8#weatherSymbol" }
 DateTime FF_Virtual_Weather_Temperature_Quarter4_Datetime "DateTime [%1$tA, %1$tm/%1$td/%1$tY %1$tl:%1$tM %1$tp]" <time> 
   { channel="ecobee:thermostat:account:411921197263:forecast8#dateTime" }
