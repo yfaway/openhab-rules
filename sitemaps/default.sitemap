@@ -88,6 +88,9 @@ sitemap default label="HV Home"
 
             Switch item=FF_KitchenSink_LightSwitch icon="material:lightbulb"
             Switch item=FF_KitchenSink_LightSwitch_MotionSensor icon="material:lightbulb"
+
+            Switch item=FF_KitchenSink_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=FF_KitchenSink_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }  
     Text label="Foyer" icon="material:checkroom" 
@@ -362,6 +365,9 @@ sitemap default label="HV Home"
         Frame label="Powder" {
             Switch item=FF_Powder_WaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
             Text item=FF_Powder_WaterLeakState_BatteryPercentage icon="battery"
+
+            Switch item=FF_Powder_SinkWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=FF_Powder_SinkWaterLeakState_BatteryPercentage icon="battery"
         }
     }
 

@@ -27,3 +27,9 @@ Switch FF_KitchenSink_LightSwitch_MotionSensor "Kitchen Sink Motion Sensor"
 Number FF_KitchenSink_LightSwitch_Illuminance "Kitchen Sink Illuminance [%d]"
   (gIlluminance) 
   { channel="mqtt:topic:myBroker:xiaomiMotionSensors:PantryIlluminance"}
+
+Switch FF_KitchenSink_SinkWaterLeakState "Sink Water Leak Detected [%s]" (gWaterLeak) 
+  { channel="mqtt:topic:myBroker:kitchen:sinkLeakSensorState" }
+
+Number FF_KitchenSink_SinkWaterLeakState_BatteryPercentage "Sink Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:kitchen:sinkLeakSensorBattery" }

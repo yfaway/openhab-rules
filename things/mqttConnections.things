@@ -61,6 +61,14 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
     Channels:
       Type switch : KitchenCameraPlug "Kitchen Camera Plug"
         [stateTopic="zigbee2mqtt/0x50325ffffe1458d7", commandTopic="zigbee2mqtt/0x50325ffffe1458d7/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
+
+      Type switch : sinkLeakSensorState "Kitchen Sink Leak Sensor state"
+       [stateTopic="zigbee2mqtt/0x8c8b48fffe22e7cf", 
+         transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
+
+      Type number : sinkLeakSensorBattery "Kitchen Sink Leak Sensor battery"
+        [stateTopic="zigbee2mqtt/0x8c8b48fffe22e7cf",
+         transformationPattern="JSONPATH:$.battery"]
     }
 
     Thing topic porch {
@@ -335,6 +343,14 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
 
       Type number : leakSensorBattery "PowderRoom Leak Sensor battery"
         [stateTopic="zigbee2mqtt/0x282c02bfffeaee23",
+         transformationPattern="JSONPATH:$.battery"]
+
+      Type switch : sinkLeakSensorState "PowderRoom Sink Leak Sensor state"
+        [stateTopic="zigbee2mqtt/0x00be44fffeab7f25", 
+         transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
+
+      Type number : sinkLeakSensorBattery "PowderRoom Sink Leak Sensor battery"
+        [stateTopic="zigbee2mqtt/0x00be44fffeab7f25",
          transformationPattern="JSONPATH:$.battery"]
     }
 

@@ -1,6 +1,11 @@
-Switch FF_Powder_WaterLeakState "Water Leak Detected [%s]" (gWaterLeak) 
+Switch FF_Powder_WaterLeakState "Toilet Water Leak Detected [%s]" (gWaterLeak) 
   { channel="mqtt:topic:myBroker:powderRoom:leakSensorState" }
 
-Number FF_Powder_WaterLeakState_BatteryPercentage "Water Leak Battery [%d]"
+Number FF_Powder_WaterLeakState_BatteryPercentage "Toilet Water Leak Battery [%d]"
   { channel="mqtt:topic:myBroker:powderRoom:leakSensorBattery" }
 
+Switch FF_Powder_SinkWaterLeakState "Sink Water Leak Detected [%s]" (gWaterLeak) 
+  { channel="mqtt:topic:myBroker:powderRoom:sinkLeakSensorState" }
+
+Number FF_Powder_SinkWaterLeakState_BatteryPercentage "Sink Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:powderRoom:sinkLeakSensorBattery" }
