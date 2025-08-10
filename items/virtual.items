@@ -67,5 +67,7 @@ String FF_Virtual_Notification_AutoReportDeviceName "Device Name"
 
 String FF_Virtual_RemoteCommand "Remote Command"
 
+String FF_Virtual_WanIpAddress "WAN IP Address [%s]" { channel="exec:command:checkip:output", autoupdate="true" }
+
 
 Group:Switch:AND(OFF,ON) gWaterLeak "Water leak detected"

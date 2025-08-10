@@ -1,0 +1,1 @@
+Thing exec:command:checkip [command="curl -s https://checkip.amazonaws.com", interval=60, timeout=10]
