@@ -552,6 +552,10 @@ sitemap default label="HV Home"
     Frame label="Remote Command" {
         Input item=FF_Virtual_RemoteCommand label="Command" icon="material:message" inputHint="text"
     }
+    Frame label="HABApp" {
+      Default item=Out_HabApp_Beacon_Interval
+      Default item=Out_HabApp_Beacon_Timestamp
+    }
     Frame label="Others" {
       Default item=FF_Virtual_WanIpAddress
     }
