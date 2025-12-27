@@ -45,12 +45,7 @@ All the APIs and rules are written in Python. They were originally based on the 
         * [4.8.2 Run timer rule to determine if any devices hasn't been triggered](#482-run-timer-rule-to-determine-if-any-devices-hasnt-been-triggered)
         * [4.8.3 Alert if any battery-powered device is low on battery](#483-alert-if-any-battery-powered-device-is-low-on-battery)
 * [5. Layout Model API - an alternative approach to access devices/sensors](#5-layout-model-api---an-alternative-approach-to-access-devicessensors)
-    * [5.1 ZoneManager](#51-zonemanager)
-    * [5.2 Zone](#52-zone)
-    * [5.3 Devices](#53-devices)
-    * [5.4 Actions](#54-actions)
-    * [5.5 Rules vs actions](#55-rules-vs-actions)
-* [6. Key enabler](#6-key-enabler)
+* [6. Key enablers](#6-key-enablers)
     * [6.1 OpenHab controller](#61-openhab-controller)
     * [6.2 Alert](#62-alert)
         * [6.2.1 The Alert API](#621-the-alert-api)
@@ -316,15 +311,15 @@ Wireless connection (WiFi, Zigbee or ZWave) can be flaky. The device could be of
 Similar the idea above.
 
 # 5. Layout Model API - an alternative approach to access devices/sensors
-In OpenHab, items are defined in a flat manner in .items files under /etc/openhab2/items folder. They are usually linked to a channel exposed by the underlying hardware (virtual items do not link to any).
+In OpenHab, items are defined in a flat manner in *.items* files under /etc/openhab2/items folder. They are usually linked to a channel exposed by the underlying hardware (virtual items do not link to any).
 
-This flat structure has an impact on how rules (whether in Xtend or Python) are organized. When the rules need to interact with multiple devices of the same type, they can utilize the [group concept](https://www.openhab.org/docs/configuration/items.html#groups). An example of good usage of group is to turn off all lights. By linking all smart lights to a group switch, turning off all the lights can be done by changing the state of the group switch to OFF.
+This flat structure has an impact on how rules (whether in Xtend or Python) are organized. When the rules need to interact with multiple devices of the same type, they can utilize the [group concept](https://www.openhab.org/docs/configuration/items.html#groups). An example of good usage of group is to turn off all lights. By linking all smart lights to a group switch, turning off all the lights can be done by changing the state of the group switch to *OFF*.
 
 What is more tricky is when rules need to interact with different devices within the same area. The typical solution is to group unrelated items that belong to the same zone either by using naming pattern, or by dedicated groups. For example, the light switch and motion sensor in the Foyer area can be named like this: "FF_Foyer_Light", and "FF_Foyer_MotionSensor". When a sensor is triggered, the zone can be derived from the name of the triggering item, and other devices/sensors can be retrieved using that naming convention.
 
 See the [Zone API](https://github.com/yfaway/zone-apis) for an alternative approach. The idea is to provide a layer above the devices/sensors (this is somewhat similar to the difference between database relational model versus ORM). Each house (a ZoneManager) contains multiple rooms (Zones), and each room contains multiple devices. Each zone is associated with a set of actions. The usual OpenHab events are routed in this manner: `OpenHab events --> ZoneManager --> Zones --> Actions`. It provides a level of abstraction on top of the raw items. The actions can operate on the abstract devices and do not concern about the naming of the items. Rather than write Python rules, you would write actions. Actions can be unit-tested with various levels of mocking.
 
-# 6. Key enabler
+# 6. Key enablers
 This section lists the essential technologies and devices to enable the rules above.
 
 ## 6.1 OpenHab controller
