@@ -61,7 +61,8 @@ All the APIs and rules are written in Python. They were originally based on the 
     * [6.10 Zigbee stick](#610-zigbee-stick)
     * [6.11 Zigbee2mqtt](#611-zigbee2mqtt)
     * [6.12 ZWave stick](#612-zwave-stick)
-    * [6.13 Others](#613-others)
+    * [6.13 Local Music Streamer with icecast2 and mpd](#613-local-music-streamer-with-icecast2-and-mpd)
+    * [6.14 Others](#614-others)
 * [7. Things to avoid](#7-things-to-avoid)
 
 <!-- vim-markdown-toc -->
@@ -387,11 +388,71 @@ The [zigbee2mqtt](https://www.zigbee2mqtt.io/) software provides an alternative 
 ## 6.12 ZWave stick
 The Aeotec Z-Wave USB ZStick Gen 5 is the recommended stick for the [ZWave](https://www.openhab.org/addons/bindings/zwave/) binding. It acts as a coordinator for all ZWave devices.
 
-## 6.13 Others
+## 6.13 Local Music Streamer with icecast2 and mpd
+There are various Internet Radio stations that stream music directly to the browser. However, those depend on Internet connectivity, and are themselves sometimes unreliable. With a local music library, one can create an off-the-Internet music stream that OpenHab can integrate with.
+
+Unfortunately, this is an area that is not well understood. Available docs are quite fragmented. This section outlines a working combination using the *icecast2* streaming media server.
+
+*icecast2* is just a stream server serving audio / video content to Internet clients such as Web browsers. However, it does not serve music directly. Instead, it relies on *source clients* that send audio / video content to *icecast2*, which it in turn sends to the Internet clients. This is the part that is not well explained and causes much confusion. The key point to note is that *icecast2* by itself is not sufficient.
+
+The installation of *icecast2* is straightforward.
+
+    sudo apt install icecast2 -y
+
+The installation will prompt for the password and the host / port configuration. If further modification is needed, edit the config file at */etc/icecast2/icecast.xml*. Note those info to configure the source client later. The server can be managed using typical *systemctl* command.
+
+    sudo systemctl restart icecast2
+
+The second key component is a source client that reads media files and sends them to *icecast2*. *ezstream* is a native source client for *icecast2*. Unfortunately it has a bug that prevents serving mp3 files. The next working source client is *mpd*. *mpd* requires an accompanying client *mpc* to control various aspects. Let's start with their installation:
+
+    sudo apt install mpd mpc
+
+Edit the *mpd* config file to specify the music directory and the *icecast2* server info.
+
+    music_directory         "/mnt/music"
+
+    audio_output {
+        type            "shout"
+        name            "My Shout Stream"
+        host            "localhost"
+        port            "8000"
+        mount           "/mpd"
+        password        "the specified password in icecast2"
+        bitrate         "128"
+        format          "44100:16:1"
+        encoding        "mp3"
+    }
+
+Once the change is made, restart mpd using *sudo systemctl restart mpd*. 
+
+Everytime the music rectory change, restart mpd, and run the following command to update its music database.
+
+    mpc update
+
+*mpd* operates with a queue of music files. So first, add all the music files to the play list.
+
+    mpc listall | mpc add
+
+You can then set various config such as
+
+    mpc random on
+    mpc shuffle
+
+Now, let's play the stream.
+
+    mpc play
+
+Open your browser to http://localhost:8080/mpd. The music should now play over your speaker.
+
+Look at the manual for mpc for various commands to control the player such as *next*, *prev*, and *current*.
+
+OpenHab can integrate with *mpd* by listening to the same stream, but exposing mechanism to change the set of music files being played. That and many other aspects can be controlled by interacting with the *mpd* client, *mpc*.
+
+## 6.14 Others
 * [Astro](https://docs.openhab.org/addons/bindings/astro/readme.html) - to determine sunrise and sunset time
 
 # 7. Things to avoid
 * Avoid the cloud: dependency on the cloud means that you are at the mercy of the service provider. If their server goes down or if they discontinue the product, your device becomes a brick. Always go with devices associated with open specs such as ZWave or Zigbee devices, or go with devices that have custom firmware that can bypass the cloud.
 * Security: if you do have to go with devices that are connected to the Internet, either put them in a separate WiFi network disjoint from the main network, or configure the router to disable Internet access for those devices.
 * Reduce complexity
-* Non-compliant devices: when it comes to hardwire devices such as wall switches or plugs, ensure that the devices are compliant with the regional electrical code. Otherwise if it causes fire, the insurance company won't cover the damage.
+* Non-compliant devices: when it comes to hardwired devices such as wall switches or plugs, ensure that the devices are compliant with the regional electrical code. Otherwise, if it causes fire, the insurance company won't cover the damage.
