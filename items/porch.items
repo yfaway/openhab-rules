@@ -13,10 +13,12 @@ Switch FF_Porch_Plug2 "Porch Plug 2" (gPlug)
 
 Switch FF_Porch_CeilingLightSwitch "Porch Light"
   { channel="mqtt:topic:myBroker:porch:PorchLightSwitch",
-	durationInMinutes="5",
+	durationInMinutes="5" }
+/*
 	colorBulb="true" }
 Color FF_Porch_CeilingLightSwitchColor "Porch Light Color"
   { channel="mqtt:topic:myBroker:porch:PorchLightColor" }
+*/
 
 String FF_Porch_Camera "Porch Camera" (gCamera)
 String FF_Porch_Camera_ImageUrl "Camera Image URL"
