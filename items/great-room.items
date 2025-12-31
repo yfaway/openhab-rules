@@ -20,36 +20,38 @@ Switch FF_GreatRoom_Tv "TV"
 /**
  * Chromecast
  */
-String FF_GreatRoom_ChromeCast { sinkName = "chromecast:audio:greatRoom" }
+String FF_GreatRoom_MpdChromeCast { sinkName = "chromecast:audio:greatRoom" }
 
 // We don't rely on the title channel as it is not reliable (changed by the ChromCast).
 String FF_GreatRoom_ChromeCastStreamTitle "Stream [%s]"
 
-Player FF_GreatRoom_ChromeCastPlayer "Player" (gCastPlayer)
-  { channel="chromecast:audio:greatRoom:control" }
-Dimmer FF_GreatRoom_ChromeCastVolume "Volume" (gCastVolume)
+Player FF_GreatRoom_MpdChromeCastPlayer "Player" (gCastPlayer)
+//  { channel="chromecast:audio:greatRoom:control" }
+Dimmer FF_GreatRoom_MpdChromeCastVolume "Volume" (gCastVolume)
   { channel="chromecast:audio:greatRoom:volume" }
-String FF_GreatRoom_ChromeCastPlayUri "Play URI [%s]"
+String FF_GreatRoom_MpdChromeCastPlayUri "Play URI [%s]"
   { channel="chromecast:audio:greatRoom:playuri" }
-Switch FF_GreatRoom_ChromeCastIdling "Idling"
+Switch FF_GreatRoom_MpdChromeCastIdling "Idling"
   { channel="chromecast:audio:greatRoom:idling" }
-Number FF_GreatRoom_ChromeCastDuration "Duration [%d]" 
+Number FF_GreatRoom_MpdChromeCastDuration "Duration [%d]" 
   { channel="chromecast:audio:greatRoom:duration" }
-Number FF_GreatRoom_ChromeCastCurrentTime "Current Time [%d]"
+Number FF_GreatRoom_MpdChromeCastCurrentTime "Current Time [%d]"
   { channel="chromecast:audio:greatRoom:currentTime" }
-String FF_GreatRoom_ChromeCastTitle "Title [%s]"
+String FF_GreatRoom_MpdChromeCastTitle "Title [%s]"
   { channel="chromecast:audio:greatRoom:title" }
-String FF_GreatRoom_ChromeCastAppName "App Name [%s]"
+String FF_GreatRoom_MpdChromeCastAppName "App Name [%s]"
   { channel="chromecast:audio:greatRoom:appName" }
-String FF_GreatRoom_ChromeCastAppId "App Id [%s]"
+String FF_GreatRoom_MpdChromeCastAppId "App Id [%s]"
   { channel="chromecast:audio:greatRoom:appId" }
 
 
 // WLED light
+/*
 Color FF_GreatRoom_Wled_MasterControls_XmasTree "Xmas Tree"
   (gWallSwitch, gLightSwitch, gFirstFloorLightSwitch) 
 	{ channel="wled:segment:XmasTree:segment0:masterControls",
   	durationInMinutes="120" }
+
 Color FF_GreatRoom_Wled_Primary_XmasTree "Primary Color"    
   {channel="wled:segment:XmasTree:segment0:primaryColor"}
 Color FF_GreatRoom_Wled_Secondary_XmasTree   "Secondary Color"  
@@ -72,3 +74,4 @@ Dimmer FF_GreatRoom_Wled_TransformTime_XmasTree "presetTransformTime" <time>
   { channel="wled:segment:XmasTree:segment0:transformTime" }
 Switch FF_GreatRoom_Wled_Sleep_XmasTree    "Sleep"     <moon> 
   { channel="wled:segment:XmasTree:segment0:sleep" }
+*/

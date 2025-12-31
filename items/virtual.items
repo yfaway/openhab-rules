@@ -59,6 +59,8 @@ DateTime vEvening_Time "Afternoon [ %1$tH:%1$tM]" <sunset> { channel="astro:sun:
 
 String FF_Virtual_FlashMessage "[%s]"
 
+String FF_Virtual_MpdController_192zz168zz0zz221_6600 "[%s]"
+
 /**
  * Item to control defer notification for auto-report devices.
  */ 
