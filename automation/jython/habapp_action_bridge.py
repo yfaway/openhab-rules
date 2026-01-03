@@ -19,66 +19,76 @@ logger = LoggerFactory.getLogger("org.openhab.core.model.script.Rules")
 @when("Item TextToSpeechMessage changed")
 def onTextToSpeechMessageChanged(event):
     ttl = scope.items[event.itemName].toString()
-    if ttl is not None and ttl != '':
-        Voice.say(ttl, None, scope.items[SINK_ITEM_NAME].toString())
 
+    try:
+        if ttl is not None and ttl != '':
+            Voice.say(ttl, None, scope.items[SINK_ITEM_NAME].toString())
+    finally:
         # reset the item to wait for the next message.
-        scope.events.sendCommand(event.itemName, '')
+        scope.events.postUpdate(event.itemName, '')
 
 @rule("Play audio stream URL")
 @when("Item AudioStreamUrl changed")
 def onAudioStreamUrlChanged(event):
     stream_url = scope.items[event.itemName].toString()
-    if stream_url is not None and stream_url != '':
-        Audio.playStream(scope.items[SINK_ITEM_NAME].toString(), stream_url)
 
+    try:
+        if stream_url is not None and stream_url != '':
+            Audio.playStream(scope.items[SINK_ITEM_NAME].toString(), stream_url)
+    finally:
         # reset the item to wait for the next message.
-        scope.events.sendCommand(event.itemName, '')
+        scope.events.postUpdate(event.itemName, '')
 
 @rule("Play local audio file")
 @when("Item AudioFileLocation changed")
 def onAudioFileLocationChanged(event):
-    file_location = scope.items[event.itemName].toString()
-    if file_location is not None and file_location != '':
-        Audio.playSound(scope.items[SINK_ITEM_NAME].toString(), file_location)
+    try:
+        file_location = scope.items[event.itemName].toString()
+        if file_location is not None and file_location != '':
+            Audio.setMasterVolume(1)
+            Audio.playSound(scope.items[SINK_ITEM_NAME].toString(), file_location)
 
+    finally:
         # reset the item to wait for the next message.
-        scope.events.sendCommand(event.itemName, '')
+        scope.events.postUpdate(event.itemName, '')
 
 @rule("Send email")
 @when("Item EmailAddresses changed")
 def onEmailAddressesChanged(event):
     email_addresses = scope.items[event.itemName].toString()
+
     if email_addresses is not None and email_addresses != '':
-        attachmentState = scope.items['EmailAttachmentUrls']
-        if scope.UnDefType.NULL ==  attachmentState \
-                or scope.UnDefType.UNDEF == attachmentState \
-                or attachmentState.toString() == '':
-            attachment_urls = []
-        else: 
-            attachment_urls = attachmentState.toString().split(', ')
+        try:
+            attachmentState = scope.items['EmailAttachmentUrls']
+            if scope.UnDefType.NULL ==  attachmentState \
+                    or scope.UnDefType.UNDEF == attachmentState \
+                    or attachmentState.toString() == '':
+                attachment_urls = []
+            else: 
+                attachment_urls = attachmentState.toString().split(', ')
 
-        bodyState = scope.items['EmailBody']
-        if scope.UnDefType.NULL ==  bodyState or scope.UnDefType.UNDEF == bodyState:
-            body = ''
-        else:
-            body = bodyState.toString()
+            bodyState = scope.items['EmailBody']
+            if scope.UnDefType.NULL ==  bodyState or scope.UnDefType.UNDEF == bodyState:
+                body = ''
+            else:
+                body = bodyState.toString()
 
-        logger.info(u"Sending email to '{}' for subject '{}', body '{}'".format(
-                email_addresses,
-                scope.items['EmailSubject'].toString(),
-                scope.items['EmailBody']))
+            logger.info(u"Sending email to '{}' for subject '{}', body '{}'".format(
+                    email_addresses,
+                    scope.items['EmailSubject'].toString(),
+                    scope.items['EmailBody']))
 
-        actions.get("mail", "mail:smtp:gmail").sendMail(
-                email_addresses,
-                scope.items['EmailSubject'].toString(),
-                body)
+            actions.get("mail", "mail:smtp:gmail").sendMail(
+                    email_addresses,
+                    scope.items['EmailSubject'].toString(),
+                    body)
 
-        # reset the item to wait for the next message.
-        scope.events.sendCommand(event.itemName, '')
-        scope.events.sendCommand("EmailSubject", '')
-        scope.events.sendCommand("EmailBody", '')
-        scope.events.sendCommand("EmailAttachmentUrls", '')
+        finally:
+            # reset the item to wait for the next message.
+            scope.events.postUpdate(event.itemName, '')
+            scope.events.postUpdate("EmailSubject", '')
+            scope.events.postUpdate("EmailBody", '')
+            scope.events.postUpdate("EmailAttachmentUrls", '')
 
 @rule("Change Ecobee thermostat mode.")
 @when("Item EcobeeThermostatHoldMode changed")
@@ -99,7 +109,6 @@ def on_ecobee_thermostat_hold_mode_changed(event):
     action = actions.get("ecobee", "ecobee:thermostat:account:411921197263")
     action.resumeProgram(True)
     logger.info(u"Resumed Ecobee thermostat.")
-
 
 #scope.events.sendCommand('EmailSubject', 'Test subject')
 #scope.events.sendCommand('EmailBody', 'Test body')
