@@ -5,7 +5,7 @@ All the APIs and rules are written in Python. They were originally based on the 
 <!-- vim-markdown-toc GFM -->
 
 * [1. What does it mean to be smart?](#1-what-does-it-mean-to-be-smart)
-* [2. Why is it so difficult to build a truely smart home system?](#2-why-is-it-so-difficult-to-build-a-truely-smart-home-system)
+* [2. Why is it so difficult to build a true smart home system?](#2-why-is-it-so-difficult-to-build-a-true-smart-home-system)
 * [3. High level aspects of smart home system](#3-high-level-aspects-of-smart-home-system)
 * [4. Sample home automation rules](#4-sample-home-automation-rules)
     * [4.1 Switches (lights / fans)](#41-switches-lights--fans)
@@ -416,12 +416,14 @@ Edit the *mpd* config file to specify the music directory and the *icecast2* ser
         name            "My Shout Stream"
         host            "localhost"
         port            "8000"
-        mount           "/mpd"
+        mount           "/mpd.mp3"
         password        "the specified password in icecast2"
         bitrate         "128"
         format          "44100:16:1"
         encoding        "mp3"
     }
+
+Note above that the *mount* value has to end with ".mp3". Otherwise, Google Chrome won't be able to read the stream.
 
 Once the change is made, restart mpd using *sudo systemctl restart mpd*. 
 

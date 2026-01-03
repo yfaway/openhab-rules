@@ -36,24 +36,51 @@ sitemap default label="HV Home"
 
 /** BEGIN AUTO-GENERATED SITEMAP **/
     Text label="Great Room"
-            icon=[FF_GreatRoom_ChromeCastPlayer == PLAY = material:music_note,
+            icon=[FF_GreatRoom_MpdChromeCastPlayer == PLAY = material:music_note,
                   FF_GreatRoom_Tv == ON = material:tv,
                   material:chair] 
-            iconcolor=[FF_GreatRoom_ChromeCastPlayer == PLAY = "orange",
+            iconcolor=[FF_GreatRoom_MpdChromeCastPlayer == PLAY = "orange",
                        FF_GreatRoom_Tv == ON = "orange",
                        FF_GreatRoom_LightSwitch == ON = "yellow"] {
-        Frame label="Great Room" {
-            Default item=FF_GreatRoom_ChromeCastPlayer icon="material:tune"
-            Default item=FF_GreatRoom_ChromeCastVolume icon="material:volume_up"
-            Default item=FF_GreatRoom_ChromeCastStreamTitle icon="material:library_music" 
-            Default item=FF_GreatRoom_ChromeCastIdling icon="material:power_settings_new"
-            Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
-            Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
-            Switch item=FF_GreatRoom_LightSwitch icon="material:lightbulb"
-            Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="material:flare"
-            Switch item=FF_GreatRoom_Plug icon="material:power"
-            Switch item=FF_GreatRoom_MotionSensor icon="material:directions_run"
-            Switch item=FF_GreatRoom_Tv icon="material:tv"
+        Frame label="Media" {
+          Default item=FF_GreatRoom_MpdChromeCastPlayer icon="material:tune"
+          Default item=FF_GreatRoom_MpdChromeCastVolume icon="material:volume_up"
+
+          Selection item=FF_GreatRoom_MpdChromeCastPredefinedCategory
+            mappings=[
+              ""="All",
+              "Buddhism"="Buddhism",
+              "Chinese"="Chinese",
+              "Classical"="Classical",
+              "Dance"="Dance",
+              "Folk"="Folk",
+              "English"="English",
+              "French"="French",
+              "Russian"="Russian",
+              "Instrument"="Instrument",
+              "Italian"="Italian",
+              "Meditation"="Meditation",
+              "Japanese"="Japanese",
+              "Spanish"="Spanish",
+              "Rock Balad"="Rock Balad",
+              "Techno"="Techno",
+              "Vietnamese"="Vietnamese"
+              ]
+            icon="material:library_music"
+          Input item=FF_GreatRoom_MpdChromeCastCustomCategory label="Custom Category" icon="text" inputHint="text"
+
+          Default item=FF_GreatRoom_MpdChromeCastStreamTitle icon="material:library_music" 
+        }
+
+        Frame label="Others" {
+
+          Text item=FF_GreatRoom_Thermostat_ActualTemperature icon="material:thermostat"
+          Text item=FF_GreatRoom_Thermostat_ActualHumidity icon="material:water_drop"
+          Switch item=FF_GreatRoom_LightSwitch icon="material:lightbulb"
+          Switch item=FF_GreatRoom_Wled_MasterControls_XmasTree icon="material:flare"
+          Switch item=FF_GreatRoom_Plug icon="material:power"
+          Switch item=FF_GreatRoom_MotionSensor icon="material:directions_run"
+          Switch item=FF_GreatRoom_Tv icon="material:tv"
         } 
     } 
     Text label="Office" icon="material:desk" 

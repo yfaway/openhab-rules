@@ -18,12 +18,14 @@ Switch FF_GreatRoom_Tv "TV"
   {channel="sony:scalar:15618683d7d2:system#powerstatus"}
 
 /**
- * Chromecast
+ * Chromecast linked to mdp / icecast2 server
  */
 String FF_GreatRoom_MpdChromeCast { sinkName = "chromecast:audio:greatRoom" }
+String FF_GreatRoom_MpdChromeCastPredefinedCategory "Pre-define Category"
+String FF_GreatRoom_MpdChromeCastCustomCategory "Custom Category"
 
 // We don't rely on the title channel as it is not reliable (changed by the ChromCast).
-String FF_GreatRoom_ChromeCastStreamTitle "Stream [%s]"
+String FF_GreatRoom_MpdChromeCastStreamTitle "Stream [%s]"
 
 Player FF_GreatRoom_MpdChromeCastPlayer "Player" (gCastPlayer)
 //  { channel="chromecast:audio:greatRoom:control" }
