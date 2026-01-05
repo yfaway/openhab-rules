@@ -102,13 +102,15 @@ def on_ecobee_thermostat_hold_mode_changed(event):
         logger.info(u"Changed Ecobee thermostat to '{}'.".format(hold_mode))
 
 @rule("Resume Ecobee thermostat.")
-@when("Item EcobeeThermostatResume changed to ON")
+@when("Item EcobeeThermostatResume changed")
 def on_ecobee_thermostat_hold_mode_changed(event):
-    scope.events.sendCommand(event.itemName, 'OFF')
+    if event.itemState == ON:
+        scope.events.sendCommand(event.itemName, 'OFF')
 
-    action = actions.get("ecobee", "ecobee:thermostat:account:411921197263")
-    action.resumeProgram(True)
-    logger.info(u"Resumed Ecobee thermostat.")
+        action = actions.get("ecobee", "ecobee:thermostat:account:411921197263")
+        action.resumeProgram(True)
+        logger.info(u"Resumed Ecobee thermostat.")
+    
 
 #scope.events.sendCommand('EmailSubject', 'Test subject')
 #scope.events.sendCommand('EmailBody', 'Test body')
