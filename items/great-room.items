@@ -28,7 +28,7 @@ String FF_GreatRoom_MpdChromeCastCustomCategory "Custom Category"
 String FF_GreatRoom_MpdChromeCastStreamTitle "Stream [%s]"
 
 Player FF_GreatRoom_MpdChromeCastPlayer "Player" (gCastPlayer)
-//  { channel="chromecast:audio:greatRoom:control" }
+  { channel="chromecast:audio:greatRoom:control" }
 Dimmer FF_GreatRoom_MpdChromeCastVolume "Volume" (gCastVolume)
   { channel="chromecast:audio:greatRoom:volume" }
 String FF_GreatRoom_MpdChromeCastPlayUri "Play URI [%s]"
