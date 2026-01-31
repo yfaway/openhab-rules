@@ -42,11 +42,16 @@ sitemap default label="HV Home"
             iconcolor=[FF_GreatRoom_MpdChromeCastPlayer == PLAY = "orange",
                        FF_GreatRoom_Tv == ON = "orange",
                        FF_GreatRoom_LightSwitch == ON = "yellow"] {
-        Frame label="Media" {
+
+        Frame label="Chromecsat" {
           Default item=FF_GreatRoom_MpdChromeCastPlayer icon="material:tune"
           Default item=FF_GreatRoom_MpdChromeCastVolume icon="material:volume_up"
+        }
 
-          Selection item=FF_GreatRoom_MpdChromeCastPredefinedCategory
+        Frame label="Streamer" {
+          Default item=FF_GreatRoom_MpdStreamPlayer icon="material:tune" 
+
+          Selection item=FF_GreatRoom_MpdStreamPlayer_PredefinedCategory
             mappings=[
               ""="All",
               "BUDDHISM"="Buddhism",
@@ -67,7 +72,7 @@ sitemap default label="HV Home"
               "VIETNAMESE"="Vietnamese"
               ]
             icon="material:library_music"
-          Input item=FF_GreatRoom_MpdChromeCastCustomCategory label="Custom Category" icon="text" inputHint="text"
+          Input item=FF_GreatRoom_MpdStreamPlayer_CustomCategory label="Custom Category" icon="text" inputHint="text"
 
           Default item=FF_GreatRoom_MpdChromeCastStreamTitle icon="material:library_music" 
         }
@@ -82,6 +87,10 @@ sitemap default label="HV Home"
           Switch item=FF_GreatRoom_MotionSensor icon="material:directions_run"
           Switch item=FF_GreatRoom_Tv icon="material:tv"
         } 
+
+        Frame label="list" {
+          Webview url="/static/mpd.html" height=7
+        }
     } 
     Text label="Office" icon="material:desk" 
             iconcolor=[FF_Office_LightSwitch == ON = "yellow"] {

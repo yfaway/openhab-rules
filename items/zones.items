@@ -79,8 +79,7 @@ String Zone_BasementWashroomShower { level="BM", displayIcon="groundfloor", disp
 String Zone_Utility { level="BM", displayIcon="groundfloor", displayOrder="46" }
 
 String Zone_KitchenSink 
-  { level="FF", displayIcon="kitchen", displayOrder="47",
-    openSpaceNeighbors="FF_Kitchen, FF_GreatRoom" }
+  { level="FF", displayIcon="kitchen", displayOrder="47" }
 
 String Zone_Powder 
   { level="FF", displayIcon="power", displayOrder="48" }

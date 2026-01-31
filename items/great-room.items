@@ -21,8 +21,6 @@ Switch FF_GreatRoom_Tv "TV"
  * Chromecast linked to mdp / icecast2 server
  */
 String FF_GreatRoom_MpdChromeCast { sinkName = "chromecast:audio:greatRoom" }
-String FF_GreatRoom_MpdChromeCastPredefinedCategory "Pre-define Category"
-String FF_GreatRoom_MpdChromeCastCustomCategory "Custom Category"
 
 // We don't rely on the title channel as it is not reliable (changed by the ChromCast).
 String FF_GreatRoom_MpdChromeCastStreamTitle "Stream [%s]"
@@ -45,6 +43,11 @@ String FF_GreatRoom_MpdChromeCastAppName "App Name [%s]"
   { channel="chromecast:audio:greatRoom:appName" }
 String FF_GreatRoom_MpdChromeCastAppId "App Id [%s]"
   { channel="chromecast:audio:greatRoom:appId" }
+
+Player FF_GreatRoom_MpdStreamPlayer "MPD Player" 
+  { host="192.168.0.221", port="6600" }
+String FF_GreatRoom_MpdStreamPlayer_PredefinedCategory "Pre-define Category"
+String FF_GreatRoom_MpdStreamPlayer_CustomCategory "Custom Category"
 
 
 // WLED light
