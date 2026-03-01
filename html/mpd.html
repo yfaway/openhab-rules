@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="../basicui/mdl/material.min.css" />
+    <link rel="stylesheet" type="text/css" href="../basicui/material-icons.css" />
+    <link rel="stylesheet" type="text/css" href="../basicui/framework7-icons.css" />
+    <link rel="stylesheet" type="text/css" href="../basicui/smarthome.css?v=202501122027" />
+
+    <script src="../basicui/smarthome.js?v=202501122027"></script>
+    <script src="../basicui/mdl/material.min.js"></script>
+  </head>
+
+  <script>
+        function getItemState() {
+          fetch('/rest/items/FF_GreatRoom_MpdChromeCastStreamTitle')
+            .then(response => response.json())
+            .then(data => {
+              song_json = JSON.parse(data.state);
+              if ( Object.keys(song_json).length != 0 ) {
+                document.getElementById('current').textContent = song_json.current_song;
+                document.getElementById('next').textContent = song_json.next_song;
+                document.getElementById('position').textContent = song_json.current_position + " / " + song_json.playlist_size;
+              } else {
+                document.getElementById('current').textContent = "No info available";
+                document.getElementById('next').textContent = "No info available";
+                document.getElementById('position').textContent = "No info available";
+              }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        // Refresh the state periodically
+        setInterval(getItemState, 2000); // Refresh every 2 seconds
+        // Get state on page load
+        window.onload = getItemState;
+    </script>
+
+  <body class="mdl-color-text--grey-700">
+    <div class="mdl-layout mdl-js-layout">
+      <div class="mdl-layout__header mdl-layout__header--scroll navigation navigation-home">
+        <div class="mdl-layout__header-row">
+          <div class="mdl-layout__header-button navigation__button-back"></div>
+          <div class="mdl-layout__header-button navigation__button-settings"></div>
+          <div class="mdl-layout-spacer"></div>
+        </div>
+      </div>
+
+      <main class="mdl-layout__content">
+        <div class="page-content mdl-grid">
+          <div class="mdl-form  mdl-color--white mdl-shadow--2dp mdl-cell mdl-grid mdl-cell--12-col">
+            <table>
+              <tr>
+                <td style="vertical-align: top;"><em>Current:</em></td>
+                <td style="vertical-align: top;"><span id="current">No info available</span></td>
+              </tr>
+              <tr>
+                <td style="vertical-align: top;"><em>Next:</em></td>
+                <td style="vertical-align: top;"><span id="next">No info available</span></td>
+              </tr>
+              <tr>
+                <td style="vertical-align: top;"><em>Position:</em></td>
+                <td style="vertical-align: top;"><span id="position">No info available</span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>                                         
+</html>
+        

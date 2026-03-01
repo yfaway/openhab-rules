@@ -57,6 +57,8 @@ sitemap default label="HV Home"
               "BUDDHISM"="Buddhism",
               "CHINESE"="Chinese",
               "CLASSICAL"="Classical",
+              "Piano"="Piano",
+              "Violin"="Violin",
               "DANCE"="Dance",
               "FOLK"="Folk",
               "ENGLISH"="English",
@@ -74,7 +76,7 @@ sitemap default label="HV Home"
             icon="material:library_music"
           Input item=FF_GreatRoom_MpdStreamPlayer_CustomCategory label="Custom Category" icon="text" inputHint="text"
 
-          Default item=FF_GreatRoom_MpdChromeCastStreamTitle icon="material:library_music" 
+          Webview url="/static/mpd.html" height=3
         }
 
         Frame label="Others" {
@@ -87,10 +89,6 @@ sitemap default label="HV Home"
           Switch item=FF_GreatRoom_MotionSensor icon="material:directions_run"
           Switch item=FF_GreatRoom_Tv icon="material:tv"
         } 
-
-        Frame label="list" {
-          Webview url="/static/mpd.html" height=7
-        }
     } 
     Text label="Office" icon="material:desk" 
             iconcolor=[FF_Office_LightSwitch == ON = "yellow"] {
