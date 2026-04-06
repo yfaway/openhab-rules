@@ -72,4 +72,6 @@ String FF_Virtual_WanIpAddress "WAN IP Address [%s]" { channel="exec:command:che
 Number Out_HabApp_Beacon_Interval "Beacon Interval (mins)"
 DateTime Out_HabApp_Beacon_Timestamp "Beacon Timestamp [%1$ta %1$tb %1$td %1$tI:%1$tM %1$tp]"
 
+String Out_SignificantEvents "Significant Events"
+
 Group:Switch:AND(OFF,ON) gWaterLeak "Water leak detected"

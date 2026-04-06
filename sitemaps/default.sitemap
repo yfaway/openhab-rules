@@ -482,6 +482,10 @@ sitemap default label="HV Home"
       Switch item=Presence_Owner1_Just_Got_Home 
       Switch item=Presence_Owner2_Just_Got_Home 
     }
+
+    Frame label="Significant Events" {
+			Webview url="/static/significant-events.html" height=8
+		}
   }
 
   Text label="Security Details" icon="material:sensor_door" {
@@ -593,5 +597,9 @@ sitemap default label="HV Home"
     Frame label="Others" {
       Default item=FF_Virtual_WanIpAddress
     }
+
+    Frame label="Significant Events" {
+			Webview url="/static/significant-events.html" height=8
+		}
   }
 }

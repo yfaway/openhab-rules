@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="../basicui/mdl/material.min.css" />
+    <link rel="stylesheet" type="text/css" href="../basicui/material-icons.css" />
+    <link rel="stylesheet" type="text/css" href="../basicui/framework7-icons.css" />
+    <link rel="stylesheet" type="text/css" href="../basicui/smarthome.css?v=202501122027" />
+
+    <script src="../basicui/smarthome.js?v=202501122027"></script>
+    <script src="../basicui/mdl/material.min.js"></script>
+  </head>
+
+  <script>
+        function getItemState() {
+          fetch('/rest/items/Out_SignificantEvents')
+            .then(response => response.json())
+            .then(data => {
+							var table = document.getElementById("events-table").getElementsByTagName('tbody')[0];
+
+							// delete all existing rows
+							table.replaceChildren();
+
+              events_json = JSON.parse(data.state);
+
+							const formatter = new Intl.DateTimeFormat('en-US', {
+								year: "numeric",
+								month: "short",
+								day: "numeric",
+								hour: '2-digit',
+								minute: '2-digit',
+								second: '2-digit',
+								hour12: false
+							});
+
+							for ( let i = 0; i < events_json.length; i++ ) {
+								e = events_json[i];
+								var newRow = table.insertRow(-1); // Insert at the end
+
+								var cell1 = newRow.insertCell(0);
+								var cell2 = newRow.insertCell(1);
+								var cell3 = newRow.insertCell(2);
+
+								var date = new Date(e.timestamp);
+
+								var icon = ""
+								if ( e.event_type >= 10 && e.event_type < 20 ) {
+									icon = "security"
+								}
+								else if ( e.event_type == 6 || e.event_type == 7 ) {
+									icon = "sensor_door"
+								}
+								else if ( e.event_type == 8 || e.event_type == 9 ) {
+									icon = "window"
+								}
+
+								if ( e.message.includes("on alarm") ) {
+									cell1.innerHTML = "alarm_on";
+								}
+								else if ( e.message.includes("alarm cleared") ) {
+									cell1.innerHTML = "alarm_off";
+								}
+
+								if ( icon != "" ) {
+									cell1.innerHTML = "<span class='material-icons'>" + icon + "</span>"
+								}
+
+								cell2.innerHTML = formatter.format(date).replace(",", "");
+								cell3.innerHTML = e.message;
+
+								cell1.vAlign = 'middle';
+								cell2.vAlign = 'middle';
+								cell3.vAlign = 'middle';
+              }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        // Refresh the state periodically
+        setInterval(getItemState, 5000); // Refresh every 5 seconds
+        // Get state on page load
+        window.onload = getItemState;
+    </script>
+
+  <body class="mdl-color-text--grey-700">
+    <div class="mdl-layout mdl-js-layout">
+      <div class="mdl-layout__header mdl-layout__header--scroll navigation navigation-home">
+        <div class="mdl-layout__header-row">
+          <div class="mdl-layout__header-button navigation__button-back"></div>
+          <div class="mdl-layout__header-button navigation__button-settings"></div>
+          <div class="mdl-layout-spacer"></div>
+        </div>
+      </div>
+
+      <main class="mdl-layout__content">
+        <div class="page-content mdl-grid">
+          <div class="mdl-form  mdl-color--white mdl-shadow--2dp mdl-cell mdl-grid mdl-cell--12-col">
+            <table id="events-table">
+							<tbody>	
+							</tbody>
+             </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>                                         
+</html>
+        
