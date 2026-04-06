@@ -558,6 +558,10 @@ sitemap default label="HV Home"
         }
     }
 
+  Text label="Significant Events" icon="material:event" {
+			Webview url="/static/significant-events.html" height=100
+ 	}
+
   Text label="Admin Controls" icon="material:settings" {
 
     Frame label="System Message" visibility=[FF_Virtual_FlashMessage!=""] {
@@ -597,9 +601,5 @@ sitemap default label="HV Home"
     Frame label="Others" {
       Default item=FF_Virtual_WanIpAddress
     }
-
-    Frame label="Significant Events" {
-			Webview url="/static/significant-events.html" height=8
-		}
   }
 }
