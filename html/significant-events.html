@@ -58,31 +58,48 @@
 									icon = "window";
 								}
 
-								if ( e.message.includes("on alarm") ) {
+								message = e.message.toLowerCase();
+
+								if ( message.includes("on alarm") ) {
 									icon = "alarm_on";
 									color = "red"
 								}
-								else if ( e.message.includes("alarm cleared") ) {
+								else if ( message.includes("alarm cleared") ) {
 									icon = "alarm_off";
 									color = "green"
 								}
-								else if ( e.message.includes('Water leak detected') ) {
+								else if ( message.includes("cannot arm") ) {
+									icon = "security";
+									color = "orange"
+								}
+								else if ( message.includes('water leak detected') ) {
 									icon = "water_drop";
 									color = "red"
 								}
-								else if ( e.message.includes('No more water leak detected') ) {
+								else if ( message.includes('no more water leak detected') ) {
 									icon = "water_drop";
 									color = "blue"
 								}
-								else if ( e.message.includes('humidity') ) {
+								else if ( message.includes('garage') ) {
+									icon = "garage";
+								}
+								else if ( message.includes('arrived home') ) {
+									icon = "person";
+									color = "green";
+								}
+								else if ( message.includes('left home') ) {
+									icon = "person";
+									color = "yellow";
+								}
+								else if ( message.includes('humidity') ) {
 									icon = "drop_fill";
 									material_icon = false;
 								}
-								else if ( e.message.includes('temperature') ) {
+								else if ( message.includes('temperature') ) {
 									icon = "thermometer";
 									material_icon = false;
 								}
-								else if ( e.message.includes('opened for') ) {
+								else if ( message.includes('opened for') ) {
 									icon = "sensor_door";
 									color = "red";
 								}

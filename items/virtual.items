@@ -34,13 +34,20 @@ Switch Presence_Owner2_Just_Got_Home "Owner2 just got home" <network>
 Group gNetworkPresence
 Switch FF_Virtual_NetworkPresenceOwner1Phone "Owner1's Phone" <network> 
   (gPresence, gOwner1Presence, gNetworkPresence) 
-  { channel="network:pingdevice:192_168_0_208:online" } 
+  { channel="network:pingdevice:Owner1Phone:online" } 
 Switch FF_Virtual_NetworkPresenceOwner2Phone "Owner2's Phone" <network> 
   (gPresence, gOwner2Presence, gNetworkPresence) 
-  { channel="network:pingdevice:192_168_0_207:online" }
+  { channel="network:pingdevice:Owner2Phone:online" }
 Switch FF_Virtual_NetworkPresenceOwner3Phone "Owner3's Phone" <network> 
-  (gPresence, gOwner2Presence, gNetworkPresence) 
-  { channel="network:pingdevice:192_168_0_206:online" }
+  (gPresence, gNetworkPresence) 
+  { channel="network:pingdevice:Owner3Phone:online" }
+
+Switch FF_Virtual_NetworkPresenceOwner5Phone "Owner5's Phone" <network> 
+  (gPresence, gNetworkPresence) 
+  { channel="network:pingdevice:Owner5Phone:online" }
+Switch FF_Virtual_NetworkPresenceOwner6Phone "Owner6's Phone" <network> 
+  (gPresence, gNetworkPresence) 
+  { channel="network:pingdevice:Owner6Phone:online" }
 
 Switch Security_Motion_Sensor_Triggered "Security motion sensor triggered" 
   (gPresence) {expire="5m,command=OFF"}

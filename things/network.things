@@ -1,3 +1,7 @@
-network:pingdevice:192_168_0_208 [ hostname="192.168.0.208", refreshInterval=30000 ]
-network:pingdevice:192_168_0_207 [ hostname="192.168.0.207", refreshInterval=30000 ]
+network:pingdevice:Owner1Phone [ hostname="192.168.0.208", refreshInterval=30000 ]
+network:pingdevice:Owner2Phone [ hostname="192.168.0.215", refreshInterval=30000 ]
+network:pingdevice:Owner3Phone [ hostname="192.168.0.205", refreshInterval=30000 ]
+network:pingdevice:Owner4Phone [ hostname="192.168.0.207", refreshInterval=30000 ]
+network:pingdevice:Owner5Phone [ hostname="192.168.0.206", refreshInterval=30000 ]
+network:pingdevice:Owner6Phone [ hostname="192.168.0.212", refreshInterval=30000 ]
 
