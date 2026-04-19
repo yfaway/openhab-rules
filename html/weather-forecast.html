@@ -2,9 +2,6 @@
         <!doctype html>
 <html>
   <head>
-    <!-- need this to get Android app to refresh the content. -->
-    <meta http-equiv="refresh" CONTENT="5">
-
     <link rel="stylesheet" type="text/css" href="../basicui/mdl/material.min.css" />
     <link rel="stylesheet" type="text/css" href="../basicui/material-icons.css" />
     <link rel="stylesheet" type="text/css" href="../basicui/framework7-icons.css" />
@@ -13,6 +10,114 @@
     <script src="../basicui/smarthome.js?v=202501122027"></script>
     <script src="../basicui/mdl/material.min.js"></script>
   </head>
+
+  <script>
+      function getWeatherForecast() {
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          weekday: "long",
+        });
+
+        // Get common stuff (timestamp, condition icon and tempoerature) for both all segments.
+        const segments = ['Quarter1', 'Quarter2', 'Quarter3', 'Quarter4', 'Tomorrow', 'In2Days', 'In3Days', 'In4Days']
+        for ( const[i, segment] of segments.entries() ) {
+          fetch('/rest/items/FF_Virtual_Weather_Temperature_' + segment + '_Datetime')
+            .then(response => response.json())
+            .then(data => {
+                var datetime = new Date(data.state);
+
+                label = '';
+                if (segment.startsWith('Quarter') ) {
+                  if (datetime.getHours() == 0) {
+                    label = 'Night';
+                  } else if (datetime.getHours() == 6) {
+                    label = 'Morning';
+                  } else if (datetime.getHours() == 12) {
+                    label = 'Afternoon';
+                  } else {
+                    label = 'Evening';
+                  }
+                } else {
+                  label = formatter.format(datetime);
+                }
+
+                document.getElementById(segment + "-label").textContent = label;
+            })
+            .catch(error => console.error('Error:', error));
+
+
+          fetch('/rest/items/FF_Virtual_Weather_Temperature_' + segment + '_WeatherSymbol')
+            .then(response => response.json())
+            .then(data => {
+                symbol = data.state;
+
+                icon = '';
+                if ( symbol == 0 )  {
+                  icon = 'sun'
+                } else if ( symbol >= 1 || symbol <= 4 ) {
+                  icon = 'sun_clouds'
+                } else if ( symbol >= 5 || symbol <= 9 ) {
+                  icon = 'rain'
+                } else if ( symbol >= 10 || symbol <= 14 ) {
+                  icon = 'snow'
+                } else if ( symbol == 16 ) {
+                  icon = 'wind'
+                }
+
+                if ( icon == '' ) {
+                  document.getElementById(segment + "-icon").innerHTML = '';
+                } else {
+                  document.getElementById(segment + "-icon").innerHTML = 
+                    "<span class='mdl-form__icon'><img src='../icon/" + icon + "?format=svg' /></span>"
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+        // Today's specific temperature
+        const quarters = ['Quarter1', 'Quarter2', 'Quarter3', 'Quarter4'];
+        for ( const[i, quarter] of quarters.entries() ) {
+          fetch('/rest/items/FF_Virtual_Weather_Temperature_' + quarter)
+            .then(response => response.json())
+            .then(data => {
+                numberValue = Number(data.state.substring(0, data.state.length - 2)).toFixed(0);
+                document.getElementById(quarter + "-temperature").textContent =
+                          "" + numberValue + " " + data.unitSymbol;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Next several days' high and low
+        const futureSegments = ['Tomorrow', 'In2Days', 'In3Days', 'In4Days'];
+        for ( const[i, segment] of futureSegments.entries() ) {
+          fetchTemperatureRange(segment);
+        }
+      }
+
+      /**
+       * Fetch the high & low temperatures from two separate items and display it in the corresponding DOM item.
+       */
+      async function fetchTemperatureRange(segment) {
+        const responses = await Promise.all([
+          fetch('/rest/items/FF_Virtual_Weather_Temperature_' + segment + "_TempHigh"),
+          fetch('/rest/items/FF_Virtual_Weather_Temperature_' + segment + "_TempLow")
+          ]);
+
+          const data1 = await responses[0].json();
+          const data2 = await responses[1].json();
+
+          tempHigh = Number(data1.state.substring(0, data1.state.length - 2)).toFixed(0);
+          tempLow = Number(data2.state.substring(0, data2.state.length - 2)).toFixed(0);
+          unit = data1.unitSymbol;
+
+          tempRange = "" + tempHigh + " " + unit + " &#8594; " + tempLow + " " + unit;
+          document.getElementById(segment + "-temperature").innerHTML = tempRange;
+      }
+
+      // Refresh the state periodically
+      setInterval(getWeatherForecast, 5000); // in milliseconds
+      // Get state on page load
+      window.onload = getWeatherForecast;
+  </script>
 
   <body class="mdl-color-text--grey-700">
     <div class="mdl-layout mdl-js-layout">
@@ -29,77 +134,76 @@
           <div class="mdl-form  mdl-color--white mdl-shadow--2dp mdl-cell mdl-grid mdl-cell--12-col">
             
             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Afternoon</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/sun?format=svg" />
-            </span>
-            31 &deg;C</div>
+              <span class="mdl-form__label" id='Quarter1-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='Quarter1-icon'>
+                </span>
+                <span id='Quarter1-temperature'></span>
+              </div>
             </div>           
-        
+
             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Evening</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/sun_clouds?format=svg" />
-            </span>
-            33 &deg;C</div>
+              <span class="mdl-form__label" id='Quarter2-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='Quarter2-icon'>
+                </span>
+                <span id='Quarter2-temperature'></span>
+              </div>
             </div>           
-        
+
+             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
+              <span class="mdl-form__label" id='Quarter3-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='Quarter3-icon'>
+                </span>
+                <span id='Quarter3-temperature'></span>
+              </div>
+            </div>           
+       
             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Night</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/sun_clouds?format=svg" />
-            </span>
-            24 &deg;C</div>
+              <span class="mdl-form__label" id='Quarter4-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='Quarter4-icon'>
+                </span>
+                <span id='Quarter4-temperature'></span>
+              </div>
             </div>           
-        
+
+             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
+              <span class="mdl-form__label" id='Tomorrow-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='Tomorrow-icon'>
+                </span>
+                <span id='Tomorrow-temperature'></span>
+              </div>
+            </div>           
+      
             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Morning</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/sun?format=svg" />
-            </span>
-            21 &deg;C</div>
+              <span class="mdl-form__label" id='In2Days-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='In2Days-icon'>
+                </span>
+                <span id='In2Days-temperature'></span>
+              </div>
             </div>           
-        
+
             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Monday</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/sun?format=svg" />
-            </span>
-            34 &deg;C &#8594; 21 &deg;C</div>
+              <span class="mdl-form__label" id='In3Days-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='In3Days-icon'>
+                </span>
+                <span id='In3Days-temperature'></span>
+              </div>
             </div>           
-        
+
             <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Tuesday</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/sun?format=svg" />
-            </span>
-            33 &deg;C &#8594; 20 &deg;C</div>
+              <span class="mdl-form__label" id='In4Days-label'>Loading...</span>
+              <div class="mdl-form__control mdl-form__text">
+                <span class="mdl-form__icon" id='In4Days-icon'>
+                </span>
+                <span id='In4Days-temperature'></span>
+              </div>
             </div>           
-        
-            <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Wednesday</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/rain?format=svg" />
-            </span>
-            30 &deg;C &#8594; 22 &deg;C</div>
-            </div>           
-        
-            <div class="mdl-form__row mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet ">
-                <span class="mdl-form__label">Thursday</span>
-                <div class="mdl-form__control mdl-form__text">
-            <span class="mdl-form__icon">
-                <img src="../icon/sun?format=svg" />
-            </span>
-            26 &deg;C &#8594; 18 &deg;C</div>
-            </div>           
-        
           </div>
         </div>
       </main>
