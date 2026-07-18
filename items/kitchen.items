@@ -16,6 +16,11 @@ Number FF_Kitchen_LightSwitch_Illuminance "Kitchen Illuminance [%d]"
 Switch FF_Kitchen_CameraPlug "Kitchen Camera Plug" (gPlug)
   { reversedSecurityControl="true", channel="mqtt:topic:myBroker:kitchen:KitchenCameraPlug"}
 
+Switch FF_Kitchen_FridgeWaterLeakState "Fridge Water Leak Detected [%s]" (gWaterLeak) 
+  { channel="mqtt:topic:myBroker:kitchen:fridgeInnerLeakSensorState" }
+
+Number FF_Kitchen_FridgeWaterLeakState_BatteryPercentage "Fridge Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:kitchen:fridgeInnerLeakSensorBattery" }
 
 Switch FF_KitchenSink_LightSwitch "Kitchen Sink Light"
   { channel="mqtt:topic:myBroker:kitchenSink:KitchenSinkLightSwitch",
@@ -33,3 +38,5 @@ Switch FF_KitchenSink_SinkWaterLeakState "Sink Water Leak Detected [%s]" (gWater
 
 Number FF_KitchenSink_SinkWaterLeakState_BatteryPercentage "Sink Water Leak Battery [%d]"
   { channel="mqtt:topic:myBroker:kitchen:sinkLeakSensorBattery" }
+
+

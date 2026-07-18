@@ -119,6 +119,8 @@ sitemap default label="HV Home"
             Switch item=FF_Kitchen_SecurityMotionSensor icon="material:directions_run"
             Switch item=FF_Kitchen_LightSwitch_PantryMotionSensor icon="material:directions_run"
             Text item=FF_Kitchen_LightSwitch_Illuminance icon="material:brightness_low"
+            Switch item=FF_Kitchen_FridgeWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=FF_Kitchen_FridgeWaterLeakState_BatteryPercentage icon="battery"
 
             Switch item=FF_KitchenSink_LightSwitch icon="material:lightbulb"
             Switch item=FF_KitchenSink_LightSwitch_MotionSensor icon="material:lightbulb"
@@ -332,6 +334,9 @@ sitemap default label="HV Home"
             Text item=BM_BasementWashroom_LightSwitch_Illuminance icon="material:brightness_low"
 
             Switch item=BM_BasementWashroomShower_FanSwitch icon="material:hvac"
+
+            Switch item=BM_BasementWashroom_ToiletWaterLeakState icon="material:water_drop" iconcolor=[==ON="red"]
+            Text item=BM_BasementWashroom_ToiletWaterLeakState_BatteryPercentage icon="battery"
         }
     }
 

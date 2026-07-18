@@ -69,13 +69,21 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
       Type number : sinkLeakSensorBattery "Kitchen Sink Leak Sensor battery"
         [stateTopic="zigbee2mqtt/0x8c8b48fffe22e7cf",
          transformationPattern="JSONPATH:$.battery"]
+
+      Type switch : fridgeInnerLeakSensorState "Fridge Leak Sensor state"
+        [stateTopic="zigbee2mqtt/0x00be44fffeab7f25", 
+         transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
+
+      Type number : fridgeInnerLeakSensorBattery "Fridge Leak Sensor battery"
+        [stateTopic="zigbee2mqtt/0x00be44fffeab7f25",
+         transformationPattern="JSONPATH:$.battery"]
     }
 
     Thing topic porch {
     Channels:
       Type switch : PorchLightSwitch "Porch Light Switch"
         [stateTopic="zigbee2mqtt/0x2c1165fffe03a2a6", commandTopic="zigbee2mqtt/0x2c1165fffe03a2a6/set", transformationPattern="JSONPATH:$.state", on="ON", off="OFF"]
-      Type colorRGB: PorchLightColor "Porch Light Color"
+      Type color: PorchLightColor "Porch Light Color"
         [stateTopic="zigbee2mqtt/0x2c1165fffe03a2a6", commandTopic="zigbee2mqtt/0x2c1165fffe03a2a6/set", transformationPattern="JSONPATH:$.color", transformationPatternOut="JS:bulbColorFix.js"]
     }
 
@@ -289,6 +297,14 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
         [stateTopic="zigbee2mqtt/0x00158d000a822430", commandTopic="zigbee2mqtt/0x00158d000a822430", transformationPattern="JSONPATH:$.occupancy", on="true", off="false"]
       Type number : BasementWashroomLightIlluminance "Basement Washroom Illuminance Sensor"
         [stateTopic="zigbee2mqtt/0x00158d000a822430", commandTopic="zigbee2mqtt/0x00158d000a822430", transformationPattern="JSONPATH:$.illuminance"]
+
+      Type switch : toiletLeakSensorState "BasementWashroom Toilet Leak Sensor state"
+        [stateTopic="zigbee2mqtt/0xb40e060fffe811b9", 
+         transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
+
+      Type number : toiletLeakSensorBattery "BasementWashroom Toilet Leak Sensor battery"
+        [stateTopic="zigbee2mqtt/0xb40e060fffe811b9",
+         transformationPattern="JSONPATH:$.battery"]
     }
 
     Thing topic kitchenSink {
@@ -346,11 +362,11 @@ Bridge mqtt:broker:myBroker [ host="localhost", secure=false ]
          transformationPattern="JSONPATH:$.battery"]
 
       Type switch : sinkLeakSensorState "PowderRoom Sink Leak Sensor state"
-        [stateTopic="zigbee2mqtt/0x00be44fffeab7f25", 
+        [stateTopic="zigbee2mqtt/0xb40e060fffe8114d", 
          transformationPattern="JSONPATH:$.water_leak", on="true", off="false"]
 
       Type number : sinkLeakSensorBattery "PowderRoom Sink Leak Sensor battery"
-        [stateTopic="zigbee2mqtt/0x00be44fffeab7f25",
+        [stateTopic="zigbee2mqtt/0xb40e060fffe8114d",
          transformationPattern="JSONPATH:$.battery"]
     }
 

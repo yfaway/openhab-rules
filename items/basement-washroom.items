@@ -1,3 +1,9 @@
+Switch BM_BasementWashroom_ToiletWaterLeakState "Toilet Water Leak Detected [%s]" (gWaterLeak)
+  { channel="mqtt:topic:myBroker:basementWashroom:toiletLeakSensorState" }
+
+Number BM_BasementWashroom_ToiletWaterLeakState_BatteryPercentage "Toilet Water Leak Battery [%d]"
+  { channel="mqtt:topic:myBroker:basementWashroom:toiletLeakSensorBattery" }
+
 Switch BM_BasementWashroom_LightSwitch "Basement Washroom Light"
   { channel="mqtt:topic:myBroker:basementWashroom:BasementWashroomLightSwitch",
 	durationInMinutes="15" }
