@@ -10,6 +10,29 @@ Switch SF_MasterWashroom_SinkWaterLeakState "Sink Water Leak Detected [%s]" (gWa
 Number SF_MasterWashroom_SinkWaterLeakState_BatteryPercentage "Sink Water Leak Battery [%d]"
   { channel="mqtt:topic:myBroker:masterWashroom:sinkLeakSensorBattery" }
 
+Switch SF_MasterWashroom_LightSwitch "Master Washroom Light" 
+  (gWallSwitch, gLightSwitch, gSecondFloorLightSwitch) 
+  { channel="zwave:device:7fb4270383:node4:switch_binary",
+    durationInMinutes="10" }
+Number SF_MasterWashroom_LightSwitch_Illuminance "Master Washroom Illuminance [%d]"
+  (gIlluminance) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomIlluminance"}
+// This wash room has two motion sensors (one in the standing shower area).
+Switch SF_MasterWashroom_LightSwitch_EntranceMotionSensor "Master Washroom Motion Sensor"
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomLightMotionSensor"}
+Switch SF_MasterWashroom_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomFanMotionSensor"}
+
+Switch SF_MasterWashroomShower_FanSwitch "Master Washroom Fan" 
+  (gWallSwitch, gFanSwitch) 
+  { channel="zwave:device:7fb4270383:node29:switch_binary",
+    durationInMinutes="15" }
+Switch SF_MasterWashroomShower_FanSwitch_MotionSensor "Master Washroom Fan Motion Sensor"
+  (gWallSwitchMotionSensor, gSecondFloorMotionSensors) 
+  { channel="mqtt:topic:myBroker:xiaomiMotionSensors:MasterWashroomFanMotionSensor"}
+
 String VT_SelectedChromeCast "Source"
 String VT_SelectedStream "Stream"
 Switch VT_GreatRoom_PlayMorningAnnouncement "Play Morning Announcement"
