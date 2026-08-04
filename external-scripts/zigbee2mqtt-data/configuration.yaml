@@ -42,8 +42,6 @@ devices:
     friendly_name: '0xb4e3f9fffeb68d5c'
   '0xb4e3f9fffe641e22':
     friendly_name: '0xb4e3f9fffe641e22'
-  '0xb4e3f9fffe214723':
-    friendly_name: '0xb4e3f9fffe214723'
   '0x2c1165fffe03a2a6':
     friendly_name: '0x2c1165fffe03a2a6'
   '0x0022a30000266826':
@@ -56,8 +54,6 @@ devices:
     friendly_name: '0x0022a3000040a769'
   '0x0022a30000266983':
     friendly_name: '0x0022a30000266983'
-  '0xb4e3f9fffeaf01fd':
-    friendly_name: '0xb4e3f9fffeaf01fd'
   '0x50325ffffe1458d7':
     friendly_name: '0x50325ffffe1458d7'
   '0x54ef44100098fc12':
@@ -72,14 +68,36 @@ devices:
     friendly_name: '0x282c02bfffeaee23'
   '0x282c02bfffeaea37':
     friendly_name: '0x282c02bfffeaea37'
-  '0xecf64cfffe449953':
-    friendly_name: '0xecf64cfffe449953'
   '0xecf64cfffe449ce6':
     friendly_name: '0xecf64cfffe449ce6'
   '0xa4c138c03424c0d7':
     friendly_name: '0xa4c138c03424c0d7'
   '0xa4c1380a54d68fe9':
     friendly_name: '0xa4c1380a54d68fe9'
+  '0xa4c138c6c67fba03':
+    friendly_name: '0xa4c138c6c67fba03'
+  '0x00be44fffeab1912':
+    friendly_name: '0x00be44fffeab1912'
+  '0x00be44fffeabf568':
+    friendly_name: '0x00be44fffeabf568'
+  '0x00be44fffeac191e':
+    friendly_name: '0x00be44fffeac191e'
+  '0x00be44fffeac1c3f':
+    friendly_name: '0x00be44fffeac1c3f'
+  '0x00be44fffeab7f25':
+    friendly_name: '0x00be44fffeab7f25'
+  '0x8c8b48fffe22e7cf':
+    friendly_name: '0x8c8b48fffe22e7cf'
+  '0xecf64cfffe449953':
+    friendly_name: '0xecf64cfffe449953'
+  '0xb4e3f9fffeaf01fd':
+    friendly_name: '0xb4e3f9fffeaf01fd'
+  '0xb4e3f9fffe214723':
+    friendly_name: '0xb4e3f9fffe214723'
+  '0xb40e060fffe811b9':
+    friendly_name: '0xb40e060fffe811b9'
+  '0xb40e060fffe8114d':
+    friendly_name: '0xb40e060fffe8114d'
 advanced:
   log_level: info
   homeassistant_legacy_entity_attributes: false
